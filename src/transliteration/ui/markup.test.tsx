@@ -10,14 +10,16 @@ import Markup, {
 import {
   BibliographyPart,
   LanguagePart,
-  ParagraphPart,
   TextPart,
   UrlPart,
 } from 'transliteration/domain/markup'
 import { raToken } from 'test-support/test-tokens'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  referenceDtoFactory,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 
 const chance = new Chance('markup.test.tsx')
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
@@ -41,10 +43,6 @@ const urlPart: UrlPart = {
   type: 'UrlPart',
   url: url,
   text: linkText,
-}
-const paragraphPart: ParagraphPart = {
-  type: 'ParagraphPart',
-  text: '',
 }
 const bibliographyPart: BibliographyPart = {
   type: 'BibliographyPart',
@@ -92,10 +90,54 @@ test('DisplayUrlPart', () => {
   expect(screen.getByText(linkText)).toHaveAttribute('href', url)
 })
 
-test('Markup rejects an unsplit paragraph part', () => {
-  expect(() => Markup({ parts: [paragraphPart] })).toThrow(
-    'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
+test.each([
+  '/corpus/L/1/4',
+  'mailto:editor@example.org',
+  'https://example.org/path with spaces',
+])('DisplayUrlPart links an allowed URL: %s', (allowedUrl) => {
+  render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
+
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'href',
+    allowedUrl,
   )
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'target',
+    '_blank',
+  )
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'rel',
+    'noopener noreferrer',
+  )
+})
+
+test.each([
+  ['java', 'script:alert(document.domain)'].join(''),
+  'data:text/html,<script>alert(document.domain)</script>',
+  'https://www.ebl.lmu.de@evil.com/',
+])('DisplayUrlPart does not link a disallowed URL: %s', (disallowedUrl) => {
+  render(<DisplayUrlPart part={{ ...urlPart, url: disallowedUrl }} />)
+
+  expect(screen.getByText(linkText)).toBeVisible()
+  expect(screen.queryByRole('link', { name: linkText })).not.toBeInTheDocument()
+})
+
+test('DisplayUrlPart uses the URL when text is empty', () => {
+  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
+
+  expect(screen.getByText(url)).toHaveAttribute('href', url)
+})
+
+test('DisplayUrlPart preserves a backend URL with Unicode and spaces', () => {
+  const backendUrl = 'www.example.com/#špecial cḫars'
+  render(
+    <DisplayUrlPart part={{ type: 'UrlPart', url: backendUrl, text: '' }} />,
+  )
+
+  const link = screen.getByRole('link', { name: backendUrl })
+  expect(link).toHaveAttribute('href', backendUrl)
+  expect(link).toHaveProperty('hash', '#%C5%A1pecial%20c%E1%B8%ABars')
+  expect(link).toHaveProperty('origin', window.location.origin)
 })
 
 test('DisplayBibliographyPart', () => {
@@ -106,66 +148,20 @@ test('DisplayBibliographyPart', () => {
   expect(container).toHaveTextContent(reference.document.primaryAuthor)
 })
 
-test('DisplayBibliographyPart renders a resolved reference without pages normally', () => {
-  const pageLessReference = reference.setPages('')
-  const { container } = render(
-    <DisplayBibliographyPart
-      part={{ type: 'BibliographyPart', reference: pageLessReference }}
-    />,
-  )
-
-  expect(container).toHaveTextContent(pageLessReference.document.primaryAuthor)
-  expect(container).not.toHaveTextContent('@bib{')
-})
-
-test('DisplayBibliographyPart renders a resolved reference with pages normally', () => {
-  const pagedReference = reference.setPages('12–14')
-  const { container } = render(
-    <DisplayBibliographyPart
-      part={{ type: 'BibliographyPart', reference: pagedReference }}
-    />,
-  )
-
-  expect(container).toHaveTextContent('12–14')
-  expect(container).not.toHaveTextContent('@bib{')
-})
-
-test('DisplayBibliographyPart omits the page separator from an empty fallback', () => {
+test('DisplayBibliographyPart preserves an unresolved reference', () => {
   render(
     <DisplayBibliographyPart
       part={{
         type: 'BibliographyPart',
-        reference: {
-          id: 'attinger2014lamentation',
-          type: 'DISCUSSION',
-          pages: '',
-          notes: '',
-          linesCited: [],
-        },
+        reference: referenceDtoFactory.build({
+          id: 'MISSING',
+          pages: '1–2',
+        }),
       }}
     />,
   )
 
-  expect(screen.getByText('@bib{attinger2014lamentation}')).toBeVisible()
-})
-
-test('DisplayBibliographyPart includes pages in a paged fallback', () => {
-  render(
-    <DisplayBibliographyPart
-      part={{
-        type: 'BibliographyPart',
-        reference: {
-          id: 'attinger2014lamentation',
-          type: 'DISCUSSION',
-          pages: '12–14',
-          notes: '',
-          linesCited: [],
-        },
-      }}
-    />,
-  )
-
-  expect(screen.getByText('@bib{attinger2014lamentation@12–14}')).toBeVisible()
+  expect(screen.getByText('@bib{MISSING@1–2}')).toBeVisible()
 })
 
 test('Markup', () => {

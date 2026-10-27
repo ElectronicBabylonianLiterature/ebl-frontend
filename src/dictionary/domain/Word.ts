@@ -65,7 +65,7 @@ export default interface Word {
   readonly supplementsAkkadianDictionaries?: string
   readonly origin: string
   readonly oraccWords: readonly OraccWord[]
-  readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
+  readonly akkadischeGlossareUndIndices?: readonly AkkadischeGlossareUndIndex[]
 }
 
 export function wordPosLabels(

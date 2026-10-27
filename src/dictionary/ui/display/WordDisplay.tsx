@@ -108,7 +108,7 @@ function WordDisplay({
     <LogogramsDisplay signService={signService} wordId={word._id} />
   )
 
-  const akkadischeGlossareUndIndices = (
+  const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
     <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
       {AfoRegisterRedirectBox}{' '}
@@ -122,6 +122,8 @@ function WordDisplay({
         icon="pointer__hover my-2 fas fa-external-link-square-alt"
       />
     </Fragment>
+  ) : (
+    <EmptySection key="akkadischeGlossareUndIndices" />
   )
 
   const supplementsAkkadianDictionaries =
