@@ -1,4 +1,3 @@
-import { waitFor } from '@testing-library/react'
 import Chance from 'chance'
 import { produce } from 'immer'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -144,9 +143,7 @@ describe('Chapter', () => {
       })
     appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
-    await waitFor(() =>
-      expect(appDriver.getView().getByRole('link', { name: 'X.1' })).toBeVisible(),
-    )
+    await appDriver.getView().findByRole('link', { name: 'X.1' })
     expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/^o iii/)).toBeVisible()
   })
