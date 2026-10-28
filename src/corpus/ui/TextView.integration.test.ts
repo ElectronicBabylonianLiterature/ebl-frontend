@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import Chance from 'chance'
 import { produce } from 'immer'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -67,7 +68,7 @@ beforeEach(() => {
   const fetchJsonImplementation =
     fakeApi.client.fetchJson.getMockImplementation()
   fakeApi.client.fetchJson.mockImplementation((path, authenticate) => {
-    if (path === '/fragments/X.1') {
+    if (path === '/fragments/X.1?excludeLines=true') {
       return Promise.resolve(uncertainFragmentDto)
     }
 
@@ -143,6 +144,9 @@ describe('Chapter', () => {
       })
     appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
+    await waitFor(() =>
+      expect(appDriver.getView().getByRole('link', { name: 'X.1' })).toBeVisible(),
+    )
     expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/^o iii/)).toBeVisible()
   })
