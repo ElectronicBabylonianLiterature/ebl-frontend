@@ -117,3 +117,29 @@ test('handles an empty list without starting a request', async () => {
   await waitFor(() => expect(screen.getByRole('list')).toBeEmptyDOMElement())
   expect(isInFragmentarium).not.toHaveBeenCalled()
 })
+
+test('limits concurrent existence checks and abandons queued lookups on unmount', async () => {
+  const pendingResolutions: Array<(exists: boolean) => void> = []
+  isInFragmentarium.mockImplementation(
+    () =>
+      new Promise<boolean>((resolve) => {
+        pendingResolutions.push(resolve)
+      }),
+  )
+  const numbers = Array.from({ length: 6 }, (_, index) => ({
+    museumNumber: `K.${index + 1}`,
+  }))
+  const { unmount } = renderLinks(numbers)
+
+  await waitFor(() => expect(isInFragmentarium).toHaveBeenCalledTimes(4))
+  expect(pendingResolutions).toHaveLength(4)
+
+  await act(async () => pendingResolutions[0](true))
+  await waitFor(() => expect(isInFragmentarium).toHaveBeenCalledTimes(5))
+
+  unmount()
+  await act(async () => {
+    pendingResolutions.slice(1).forEach((resolve) => resolve(false))
+  })
+  expect(isInFragmentarium).toHaveBeenCalledTimes(5)
+})

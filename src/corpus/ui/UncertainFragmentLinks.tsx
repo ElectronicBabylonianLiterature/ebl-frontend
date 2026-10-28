@@ -4,6 +4,9 @@ import type { UncertainFragment } from 'corpus/domain/text'
 import FragmentariumLink from 'corpus/ui/FragmentariumLink'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+
+const fragmentExistenceLimiter = new ConcurrencyLimiter(4)
 
 type Props = {
   uncertainFragments: readonly UncertainFragment[]
@@ -26,14 +29,17 @@ export default withData<Props, unknown, ReadonlyMap<string, boolean>>(
       ))}
     </ul>
   ),
-  async ({ uncertainFragments, fragmentService }) => {
+  async ({ uncertainFragments, fragmentService }, signal) => {
     const numbers = _.uniq(
       uncertainFragments.map(({ museumNumber }) => museumNumber),
     )
     const existence = await Promise.all(
       numbers.map(async (museumNumber) => ({
         museumNumber,
-        exists: await fragmentService.isInFragmentarium(museumNumber),
+        exists: await fragmentExistenceLimiter.run(
+          () => fragmentService.isInFragmentarium(museumNumber),
+          signal,
+        ),
       })),
     )
     return new Map(
