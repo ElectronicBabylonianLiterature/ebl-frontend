@@ -32,7 +32,6 @@ export default class BibliographyBatchLoader {
   constructor(
     private readonly bibliographyRepository: BibliographyRepository,
     private readonly cacheEntry: CacheEntry,
-    private readonly signal?: AbortSignal,
   ) {}
 
   load(
@@ -46,9 +45,7 @@ export default class BibliographyBatchLoader {
       return this.onlyFoundEntries(cachedRequest)
     }
 
-    const batchRequest = this.signal
-      ? this.bibliographyRepository.findMany(sortedUniqueIds, this.signal)
-      : this.bibliographyRepository.findMany(sortedUniqueIds)
+    const batchRequest = this.bibliographyRepository.findMany(sortedUniqueIds)
     const entriesByIdRequest = batchRequest.then((entries) => {
       entries.forEach((entry) => this.cacheEntry(entry.id, entry, generation))
       return new Map(entries.map((entry) => [entry.id, entry]))
@@ -126,9 +123,7 @@ export default class BibliographyBatchLoader {
   }
 
   private findMissingEntry(id: string, generation: number): EntryRequest {
-    const request = this.signal
-      ? this.bibliographyRepository.find(id, this.signal)
-      : this.bibliographyRepository.find(id)
+    const request = this.bibliographyRepository.find(id)
     return request
       .then((entry) => {
         this.cacheEntry(id, entry, generation)

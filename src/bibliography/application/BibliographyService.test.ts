@@ -88,17 +88,15 @@ describe('BibliographyService', () => {
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
 
-  test('delegates search and bibliography listing', async () => {
+  test('forwards search signal and delegates bibliography listing', async () => {
     const service = new BibliographyService(bibliographyRepository)
+    const signal = new AbortController().signal
     bibliographyRepository.search.mockResolvedValue([entryA])
     bibliographyRepository.listAllBibliography.mockResolvedValue(['RN1'])
 
-    await expect(service.search('Aššur')).resolves.toEqual([entryA])
+    await expect(service.search('Aššur', signal)).resolves.toEqual([entryA])
     await expect(service.listAllBibliography()).resolves.toEqual(['RN1'])
-    expect(bibliographyRepository.search).toHaveBeenCalledWith(
-      'Aššur',
-      undefined,
-    )
+    expect(bibliographyRepository.search).toHaveBeenCalledWith('Aššur', signal)
     expect(bibliographyRepository.listAllBibliography).toHaveBeenCalledTimes(1)
   })
 

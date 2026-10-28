@@ -38,17 +38,16 @@ export default class BibliographyService implements BibliographySearch {
     )
   }
 
-  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
+  find(id: string): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-    return this.cache.find(id, signal)
+    return this.cache.find(id)
   }
 
   findManyById(
     ids: readonly string[],
-    signal?: AbortSignal,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     this.clearCachesWhenScopeChanges()
-    return this.cache.findManyById(ids, signal)
+    return this.cache.findManyById(ids)
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
@@ -83,10 +82,10 @@ export default class BibliographyService implements BibliographySearch {
         this.clearCachesWhenScopeChanges()
         if (scopeGeneration === this.scopeGeneration) {
           const winner = state.winner
-          if (!winner || winner.sequence < sequence) {
-            state.winner = { sequence, entry }
-          }
-          this.cache.cacheUpdatedEntry(state.winner!.entry)
+          const winningMutation =
+            !winner || winner.sequence < sequence ? { sequence, entry } : winner
+          state.winner = winningMutation
+          this.cache.cacheUpdatedEntry(winningMutation.entry)
         }
         return entry
       })

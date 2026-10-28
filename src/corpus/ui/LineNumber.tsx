@@ -90,7 +90,9 @@ export default function LineNumber({
             event.preventDefault()
             window.history.replaceState(null, '', hash)
             const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-            scrollLineIntoView(event.currentTarget, { behavior })
+            if (ref.current) {
+              scrollLineIntoView(ref.current, { behavior })
+            }
           }}
         >
           {lineNumberToString(line.number)}

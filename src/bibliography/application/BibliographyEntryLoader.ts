@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { createAbortError } from 'common/utils/abortError'
 
 import BibliographyBatchLoader, {
   isNotFoundError,
@@ -30,14 +29,7 @@ export default class BibliographyEntryLoader {
     )
   }
 
-  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
-    if (signal?.aborted) return Promise.reject(createAbortError(signal))
-    return signal
-      ? this.bibliographyRepository.find(id, signal)
-      : this.findCachedEntry(id)
-  }
-
-  private findCachedEntry(id: string): Promise<BibliographyEntry> {
+  find(id: string): Promise<BibliographyEntry> {
     const cachedEntry = getCachedValue(this.entries, id)
     if (cachedEntry) {
       return Promise.resolve(cachedEntry)
@@ -45,7 +37,7 @@ export default class BibliographyEntryLoader {
 
     const inFlightRequest =
       this.findRequests.get(id) ?? this.batchLoader.findInFlight(id)
-    return (inFlightRequest ?? this.fetchEntry(id)).then((entry) => entry)
+    return inFlightRequest ?? this.fetchEntry(id)
   }
 
   private fetchEntry(id: string): Promise<BibliographyEntry> {
@@ -72,12 +64,11 @@ export default class BibliographyEntryLoader {
 
   findManyById(
     ids: readonly string[],
-    signal?: AbortSignal,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const uniqueIds = _.uniq(ids)
     return _.isEmpty(uniqueIds)
       ? Promise.resolve(new Map<string, BibliographyEntry>())
-      : this.loadEntriesByIds(uniqueIds, signal)
+      : this.loadEntriesByIds(uniqueIds)
   }
 
   cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
@@ -111,16 +102,7 @@ export default class BibliographyEntryLoader {
 
   loadEntriesByIds(
     ids: readonly string[],
-    signal?: AbortSignal,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
-    if (signal?.aborted) return Promise.reject(createAbortError(signal))
-    if (signal) {
-      return new BibliographyBatchLoader(
-        this.bibliographyRepository,
-        () => undefined,
-        signal,
-      ).load(ids, this.generation)
-    }
     const entriesById = new Map<string, BibliographyEntry>()
     const missingIds: string[] = []
     const inFlightRequests: Array<Promise<void>> = []
