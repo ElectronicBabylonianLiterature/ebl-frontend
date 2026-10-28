@@ -10,6 +10,7 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import SignService from 'signs/application/SignService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import Word from 'dictionary/domain/Word'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { wordFactory } from 'test-support/word-fixtures'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -26,8 +27,7 @@ const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 
-test('shows empty sections for a word without dictionary entries', async () => {
-  const word = wordFactory.build({ origin: 'EBL' })
+function renderWordDisplay(word: Word): void {
   wordService.find.mockResolvedValue(word)
   signService.search.mockResolvedValue([])
   fragmentService.query.mockResolvedValue({ items: [], matchCountTotal: 0 })
@@ -51,6 +51,10 @@ test('shows empty sections for a word without dictionary entries', async () => {
       </MemoryRouter>
     </HelmetProvider>,
   )
+}
+
+test('shows empty sections for a word without dictionary entries', async () => {
+  renderWordDisplay(wordFactory.build({ origin: 'EBL' }))
   await screen.findAllByText('No entries')
   await waitForSpinnerToBeRemoved(screen)
 
@@ -62,4 +66,16 @@ test('shows empty sections for a word without dictionary entries', async () => {
     screen.queryByText(/By permission from the authors/),
   ).not.toBeInTheDocument()
   expect(screen.queryByText(/CC BY-ND 3.0/)).not.toBeInTheDocument()
+})
+
+test('shows an empty AGI section for a word without AGI entries', async () => {
+  renderWordDisplay(
+    wordFactory.build({ akkadischeGlossareUndIndices: undefined }),
+  )
+  await screen.findAllByText('No entries')
+  await waitForSpinnerToBeRemoved(screen)
+
+  expect(
+    screen.queryByText('Akkadische Glossare und Indizes'),
+  ).not.toBeInTheDocument()
 })

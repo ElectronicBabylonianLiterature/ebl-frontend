@@ -3,7 +3,10 @@ import { Button, FormGroup, FormLabel } from 'react-bootstrap'
 import _ from 'lodash'
 import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
-import { editionFields } from 'fragmentarium/application/FragmentService'
+import {
+  editionFields,
+  EditionField,
+} from 'fragmentarium/application/FragmentService'
 
 export type FormData = {
   transliteration: string
@@ -43,7 +46,7 @@ export function TransliterationFormFields({
   formData: FormData
   formId: string
   disabled?: boolean
-  update: (property: keyof FormData) => (value: string) => void
+  update: (property: EditionField) => (value: string) => void
 }): JSX.Element {
   return (
     <>
@@ -53,6 +56,7 @@ export function TransliterationFormFields({
           {name === 'transliteration' && <SpecialCharactersHelp />}
           <Editor
             name={name}
+            inputId={`${formId}-${name}`}
             value={formData[name]}
             onChange={update(name)}
             disabled={disabled}

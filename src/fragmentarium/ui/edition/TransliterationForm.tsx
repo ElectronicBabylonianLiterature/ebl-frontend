@@ -14,6 +14,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
 import {
   editionFields,
+  EditionField,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
 import {
@@ -23,6 +24,13 @@ import {
 } from 'fragmentarium/ui/edition/TransliterationFormControls'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
+import {
+  createAttemptKey,
+  createUpdatedFields,
+  rememberRejectedAttempt,
+  isDeterministicFailure,
+  mergeSavedValues,
+} from 'fragmentarium/ui/edition/editionSaveState'
 import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 
 type Props = {
@@ -40,7 +48,7 @@ const TransliterationForm: React.FC<Props> = ({
   updateEdition,
   disabled: propsDisabled,
 }): JSX.Element => {
-  const formId = _.uniqueId('TransliterationForm-')
+  const formId = useMemo(() => _.uniqueId('TransliterationForm-'), [])
   const [formData, setFormData] = useState<FormData>({
     transliteration,
     notes,
@@ -48,18 +56,16 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
+  const [rejectedAttempts, setRejectedAttempts] = useState<ReadonlySet<string>>(
+    new Set(),
+  )
   const updateOperation = useRef(new SupersedableOperation())
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
   )
 
-  const isDirty = (
-    _value: unknown,
-    field: (typeof editionFields)[number],
-  ): boolean => formData[field] !== initialValues[field]
-
-  const update = (property: keyof FormData) => (value: string) => {
+  const update = (property: EditionField) => (value: string) => {
     setFormData((prev) => ({
       ...prev,
       [property]: value,
@@ -75,21 +81,33 @@ const TransliterationForm: React.FC<Props> = ({
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const updatedFields = _.pickBy(
-      _.pick(formData, editionFields),
-      isDirty,
-    ) as EditionFields
+    const editedValues = _.pick(formData, editionFields)
+    if (rejectedAttempts.has(createAttemptKey(editedValues))) {
+      return
+    }
+    const updatedFields = createUpdatedFields(editedValues, initialValues)
     applyWhenCurrent(() => updateEdition(updatedFields), {
       onSuccess: (fragment: Fragment) => {
+        setRejectedAttempts(new Set())
         setFormData((prev) => ({
           ...prev,
-          transliteration: fragment.atf,
-          notes: fragment.notes.text,
-          introduction: fragment.introduction.text,
+          ...mergeSavedValues(prev, editedValues, {
+            transliteration: fragment.atf,
+            notes: fragment.notes.text,
+            introduction: fragment.introduction.text,
+          }),
           error: null,
         }))
       },
       onError: (error) => {
+        if (isDeterministicFailure(error)) {
+          setRejectedAttempts((previousAttempts) =>
+            rememberRejectedAttempt(
+              previousAttempts,
+              createAttemptKey(editedValues),
+            ),
+          )
+        }
         setFormData((prev) => ({ ...prev, error }))
       },
     })(updateOperation.current.start())
@@ -102,6 +120,16 @@ const TransliterationForm: React.FC<Props> = ({
       formData.introduction !== introduction,
     [formData, transliteration, notes, introduction],
   )
+
+  const matchesRejectedAttempt = rejectedAttempts.has(
+    createAttemptKey(formData),
+  )
+
+  useEffect(() => {
+    const clearRejectedAttempts = () => setRejectedAttempts(new Set<string>())
+    window.addEventListener('focus', clearRejectedAttempts)
+    return () => window.removeEventListener('focus', clearRejectedAttempts)
+  }, [])
 
   useEffect(() => () => updateOperation.current.supersede(), [])
 
@@ -133,7 +161,7 @@ const TransliterationForm: React.FC<Props> = ({
         <Col>
           <SubmitButton
             disabled={propsDisabled}
-            hasChanges={hasChanges()}
+            hasChanges={hasChanges() && !matchesRejectedAttempt}
             formId={formId}
           />
         </Col>

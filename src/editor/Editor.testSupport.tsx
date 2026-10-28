@@ -2,6 +2,7 @@ import React from 'react'
 
 export interface EditorMockProps {
   name: string
+  inputId?: string
   value: string
   onChange: (value: string) => void
   disabled?: boolean
@@ -21,6 +22,7 @@ export function editorErrorOf(name: string): unknown {
 
 export default function EditorMock({
   name,
+  inputId,
   value,
   onChange,
   disabled,
@@ -30,6 +32,7 @@ export default function EditorMock({
   return (
     <textarea
       aria-label={name}
+      id={inputId}
       value={value}
       disabled={disabled}
       onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
