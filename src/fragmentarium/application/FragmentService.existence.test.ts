@@ -10,7 +10,7 @@ test('resolves false for an asynchronous missing fragment', async () => {
   fragmentRepository.find.mockRejectedValue(new ApiError('Not found', {}, 404))
 
   await expect(fragmentService.isInFragmentarium('K.404')).resolves.toBe(false)
-  expect(fragmentRepository.find).toHaveBeenCalledWith('K.404')
+  expect(fragmentRepository.find).toHaveBeenCalledWith('K.404', undefined, true)
 })
 
 test.each([
