@@ -5,8 +5,18 @@ import Folio from 'fragmentarium/domain/Folio'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 import { CANONICAL_ORIGIN } from 'router/domain'
 
+function encodeWellFormedURIComponent(value: string): string {
+  const wellFormedValue = Array.from(value, (character) => {
+    const codePoint = character.charCodeAt(0)
+    return character.length === 1 && codePoint >= 0xd800 && codePoint <= 0xdfff
+      ? '\uFFFD'
+      : character
+  }).join('')
+  return encodeURIComponent(wellFormedValue)
+}
+
 export function encodeFragmentNumber(number: string): string {
-  return encodeURIComponent(number.toWellFormed?.() ?? number)
+  return encodeWellFormedURIComponent(number)
 }
 
 function createFragmentLocation(
@@ -16,7 +26,7 @@ function createFragmentLocation(
 ): string {
   return `/library/${encodeFragmentNumber(number)}${query && '?'}${query}${
     hash && '#'
-  }${encodeURIComponent(hash)}`
+  }${encodeWellFormedURIComponent(hash)}`
 }
 
 export function createFragmentUrl(number: string, hash = ''): string {

@@ -196,6 +196,12 @@ describe('encodeFragmentNumber', () => {
     Reflect.deleteProperty(String.prototype, 'toWellFormed')
     try {
       expect(encodeFragmentNumber('K.1 a')).toBe('K.1%20a')
+      expect(encodeFragmentNumber('K.\uD800')).toBe('K.%EF%BF%BD')
+      expect(encodeFragmentNumber('K.\uDC00')).toBe('K.%EF%BF%BD')
+      expect(encodeFragmentNumber('K.😀')).toBe('K.%F0%9F%98%80')
+      expect(createFragmentUrlWithTab('K.1', 'notes', 'line \uD800')).toBe(
+        '/library/K.1?tab=notes#line%20%EF%BF%BD',
+      )
     } finally {
       if (toWellFormed) {
         Reflect.defineProperty(String.prototype, 'toWellFormed', toWellFormed)
