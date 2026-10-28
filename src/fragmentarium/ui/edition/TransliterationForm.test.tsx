@@ -1,15 +1,12 @@
-import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 
-import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
-import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
-
-type TemplateFormMockProps = {
-  onSubmit: (templateValue: string) => void
-}
+import {
+  editorError,
+  renderTransliterationForm,
+} from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
 
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
@@ -17,50 +14,24 @@ jest.mock('editor/SpecialCharactersHelp', () => {
   }
 })
 
-jest.mock('fragmentarium/ui/edition/TemplateForm', () => {
-  return function TemplateFormMock({
-    onSubmit,
-  }: TemplateFormMockProps): JSX.Element {
-    return (
-      <button onClick={() => onSubmit('template value')} type="button">
-        Apply template
-      </button>
-    )
-  }
-})
+jest.mock('fragmentarium/ui/edition/TemplateForm', () =>
+  jest.requireActual('fragmentarium/ui/edition/TemplateForm.testSupport'),
+)
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
 
-const editorError = (): unknown => editorErrorOf('transliteration')
-
-const transliteration = 'line1\nline2'
-const notes = 'notes'
-const introduction = 'introduction'
-
 let addEventListenerSpy
 let updateEdition
 
-const renderForm = (updateEditionMock: jest.Mock): void => {
-  render(
-    <TransliterationForm
-      transliteration={transliteration}
-      notes={notes}
-      introduction={introduction}
-      updateEdition={updateEditionMock}
-    />,
-  )
-}
-
 const setup = () => {
   jest.restoreAllMocks()
-  resetEditorMock()
   addEventListenerSpy = jest.spyOn(window, 'addEventListener')
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(new Promise(() => undefined))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 }
 
 it('Updates transliteration on change', async () => {
@@ -125,9 +96,9 @@ it('Displays warning before closing when unsaved', async () => {
 it('keeps error on editor input change', async () => {
   const requestError = new Error('request failed')
   updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.reject(requestError))
+  updateEdition.mockImplementation(() => Promise.reject(requestError))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -142,9 +113,9 @@ it('keeps error on editor input change', async () => {
 it('keeps error on template application', async () => {
   const requestError = new Error('request failed')
   updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.reject(requestError))
+  updateEdition.mockImplementation(() => Promise.reject(requestError))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -165,10 +136,10 @@ it('clears error after successful save', async () => {
 
   updateEdition = jest.fn()
   updateEdition
-    .mockReturnValueOnce(Promise.reject(requestError))
+    .mockImplementationOnce(() => Promise.reject(requestError))
     .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -201,7 +172,7 @@ it('does not surface an error from a superseded update', async () => {
     )
     .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   submitFormByTestId(screen, 'transliteration-form')

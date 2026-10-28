@@ -49,6 +49,8 @@ export const editionFields = [
   'introduction',
 ] as const
 
+export type EditionField = (typeof editionFields)[number]
+
 export type FragmentStatistics = {
   transliteratedFragments: number
   lines: number
@@ -60,9 +62,9 @@ export type CorpusAttestations = {
   uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
 }
 
-export type EditionFields = {
-  [K in (typeof editionFields)[number]]: string | null
-}
+export type EditionFields = Partial<{
+  [K in EditionField]: string | null
+}>
 
 export interface FragmentRepository {
   statistics(signal?: AbortSignal): Promise<FragmentStatistics>
