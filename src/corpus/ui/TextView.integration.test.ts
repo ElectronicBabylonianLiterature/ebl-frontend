@@ -143,7 +143,9 @@ describe('Chapter', () => {
       })
     appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
-    await appDriver.getView().findByRole('link', { name: 'X.1' })
+    await appDriver.getView().findByText('X.1', {
+      selector: '.list-of-manuscripts__uncertain-fragments a',
+    })
     expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/^o iii/)).toBeVisible()
   })
