@@ -6,7 +6,7 @@ export default async function findFragmentExistence(
   number: string,
 ): Promise<boolean> {
   try {
-    await repository.find(number)
+    await repository.find(number, undefined, true)
     return true
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
