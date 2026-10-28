@@ -18,6 +18,7 @@ import {
   isUrlPart,
 } from 'transliteration/domain/type-guards'
 import 'transliteration/ui/markup.css'
+import isAllowedMarkupUrl from 'transliteration/ui/isAllowedMarkupUrl'
 
 const textPartClassMap = {
   EmphasisPart: 'markup-emphasis',
@@ -45,10 +46,13 @@ export function DisplayUrlPart({
 }: {
   part: UrlPart
 }): JSX.Element {
-  return (
+  const label = text || url
+  return isAllowedMarkupUrl(url) ? (
     <a href={url} target="_blank" rel="noopener noreferrer">
-      {text || url}
+      {label}
     </a>
+  ) : (
+    <span>{label}</span>
   )
 }
 

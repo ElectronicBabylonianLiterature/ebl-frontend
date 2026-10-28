@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { Ace, edit, Range } from 'ace-builds'
+import { Ace, edit, Range, require as requireAceModule } from 'ace-builds'
 import Editor from 'editor/Editor'
 import AtfMode from 'editor/AtfMode'
 import atSnippets from 'editor/atSnippets.json'
@@ -110,6 +110,27 @@ test('inserts special characters', () => {
 })
 
 describe('snippet completers', () => {
+  test.each(['word', '@', '#', 'a#'])(
+    'finishes collecting suggestions for %p',
+    (value) => {
+      const editor = mountEditor(value)
+      editor.selection.moveCursorTo(0, value.length)
+      const {
+        Autocomplete,
+      }: typeof import('ace-builds-internal/autocomplete') =
+        requireAceModule('ace/autocomplete')
+      const callback = jest.fn()
+
+      Autocomplete.for(editor).gatherCompletions(editor, callback)
+
+      expect(callback).toHaveBeenCalledTimes(editor.completers.length)
+      expect(callback).toHaveBeenLastCalledWith(
+        null,
+        expect.objectContaining({ finished: true }),
+      )
+    },
+  )
+
   function complete(
     editor: Ace.Editor,
     index: number,
@@ -134,10 +155,9 @@ describe('snippet completers', () => {
     'completer %i offers snippets for %p',
     (index, prefix, column, snippets) => {
       const editor = mountEditor('')
-      expect(complete(editor, index, prefix, column)).toHaveBeenCalledWith(
-        null,
-        snippets,
-      )
+      const callback = complete(editor, index, prefix, column)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith(null, snippets)
     },
   )
 
@@ -149,7 +169,9 @@ describe('snippet completers', () => {
     'completer %i offers nothing for %p at column %i',
     (index, prefix, column) => {
       const editor = mountEditor('')
-      expect(complete(editor, index, prefix, column)).not.toHaveBeenCalled()
+      const callback = complete(editor, index, prefix, column)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith(null, [])
     },
   )
 })

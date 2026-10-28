@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AceEditor, { IAnnotation, ICommand } from 'react-ace'
+import AceEditor, { ICommand } from 'react-ace'
 import { Ace, Range } from 'ace-builds'
 import _ from 'lodash'
 
@@ -10,24 +10,9 @@ import specialCharacters from 'editor/SpecialCharacters.json'
 import atSnippets from 'editor/atSnippets.json'
 import hashSnippets from 'editor/hashSnippets.json'
 import AtfMode from 'editor/AtfMode'
+import createAnnotations from 'editor/createAnnotations'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
-
-type LineError = { lineNumber: number; description: string }
-
-function hasLineNumber(error: object): error is LineError {
-  return _.has(error, 'lineNumber')
-}
-
-function createAnnotations(compositeError: Props['error']): IAnnotation[] {
-  const errors: object[] = _.get(compositeError, 'data.errors', [])
-  return errors.filter(hasLineNumber).map((error) => ({
-    row: error.lineNumber - 1,
-    column: 0,
-    type: 'error',
-    text: error.description,
-  }))
-}
 
 function createCompleter(
   triggerRegex: RegExp,
@@ -38,9 +23,10 @@ function createCompleter(
     getCompletions: function (editor, session, pos, prefix, callback) {
       const isTriggerPosition = !lineStartOnly || pos.column === 1
 
-      if (prefix.match(triggerRegex) && isTriggerPosition) {
-        callback(null, snippets)
-      }
+      callback(
+        null,
+        prefix.match(triggerRegex) && isTriggerPosition ? snippets : [],
+      )
     },
     identifierRegexps: [triggerRegex],
   }
@@ -58,6 +44,7 @@ const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
 
 interface Props {
   readonly name: string
+  readonly inputId?: string
   readonly value: string
   readonly onChange: (value: string, event?: unknown) => void | undefined
   readonly disabled: boolean
@@ -76,8 +63,12 @@ class Editor extends Component<Props> {
     this.setSnippets()
   }
 
-  configureSession(editor: Ace.Editor): void {
+  configureSession = (editor: Ace.Editor): void => {
     editor.getSession().setNewLineMode('unix')
+    editor.textInput.setAriaLabel()
+    if (this.props.inputId) {
+      editor.textInput.getElement().id = this.props.inputId
+    }
   }
 
   setSnippets(): void {
@@ -158,6 +149,7 @@ class Editor extends Component<Props> {
           }}
           setOptions={{
             showLineNumbers: false,
+            textInputAriaLabel: _.capitalize(name),
             autoScrollEditorIntoView: true,
             rtlText: true,
           }}
