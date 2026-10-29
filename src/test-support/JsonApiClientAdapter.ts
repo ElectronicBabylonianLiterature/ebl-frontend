@@ -39,10 +39,14 @@ export default class JsonApiClientAdapter extends ApiClient {
   postJson<T = unknown>(
     path: string,
     body: unknown,
-    ...authenticate: [boolean?]
+    authenticate = true,
+    onHttpSuccess?: () => void,
   ): Promise<T> {
     return isJsonBody(body)
-      ? this.json.postJson<T>(path, body, ...authenticate)
+      ? this.json.postJson<T>(path, body, authenticate).then((response) => {
+          onHttpSuccess?.()
+          return response
+        })
       : Promise.reject(new Error(`Unsupported postJson body for ${path}`))
   }
 
