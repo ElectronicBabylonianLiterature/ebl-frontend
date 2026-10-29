@@ -60,8 +60,4 @@ export default class SumerianDictionaryService {
   statistics(signal?: AbortSignal): Promise<SumerianDictionaryStatistics> {
     return this.repository.statistics(signal)
   }
-
-  listAllIds(): Promise<string[]> {
-    return this.repository.listAllIds()
-  }
 }

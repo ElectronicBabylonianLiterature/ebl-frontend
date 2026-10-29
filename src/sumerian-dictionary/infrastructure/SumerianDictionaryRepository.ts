@@ -74,8 +74,4 @@ export default class SumerianDictionaryRepository {
       signal,
     )
   }
-
-  listAllIds(): Promise<string[]> {
-    return this.apiClient.fetchJson<string[]>(`${basePath}/all`, authenticate)
-  }
 }

@@ -62,14 +62,6 @@ const testData: TestData<SumerianDictionaryService>[] = [
     [signal],
     Promise.resolve(statistics),
   ),
-  new TestData(
-    'listAllIds',
-    [],
-    repository.listAllIds,
-    ['o1'],
-    [],
-    Promise.resolve(['o1']),
-  ),
 ]
 
 describe('SumerianDictionaryService', () =>

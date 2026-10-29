@@ -127,9 +127,3 @@ it('fetches the statistics', async () => {
     signal,
   )
 })
-
-it('lists all ids', async () => {
-  apiClient.fetchJson.mockResolvedValueOnce(['o1'])
-  expect(await repository.listAllIds()).toEqual(['o1'])
-  expect(apiClient.fetchJson).toHaveBeenCalledWith('/sumerian-words/all', true)
-})
