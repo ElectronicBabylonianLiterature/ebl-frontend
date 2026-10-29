@@ -12,6 +12,7 @@ async function startApplication(environment = {}) {
   const stdin = new PassThrough()
   const exit = jest.fn()
   const errors = []
+  const logs = []
   const closeCompiler = jest.fn()
   const stopServer = jest.fn()
   let serverOptions
@@ -69,7 +70,10 @@ async function startApplication(environment = {}) {
   loadDependency.resolve = (name) => name
   vm.runInNewContext(startScript, {
     require: loadDependency,
-    console: { log: () => undefined, error: (error) => errors.push(error) },
+    console: {
+      log: (message) => logs.push(message),
+      error: (error) => errors.push(error),
+    },
     process: {
       env: { ...environment },
       stdout: { isTTY: false },
@@ -84,6 +88,7 @@ async function startApplication(environment = {}) {
     stdin,
     exit,
     errors,
+    logs,
     closeCompiler,
     stopServer,
     serverOptions,
@@ -136,6 +141,9 @@ test.each(['before server stop', 'during compiler close'])(
   async (phase) => {
     const application = await startApplication()
     triggerShutdown(application, 'SIGINT')
+    expect(application.logs).toContain(
+      'Gracefully shutting down. Press ^C again to force exit.',
+    )
     triggerShutdown(application, 'stdin')
     expect(application.stopServer).toHaveBeenCalledTimes(1)
     if (phase === 'during compiler close') {
@@ -147,6 +155,11 @@ test.each(['before server stop', 'during compiler close'])(
     expect(application.exit).toHaveBeenCalledTimes(1)
     expect(application.exit).toHaveBeenCalledWith(1)
     expect(application.stopServer).toHaveBeenCalledTimes(1)
+    expect(
+      application.logs.filter((message) =>
+        message.startsWith('Gracefully shutting down.'),
+      ),
+    ).toHaveLength(1)
   },
 )
 
@@ -190,12 +203,16 @@ test('reports a synchronous compiler close error once', async () => {
 })
 
 test.each([
-  [new Error('server cleanup failed'), undefined],
-  [undefined, new Error('compiler cleanup failed')],
-  [new Error('server cleanup failed'), new Error('compiler cleanup failed')],
+  ['server stop fails', new Error('server cleanup failed'), undefined],
+  ['compiler close fails', undefined, new Error('compiler cleanup failed')],
+  [
+    'both cleanup steps fail',
+    new Error('server cleanup failed'),
+    new Error('compiler cleanup failed'),
+  ],
 ])(
-  'reports cleanup errors and exits unsuccessfully',
-  async (stopError, closeError) => {
+  'reports cleanup errors and exits unsuccessfully when %s',
+  async (_case, stopError, closeError) => {
     const application = await startApplication()
     triggerShutdown(application, 'SIGTERM')
     application.stopServer.mock.calls[0][0](stopError)
