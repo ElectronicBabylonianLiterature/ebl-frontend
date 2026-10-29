@@ -34,7 +34,10 @@ test('saves a chapter when provenance preload fails', async () => {
     chapter,
   )
 
-  expect(apiClient.postJson).toHaveBeenCalledWith(`${chapterUrl}/import`, {
-    atf: '1. kur',
-  })
+  expect(apiClient.postJson).toHaveBeenCalledWith(
+    `${chapterUrl}/import`,
+    { atf: '1. kur' },
+    true,
+    expect.any(Function),
+  )
 })

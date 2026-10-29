@@ -24,6 +24,12 @@ export function createChapterCacheTestContext(
   const context = createTextServiceTestContext()
   context.fragmentServiceMock.fetchProvenances.mockResolvedValue([])
   context.apiClient.fetchJson.mockResolvedValue(staleDisplayDto)
-  context.apiClient.postJson.mockResolvedValue(chapterDto)
+  context.apiClient.postJson.mockImplementation(
+    (_path, _body, _authenticate, onHttpSuccess) =>
+      Promise.resolve(chapterDto).then((response) => {
+        onHttpSuccess?.()
+        return response
+      }),
+  )
   return { ...context, service: context.createService(getCacheScope) }
 }

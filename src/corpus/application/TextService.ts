@@ -64,12 +64,12 @@ export default class TextService extends TextReadService {
   ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
-      this.apiClient
-        .postJson(`${createChapterUrl(id)}/${endpoint}`, dto)
-        .then((chapterDto) => {
-          this.invalidateChapterDisplayCache(id)
-          return chapterDto
-        }),
+      this.apiClient.postJson(
+        `${createChapterUrl(id)}/${endpoint}`,
+        dto,
+        true,
+        () => this.invalidateChapterDisplayCache(id),
+      ),
     ]).then(([, chapterDto]) => fromChapterDto(chapterDto))
   }
 }

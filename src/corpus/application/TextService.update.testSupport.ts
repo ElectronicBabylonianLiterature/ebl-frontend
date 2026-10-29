@@ -148,7 +148,7 @@ export function createWriteTestData(
       [chapterId, chapter.alignment],
       apiClient.postJson,
       chapter,
-      [`${chapterUrl}/alignment`, alignmentDto],
+      [`${chapterUrl}/alignment`, alignmentDto, true, expect.any(Function)],
       Promise.resolve(chapterDto),
     ),
     new TestData(
@@ -156,7 +156,12 @@ export function createWriteTestData(
       [chapterId, lemmatization],
       apiClient.postJson,
       chapter,
-      [`${chapterUrl}/lemmatization`, lemmatizationDto],
+      [
+        `${chapterUrl}/lemmatization`,
+        lemmatizationDto,
+        true,
+        expect.any(Function),
+      ],
       Promise.resolve(chapterDto),
     ),
     new TestData(
@@ -164,7 +169,7 @@ export function createWriteTestData(
       [chapterId, chapter.manuscripts, chapter.uncertainFragments],
       apiClient.postJson,
       chapter,
-      [`${chapterUrl}/manuscripts`, manuscriptsDto],
+      [`${chapterUrl}/manuscripts`, manuscriptsDto, true, expect.any(Function)],
       Promise.resolve(chapterDto),
     ),
     new TestData(
@@ -188,6 +193,8 @@ export function createWriteTestData(
           deleted: [0],
           new: [_.omit(createLine({ number: '3' }), 'status')],
         },
+        true,
+        expect.any(Function),
       ],
       Promise.resolve(chapterDto),
     ),
@@ -196,7 +203,7 @@ export function createWriteTestData(
       [chapterId, '1. kur'],
       apiClient.postJson,
       chapter,
-      [`${chapterUrl}/import`, { atf: '1. kur' }],
+      [`${chapterUrl}/import`, { atf: '1. kur' }, true, expect.any(Function)],
       Promise.resolve(chapterDto),
     ),
     new TestData(
