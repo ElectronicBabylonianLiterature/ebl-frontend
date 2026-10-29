@@ -53,6 +53,16 @@ export function setCachedValue<CacheKey, CacheValue>({
   return value
 }
 
+export function setCachedValueForKeys<CacheKey, CacheValue>({
+  keys,
+  ...params
+}: Omit<SetCachedValueParams<CacheKey, CacheValue>, 'key'> & {
+  readonly keys: readonly CacheKey[]
+}): CacheValue {
+  new Set(keys).forEach((key) => setCachedValue({ ...params, key }))
+  return params.value
+}
+
 export function trimCache<CacheKey, CacheValue>(
   cache: Map<CacheKey, CacheEntry<CacheValue>>,
   maximumCacheSize: number,

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Route, Redirect } from 'router/compat'
 import type MarkupService from 'markup/application/MarkupService'
+import type { CachedMarkupService } from 'markup/application/MarkupService'
 import {
   sitemapDefaults,
   type BibliographySlugs,
@@ -14,6 +15,7 @@ import type WordService from 'dictionary/application/WordService'
 import type BibliographyService from 'bibliography/application/BibliographyService'
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
+import type SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type TextService from 'corpus/application/TextService'
 import type DossiersService from 'dossiers/application/DossiersService'
@@ -24,11 +26,13 @@ export default function ToolsRoutes({
   sitemap,
   signService,
   markupService,
+  cachedMarkupService,
   wordService,
   textService,
   bibliographyService,
   afoRegisterService,
   realiaService,
+  sumerianDictionaryService,
   dossiersService,
   fragmentService,
   signSlugs,
@@ -39,11 +43,13 @@ export default function ToolsRoutes({
   sitemap: boolean
   signService: SignService
   markupService: MarkupService
+  cachedMarkupService: CachedMarkupService
   wordService: WordService
   textService: TextService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
   dossiersService: DossiersService
   fragmentService: FragmentService
   signSlugs?: SignSlugs
@@ -80,6 +86,7 @@ export default function ToolsRoutes({
             bibliographyService={bibliographyService}
             afoRegisterService={afoRegisterService}
             realiaService={realiaService}
+            sumerianDictionaryService={sumerianDictionaryService}
             dossiersService={dossiersService}
             fragmentService={fragmentService}
           />
@@ -104,6 +111,7 @@ export default function ToolsRoutes({
               bibliographyService={bibliographyService}
               afoRegisterService={afoRegisterService}
               realiaService={realiaService}
+              sumerianDictionaryService={sumerianDictionaryService}
               dossiersService={dossiersService}
               fragmentService={fragmentService}
               activeTab={tabId}
@@ -120,6 +128,8 @@ export default function ToolsRoutes({
       textService,
       bibliographyService,
       realiaService,
+      sumerianDictionaryService,
+      cachedMarkupService,
       fragmentService,
       signSlugs,
       dictionarySlugs,

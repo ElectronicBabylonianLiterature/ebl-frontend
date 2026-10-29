@@ -13,6 +13,7 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
+import SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import { saveAs } from 'file-saver'
 import pako from 'pako'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -31,6 +32,7 @@ jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('markup/application/MarkupService')
 jest.mock('http/ApiClient')
 jest.mock('realia/application/RealiaService')
+jest.mock('sumerian-dictionary/application/SumerianDictionaryService')
 
 let services: Services
 
@@ -131,6 +133,9 @@ beforeEach(() => {
     cachedMarkupService: cachedMarkupService,
     afoRegisterService: afoRegisterService,
     realiaService: realiaService,
+    sumerianDictionaryService: new (SumerianDictionaryService as jest.Mock<
+      jest.Mocked<SumerianDictionaryService>
+    >)(),
     dossiersService: dossiersService,
   }
 })

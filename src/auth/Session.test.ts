@@ -15,6 +15,7 @@ describe('GuestSession', () => {
     expect(guestSession.isAllowedToWriteTexts()).toBe(false)
     expect(guestSession.hasBetaAccess()).toBe(false)
     expect(guestSession.isAllowedToReadRealia()).toBe(false)
+    expect(guestSession.isAllowedToReadSumerianWords()).toBe(false)
     expect(guestSession.isGuestSession()).toBe(true)
   })
 
@@ -43,6 +44,7 @@ describe.each([
   ['access:beta', 'hasBetaAccess'],
   ['create:proper_nouns', 'isAllowedToCreateProperNouns'],
   ['read:realia', 'isAllowedToReadRealia'],
+  ['read:sumerian-words', 'isAllowedToReadSumerianWords'],
 ])('%s %s', (scope, method) => {
   test('Returns true if session has scope', () => {
     const session = new MemorySession([scope])
@@ -55,24 +57,26 @@ describe.each([
   })
 })
 
-describe.each([
-  ['read:WGL-folios', 'WGL'],
-  ['read:LV-folios', 'LV'],
-  ['read:FWG-folios', 'FWG'],
-  ['read:EL-folios', 'EL'],
-  ['read:AKG-folios', 'AKG'],
-  ['read:MJG-folios', 'MJG'],
-  ['read:USK-folios', 'USK'],
-  ['read:ILF-folios', 'ILF'],
-  ['read:ARG-folios', 'ARG'],
-  ['read:AS-folios', 'AS'],
-  ['read:UG-folios', 'UG'],
-  ['read:ER-folios', 'ER'],
-  ['read:GS-folios', 'GS'],
-  ['read:EVW-folios', 'EVW'],
-  ['read:JLP-folios', 'JLP'],
-  ['read:JVD-folios', 'JVD'],
-])('%s %s', (scope, name) => {
+const folioScopes = [
+  'WGL',
+  'LV',
+  'FWG',
+  'EL',
+  'AKG',
+  'MJG',
+  'USK',
+  'ILF',
+  'ARG',
+  'AS',
+  'UG',
+  'ER',
+  'GS',
+  'EVW',
+  'JLP',
+  'JVD',
+].map((name) => [`read:${name}-folios`, name])
+
+describe.each(folioScopes)('%s %s', (scope, name) => {
   const folio = new Folio({ name: name, number: '1' })
 
   test('Returns true if session has scope', () => {

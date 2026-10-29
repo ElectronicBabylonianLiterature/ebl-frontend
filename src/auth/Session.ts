@@ -30,6 +30,8 @@ export interface Session {
 
   isAllowedToReadRealia(): boolean
 
+  isAllowedToReadSumerianWords(): boolean
+
   isGuestSession(): boolean
 }
 
@@ -87,6 +89,10 @@ class GuestSession implements Session {
   }
 
   isAllowedToReadRealia(): boolean {
+    return false
+  }
+
+  isAllowedToReadSumerianWords(): boolean {
     return false
   }
 
@@ -154,6 +160,10 @@ export default class MemorySession implements Session {
 
   isAllowedToReadRealia(): boolean {
     return this.hasApplicationScope('readRealia')
+  }
+
+  isAllowedToReadSumerianWords(): boolean {
+    return this.hasApplicationScope('readSumerianWords')
   }
 
   isAllowedToReadFolio(folio: Folio): boolean {
