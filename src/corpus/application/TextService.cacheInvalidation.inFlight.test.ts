@@ -59,7 +59,13 @@ test('an old pending read cannot replace a newer display or its request', async 
 test('invalidates a read started while the save is pending', async () => {
   const { apiClient, service } = createChapterCacheTestContext()
   const saveResponse = deferred<typeof chapterDto>()
-  apiClient.postJson.mockReturnValueOnce(saveResponse.promise)
+  apiClient.postJson.mockImplementationOnce(
+    (_path, _body, _authenticate, onHttpSuccess) =>
+      saveResponse.promise.then((response) => {
+        onHttpSuccess?.()
+        return response
+      }),
+  )
   const save = service.updateLines(chapterId, [])
   await service.findChapterDisplay(chapterId)
 
@@ -99,7 +105,13 @@ test('scope changes during a save cannot preserve old display data', async () =>
   const oldResponse = deferred<typeof staleDisplayDto>()
   const saveResponse = deferred<typeof chapterDto>()
   apiClient.fetchJson.mockReturnValueOnce(oldResponse.promise)
-  apiClient.postJson.mockReturnValueOnce(saveResponse.promise)
+  apiClient.postJson.mockImplementationOnce(
+    (_path, _body, _authenticate, onHttpSuccess) =>
+      saveResponse.promise.then((response) => {
+        onHttpSuccess?.()
+        return response
+      }),
+  )
   const oldRead = service.findChapterDisplay(chapterId)
   const save = service.updateLines(chapterId, [])
   await settle()

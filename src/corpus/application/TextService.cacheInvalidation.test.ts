@@ -109,7 +109,13 @@ test('retains a warm display after a rejected save', async () => {
 test('invalidates a successful save even if its response cannot be decoded', async () => {
   const { apiClient, service } = createChapterCacheTestContext()
   await service.findChapterDisplay(chapterId)
-  apiClient.postJson.mockResolvedValueOnce(null)
+  apiClient.postJson.mockImplementationOnce(
+    (_path, _body, _authenticate, onHttpSuccess) =>
+      Promise.resolve(null).then((response) => {
+        onHttpSuccess?.()
+        return response
+      }),
+  )
 
   await expect(service.updateLines(chapterId, [])).rejects.toBeInstanceOf(
     TypeError,
