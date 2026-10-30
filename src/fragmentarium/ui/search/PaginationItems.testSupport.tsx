@@ -1,6 +1,5 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import { render } from '@testing-library/react'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 
@@ -23,7 +22,7 @@ export function renderPaginationItems(
   lastPageIndex: number | null = null,
 ) {
   return render(
-    <MemoryRouter initialEntries={[initialEntry]} future={routerFutureFlags}>
+    <MemoryRouter initialEntries={[initialEntry]}>
       <PaginationItems
         paginationURLParam="paginationIndex"
         activePage={activePage}

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import {
   SearchResult,
   SearchResultFragmentService,
@@ -85,10 +84,7 @@ export function renderSearchResult({
     const nextPagination = nextOptions.pagination ?? pagination
     const nextLeadingContent = nextOptions.leadingContent ?? leadingContent
     const element = (
-      <MemoryRouter
-        initialEntries={[`/library/search/${nextSearch}`]}
-        future={routerFutureFlags}
-      >
+      <MemoryRouter initialEntries={[`/library/search/${nextSearch}`]}>
         {nextLeadingContent}
         <SearchResult
           fragmentService={fragmentService}
