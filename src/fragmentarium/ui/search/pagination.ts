@@ -4,6 +4,8 @@ import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 
 export const paginationURLParam = 'paginationIndex'
 export const pageSizeURLParam = 'limit'
+export const corpusPaginationURLParam = 'corpusPaginationIndex'
+export const corpusPageSizeURLParam = 'corpusLimit'
 export const RESULTS_PER_PAGE = 50
 export const RESULT_PAGE_SIZES = [25, 50, 100] as const
 
@@ -14,8 +16,9 @@ export type SearchPagination = {
 
 export function getRequestedPaginationIndex(
   search: string,
+  param = paginationURLParam,
 ): number | undefined {
-  const paginationIndex = new URLSearchParams(search).get(paginationURLParam)
+  const paginationIndex = new URLSearchParams(search).get(param)
   const parsedPaginationIndex =
     paginationIndex === null || paginationIndex.trim() === ''
       ? Number.NaN
@@ -77,8 +80,11 @@ export function updatePaginationSearchParam(
   return updateRawSearchParams(search, new Map([[param, index.toString()]]))
 }
 
-export function getPageIndex(search: string): number {
-  return getRequestedPaginationIndex(search) ?? 0
+export function getPageIndex(
+  search: string,
+  param = paginationURLParam,
+): number {
+  return getRequestedPaginationIndex(search, param) ?? 0
 }
 
 export function getValidatedPageSize(
@@ -92,11 +98,15 @@ export function getValidatedPageSize(
     : RESULTS_PER_PAGE
 }
 
-export function parseSearchPagination(search: string): SearchPagination {
+export function parseSearchPagination(
+  search: string,
+  indexParam = paginationURLParam,
+  sizeParam = pageSizeURLParam,
+): SearchPagination {
   const pageSize = getValidatedPageSize(
-    new URLSearchParams(search).get(pageSizeURLParam),
+    new URLSearchParams(search).get(sizeParam),
   )
-  const pageIndex = getPageIndex(search)
+  const pageIndex = getPageIndex(search, indexParam)
   return {
     pageIndex:
       pageIndex <=
@@ -111,6 +121,8 @@ export function parseSearchCriteria(search: string): FragmentSearchCriteria {
   return _.omit(parse(search, { decode: true }), [
     paginationURLParam,
     pageSizeURLParam,
+    corpusPaginationURLParam,
+    corpusPageSizeURLParam,
     'offset',
     'count',
   ]) as FragmentSearchCriteria
@@ -178,12 +190,14 @@ export function getNumberedPageIndexes(
 export function updatePageSizeSearchParam(
   search: string,
   limit: number,
+  indexParam = paginationURLParam,
+  sizeParam = pageSizeURLParam,
 ): string {
   return updateRawSearchParams(
     search,
     new Map([
-      [pageSizeURLParam, String(getValidatedPageSize(limit))],
-      [paginationURLParam, '0'],
+      [sizeParam, String(getValidatedPageSize(limit))],
+      [indexParam, '0'],
     ]),
   )
 }

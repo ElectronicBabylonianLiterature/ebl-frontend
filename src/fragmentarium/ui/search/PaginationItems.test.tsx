@@ -260,4 +260,48 @@ describe('PaginationItems', () => {
     expect(screen.queryByText('Last')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Go to page')).not.toBeInTheDocument()
   })
+
+  it('keeps Corpus page keys and tab hash separate from Library state', async () => {
+    render(
+      <MemoryRouter
+        initialEntries={[
+          '/library/search/?transliteration=a%2Bb&paginationIndex=2&limit=100&corpusPaginationIndex=0&corpusLimit=25#library',
+        ]}
+      >
+        <PaginationItems
+          paginationURLParam="corpusPaginationIndex"
+          pageSizeURLParam="corpusLimit"
+          hash="#corpus"
+          activePage={0}
+          pageSize={25}
+          hasNextPage={true}
+          lastPageIndex={4}
+          position="top"
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Next')).toHaveAttribute(
+      'href',
+      '/library/search/?transliteration=a%2Bb&paginationIndex=2&limit=100&corpusPaginationIndex=1&corpusLimit=25#corpus',
+    )
+    await userEvent.click(screen.getByText('Next'))
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
+      search:
+        'transliteration=a%2Bb&paginationIndex=2&limit=100&corpusPaginationIndex=1&corpusLimit=25',
+      hash: '#corpus',
+    })
+
+    await userEvent.selectOptions(
+      screen.getByLabelText('Results per page'),
+      '50',
+    )
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
+      search:
+        'transliteration=a%2Bb&paginationIndex=2&limit=100&corpusPaginationIndex=0&corpusLimit=50',
+      hash: '#corpus',
+    })
+  })
 })

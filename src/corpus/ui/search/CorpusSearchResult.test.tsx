@@ -41,6 +41,7 @@ function itemOf(
 }
 
 beforeEach(() => {
+  jest.clearAllMocks()
   textService.findChapterLine.mockResolvedValue(
     new LineDetails(
       [
@@ -105,10 +106,41 @@ it('tells how many more lines matched than are shown', async () => {
     { transliteration: 'kur\nra\n' },
   )
 
-  expect(await screen.findByText('And 2 more')).toBeVisible()
+  expect(
+    await screen.findByRole('button', { name: 'Show 2 more matches' }),
+  ).toBeVisible()
   expect(textService.findChapterDisplay).toHaveBeenCalledWith(
     expect.anything(),
     [0, 1, 2],
     [0, 0, 0],
   )
+})
+
+it('caps the initial detail request for a long multiline query', async () => {
+  const lines = Array.from({ length: 20 }, (_unused, index) => index)
+  renderResult(
+    { items: [itemOf(undefined, lines)], matchCountTotal: 20 },
+    { transliteration: 'a\n'.repeat(30) },
+  )
+
+  expect(
+    await screen.findByRole('button', { name: 'Show 10 more matches' }),
+  ).toBeVisible()
+  expect(textService.findChapterDisplay).toHaveBeenCalledWith(
+    expect.anything(),
+    lines.slice(0, 10),
+    Array(10).fill(0),
+  )
+})
+
+it('does not fetch a full chapter when a result has no valid match pairs', async () => {
+  renderResult({
+    items: [itemOf(undefined, [])],
+    matchCountTotal: 0,
+  })
+
+  expect(
+    await screen.findByText(/Matching lines are unavailable for/),
+  ).toBeVisible()
+  expect(textService.findChapterDisplay).not.toHaveBeenCalled()
 })

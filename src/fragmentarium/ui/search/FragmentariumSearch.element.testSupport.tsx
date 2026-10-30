@@ -1,5 +1,5 @@
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
@@ -22,6 +22,15 @@ export interface FragmentariumSearchServices {
   session: Session
 }
 
+function SearchLocationProbe(): JSX.Element {
+  const location = useLocation()
+  return (
+    <output data-testid="search-location">
+      {location.search + location.hash}
+    </output>
+  )
+}
+
 export function createSearchElement(
   services: FragmentariumSearchServices,
   query: Partial<FragmentQuery>,
@@ -42,6 +51,7 @@ export function createSearchElement(
             textService={services.textService}
             activeTab={activeTab}
           />
+          <SearchLocationProbe />
         </SessionContext.Provider>
       </DictionaryContext.Provider>
     </MemoryRouter>

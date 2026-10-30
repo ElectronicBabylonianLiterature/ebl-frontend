@@ -1,5 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -104,10 +105,12 @@ const getters: [string, () => JSX.Element, PendingReadInstaller][] = [
   [
     'CorpusSearchResult → query',
     () => (
-      <CorpusSearchResult
-        textService={textService}
-        corpusQuery={{ lemmas: 'kur' }}
-      />
+      <MemoryRouter>
+        <CorpusSearchResult
+          textService={textService}
+          corpusQuery={{ lemmas: 'kur' }}
+        />
+      </MemoryRouter>
     ),
     (read) => textService.query.mockImplementation(read),
   ],

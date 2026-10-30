@@ -112,6 +112,25 @@ test('query', async () => {
   )
 })
 
+test('query sends the bounded Corpus pagination contract', async () => {
+  const queryResult = {
+    items: [],
+    totalChapters: 237,
+    matchCountTotal: 0,
+    hasNextPage: true,
+  }
+  apiClient.fetchJson.mockResolvedValueOnce(queryResult)
+
+  await expect(
+    textService.query({ lemmas: 'foo', limit: 25, offset: 50 }),
+  ).resolves.toEqual(queryResult)
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    '/corpus/query?lemmas=foo&limit=25&offset=50',
+    false,
+    undefined,
+  )
+})
+
 test('searchLemma without a genre', async () => {
   apiClient.fetchJson.mockResolvedValueOnce([])
 

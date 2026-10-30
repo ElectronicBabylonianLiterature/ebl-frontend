@@ -11,12 +11,14 @@ import {
 
 function PaginationControl({
   paginationURLParam,
+  hash,
   index,
   disabled,
   active = false,
   children,
 }: {
   paginationURLParam: string
+  hash?: string
   index: number
   disabled: boolean
   active?: boolean
@@ -24,6 +26,7 @@ function PaginationControl({
 }) {
   const location = useLocation()
   const history = useHistory()
+  const destinationHash = hash ?? location.hash
   const search = updatePaginationSearchParam(
     location.search,
     paginationURLParam,
@@ -35,7 +38,9 @@ function PaginationControl({
       aria-current={active ? 'page' : undefined}
       disabled={disabled}
       href={
-        disabled ? undefined : `${location.pathname}?${search}${location.hash}`
+        disabled
+          ? undefined
+          : `${location.pathname}?${search}${destinationHash}`
       }
       onClick={(event) => {
         if (disabled) {
@@ -56,7 +61,7 @@ function PaginationControl({
         history.push({
           pathname: location.pathname,
           search,
-          hash: location.hash,
+          hash: destinationHash,
         })
       }}
     >
@@ -73,17 +78,22 @@ export default function PaginationItems({
   hasNextPage,
   lastPageIndex,
   paginationURLParam,
+  pageSizeURLParam,
+  hash,
   position,
 }: {
   activePage: number
   pageSize: number
   paginationURLParam: string
+  pageSizeURLParam?: string
+  hash?: string
   hasNextPage: boolean
   lastPageIndex?: number | null
   position: PaginationPosition
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+  const destinationHash = hash ?? location.hash
   const controlIdPrefix = React.useId()
   const pageJumpId = `${controlIdPrefix}page-jump`
   const pageSizeId = `${controlIdPrefix}page-size`
@@ -116,7 +126,7 @@ export default function PaginationItems({
         paginationURLParam,
         index,
       ),
-      hash: location.hash,
+      hash: destinationHash,
     })
     setPageJump('')
   }
@@ -135,6 +145,7 @@ export default function PaginationItems({
           {knownLastPage !== null && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={0}
               disabled={activePage === 0}
             >
@@ -143,6 +154,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage - 1}
             disabled={activePage === 0}
           >
@@ -161,6 +173,7 @@ export default function PaginationItems({
                   <PaginationControl
                     key={page}
                     paginationURLParam={paginationURLParam}
+                    hash={hash}
                     index={page}
                     active={page === activePage}
                     disabled={page === activePage}
@@ -172,6 +185,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage + 1}
             disabled={!nextPageAvailable}
           >
@@ -180,6 +194,7 @@ export default function PaginationItems({
           {knownLastPage !== null && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={knownLastPage}
               disabled={activePage >= knownLastPage}
             >
@@ -229,8 +244,10 @@ export default function PaginationItems({
                 search: updatePageSizeSearchParam(
                   location.search,
                   Number(event.currentTarget.value),
+                  paginationURLParam,
+                  pageSizeURLParam,
                 ),
-                hash: location.hash,
+                hash: destinationHash,
               })
             }}
           >
