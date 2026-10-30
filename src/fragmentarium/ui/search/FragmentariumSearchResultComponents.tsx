@@ -9,7 +9,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
-import { Genres } from 'fragmentarium/domain/Genres'
+import FragmentGenresDisplay from 'fragmentarium/ui/search/FragmentGenresDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
@@ -28,20 +28,6 @@ import {
 } from 'query/queryItemRenderReady'
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
-
-function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
-  return (
-    <ul>
-      {genres.genres.map((genreItem, index) => {
-        return (
-          <ul key={index}>
-            <small>{genreItem.toString()}</small>
-          </ul>
-        )
-      })}
-    </ul>
-  )
-}
 
 export type FragmentLinesService = Pick<
   FragmentService,
@@ -147,7 +133,7 @@ function FragmentLinesContent({
           <ProjectList projects={fragment.projects} />
         </ResponsiveCol>
         <ResponsiveCol className={'text-secondary fragment-result__genre'}>
-          <GenresDisplay genres={fragment.genres} />
+          <FragmentGenresDisplay genres={fragment.genres} />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__record'}>
           {includeLatestRecord && <TransliterationRecord fragment={fragment} />}
