@@ -59,10 +59,14 @@
       display: flex
       justify-content: center
       max-width: 100%
+      overflow-x: auto
 
     &-pages
       flex-wrap: nowrap
       margin-bottom: 0
+
+      .page-link
+        white-space: nowrap
 
     &-secondary
       display: flex
@@ -90,5 +94,9 @@
       width: auto
 
     @media (max-width: $ebl-breakpoint-sm-max)
+      &-primary
+        justify-content: flex-start
+        width: 100%
+
       &-secondary
         flex-direction: column

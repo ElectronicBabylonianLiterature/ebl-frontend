@@ -70,7 +70,11 @@ describe('FragmentariumSearchResult pagination', () => {
 
   it('names the top and bottom pagers distinctly without duplicating ids', async () => {
     renderSearchResult({
-      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+      queryResult: buildQueryResult({
+        items: 50,
+        hasNextPage: true,
+        totalDocuments: 237,
+      }),
     })
 
     await screen.findByText('K.1')
@@ -95,7 +99,11 @@ describe('FragmentariumSearchResult pagination', () => {
 
   it('points each pager label at the control in its own pager', async () => {
     renderSearchResult({
-      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+      queryResult: buildQueryResult({
+        items: 50,
+        hasNextPage: true,
+        totalDocuments: 237,
+      }),
     })
 
     await screen.findByText('K.1')
@@ -169,6 +177,100 @@ describe('FragmentariumSearchResult pagination', () => {
     expect(screen.getByRole('link', { name: 'K.2' })).toHaveAttribute(
       'href',
       '/library/search?number=K.2',
+    )
+  })
+
+  it('shows bibliography document totals independently of matching lines', async () => {
+    const view = renderSearchResult({
+      fragmentQuery: { bibId: 'ABC' },
+      queryResult: buildQueryResult({
+        items: 50,
+        totalDocuments: 237,
+        matchCountTotal: 900,
+      }),
+    })
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getByText('Showing documents 1-50 of 237')).toBeVisible()
+    expect(screen.queryByText(/900 matching lines/)).not.toBeInTheDocument()
+    expect(screen.getAllByText('5')).toHaveLength(2)
+    expect(view.query).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows the last document range and disables Next', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({
+        items: 37,
+        totalDocuments: 237,
+        hasNextPage: false,
+      }),
+      pagination: { pageIndex: 4, pageSize: 50 },
+    })
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getByText('Showing documents 201-237 of 237')).toBeVisible()
+    expect(screen.getAllByText('Next')[0]).not.toHaveAttribute('href')
+  })
+
+  it('hides pagination for an empty result with a known total', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({
+        items: 0,
+        totalDocuments: 0,
+        hasNextPage: false,
+      }),
+    })
+
+    expect(await screen.findByText('Found 0 documents')).toBeVisible()
+    expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+  })
+
+  it('keeps the page-size selector for a known single page of 30 results', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({
+        items: 30,
+        totalDocuments: 30,
+        hasNextPage: false,
+      }),
+    })
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getAllByLabelText('Results per page')).toHaveLength(2)
+    expect(screen.getByText('Showing documents 1-30 of 30')).toBeVisible()
+  })
+
+  it('does not correct the next query using a stale earlier total', async () => {
+    const fragmentService: jest.Mocked<SearchResultFragmentService> = {
+      find: jest.fn(),
+      findThumbnail: jest.fn(),
+      query: jest
+        .fn()
+        .mockResolvedValueOnce({
+          items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
+          matchCountTotal: null,
+          totalDocuments: 1,
+        })
+        .mockResolvedValueOnce({
+          items: [{ museumNumber: 'K.new', matchingLines: [], matchCount: 0 }],
+          matchCountTotal: null,
+          totalDocuments: 237,
+        }),
+    }
+    const view = renderSearchResult({
+      fragmentService,
+      leadingContent: <LocationDisplay />,
+    })
+    expect(await screen.findByText('K.old')).toBeInTheDocument()
+
+    view.renderView({
+      fragmentQuery: { number: 'K.2' },
+      pagination: { pageIndex: 4, pageSize: 50 },
+    })
+
+    expect(await screen.findByText('K.new')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledTimes(2)
+    expect(screen.getByTestId('location')).not.toHaveTextContent(
+      'paginationIndex=0',
     )
   })
 

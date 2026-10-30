@@ -93,11 +93,17 @@ export function getValidatedPageSize(
 }
 
 export function parseSearchPagination(search: string): SearchPagination {
+  const pageSize = getValidatedPageSize(
+    new URLSearchParams(search).get(pageSizeURLParam),
+  )
+  const pageIndex = getPageIndex(search)
   return {
-    pageIndex: getPageIndex(search),
-    pageSize: getValidatedPageSize(
-      new URLSearchParams(search).get(pageSizeURLParam),
-    ),
+    pageIndex:
+      pageIndex <=
+      Math.floor((Number.MAX_SAFE_INTEGER - pageSize - 1) / pageSize)
+        ? pageIndex
+        : 0,
+    pageSize,
   }
 }
 
@@ -136,6 +142,37 @@ export function hasNextPageAfter(
   reportedHasNextPage: boolean | null | undefined,
 ): boolean {
   return reportedHasNextPage === true || items.length > pageSize
+}
+
+export function getLastPageIndex(
+  totalDocuments: number | null | undefined,
+  pageSize: number,
+): number | null {
+  return typeof totalDocuments === 'number' &&
+    Number.isSafeInteger(totalDocuments) &&
+    totalDocuments >= 0
+    ? Math.max(0, Math.ceil(totalDocuments / pageSize) - 1)
+    : null
+}
+
+export function getNumberedPageIndexes(
+  activePage: number,
+  lastPage: number,
+): readonly (number | 'ellipsis')[] {
+  const pages = new Set([0, lastPage])
+  const start = Math.max(0, Math.min(activePage - 1, lastPage - 3))
+  const end = Math.min(lastPage, Math.max(activePage + 1, 3))
+
+  for (let page = start; page <= end; page += 1) {
+    pages.add(page)
+  }
+
+  const sorted = [...pages].sort((first, second) => first - second)
+  return sorted.flatMap((page, index) =>
+    index > 0 && page - sorted[index - 1] > 1
+      ? ['ellipsis' as const, page]
+      : [page],
+  )
 }
 
 export function updatePageSizeSearchParam(
