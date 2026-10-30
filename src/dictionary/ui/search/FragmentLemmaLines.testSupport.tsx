@@ -6,7 +6,6 @@ import { fragment, lines } from 'test-support/test-fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { MemoryRouter } from 'react-router-dom'
-import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { produce, castDraft, Draft } from 'immer'
@@ -61,7 +60,7 @@ export function renderWithDictionary(
   wordService: WordService,
 ): ReturnType<typeof render> {
   return render(
-    <MemoryRouter future={routerFutureFlags}>
+    <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         {component}
       </DictionaryContext.Provider>
