@@ -7,7 +7,7 @@ import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
+import ExpandableFragmentMatches from 'fragmentarium/ui/search/ExpandableFragmentMatches'
 import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import FragmentGenresDisplay from 'fragmentarium/ui/search/FragmentGenresDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
@@ -153,13 +153,13 @@ function FragmentLinesContent({
           </small>
         </ResponsiveCol>
         <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
-          <RenderFragmentLines
+          <ExpandableFragmentMatches
             fragment={fragment}
             linesToShow={linesToShow}
-            totalMatchingLines={queryItem.totalMatchingLines}
-            totalLines={includeLatestRecord ? queryItem.matchCount : undefined}
-            matchingLineIndexes={queryItem.matchingLines}
-            lemmaIds={queryLemmas}
+            queryItem={queryItem}
+            queryLemmas={queryLemmas}
+            fragmentService={fragmentService}
+            enableExpansion={!includeLatestRecord}
           />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__preview'}>
