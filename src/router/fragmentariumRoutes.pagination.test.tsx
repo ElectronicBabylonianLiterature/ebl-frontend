@@ -61,7 +61,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -76,7 +76,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       genre: 'CANONICAL:Technical:Astronomy:Astronomical Diaries',
       limit: 51,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -92,7 +92,7 @@ describe('FragmentariumRoutes library search pagination', () => {
         number: 'K.1',
         limit: 51,
         offset: 0,
-        count: 'page',
+        count: 'exact',
       })
     },
   )
@@ -145,7 +145,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 101,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -159,7 +159,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
 
     await userEvent.click(screen.getAllByText('Next')[0])
@@ -174,7 +174,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -202,7 +202,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       genre: 'CANONICAL:Technical',
       limit: 51,
       offset: 200,
-      count: 'page',
+      count: 'exact',
     })
     expect(view.query).toHaveBeenCalledTimes(2)
   })
