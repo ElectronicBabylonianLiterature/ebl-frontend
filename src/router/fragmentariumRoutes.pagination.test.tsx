@@ -178,34 +178,37 @@ describe('FragmentariumRoutes library search pagination', () => {
     })
   })
 
-  it('corrects an out-of-range direct URL to the last real page', async () => {
-    const view = renderLibrarySearch(
-      '/library/search/?number=000123&genre=CANONICAL%3ATechnical&paginationIndex=99#library',
-      (query) => ({
-        items:
-          query.offset === 200
-            ? [{ museumNumber: 'K.201', matchingLines: [], matchCount: 0 }]
-            : [],
-        matchCountTotal: null,
-        totalDocuments: 237,
-        hasNextPage: false,
-      }),
-    )
+  it.each(['paginationIndex', 'pagination%49ndex'])(
+    'corrects an out-of-range direct URL using %s',
+    async (paginationKey) => {
+      const view = renderLibrarySearch(
+        `/library/search/?number=000123&genre=CANONICAL%3ATechnical&${paginationKey}=99#library`,
+        (query) => ({
+          items:
+            query.offset === 200
+              ? [{ museumNumber: 'K.201', matchingLines: [], matchCount: 0 }]
+              : [],
+          matchCountTotal: null,
+          totalDocuments: 237,
+          hasNextPage: false,
+        }),
+      )
 
-    expect(await screen.findByText('K.201')).toBeInTheDocument()
-    expect(screen.getByTestId('location')).toHaveTextContent(
-      'number=000123&genre=CANONICAL%3ATechnical&paginationIndex=4',
-    )
-    expect(screen.getByTestId('location')).toHaveTextContent('#library')
-    expect(view.query).toHaveBeenLastCalledWith({
-      number: '000123',
-      genre: 'CANONICAL:Technical',
-      limit: 51,
-      offset: 200,
-      count: 'exact',
-    })
-    expect(view.query).toHaveBeenCalledTimes(2)
-  })
+      expect(await screen.findByText('K.201')).toBeInTheDocument()
+      expect(screen.getByTestId('location')).toHaveTextContent(
+        'number=000123&genre=CANONICAL%3ATechnical&paginationIndex=4',
+      )
+      expect(screen.getByTestId('location')).toHaveTextContent('#library')
+      expect(view.query).toHaveBeenLastCalledWith({
+        number: '000123',
+        genre: 'CANONICAL:Technical',
+        limit: 51,
+        offset: 200,
+        count: 'exact',
+      })
+      expect(view.query).toHaveBeenCalledTimes(2)
+    },
+  )
 
   it('restores numbered pages through browser Back and Forward', async () => {
     const view = renderLibrarySearch(
