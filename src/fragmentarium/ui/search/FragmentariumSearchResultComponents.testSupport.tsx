@@ -1,6 +1,5 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import { render } from '@testing-library/react'
 import { QueryItem } from 'query/QueryResult'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -26,7 +25,7 @@ export function renderFragmentLines(
   queryLemmas?: readonly string[],
 ): ReturnType<typeof render> {
   return render(
-    <MemoryRouter future={routerFutureFlags}>
+    <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <FragmentLines
           fragmentService={fragmentService}

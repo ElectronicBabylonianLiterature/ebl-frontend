@@ -2,7 +2,6 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
@@ -28,7 +27,7 @@ function location(
 
 function renderLines(fragment: Fragment): void {
   render(
-    <MemoryRouter future={routerFutureFlags}>
+    <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <RenderFragmentLines fragment={fragment} linesToShow={5} />
       </DictionaryContext.Provider>
