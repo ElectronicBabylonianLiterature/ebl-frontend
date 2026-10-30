@@ -13,61 +13,86 @@ export interface CorpusSearchPresentation {
   showPaginationControls: boolean
 }
 
-export function getCorpusSearchPresentation(
+function hasNextCorpusPage(
   data: CorpusQueryResult,
   { pageIndex, pageSize }: SearchPagination,
+  lastPageIndex: number | null,
+): boolean {
+  if (lastPageIndex !== null) return pageIndex < lastPageIndex
+  return (
+    data.hasNextPage === true ||
+    data.items.length > pageSize ||
+    (data.hasNextPage == null && data.items.length === pageSize)
+  )
+}
+
+function formattedMatchCount(data: CorpusQueryResult): string | null {
+  return typeof data.matchCountTotal === 'number'
+    ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()}`
+    : null
+}
+
+function chapterRange(
+  { pageIndex, pageSize }: SearchPagination,
+  chapterCount: number,
+  totalChapters: number | null,
+): string {
+  if (chapterCount === 0) {
+    return pageIndex > 0 ? 'No chapters on this page' : ''
+  }
+  const first = (pageIndex * pageSize + 1).toLocaleString()
+  const last = (pageIndex * pageSize + chapterCount).toLocaleString()
+  const range = `Showing chapters ${first}-${last}`
+  return totalChapters === null
+    ? range
+    : `${range} of ${totalChapters.toLocaleString()}`
+}
+
+function corpusSummary(
+  data: CorpusQueryResult,
+  pagination: SearchPagination,
+  chapterCount: number,
+  totalChapters: number | null,
+  hasNextPage: boolean,
+): string {
+  const count = formattedMatchCount(data)
+  const range = chapterRange(pagination, chapterCount, totalChapters)
+  if (totalChapters !== null) {
+    const lineInfo =
+      count === null
+        ? ''
+        : `${count} matching line variant${data.matchCountTotal === 1 ? '' : 's'} in `
+    const chapters = `${totalChapters.toLocaleString()} chapter${totalChapters === 1 ? '' : 's'}`
+    return `Found ${lineInfo}${chapters}${range ? `. ${range}` : ''}`
+  }
+  if (pagination.pageIndex > 0) {
+    const lineInfo =
+      count === null ? '' : `Found ${count} matching line variants. `
+    return `${lineInfo}${range}`
+  }
+  const lineInfo =
+    count === null
+      ? ''
+      : `${count} line${data.matchCountTotal === 1 ? '' : 's'} in `
+  const chapters = `${chapterCount.toLocaleString()} chapter${chapterCount === 1 ? '' : 's'}`
+  return `Found ${lineInfo}${chapters}${hasNextPage ? '; more results are available' : ''}`
+}
+
+export function getCorpusSearchPresentation(
+  data: CorpusQueryResult,
+  pagination: SearchPagination,
 ): CorpusSearchPresentation {
-  const visibleChapters = data.items.slice(0, pageSize)
-  const lastPageIndex = getLastPageIndex(data.totalChapters, pageSize)
-  const chapterCount = visibleChapters.length
+  const visibleChapters = data.items.slice(0, pagination.pageSize)
+  const lastPageIndex = getLastPageIndex(
+    data.totalChapters,
+    pagination.pageSize,
+  )
   const totalChapters =
     lastPageIndex === null ? null : (data.totalChapters as number)
-  const hasNextPage =
-    lastPageIndex === null
-      ? data.hasNextPage === true ||
-        data.items.length > pageSize ||
-        (data.hasNextPage == null && data.items.length === pageSize)
-      : pageIndex < lastPageIndex
-  const matchCountTotal = data.matchCountTotal
-  const hasLineCount = typeof matchCountTotal === 'number'
-  const legacyLineCountInfo = hasLineCount
-    ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} line${
-        matchCountTotal === 1 ? '' : 's'
-      } in `
-    : ''
-  const lineCountInfo = hasLineCount
-    ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} matching line variant${
-        matchCountTotal === 1 ? '' : 's'
-      } in `
-    : ''
-  const chapterRange =
-    chapterCount > 0
-      ? `Showing chapters ${(pageIndex * pageSize + 1).toLocaleString()}-${(
-          pageIndex * pageSize +
-          chapterCount
-        ).toLocaleString()} of ${totalChapters?.toLocaleString()}`
-      : pageIndex > 0
-        ? 'No chapters on this page'
-        : ''
-  const summary =
-    totalChapters === null
-      ? pageIndex > 0
-        ? `${hasLineCount ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} matching line variants. ` : ''}${
-            chapterCount > 0
-              ? `Showing chapters ${(pageIndex * pageSize + 1).toLocaleString()}-${(
-                  pageIndex * pageSize +
-                  chapterCount
-                ).toLocaleString()}`
-              : 'No chapters on this page'
-          }`
-        : `Found ${legacyLineCountInfo}${chapterCount.toLocaleString()} chapter${
-            chapterCount === 1 ? '' : 's'
-          }${hasNextPage ? '; more results are available' : ''}`
-      : `Found ${lineCountInfo}${totalChapters.toLocaleString()} chapter${
-          totalChapters === 1 ? '' : 's'
-        }${chapterRange ? `. ${chapterRange}` : ''}`
+  const chapterCount = visibleChapters.length
+  const hasNextPage = hasNextCorpusPage(data, pagination, lastPageIndex)
   const showPaginationControls = !(
-    pageIndex === 0 &&
+    pagination.pageIndex === 0 &&
     !hasNextPage &&
     chapterCount < RESULT_PAGE_SIZES[0]
   )
@@ -75,7 +100,13 @@ export function getCorpusSearchPresentation(
     visibleChapters,
     lastPageIndex,
     hasNextPage,
-    summary,
+    summary: corpusSummary(
+      data,
+      pagination,
+      chapterCount,
+      totalChapters,
+      hasNextPage,
+    ),
     showPaginationControls,
   }
 }

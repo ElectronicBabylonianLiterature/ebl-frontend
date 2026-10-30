@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import TextService from 'corpus/application/TextService'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -22,6 +29,18 @@ interface ChapterMatchState {
   collapse: () => void
 }
 
+interface MatchBatchContext {
+  requestVersion: MutableRefObject<number>
+  chapterId: ChapterId
+  textService: TextService
+  setChapter: Dispatch<SetStateAction<ChapterDisplay>>
+  setLoadedPairs: Dispatch<SetStateAction<number>>
+  setExpanded: Dispatch<SetStateAction<boolean>>
+  setLoading: Dispatch<SetStateAction<boolean>>
+  setError: Dispatch<SetStateAction<boolean>>
+  setUnavailable: Dispatch<SetStateAction<boolean>>
+}
+
 function containsRequestedPairs(
   additional: ChapterDisplay,
   requested: readonly CorpusMatchPair[],
@@ -37,6 +56,47 @@ function containsRequestedPairs(
     ),
   )
   return requested.every((pair) => returnedPairs.has(corpusMatchPairKey(pair)))
+}
+
+async function loadChapterMatchBatch(
+  batch: readonly CorpusMatchPair[],
+  {
+    requestVersion,
+    chapterId,
+    textService,
+    setChapter,
+    setLoadedPairs,
+    setExpanded,
+    setLoading,
+    setError,
+    setUnavailable,
+  }: MatchBatchContext,
+): Promise<void> {
+  const currentVersion = ++requestVersion.current
+  setLoading(true)
+  setError(false)
+  try {
+    const additional = await textService.findChapterDisplay(
+      chapterId,
+      batch.map((pair) => pair.line),
+      batch.map((pair) => pair.variant),
+    )
+    if (currentVersion !== requestVersion.current) return
+    if (!containsRequestedPairs(additional, batch)) {
+      setUnavailable(true)
+      setLoading(false)
+      return
+    }
+    setChapter((current) => mergeChapterDisplays(current, additional))
+    setLoadedPairs((count) => count + batch.length)
+    setExpanded(true)
+    setLoading(false)
+  } catch {
+    if (currentVersion === requestVersion.current) {
+      setLoading(false)
+      setError(true)
+    }
+  }
 }
 
 export default function useCorpusChapterMatches(
@@ -74,41 +134,25 @@ export default function useCorpusChapterMatches(
     setError(false)
   }
 
-  async function loadBatch(batch: readonly CorpusMatchPair[]): Promise<void> {
-    const currentVersion = ++requestVersion.current
-    setLoading(true)
-    setError(false)
-    try {
-      const additional = await textService.findChapterDisplay(
-        chapterId,
-        batch.map((pair) => pair.line),
-        batch.map((pair) => pair.variant),
-      )
-      if (currentVersion !== requestVersion.current) return
-      if (!containsRequestedPairs(additional, batch)) {
-        setUnavailable(true)
-        setLoading(false)
-        return
-      }
-      setChapter((current) => mergeChapterDisplays(current, additional))
-      setLoadedPairs((count) => count + batch.length)
-      setExpanded(true)
-      setLoading(false)
-    } catch {
-      if (currentVersion === requestVersion.current) {
-        setLoading(false)
-        setError(true)
-      }
-    }
-  }
-
   function showMore(): void {
     if (loading) return
     if (!expanded && loadedPairs > initiallyVisible) {
       setExpanded(true)
       return
     }
-    if (nextBatch.length > 0) void loadBatch(nextBatch)
+    if (nextBatch.length > 0) {
+      void loadChapterMatchBatch(nextBatch, {
+        requestVersion,
+        chapterId,
+        textService,
+        setChapter,
+        setLoadedPairs,
+        setExpanded,
+        setLoading,
+        setError,
+        setUnavailable,
+      })
+    }
   }
 
   return {
