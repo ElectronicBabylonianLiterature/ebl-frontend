@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server'
 import { MemoryRouter } from 'react-router-dom'
 import UncertainFragmentLinks from 'corpus/ui/UncertainFragmentLinks'
 
-const isInFragmentarium = jest.fn<Promise<boolean>, [string]>()
+const isInFragmentarium = jest.fn<Promise<boolean>, [string, AbortSignal?]>()
 const fragmentService = { isInFragmentarium }
 const uncertainFragments = [
   { museumNumber: 'K.1' },
@@ -75,7 +75,9 @@ test('does not apply a previous fragment list result after props change', async 
     )
     .mockResolvedValue(false)
   const { rerender, element } = renderLinks([{ museumNumber: 'K.1' }])
-  await waitFor(() => expect(isInFragmentarium).toHaveBeenCalledWith('K.1'))
+  await waitFor(() =>
+    expect(isInFragmentarium).toHaveBeenCalledWith('K.1', expect.anything()),
+  )
   rerender(element([{ museumNumber: 'K.2' }]))
   expect(await screen.findByText('K.2')).toBeInTheDocument()
 
@@ -141,5 +143,33 @@ test('limits concurrent existence checks and abandons queued lookups on unmount'
   await act(async () => {
     pendingResolutions.slice(1).forEach((resolve) => resolve(false))
   })
+  expect(isInFragmentarium).toHaveBeenCalledTimes(5)
+})
+
+test('frees active lookup slots after unmount so another chapter can load', async () => {
+  isInFragmentarium.mockImplementation(
+    (number, signal) =>
+      new Promise<boolean>((resolve, reject) => {
+        if (number === 'K.5') {
+          resolve(true)
+        } else {
+          signal?.addEventListener(
+            'abort',
+            () => reject(new DOMException('Aborted', 'AbortError')),
+            { once: true },
+          )
+        }
+      }),
+  )
+  const firstNumbers = Array.from({ length: 4 }, (_, index) => ({
+    museumNumber: `K.${index + 1}`,
+  }))
+  const { unmount } = renderLinks(firstNumbers)
+  await waitFor(() => expect(isInFragmentarium).toHaveBeenCalledTimes(4))
+
+  unmount()
+  renderLinks([{ museumNumber: 'K.5' }])
+
+  expect(await screen.findByRole('link', { name: 'K.5' })).toBeInTheDocument()
   expect(isInFragmentarium).toHaveBeenCalledTimes(5)
 })
