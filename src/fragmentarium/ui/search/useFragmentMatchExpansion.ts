@@ -36,14 +36,21 @@ function hasMoreMatches(queryItem: QueryItem, visibleCount: number): boolean {
   return hasMoreIndexes && hasMoreTotal
 }
 
-function remainingMatches(
-  expanded: boolean,
-  loadedFragment: Fragment | null,
-  availableCount: number,
-  visibleCount: number,
-  totalMatchingLines: number | null | undefined,
-  initialVisibleCount: number,
-): number | null {
+function remainingMatches({
+  expanded,
+  loadedFragment,
+  availableCount,
+  visibleCount,
+  totalMatchingLines,
+  initialVisibleCount,
+}: {
+  expanded: boolean
+  loadedFragment: Fragment | null
+  availableCount: number
+  visibleCount: number
+  totalMatchingLines: number | null | undefined
+  initialVisibleCount: number
+}): number | null {
   if (expanded && loadedFragment) {
     return Math.max(availableCount - visibleCount, 0)
   }
@@ -110,14 +117,14 @@ export default function useFragmentMatchExpansion({
     ? textLineIndexes(loadedFragment, queryItem.matchingLines)
     : []
   const availableCount = selectedIndexes.length
-  const remainingCount = remainingMatches(
+  const remainingCount = remainingMatches({
     expanded,
     loadedFragment,
     availableCount,
     visibleCount,
-    queryItem.totalMatchingLines,
+    totalMatchingLines: queryItem.totalMatchingLines,
     initialVisibleCount,
-  )
+  })
 
   function collapse(): void {
     requestVersion.current += 1
