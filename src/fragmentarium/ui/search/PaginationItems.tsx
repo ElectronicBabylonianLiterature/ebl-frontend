@@ -42,13 +42,13 @@ function PaginationControl({
           event.preventDefault()
           return
         }
-        if (
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) {
+        const hasModifierKey = [
+          event.metaKey,
+          event.ctrlKey,
+          event.shiftKey,
+          event.altKey,
+        ].some(Boolean)
+        if (event.button !== 0 || hasModifierKey) {
           return
         }
 
