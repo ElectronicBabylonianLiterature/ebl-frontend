@@ -2,7 +2,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'common/utils/queryString'
 
-function createEntry(cslData) {
+function createEntry(cslData: Record<string, unknown>): BibliographyEntry {
   return new BibliographyEntry(cslData)
 }
 
@@ -13,19 +13,22 @@ export default class BibliographyRepository {
     this.apiClient = apiClient
   }
 
-  find(id: string): Promise<BibliographyEntry> {
+  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>
-      >(`/bibliography/${encodeURIComponent(id)}`, false)
+      >(`/bibliography/${encodeURIComponent(id)}`, false, signal)
       .then(createEntry)
   }
 
-  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
+  findMany(
+    ids: readonly string[],
+    signal?: AbortSignal,
+  ): Promise<readonly BibliographyEntry[]> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>[]
-      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false)
+      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false, signal)
       .then((result) => result.map(createEntry))
   }
 
@@ -39,10 +42,11 @@ export default class BibliographyRepository {
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
-      .postJson<
-        Record<string, unknown>
-      >(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toCslData())
-      .then(createEntry)
+      .postJson<Record<
+        string,
+        unknown
+      > | null>(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toCslData())
+      .then((response) => (response === null ? entry : createEntry(response)))
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {

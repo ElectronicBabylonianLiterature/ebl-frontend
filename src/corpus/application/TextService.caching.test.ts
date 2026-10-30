@@ -48,6 +48,30 @@ describe('list caching', () => {
     await expect(service.list()).resolves.toEqual([text])
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
   })
+
+  test('a stale scope rejection does not clear the current cached request', async () => {
+    const scope = { current: 'guest' }
+    service = createService(() => scope.current)
+    const staleError = new Error('stale request failed')
+    let rejectStaleRequest: (error: Error) => void = () => undefined
+    const staleRequest = new Promise<unknown[]>((_resolve, reject) => {
+      rejectStaleRequest = reject
+    })
+    apiClient.fetchJson
+      .mockReturnValueOnce(staleRequest)
+      .mockReturnValueOnce(Promise.resolve(textsDto))
+
+    const firstRequest = service.list()
+    scope.current = 'authenticated:user-a'
+    await expect(service.list()).resolves.toEqual([text])
+
+    const staleExpectation = expect(firstRequest).rejects.toBe(staleError)
+    rejectStaleRequest(staleError)
+    await staleExpectation
+
+    await expect(service.list()).resolves.toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
+  })
 })
 
 describe('loadProvenances delegation', () => {

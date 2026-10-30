@@ -1,24 +1,10 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
+import { createBibliographyRepositoryMock } from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
+import { ApiError } from 'http/ApiClient'
 
 describe('BibliographyService', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
 
   const entryA = new BibliographyEntry({ id: 'RN1', title: 'Entry A' })
   const entryB = new BibliographyEntry({ id: 'RN2', title: 'Entry B' })
@@ -38,15 +24,16 @@ describe('BibliographyService', () => {
     expect(bibliographyRepository.find).toHaveBeenCalledWith('RN1')
   })
 
-  test('deduplicates findMany ids while preserving requested order', async () => {
+  test('deduplicates requested ids in the keyed result', async () => {
     const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.findMany.mockResolvedValue([entryA, entryB])
 
-    await expect(service.findMany(['RN2', 'RN1', 'RN1'])).resolves.toEqual([
-      entryB,
-      entryA,
-      entryA,
-    ])
+    await expect(service.findManyById(['RN2', 'RN1', 'RN1'])).resolves.toEqual(
+      new Map([
+        [entryA.id, entryA],
+        [entryB.id, entryB],
+      ]),
+    )
 
     expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.findMany).toHaveBeenCalledWith(['RN1', 'RN2'])
@@ -62,12 +49,14 @@ describe('BibliographyService', () => {
     )
 
     const inFlightFind = service.find('RN1')
-    const inFlightFindMany = service.findMany(['RN1'])
+    const inFlightFindMany = service.findManyById(['RN1'])
 
     resolveFind?.(entryA)
 
     await expect(inFlightFind).resolves.toBe(entryA)
-    await expect(inFlightFindMany).resolves.toEqual([entryA])
+    await expect(inFlightFindMany).resolves.toEqual(
+      new Map([[entryA.id, entryA]]),
+    )
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
 
@@ -92,62 +81,122 @@ describe('BibliographyService', () => {
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(2)
   })
 
-  test('search forwards the query and the signal', async () => {
+  test('returns an empty requested-id map without a repository request', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+
+    await expect(service.findManyById([])).resolves.toEqual(new Map())
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+  })
+
+  test('forwards search signal and delegates bibliography listing', async () => {
     const service = new BibliographyService(bibliographyRepository)
     const signal = new AbortController().signal
     bibliographyRepository.search.mockResolvedValue([entryA])
-
-    await expect(service.search('Borger', signal)).resolves.toEqual([entryA])
-
-    expect(bibliographyRepository.search).toHaveBeenCalledWith('Borger', signal)
-  })
-
-  test('update caches the saved entry for later lookups', async () => {
-    const service = new BibliographyService(bibliographyRepository)
-    bibliographyRepository.update.mockResolvedValue(entryB)
-
-    await expect(service.update(entryB)).resolves.toBe(entryB)
-    await expect(service.find('RN2')).resolves.toBe(entryB)
-
-    expect(bibliographyRepository.find).not.toHaveBeenCalled()
-  })
-
-  test('create caches the created entry for later lookups', async () => {
-    const service = new BibliographyService(bibliographyRepository)
-    bibliographyRepository.create.mockResolvedValue(entryA)
-
-    await expect(service.create(entryA)).resolves.toBe(entryA)
-    await expect(service.find('RN1')).resolves.toBe(entryA)
-
-    expect(bibliographyRepository.create).toHaveBeenCalledWith(entryA)
-    expect(bibliographyRepository.find).not.toHaveBeenCalled()
-  })
-
-  test('findMany resolves to an empty list without a request for no ids', async () => {
-    const service = new BibliographyService(bibliographyRepository)
-
-    await expect(service.findMany([])).resolves.toEqual([])
-
-    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
-    expect(bibliographyRepository.find).not.toHaveBeenCalled()
-  })
-
-  test('listAllBibliography forwards to the repository', async () => {
-    const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.listAllBibliography.mockResolvedValue(['RN1'])
 
+    await expect(service.search('Aššur', signal)).resolves.toEqual([entryA])
     await expect(service.listAllBibliography()).resolves.toEqual(['RN1'])
+    expect(bibliographyRepository.search).toHaveBeenCalledWith('Aššur', signal)
+    expect(bibliographyRepository.listAllBibliography).toHaveBeenCalledTimes(1)
   })
 
-  test('keeps the cache when resolving the cache scope throws', async () => {
-    const service = new BibliographyService(bibliographyRepository, () => {
-      throw new Error('scope unavailable')
-    })
+  test('reuses a cached direct entry in findMany', async () => {
+    const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.find.mockResolvedValue(entryA)
 
-    await expect(service.find('RN1')).resolves.toBe(entryA)
-    await expect(service.find('RN1')).resolves.toBe(entryA)
+    await expect(service.find(entryA.id)).resolves.toBe(entryA)
+    await expect(service.findManyById([entryA.id])).resolves.toEqual(
+      new Map([[entryA.id, entryA]]),
+    )
+    expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+  })
 
+  test('omits a concurrent direct 404 from findMany', async () => {
+    const error = new ApiError('Not Found', {}, 404)
+    let rejectFind = (_error: Error): void => {
+      throw new Error('Find promise was not initialized')
+    }
+    bibliographyRepository.find.mockReturnValue(
+      new Promise((_, reject) => {
+        rejectFind = reject
+      }),
+    )
+    const service = new BibliographyService(bibliographyRepository)
+
+    const directRequest = service.find('missing-entry')
+    const findManyRequest = service.findManyById(['missing-entry'])
+    const directExpectation = expect(directRequest).rejects.toBe(error)
+    rejectFind(error)
+
+    await directExpectation
+    await expect(findManyRequest).resolves.toEqual(new Map())
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+  })
+
+  test('propagates a concurrent direct systemic error through findMany', async () => {
+    const error = new Error('Network unavailable')
+    let rejectFind = (_error: Error): void => {
+      throw new Error('Find promise was not initialized')
+    }
+    bibliographyRepository.find.mockReturnValue(
+      new Promise((_, reject) => {
+        rejectFind = reject
+      }),
+    )
+    const service = new BibliographyService(bibliographyRepository)
+
+    const directRequest = service.find(entryA.id)
+    const findManyRequest = service.findManyById([entryA.id])
+    const directExpectation = expect(directRequest).rejects.toBe(error)
+    const findManyExpectation = expect(findManyRequest).rejects.toBe(error)
+    rejectFind(error)
+
+    await directExpectation
+    await findManyExpectation
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+  })
+
+  test('shares a batch fallback 404 with an overlapping findMany', async () => {
+    const error = new ApiError('Not Found', {}, 404)
+    let resolveBatch = (_entries: readonly BibliographyEntry[]): void => {
+      throw new Error('Batch promise was not initialized')
+    }
+    bibliographyRepository.findMany.mockReturnValue(
+      new Promise((resolve) => {
+        resolveBatch = resolve
+      }),
+    )
+    bibliographyRepository.find.mockRejectedValue(error)
+    const service = new BibliographyService(bibliographyRepository)
+
+    const firstRequest = service.findManyById(['missing-entry'])
+    const secondRequest = service.findManyById(['missing-entry'])
+    resolveBatch([])
+
+    await expect(firstRequest).resolves.toEqual(new Map())
+    await expect(secondRequest).resolves.toEqual(new Map())
+    expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
+    expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
+  })
+
+  test('uses the default scope when scope resolution throws', async () => {
+    let shouldThrow = true
+    const getCacheScope = (): string => {
+      if (shouldThrow) {
+        throw new Error('Session unavailable')
+      }
+      return 'default'
+    }
+    const service = new BibliographyService(
+      bibliographyRepository,
+      getCacheScope,
+    )
+    bibliographyRepository.find.mockResolvedValue(entryA)
+
+    await expect(service.find(entryA.id)).resolves.toBe(entryA)
+    shouldThrow = false
+    await expect(service.find(entryA.id)).resolves.toBe(entryA)
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
   })
 })

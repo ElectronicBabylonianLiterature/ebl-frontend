@@ -1,5 +1,7 @@
+import { produce } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
+  bibliographyService,
   buildTestFragment,
   createFragmentService,
   fragmentRepository,
@@ -29,6 +31,36 @@ describe('find', () => {
       undefined,
       undefined,
     )
+  })
+})
+describe('bibliography errors', () => {
+  test('preserves fragment content when bibliography is unavailable', async () => {
+    const error = new Error('Bibliography unavailable')
+    const service = createFragmentService()
+    const fragmentWithCitation = produce(fragment, (draft) => {
+      draft.notes = {
+        text: '@bib{unavailable}',
+        parts: [
+          {
+            type: 'BibliographyPart',
+            reference: {
+              id: 'unavailable',
+              type: 'DISCUSSION',
+              pages: '',
+              notes: '',
+              linesCited: [],
+            },
+          },
+        ],
+      }
+    })
+    fragmentRepository.find.mockResolvedValue(fragmentWithCitation)
+    bibliographyService.findManyById.mockRejectedValue(error)
+
+    await expect(service.find(number)).resolves.toEqual(fragmentWithCitation)
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
+      'unavailable',
+    ])
   })
 })
 

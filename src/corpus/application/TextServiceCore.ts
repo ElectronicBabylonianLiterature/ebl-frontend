@@ -1,4 +1,5 @@
 import { produce, castDraft } from 'immer'
+import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterDisplay, LineVariantDisplay } from 'corpus/domain/chapter'
@@ -35,10 +36,12 @@ export class TextServiceCore {
     return Promise.resolve(this.fragmentService.fetchProvenances())
       .then(() => undefined)
       .catch((error) => {
-        console.error('Failed to preload provenances', error)
+        this.errorReporter.captureException(error)
       })
   }
   protected readonly referenceInjector: ReferenceInjector
+
+  private readonly errorReporter = new SentryErrorReporter()
 
   protected cacheScope: string | null = null
 

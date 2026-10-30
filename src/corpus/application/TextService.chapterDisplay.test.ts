@@ -91,11 +91,15 @@ test('inject ChapterDisplay', async () => {
     ]
   })
   apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterWithReferences))
-  bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Promise.resolve([translationReference.document]),
+  bibliographyServiceMock.findManyById.mockReturnValueOnce(
+    Promise.resolve(
+      new Map([[translationReference.id, translationReference.document]]),
+    ),
   )
-  bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Promise.resolve([intertextReference.document]),
+  bibliographyServiceMock.findManyById.mockReturnValueOnce(
+    Promise.resolve(
+      new Map([[intertextReference.id, intertextReference.document]]),
+    ),
   )
   await expect(service.findChapterDisplay(chapterId)).resolves.toEqual(
     injectedChapter,
@@ -104,10 +108,10 @@ test('inject ChapterDisplay', async () => {
     `${chapterUrl}/display`,
     false,
   )
-  expect(bibliographyServiceMock.findMany).toHaveBeenCalledWith([
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
     translationReference.id,
   ])
-  expect(bibliographyServiceMock.findMany).toHaveBeenCalledWith([
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
     intertextReference.id,
   ])
 })
