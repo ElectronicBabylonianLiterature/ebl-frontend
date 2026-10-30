@@ -20,6 +20,7 @@ import {
 } from 'test-support/fragment-query-summary'
 import { tokenWithClass } from 'test-support/fragment-query-preview'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
+import { comment } from 'test-support/lines/control'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
@@ -62,10 +63,8 @@ const previewSubsetFragment = produce(fragment, (draft: Draft<Fragment>) => {
   draft.text = castDraft(previewSubsetText)
 })
 
-let container: HTMLElement
-
 function renderFragmentLemmaLines() {
-  container = render(
+  render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <FragmentLemmaLines
@@ -74,7 +73,7 @@ function renderFragmentLemmaLines() {
         />
       </DictionaryContext.Provider>
     </MemoryRouter>,
-  ).container
+  )
 }
 
 describe('Show Library entries', () => {
@@ -107,7 +106,8 @@ describe('Show Library entries', () => {
     await setup()
     await screen.findByText(fragmentWithLemma.number)
     await screen.findByText('kur')
-    expect(container).toMatchSnapshot()
+    expect(screen.getByRole('table')).toHaveTextContent('kur')
+    expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
   })
 
   it('renders example-count copy when matchCountTotal is null', async () => {
@@ -132,8 +132,9 @@ describe('Show Library entries', () => {
   it('renders compact summary examples without hydrating fragments', async () => {
     const queryItem: QueryItem = {
       museumNumber: previewSubsetFragment.number,
-      matchingLines: [0, 1],
+      matchingLines: [0, 1, 2, 3, 4],
       matchCount: 5,
+      totalMatchingLines: 5,
       fragment: previewSubsetFragment,
       cardSummary: createFragmentCardSummary(),
     }
@@ -149,7 +150,7 @@ describe('Show Library entries', () => {
         tokenWithClass('Transliteration__Word--highlight', 'kur'),
       ),
     ).toBeInTheDocument()
-    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 
@@ -205,7 +206,7 @@ describe('RenderFragmentLines', () => {
             fragment={previewSubsetFragment}
             lemmaIds={[word._id]}
             linesToShow={3}
-            totalLines={5}
+            totalMatchingLines={5}
           />
         </DictionaryContext.Provider>
       </MemoryRouter>,
@@ -213,10 +214,10 @@ describe('RenderFragmentLines', () => {
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
-    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
   })
 
-  it('falls back to the fragment line count when no total is given', () => {
+  it('uses cautious wording when no matching-line total is given', () => {
     render(
       <MemoryRouter>
         <DictionaryContext.Provider value={wordService}>
@@ -229,6 +230,52 @@ describe('RenderFragmentLines', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('And 1 more')).toBeVisible()
+    expect(
+      screen.getByText('More matching lines may be available'),
+    ).toBeVisible()
+  })
+
+  it('does not show a remainder when the exact total is visible', () => {
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <RenderFragmentLines
+            fragment={previewSubsetFragment}
+            linesToShow={2}
+            totalMatchingLines={2}
+          />
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByText(/more matching lines/)).not.toBeInTheDocument()
+  })
+
+  it('does not count a control line as matching text', () => {
+    const fragmentWithControl = produce(previewSubsetFragment, (draft) => {
+      draft.text = castDraft(
+        new Text({
+          lines: [
+            previewSubsetText.lines[0],
+            comment,
+            previewSubsetText.lines[1],
+          ],
+        }),
+      )
+    })
+
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <RenderFragmentLines
+            fragment={fragmentWithControl}
+            linesToShow={1}
+            totalMatchingLines={2}
+          />
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('And 1 more matching line')).toBeVisible()
   })
 })

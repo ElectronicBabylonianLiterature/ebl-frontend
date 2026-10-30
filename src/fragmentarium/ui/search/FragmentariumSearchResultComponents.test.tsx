@@ -15,6 +15,7 @@ import {
   SUMMARY_LEMMA_ID,
 } from 'test-support/fragment-query-summary'
 import {
+  previewLine,
   tokenWithClass,
   withPreviewLines,
 } from 'test-support/fragment-query-preview'
@@ -65,6 +66,64 @@ function renderFragmentLines(
 }
 
 describe('FragmentLines', () => {
+  it('counts hidden text lines across overlapping three-line matches', () => {
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
+    const preview = Array.from({ length: 5 }, (_unused, index) =>
+      previewLine(index + 1, []),
+    )
+
+    renderFragmentLines(
+      {
+        museumNumber: fragment.number,
+        matchingLines: [0, 1, 2, 2, 3, 4, 4, 5, 6],
+        matchCount: 3,
+        totalMatchingLines: 7,
+        fragment: withPreviewLines(fragment, preview),
+        cardSummary: createFragmentCardSummary(),
+      },
+      5,
+    )
+
+    expect(screen.getByText('And 2 more matching lines')).toBeVisible()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('does not invent a numeric line count without preview metadata', () => {
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [0, 1, 2, 3],
+      matchCount: 20,
+      fragment: withPreviewLines(fragment),
+      cardSummary: createFragmentCardSummary(),
+    })
+
+    expect(
+      screen.getByText('More matching lines may be available'),
+    ).toBeVisible()
+    expect(screen.queryByText(/And \d+ more/)).not.toBeInTheDocument()
+  })
+
+  it('deduplicates overlapping indexes before hydrating preview lines', async () => {
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
+    fragmentService.find.mockResolvedValueOnce(fragment)
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [0, 1, 1, 2, 2, 3],
+      matchCount: 2,
+      totalMatchingLines: 4,
+    })
+
+    expect(await screen.findByText(fragment.number)).toBeInTheDocument()
+    expect(fragmentService.find).toHaveBeenCalledWith(
+      fragment.number,
+      [0, 1, 2],
+      false,
+    )
+    expect(fragmentService.find).toHaveBeenCalledTimes(1)
+  })
   it('renders compact summary lines and lemma highlights without hydration', () => {
     const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
 
@@ -188,8 +247,9 @@ describe('FragmentLines', () => {
     renderFragmentLines(
       {
         museumNumber: summaryFragment.number,
-        matchingLines: [1, 2],
+        matchingLines: [1, 2, 3, 4, 5],
         matchCount: 5,
+        totalMatchingLines: 5,
         fragment: withPreviewLines(summaryFragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath,
@@ -214,7 +274,7 @@ describe('FragmentLines', () => {
     ).toBeVisible()
     expect(screen.getByText('1')).toBeVisible()
     expect(screen.getByRole('table')).toHaveTextContent('kur ša')
-    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
     expect(
       screen.getByText(/Borger/, {
         selector: '.reference-popover__interactive',
@@ -232,8 +292,9 @@ describe('FragmentLines', () => {
     renderFragmentLines(
       {
         museumNumber: fragment.number,
-        matchingLines: [1, 2],
+        matchingLines: [1, 2, 3, 4, 5, 6, 7],
         matchCount: 7,
+        totalMatchingLines: 7,
         fragment: withPreviewLines(fragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath: null,
@@ -241,6 +302,6 @@ describe('FragmentLines', () => {
       5,
     )
 
-    expect(screen.getByText('And 5 more')).toBeInTheDocument()
+    expect(screen.getByText('And 5 more matching lines')).toBeInTheDocument()
   })
 })
