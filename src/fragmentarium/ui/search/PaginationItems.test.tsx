@@ -1,46 +1,13 @@
-import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
-
-const mockHistoryPush = jest.fn()
-
-jest.mock('router/compat', () => ({
-  ...jest.requireActual('router/compat'),
-  useHistory: () => ({
-    push: mockHistoryPush,
-    replace: jest.fn(),
-    location: { pathname: '/library/search/', search: '' },
-  }),
-}))
-
-function renderPaginationItems(
-  activePage = 0,
-  hasNextPage = true,
-  initialEntry = '/library/search/',
-  pageSize = 50,
-) {
-  return render(
-    <MemoryRouter initialEntries={[initialEntry]}>
-      <PaginationItems
-        paginationURLParam="paginationIndex"
-        activePage={activePage}
-        pageSize={pageSize}
-        hasNextPage={hasNextPage}
-        position="top"
-      />
-    </MemoryRouter>,
-  )
-}
-
-beforeEach(() => {
-  mockHistoryPush.mockClear()
-})
+import {
+  mockHistoryPush,
+  renderPaginationItems,
+} from 'fragmentarium/ui/search/PaginationItems.testSupport'
 
 describe('PaginationItems', () => {
   it('renders a named navigation landmark with centered control groups', () => {
-    renderPaginationItems()
+    renderPaginationItems(0, true, '/library/search/', 50, 9)
 
     expect(
       screen.getByRole('navigation', {
@@ -62,7 +29,7 @@ describe('PaginationItems', () => {
   })
 
   it('associates each visible label with its own control', () => {
-    renderPaginationItems()
+    renderPaginationItems(0, true, '/library/search/', 50, 9)
 
     const pageJumpLabel = screen.getByText('Go to page')
     const pageSizeLabel = screen.getByText('Results per page')
@@ -113,8 +80,10 @@ describe('PaginationItems', () => {
     await userEvent.click(screen.getByText('Next'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search:
         'museum=BM&number=000123&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&paginationIndex=1',
+      hash: '',
     })
   })
 
@@ -128,7 +97,9 @@ describe('PaginationItems', () => {
     await userEvent.click(screen.getByText('Previous'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search: 'museum=BM&paginationIndex=3&genre=letters',
+      hash: '',
     })
   })
 
@@ -145,8 +116,10 @@ describe('PaginationItems', () => {
     )
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search:
         'museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123&limit=100&paginationIndex=0',
+      hash: '',
     })
   })
 
@@ -154,57 +127,5 @@ describe('PaginationItems', () => {
     renderPaginationItems(0, true, '/library/search/?limit=50', 25)
 
     expect(screen.getByLabelText('Results per page')).toHaveValue('25')
-  })
-
-  it('jumps directly to a requested page and clears the input afterwards', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    await userEvent.type(pageJumpInput, '4')
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).toHaveBeenLastCalledWith({
-      search: 'number=K.1&paginationIndex=3',
-    })
-    expect(pageJumpInput).toHaveValue(null)
-  })
-
-  it('ignores invalid and current page jump requests', async () => {
-    renderPaginationItems(2, true, '/library/search/?number=K.1')
-
-    await userEvent.type(screen.getByLabelText('Go to page'), '0')
-    await userEvent.click(screen.getByText('Go'))
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-
-    await userEvent.clear(screen.getByLabelText('Go to page'))
-    await userEvent.type(screen.getByLabelText('Go to page'), '3')
-    await userEvent.click(screen.getByText('Go'))
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-  })
-
-  it('rejects a page jump beyond the safe integer range', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
-
-    const unsafePage = '99999999999999999'
-    expect(Number(unsafePage)).toBeGreaterThan(Number.MAX_SAFE_INTEGER)
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    await userEvent.type(pageJumpInput, unsafePage)
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-    expect(pageJumpInput).toHaveValue(Number(unsafePage))
-  })
-
-  it('requires the page-jump input and rejects an empty submission', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    expect(pageJumpInput).toBeRequired()
-    expect(pageJumpInput).toHaveAttribute('min', '1')
-
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 })

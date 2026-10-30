@@ -178,3 +178,14 @@ describe('malformed items never reject the query result', () => {
     expect(item.museumNumber).toEqual('Test.1')
   })
 })
+
+it('preserves document totals separately from matching-line counts', () => {
+  const result = createQueryResult({
+    items: [],
+    matchCountTotal: 900,
+    totalDocuments: 237,
+  })
+
+  expect(result.matchCountTotal).toBe(900)
+  expect(result.totalDocuments).toBe(237)
+})
