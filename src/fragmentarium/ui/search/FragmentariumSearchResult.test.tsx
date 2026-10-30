@@ -22,7 +22,7 @@ describe('FragmentariumSearchResult pagination', () => {
       number: 'K.1',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -187,6 +187,7 @@ describe('FragmentariumSearchResult pagination', () => {
         items: 50,
         totalDocuments: 237,
         matchCountTotal: 900,
+        hasNextPage: null,
       }),
     })
 
@@ -194,6 +195,12 @@ describe('FragmentariumSearchResult pagination', () => {
     expect(screen.getByText('Showing documents 1-50 of 237')).toBeVisible()
     expect(screen.queryByText(/900 matching lines/)).not.toBeInTheDocument()
     expect(screen.getAllByText('5')).toHaveLength(2)
+    expect(view.query).toHaveBeenCalledWith({
+      bibId: 'ABC',
+      limit: 51,
+      offset: 0,
+      count: 'exact',
+    })
     expect(view.query).toHaveBeenCalledTimes(1)
   })
 

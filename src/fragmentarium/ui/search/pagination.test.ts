@@ -152,13 +152,13 @@ describe('isLineQuery', () => {
 })
 
 describe('createPagedFragmentQuery', () => {
-  it('overfetches a document query by one item and asks for page metadata', () => {
+  it('overfetches a document query by one item and requests exact document totals', () => {
     expect(
       createPagedFragmentQuery(
         { project: 'CAIC' },
         { pageIndex: 0, pageSize: 50 },
       ),
-    ).toEqual({ project: 'CAIC', limit: 51, offset: 0, count: 'page' })
+    ).toEqual({ project: 'CAIC', limit: 51, offset: 0, count: 'exact' })
   })
 
   it('offsets later pages by the visible page size, not the fetched size', () => {
@@ -167,7 +167,7 @@ describe('createPagedFragmentQuery', () => {
         { project: 'CAIC' },
         { pageIndex: 2, pageSize: 25 },
       ),
-    ).toEqual({ project: 'CAIC', limit: 26, offset: 50, count: 'page' })
+    ).toEqual({ project: 'CAIC', limit: 26, offset: 50, count: 'exact' })
   })
 
   it('overfetches line queries by one item to detect the next page', () => {
@@ -196,7 +196,7 @@ describe('createPagedFragmentQuery', () => {
       museum: 'THE_BRITISH_MUSEUM',
       limit: 101,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 })

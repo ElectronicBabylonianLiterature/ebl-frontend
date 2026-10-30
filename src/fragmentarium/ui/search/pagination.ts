@@ -132,7 +132,7 @@ export function createPagedFragmentQuery(
     ...fragmentQuery,
     limit: pageSize + 1,
     offset: pageIndex * pageSize,
-    count: isLineQuery(fragmentQuery) ? 'exact' : 'page',
+    count: 'exact',
   }
 }
 
