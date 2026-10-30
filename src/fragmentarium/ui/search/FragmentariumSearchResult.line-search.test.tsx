@@ -5,6 +5,31 @@ import {
 } from 'fragmentarium/ui/search/FragmentariumSearchResult.testSupport'
 
 describe('FragmentariumSearchResult line-search counts', () => {
+  it('labels multiline transliteration windows as passages', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 1, matchCountTotal: 3 }),
+      fragmentQuery: { transliteration: 'ana\nkur\nša' },
+    })
+
+    expect(
+      await screen.findByText(
+        'Found 3 matching passages. Showing documents 1-1',
+      ),
+    ).toBeVisible()
+  })
+
+  it('labels repeated lemma phrases as occurrences', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 1, matchCountTotal: 2 }),
+      fragmentQuery: { lemmas: 'kur I', lemmaOperator: 'phrase' },
+    })
+
+    expect(
+      await screen.findByText(
+        'Found 2 matching occurrences. Showing documents 1-1',
+      ),
+    ).toBeVisible()
+  })
   it('does not display zero when the total line count is unknown', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ matchCountTotal: null }),

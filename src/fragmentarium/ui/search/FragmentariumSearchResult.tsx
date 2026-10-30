@@ -118,6 +118,15 @@ export const SearchResult = withData<
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
+    const countUnit =
+      fragmentQuery.transliteration?.trim().includes('\n') &&
+      !fragmentQuery.lemmas
+        ? 'matching passage'
+        : fragmentQuery.lemmas &&
+            fragmentQuery.lemmaOperator === 'phrase' &&
+            !fragmentQuery.transliteration
+          ? 'matching occurrence'
+          : 'matching line'
     const isCompleteFirstPage = pageIndex === 0 && !effectiveHasNextPage
     const showPaginationControls = !(
       isCompleteFirstPage && visibleItems.length < RESULT_PAGE_SIZES[0]
@@ -135,7 +144,7 @@ export const SearchResult = withData<
           : 'Found 0 documents'
     const lineCountInfo =
       lineQuery && hasLineCount
-        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} ${countUnit}${
             data.matchCountTotal === 1 ? '' : 's'
           }`
         : null

@@ -1,25 +1,22 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { render, screen } from '@testing-library/react'
-import { dictionaryWord } from 'test-support/word-info-fixtures'
-import FragmentLemmaLines from 'dictionary/ui/search/FragmentLemmaLines'
+import { screen } from '@testing-library/react'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
-import { fragment, lines } from 'test-support/test-fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import WordService from 'dictionary/application/WordService'
-import { MemoryRouter } from 'react-router-dom'
-import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import { produce, castDraft, Draft } from 'immer'
+import { produce, castDraft } from 'immer'
 import { Text } from 'transliteration/domain/text'
-import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
-import { atfTokenKur } from 'test-support/test-tokens'
-import {
-  createFragmentCardSummary,
-  SUMMARY_LEMMA_ID,
-} from 'test-support/fragment-query-summary'
+import { createFragmentCardSummary } from 'test-support/fragment-query-summary'
 import { tokenWithClass } from 'test-support/fragment-query-preview'
-import { lineNumberFactory } from 'test-support/linenumber-factory'
+import { comment } from 'test-support/lines/control'
+import {
+  fragmentWithLemma,
+  previewSubsetFragment,
+  previewSubsetText,
+  renderFragmentLemmaLines,
+  renderWithDictionary,
+  word,
+} from 'dictionary/ui/search/FragmentLemmaLines.testSupport'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
@@ -28,57 +25,13 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-const word = { ...dictionaryWord, _id: SUMMARY_LEMMA_ID }
-
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
-const lineDto: TextLineDto = {
-  ...lines[0],
-  content: [{ ...atfTokenKur, uniqueLemma: [word._id] }],
-}
-const text = new Text({
-  lines: [new TextLine(lineDto)],
-})
-
-const fragmentWithLemma = produce(fragment, (draft: Draft<Fragment>) => {
-  draft.text = castDraft(text)
-})
-
-const previewSubsetText = new Text({
-  lines: [
-    new TextLine(lineDto),
-    new TextLine({
-      ...lines[1],
-      prefix: '2.',
-      lineNumber: lineNumberFactory.build({ number: 2 }),
-    }),
-  ],
-})
-
-const previewSubsetFragment = produce(fragment, (draft: Draft<Fragment>) => {
-  draft.text = castDraft(previewSubsetText)
-})
-
-let container: HTMLElement
-
-function renderFragmentLemmaLines() {
-  container = render(
-    <MemoryRouter>
-      <DictionaryContext.Provider value={wordService}>
-        <FragmentLemmaLines
-          lemmaId={word._id}
-          fragmentService={fragmentService}
-        />
-      </DictionaryContext.Provider>
-    </MemoryRouter>,
-  ).container
-}
-
 describe('Show Library entries', () => {
-  const setup = async () => {
+  const setup = async (): Promise<HTMLElement> => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
       matchingLines: [0],
@@ -88,7 +41,7 @@ describe('Show Library entries', () => {
     fragmentService.query.mockReturnValue(Promise.resolve(queryResult))
     fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
-    renderFragmentLemmaLines()
+    const view = renderFragmentLemmaLines(fragmentService, wordService)
 
     expect(fragmentService.query).toBeCalledWith({
       lemmas: word._id,
@@ -96,6 +49,7 @@ describe('Show Library entries', () => {
       count: 'exact',
     })
     await screen.findByText(fragmentWithLemma.number)
+    return view
   }
 
   it('shows the fragment number', async () => {
@@ -104,10 +58,23 @@ describe('Show Library entries', () => {
   })
 
   it('shows the matching Library line', async () => {
-    await setup()
+    const view = await setup()
     await screen.findByText(fragmentWithLemma.number)
     await screen.findByText('kur')
-    expect(container).toMatchSnapshot()
+    expect(screen.getByRole('table')).toHaveTextContent('kur')
+    expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
+    expect(screen.getByText('10')).toBeVisible()
+    expect(
+      screen.getByRole('link', { name: fragmentWithLemma.number }),
+    ).toHaveAttribute('href', `/library/${fragmentWithLemma.number}`)
+    expect(
+      screen.getByRole('link', {
+        name: /Show all 1 matches in Library search/,
+      }),
+    ).toHaveAttribute('href', `/library/search/?lemmas=${word._id}`)
+    expect(screen.getByText(/1 matches/, { selector: 'p' })).toBeVisible()
+    expect(screen.getAllByTitle('View in fragmentarium search')).toHaveLength(2)
+    expect(view).toMatchSnapshot()
   })
 
   it('renders example-count copy when matchCountTotal is null', async () => {
@@ -121,7 +88,7 @@ describe('Show Library entries', () => {
     )
     fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
-    renderFragmentLemmaLines()
+    renderFragmentLemmaLines(fragmentService, wordService)
 
     expect(
       await screen.findByText('Showing 1 Library document example'),
@@ -132,8 +99,9 @@ describe('Show Library entries', () => {
   it('renders compact summary examples without hydrating fragments', async () => {
     const queryItem: QueryItem = {
       museumNumber: previewSubsetFragment.number,
-      matchingLines: [0, 1],
+      matchingLines: [0, 1, 2, 3, 4],
       matchCount: 5,
+      totalMatchingLines: 5,
       fragment: previewSubsetFragment,
       cardSummary: createFragmentCardSummary(),
     }
@@ -141,7 +109,7 @@ describe('Show Library entries', () => {
       Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
 
-    renderFragmentLemmaLines()
+    renderFragmentLemmaLines(fragmentService, wordService)
 
     expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
     expect(
@@ -149,7 +117,7 @@ describe('Show Library entries', () => {
         tokenWithClass('Transliteration__Word--highlight', 'kur'),
       ),
     ).toBeInTheDocument()
-    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 
@@ -164,7 +132,7 @@ describe('Show Library entries', () => {
       Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
 
-    renderFragmentLemmaLines()
+    renderFragmentLemmaLines(fragmentService, wordService)
 
     expect(
       await screen.findByText('Details for this result are unavailable.'),
@@ -187,7 +155,7 @@ describe('Show Library entries', () => {
       Promise.resolve({ items, matchCountTotal: null }),
     )
 
-    renderFragmentLemmaLines()
+    renderFragmentLemmaLines(fragmentService, wordService)
 
     expect(await screen.findByText('Test.Fragment.0')).toBeVisible()
     expect(screen.getByText('Test.Fragment.9')).toBeVisible()
@@ -198,37 +166,71 @@ describe('Show Library entries', () => {
 
 describe('RenderFragmentLines', () => {
   it('renders the preview subset without hydrating the fragment', () => {
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <RenderFragmentLines
-            fragment={previewSubsetFragment}
-            lemmaIds={[word._id]}
-            linesToShow={3}
-            totalLines={5}
-          />
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
+    renderWithDictionary(
+      <RenderFragmentLines
+        fragment={previewSubsetFragment}
+        lemmaIds={[word._id]}
+        linesToShow={3}
+        totalMatchingLines={5}
+      />,
+      wordService,
     )
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
-    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
   })
 
-  it('falls back to the fragment line count when no total is given', () => {
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <RenderFragmentLines
-            fragment={previewSubsetFragment}
-            lemmaIds={[word._id]}
-            linesToShow={1}
-          />
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
+  it('uses cautious wording when no matching-line total is given', () => {
+    renderWithDictionary(
+      <RenderFragmentLines
+        fragment={previewSubsetFragment}
+        lemmaIds={[word._id]}
+        linesToShow={1}
+      />,
+      wordService,
     )
 
-    expect(screen.getByText('And 1 more')).toBeVisible()
+    expect(
+      screen.getByText('More matching lines may be available'),
+    ).toBeVisible()
+  })
+
+  it('does not show a remainder when the exact total is visible', () => {
+    renderWithDictionary(
+      <RenderFragmentLines
+        fragment={previewSubsetFragment}
+        linesToShow={2}
+        totalMatchingLines={2}
+      />,
+      wordService,
+    )
+
+    expect(screen.queryByText(/more matching lines/)).not.toBeInTheDocument()
+  })
+
+  it('does not count a control line as matching text', () => {
+    const fragmentWithControl = produce(previewSubsetFragment, (draft) => {
+      draft.text = castDraft(
+        new Text({
+          lines: [
+            previewSubsetText.lines[0],
+            comment,
+            previewSubsetText.lines[1],
+          ],
+        }),
+      )
+    })
+
+    renderWithDictionary(
+      <RenderFragmentLines
+        fragment={fragmentWithControl}
+        linesToShow={1}
+        totalMatchingLines={2}
+      />,
+      wordService,
+    )
+
+    expect(screen.getByText('And 1 more matching line')).toBeVisible()
   })
 })
