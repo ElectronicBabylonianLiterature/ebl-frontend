@@ -1,5 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
+import { routerFutureFlags } from 'fragmentarium/ui/search/routerFutureFlags.testSupport'
 import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
@@ -28,7 +29,7 @@ export function createSearchElement(
   activeTab: string,
 ): JSX.Element {
   return (
-    <MemoryRouter>
+    <MemoryRouter future={routerFutureFlags}>
       <DictionaryContext.Provider value={services.wordService}>
         <SessionContext.Provider value={services.session}>
           <FragmentariumSearch

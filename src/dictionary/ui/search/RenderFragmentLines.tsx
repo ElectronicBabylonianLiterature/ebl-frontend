@@ -63,6 +63,58 @@ function lineHash(
     : null
 }
 
+function FragmentLineRow({
+  fragmentNumber,
+  line,
+  location,
+  lemmaIds,
+}: {
+  fragmentNumber: string
+  line: TextLine
+  location: TextLineLocation | null
+  lemmaIds?: readonly string[]
+}): JSX.Element {
+  const label = formatLineLocation(line, location)
+  const hash = lineHash(line, location)
+  const columns = [
+    {
+      span: 1,
+      content: createColumns(line.content).flatMap((column) => column.content),
+    },
+  ]
+
+  return (
+    <tr>
+      <td className="fragment-lines-with-lemma__line-number">
+        {hash ? (
+          <FragmentLink number={fragmentNumber} hash={hash}>
+            {label}
+          </FragmentLink>
+        ) : (
+          label
+        )}
+      </td>
+      <LineColumns
+        columns={columns}
+        maxColumns={1}
+        TokenActionWrapper={LemmaPopover}
+        conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
+      />
+    </tr>
+  )
+}
+
+function shouldShowRemainingMessage(
+  hideRemainingMessage: boolean,
+  remainingLines: number | null,
+  mayHaveMoreLines: boolean,
+): boolean {
+  if (hideRemainingMessage) {
+    return false
+  }
+  return remainingLines === null ? mayHaveMoreLines : remainingLines > 0
+}
+
 export default function RenderFragmentLines({
   fragment,
   lemmaIds,
@@ -126,54 +178,34 @@ export default function RenderFragmentLines({
         visibleLines.length + 1,
       ).length > visibleLines.length)
   const lineNoun = totalLines === undefined ? 'matching line' : 'line'
+  const showRemainingMessage = shouldShowRemainingMessage(
+    hideRemainingMessage,
+    remainingLines,
+    mayHaveMoreLines,
+  )
 
   return (
     <table>
       <tbody>
-        {visibleLines.map(({ line, location }, index) => {
-          const label = formatLineLocation(line, location)
-          const hash = lineHash(line, location)
-          const columns = [
-            {
-              span: 1,
-              content: createColumns(line.content).flatMap(
-                (column) => column.content,
-              ),
-            },
-          ]
-
-          return (
-            <tr key={index}>
-              <td className={'fragment-lines-with-lemma__line-number'}>
-                {hash ? (
-                  <FragmentLink number={fragment.number} hash={hash}>
-                    {label}
-                  </FragmentLink>
-                ) : (
-                  label
-                )}
-              </td>
-              <LineColumns
-                columns={columns}
-                maxColumns={1}
-                TokenActionWrapper={LemmaPopover}
-                conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
-              />
-            </tr>
-          )
-        })}
-        {!hideRemainingMessage &&
-          ((remainingLines !== null && remainingLines > 0) ||
-            mayHaveMoreLines) && (
-            <tr>
-              <td></td>
-              <td>
-                {remainingLines === null
-                  ? `More ${lineNoun}s may be available`
-                  : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
-              </td>
-            </tr>
-          )}
+        {visibleLines.map(({ line, location }, index) => (
+          <FragmentLineRow
+            key={index}
+            fragmentNumber={fragment.number}
+            line={line}
+            location={location}
+            lemmaIds={lemmaIds}
+          />
+        ))}
+        {showRemainingMessage && (
+          <tr>
+            <td></td>
+            <td>
+              {remainingLines === null
+                ? `More ${lineNoun}s may be available`
+                : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   )
