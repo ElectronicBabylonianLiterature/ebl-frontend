@@ -70,6 +70,8 @@ export default function RenderFragmentLines({
   totalMatchingLines,
   totalLines,
   matchingLineIndexes,
+  selectedLineIndexes,
+  hideRemainingMessage = false,
 }: {
   fragment: Fragment
   lemmaIds?: readonly string[]
@@ -77,21 +79,38 @@ export default function RenderFragmentLines({
   totalMatchingLines?: number | null
   totalLines?: number | null
   matchingLineIndexes?: readonly number[]
+  selectedLineIndexes?: readonly number[]
+  hideRemainingMessage?: boolean
 }): JSX.Element {
   let labels = defaultLabels
   const matchingLines: { line: TextLine; location: TextLineLocation | null }[] =
     []
-  for (const line of fragment.text.lines) {
+  const indexedLines = new Map<
+    number,
+    { line: TextLine; location: TextLineLocation | null }
+  >()
+  for (const [sourceIndex, line] of fragment.text.allLines.entries()) {
     if (line.type === 'TextLine') {
       const textLine = line as TextLine
-      matchingLines.push({
+      const entry = {
         line: textLine,
         location: textLine.location ?? locationFromLabels(labels),
-      })
+      }
+      matchingLines.push(entry)
+      indexedLines.set(sourceIndex, entry)
     }
     labels = getCurrentLabels(labels, line)
   }
-  const visibleLines = matchingLines.slice(0, linesToShow)
+  const orderedLines = selectedLineIndexes
+    ? takeUniqueMatchingLineIndexes(
+        selectedLineIndexes,
+        Number.MAX_SAFE_INTEGER,
+      ).flatMap((index) => {
+        const entry = indexedLines.get(index)
+        return entry ? [entry] : []
+      })
+    : matchingLines
+  const visibleLines = orderedLines.slice(0, linesToShow)
   const knownTotal = totalMatchingLines ?? totalLines
   const remainingLines =
     typeof knownTotal === 'number' &&
@@ -101,7 +120,7 @@ export default function RenderFragmentLines({
       : null
   const mayHaveMoreLines =
     remainingLines === null &&
-    (matchingLines.length > visibleLines.length ||
+    (orderedLines.length > visibleLines.length ||
       takeUniqueMatchingLineIndexes(
         matchingLineIndexes ?? [],
         visibleLines.length + 1,
@@ -143,17 +162,18 @@ export default function RenderFragmentLines({
             </tr>
           )
         })}
-        {((remainingLines !== null && remainingLines > 0) ||
-          mayHaveMoreLines) && (
-          <tr>
-            <td></td>
-            <td>
-              {remainingLines === null
-                ? `More ${lineNoun}s may be available`
-                : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
-            </td>
-          </tr>
-        )}
+        {!hideRemainingMessage &&
+          ((remainingLines !== null && remainingLines > 0) ||
+            mayHaveMoreLines) && (
+            <tr>
+              <td></td>
+              <td>
+                {remainingLines === null
+                  ? `More ${lineNoun}s may be available`
+                  : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
+              </td>
+            </tr>
+          )}
       </tbody>
     </table>
   )
