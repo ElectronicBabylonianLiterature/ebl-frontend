@@ -37,7 +37,7 @@ export default withData<Props, unknown, ReadonlyMap<string, boolean>>(
       numbers.map(async (museumNumber) => ({
         museumNumber,
         exists: await fragmentExistenceLimiter.run(
-          () => fragmentService.isInFragmentarium(museumNumber),
+          () => fragmentService.isInFragmentarium(museumNumber, signal),
           signal,
         ),
       })),

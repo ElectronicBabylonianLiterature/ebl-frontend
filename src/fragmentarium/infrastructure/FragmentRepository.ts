@@ -45,6 +45,7 @@ class ApiFragmentRepository
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     const params = _.omitBy(
       { lines: lines, excludeLines: excludeLines },
@@ -56,6 +57,7 @@ class ApiFragmentRepository
           _.isEmpty(params) ? '' : `?${stringify(params)}`
         }`,
         false,
+        signal,
       )
       .then(createFragment)
   }

@@ -66,8 +66,8 @@ export class FragmentService extends FragmentServiceBase {
     )
   }
 
-  isInFragmentarium(number: string): Promise<boolean> {
-    return findFragmentExistence(this.fragmentRepository, number)
+  isInFragmentarium(number: string, signal?: AbortSignal): Promise<boolean> {
+    return findFragmentExistence(this.fragmentRepository, number, signal)
   }
 
   fetchGenres(signal?: AbortSignal): Promise<string[][]> {
