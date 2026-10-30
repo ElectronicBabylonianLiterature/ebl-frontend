@@ -1,4 +1,3 @@
-import { routerFutureFlags } from './routerFutureFlags.testSupport'
 import React from 'react'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -28,7 +27,7 @@ export function fragmentLinesElement(
   queryLemmas?: readonly string[],
 ): JSX.Element {
   return (
-    <MemoryRouter future={routerFutureFlags}>
+    <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <FragmentLines
           fragmentService={fragmentService}

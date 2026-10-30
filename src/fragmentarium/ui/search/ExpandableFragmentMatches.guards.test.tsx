@@ -1,4 +1,3 @@
-import { routerFutureFlags } from './routerFutureFlags.testSupport'
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -106,7 +105,7 @@ describe('expanding Library matching lines: guards', () => {
       cardSummary: createFragmentCardSummary(),
     })
     const page = (key: string, base: Fragment) => (
-      <MemoryRouter future={routerFutureFlags}>
+      <MemoryRouter>
         <DictionaryContext.Provider value={wordService}>
           <FragmentLines
             key={key}

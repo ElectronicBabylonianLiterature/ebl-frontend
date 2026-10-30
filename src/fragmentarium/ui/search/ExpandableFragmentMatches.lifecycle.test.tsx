@@ -1,4 +1,3 @@
-import { routerFutureFlags } from './routerFutureFlags.testSupport'
 import React from 'react'
 import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -126,7 +125,7 @@ describe('expanding Library matching lines: lifecycle', () => {
     })
     fragmentService.find.mockResolvedValueOnce(withPreviewLines(first, lines))
     render(
-      <MemoryRouter future={routerFutureFlags}>
+      <MemoryRouter>
         <DictionaryContext.Provider value={wordService}>
           <FragmentLines
             fragmentService={fragmentService}
