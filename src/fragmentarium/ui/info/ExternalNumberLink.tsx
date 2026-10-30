@@ -153,6 +153,21 @@ export const sketchfabLink = createNumberLink(
   'SketchFab',
 )
 
+export const mdzLink = createNumberLink(
+  'https://mdz-nbn-resolving.de/details:',
+  'MDZ Digitale Bibliothek',
+)
+
+export const deutschesMuseumLink = createNumberLink(
+  'https://digital.deutsches-museum.de/item/',
+  'Deutsches Museum',
+)
+
+export const smaekLink = createNumberLink(
+  'https://sammlung.smaek.de/de/object/',
+  'SMÄK',
+)
+
 export const arkLink = createNumberLink('https://n2t.net/ark:/', 'ark')
 
 export const dublinTcdLink = createNumberLink(
