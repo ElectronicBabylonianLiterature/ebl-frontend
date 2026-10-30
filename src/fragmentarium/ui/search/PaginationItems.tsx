@@ -8,62 +8,7 @@ import {
   updatePageSizeSearchParam,
   updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
-
-function PaginationControl({
-  paginationURLParam,
-  index,
-  disabled,
-  active = false,
-  children,
-}: {
-  paginationURLParam: string
-  index: number
-  disabled: boolean
-  active?: boolean
-  children: React.ReactNode
-}) {
-  const location = useLocation()
-  const history = useHistory()
-  const search = updatePaginationSearchParam(
-    location.search,
-    paginationURLParam,
-    index,
-  )
-  return (
-    <Pagination.Item
-      active={active}
-      aria-current={active ? 'page' : undefined}
-      disabled={disabled}
-      href={
-        disabled ? undefined : `${location.pathname}?${search}${location.hash}`
-      }
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault()
-          return
-        }
-        const hasModifierKey = [
-          event.metaKey,
-          event.ctrlKey,
-          event.shiftKey,
-          event.altKey,
-        ].some(Boolean)
-        if (event.button !== 0 || hasModifierKey) {
-          return
-        }
-
-        event.preventDefault()
-        history.push({
-          pathname: location.pathname,
-          search,
-          hash: location.hash,
-        })
-      }}
-    >
-      {children}
-    </Pagination.Item>
-  )
-}
+import PaginationControl from 'fragmentarium/ui/search/PaginationControl'
 
 export type PaginationPosition = 'top' | 'bottom'
 
@@ -73,17 +18,22 @@ export default function PaginationItems({
   hasNextPage,
   lastPageIndex,
   paginationURLParam,
+  pageSizeURLParam,
+  hash,
   position,
 }: {
   activePage: number
   pageSize: number
   paginationURLParam: string
+  pageSizeURLParam?: string
+  hash?: string
   hasNextPage: boolean
   lastPageIndex?: number | null
   position: PaginationPosition
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+  const destinationHash = hash ?? location.hash
   const controlIdPrefix = React.useId()
   const pageJumpId = `${controlIdPrefix}page-jump`
   const pageSizeId = `${controlIdPrefix}page-size`
@@ -116,7 +66,7 @@ export default function PaginationItems({
         paginationURLParam,
         index,
       ),
-      hash: location.hash,
+      hash: destinationHash,
     })
     setPageJump('')
   }
@@ -135,6 +85,7 @@ export default function PaginationItems({
           {knownLastPage !== null && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={0}
               disabled={activePage === 0}
             >
@@ -143,6 +94,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage - 1}
             disabled={activePage === 0}
           >
@@ -161,6 +113,7 @@ export default function PaginationItems({
                   <PaginationControl
                     key={page}
                     paginationURLParam={paginationURLParam}
+                    hash={hash}
                     index={page}
                     active={page === activePage}
                     disabled={page === activePage}
@@ -172,6 +125,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage + 1}
             disabled={!nextPageAvailable}
           >
@@ -180,6 +134,7 @@ export default function PaginationItems({
           {knownLastPage !== null && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={knownLastPage}
               disabled={activePage >= knownLastPage}
             >
@@ -229,8 +184,10 @@ export default function PaginationItems({
                 search: updatePageSizeSearchParam(
                   location.search,
                   Number(event.currentTarget.value),
+                  paginationURLParam,
+                  pageSizeURLParam,
                 ),
-                hash: location.hash,
+                hash: destinationHash,
               })
             }}
           >

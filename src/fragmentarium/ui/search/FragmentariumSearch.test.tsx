@@ -44,13 +44,18 @@ test('asks to log in when the session cannot read fragments', async () => {
   ).toBeVisible()
 })
 
-test('fills in the search form query', async () => {
+test('keeps a number-only search in the Library without querying Corpus', async () => {
   harness.fragmentService.query.mockResolvedValue(queryResult())
 
   harness.renderSearch({ number: 'K.1' })
 
   expect(await screen.findByLabelText('Number')).toHaveValue('K.1')
-  await screen.findByText('Found 0 chapters')
+  expect(
+    await screen.findByText(
+      'Enter a transliteration or lemma search to search the Corpus.',
+    ),
+  ).toBeVisible()
+  expect(harness.textService.query).not.toHaveBeenCalled()
 })
 
 test('does not refetch on an equivalent query with a new object reference', async () => {

@@ -115,9 +115,17 @@ describe('Searching fragments by transliteration', () => {
   it('Updates URL anchor when clicking tab', async () => {
     await setupTransliterationSearch()
     await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
-    expect(global.window.location.hash).toEqual('#corpus')
+    expect(screen.getByTestId('search-location')).toHaveTextContent('#corpus')
+    expect(screen.getByRole('tab', { name: 'Corpus' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
 
     await userEvent.click(screen.getByRole('tab', { name: 'Library' }))
-    expect(global.window.location.hash).toEqual('#library')
+    expect(screen.getByTestId('search-location')).toHaveTextContent('#library')
+    expect(screen.getByRole('tab', { name: 'Library' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
   })
 })
