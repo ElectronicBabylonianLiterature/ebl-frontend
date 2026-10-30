@@ -122,6 +122,17 @@ it('loads additional pairs only after a click and reuses them after collapse', a
     ],
   )
 
+  const showMoreButton = screen.getByRole('button', {
+    name: 'Show 2 more matches',
+  })
+  expect(showMoreButton).toHaveAttribute(
+    'aria-controls',
+    screen.getByTestId('chapter-matches').getAttribute('id'),
+  )
+  expect(showMoreButton).toHaveAttribute(
+    'aria-describedby',
+    screen.getByTestId('chapter-match-description').getAttribute('id'),
+  )
   expect(textService.findChapterDisplay).not.toHaveBeenCalled()
   await userEvent.click(
     screen.getByRole('button', { name: 'Show 2 more matches' }),

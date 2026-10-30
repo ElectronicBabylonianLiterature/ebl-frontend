@@ -5,158 +5,25 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
-import { ChapterDisplay } from 'corpus/domain/chapter'
-import { Markdown } from 'common/ui/Markdown'
-import { genreFromAbbr } from 'corpus/ui/Corpus'
-import CorpusChapterMatches, {
-  CORPUS_MATCH_BATCH_SIZE,
-  CorpusMatchPair,
-  uniqueCorpusMatchPairs,
-} from 'corpus/ui/search/CorpusChapterMatches'
+import { chapterIdToString } from 'transliteration/domain/chapter-id'
+import { CORPUS_MATCH_BATCH_SIZE } from 'corpus/ui/search/CorpusChapterMatches'
+import LazyChapterResult from 'corpus/ui/search/CorpusChapterResult'
 import PaginationItems, {
   PaginationPosition,
 } from 'fragmentarium/ui/search/PaginationItems'
 import {
   corpusPageSizeURLParam,
   corpusPaginationURLParam,
-  getLastPageIndex,
   parseSearchPagination,
-  RESULT_PAGE_SIZES,
   SearchPagination,
   updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import { stringify } from 'common/utils/queryString'
-import useNearViewport from 'common/hooks/useNearViewport'
+import { getCorpusSearchPresentation } from 'corpus/ui/search/CorpusSearchPresentation'
 import 'corpus/ui/search/CorpusSearchResult.sass'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
-
-function GenreInfoRow({
-  chapterId,
-  textName,
-  url,
-}: {
-  chapterId: ChapterId
-  textName: string
-  url: string
-}): JSX.Element {
-  return (
-    <Row>
-      <Col className="justify-content-left fragment-result__match-info text-secondary">
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <small>
-            <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
-            {textName && (
-              <>
-                &nbsp;&gt;&nbsp;
-                <Markdown text={textName} />
-              </>
-            )}
-            {' > '}
-            {`${chapterIdToString(chapterId)} `}
-            <i className="fas fa-external-link-alt" aria-hidden="true" />
-          </small>
-        </a>
-      </Col>
-    </Row>
-  )
-}
-
-const ChapterResult = withData<
-  {
-    chapterId: ChapterId
-    textService: TextService
-    pairs: readonly CorpusMatchPair[]
-    variantsToShow: number
-  },
-  {
-    textService: TextService
-    active: number
-  },
-  ChapterDisplay
->(
-  ({
-    data: chapterDisplay,
-    chapterId,
-    pairs,
-    textService,
-    variantsToShow,
-  }): JSX.Element => {
-    return (
-      <>
-        <GenreInfoRow
-          chapterId={chapterId}
-          textName={chapterDisplay.textName}
-          url={chapterDisplay.url}
-        />
-        <CorpusChapterMatches
-          initialChapter={chapterDisplay}
-          chapterId={chapterId}
-          pairs={pairs}
-          initiallyVisible={Math.min(pairs.length, variantsToShow)}
-          textService={textService}
-        />
-        <hr />
-      </>
-    )
-  },
-  ({ textService, chapterId, pairs, variantsToShow }) =>
-    textService.findChapterDisplay(
-      chapterId,
-      pairs.slice(0, variantsToShow).map((pair) => pair.line),
-      pairs.slice(0, variantsToShow).map((pair) => pair.variant),
-    ),
-  {
-    watch: ({ active }) => [active],
-  },
-)
-
-function LazyChapterResult({
-  chapter,
-  textService,
-  variantsToShow,
-  pageIndex,
-}: {
-  chapter: CorpusQueryItem
-  textService: TextService
-  variantsToShow: number
-  pageIndex: number
-}): JSX.Element {
-  const { containerRef, isNearViewport } = useNearViewport('400px')
-  const chapterId: ChapterId = {
-    textId: chapter.textId,
-    name: chapter.name,
-    stage: chapter.stage,
-  }
-  const pairs = uniqueCorpusMatchPairs(chapter.lines, chapter.variants)
-  if (pairs.length === 0) {
-    return (
-      <div className="corpus-search__chapter-slot">
-        <p>
-          Matching lines are unavailable for {chapterIdToString(chapterId)}.
-        </p>
-      </div>
-    )
-  }
-  return (
-    <div className="corpus-search__chapter-slot" ref={containerRef}>
-      {isNearViewport && (
-        <ChapterResult
-          textService={textService}
-          chapterId={chapterId}
-          active={pageIndex}
-          pairs={pairs}
-          variantsToShow={variantsToShow}
-        />
-      )}
-      {!isNearViewport && (
-        <p>Chapter {chapterIdToString(chapterId)} loads as you scroll.</p>
-      )}
-    </div>
-  )
-}
 
 function ResultPages({
   textService,
@@ -243,8 +110,13 @@ const PagedCorpusSearchResult = withData<
     const location = useLocation()
     const history = useHistory()
     const { pageIndex, pageSize } = pagination
-    const visibleChapters = data.items.slice(0, pageSize)
-    const lastPageIndex = getLastPageIndex(data.totalChapters, pageSize)
+    const {
+      visibleChapters,
+      lastPageIndex,
+      hasNextPage,
+      summary,
+      showPaginationControls,
+    } = getCorpusSearchPresentation(data, pagination)
     React.useEffect(() => {
       if (lastPageIndex !== null && pageIndex > lastPageIndex) {
         history.replace({
@@ -263,58 +135,6 @@ const PagedCorpusSearchResult = withData<
       return <></>
     }
 
-    const chapterCount = visibleChapters.length
-    const totalChapters =
-      lastPageIndex === null ? null : (data.totalChapters as number)
-    const hasNextPage =
-      lastPageIndex === null
-        ? data.hasNextPage === true ||
-          data.items.length > pageSize ||
-          (data.hasNextPage == null && data.items.length === pageSize)
-        : pageIndex < lastPageIndex
-    const matchCountTotal = data.matchCountTotal
-    const hasLineCount = typeof matchCountTotal === 'number'
-    const legacyLineCountInfo = hasLineCount
-      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} line${
-          matchCountTotal === 1 ? '' : 's'
-        } in `
-      : ''
-    const lineCountInfo = hasLineCount
-      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} matching line variant${
-          matchCountTotal === 1 ? '' : 's'
-        } in `
-      : ''
-    const chapterRange =
-      chapterCount > 0
-        ? `Showing chapters ${(pageIndex * pageSize + 1).toLocaleString()}-${(
-            pageIndex * pageSize +
-            chapterCount
-          ).toLocaleString()} of ${totalChapters?.toLocaleString()}`
-        : pageIndex > 0
-          ? 'No chapters on this page'
-          : ''
-    const summary =
-      totalChapters === null
-        ? pageIndex > 0
-          ? `${hasLineCount ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} matching line variants. ` : ''}${
-              chapterCount > 0
-                ? `Showing chapters ${(pageIndex * pageSize + 1).toLocaleString()}-${(
-                    pageIndex * pageSize +
-                    chapterCount
-                  ).toLocaleString()}`
-                : 'No chapters on this page'
-            }`
-          : `Found ${legacyLineCountInfo}${chapterCount.toLocaleString()} chapter${
-              chapterCount === 1 ? '' : 's'
-            }${hasNextPage ? '; more results are available' : ''}`
-        : `Found ${lineCountInfo}${totalChapters.toLocaleString()} chapter${
-            totalChapters === 1 ? '' : 's'
-          }${chapterRange ? `. ${chapterRange}` : ''}`
-    const showPaginationControls = !(
-      pageIndex === 0 &&
-      !hasNextPage &&
-      chapterCount < RESULT_PAGE_SIZES[0]
-    )
     return (
       <>
         <Row>
@@ -323,7 +143,7 @@ const PagedCorpusSearchResult = withData<
           </Col>
         </Row>
 
-        {(chapterCount > 0 || pageIndex > 0 || hasNextPage) && (
+        {(visibleChapters.length > 0 || pageIndex > 0 || hasNextPage) && (
           <ResultPages
             chapters={visibleChapters}
             textService={textService}

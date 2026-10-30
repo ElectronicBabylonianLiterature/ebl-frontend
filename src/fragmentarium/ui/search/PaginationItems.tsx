@@ -8,67 +8,7 @@ import {
   updatePageSizeSearchParam,
   updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
-
-function PaginationControl({
-  paginationURLParam,
-  hash,
-  index,
-  disabled,
-  active = false,
-  children,
-}: {
-  paginationURLParam: string
-  hash?: string
-  index: number
-  disabled: boolean
-  active?: boolean
-  children: React.ReactNode
-}) {
-  const location = useLocation()
-  const history = useHistory()
-  const destinationHash = hash ?? location.hash
-  const search = updatePaginationSearchParam(
-    location.search,
-    paginationURLParam,
-    index,
-  )
-  return (
-    <Pagination.Item
-      active={active}
-      aria-current={active ? 'page' : undefined}
-      disabled={disabled}
-      href={
-        disabled
-          ? undefined
-          : `${location.pathname}?${search}${destinationHash}`
-      }
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault()
-          return
-        }
-        if (
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) {
-          return
-        }
-
-        event.preventDefault()
-        history.push({
-          pathname: location.pathname,
-          search,
-          hash: destinationHash,
-        })
-      }}
-    >
-      {children}
-    </Pagination.Item>
-  )
-}
+import PaginationControl from 'fragmentarium/ui/search/PaginationControl'
 
 export type PaginationPosition = 'top' | 'bottom'
 

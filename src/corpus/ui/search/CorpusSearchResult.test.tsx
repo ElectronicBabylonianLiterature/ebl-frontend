@@ -89,6 +89,64 @@ it('names the text of a chapter', async () => {
   expect(await screen.findByText('Poem of Erra')).toBeVisible()
 })
 
+it('renders visible chapter details in query order', async () => {
+  const first = chapterDisplayFactory.build({
+    textName: 'First visible chapter',
+  })
+  const second = chapterDisplayFactory.build({
+    textName: 'Second visible chapter',
+  })
+  const chapters = [first, second]
+  textService.findChapterDisplay.mockImplementation(
+    async (chapterId) =>
+      chapters.find((chapter) => chapter.id.name === chapterId.name)!,
+  )
+  renderResult({
+    items: chapters.map((chapter) =>
+      corpusQueryItemFactory.build({
+        textId: chapter.id.textId,
+        stage: chapter.id.stage,
+        name: chapter.id.name,
+        lines: [0, 1, 2, 3],
+        variants: [0, 0, 0, 0],
+      }),
+    ),
+    totalChapters: 2,
+    matchCountTotal: 8,
+    hasNextPage: false,
+  })
+
+  const firstName = await screen.findByText('First visible chapter')
+  const secondName = await screen.findByText('Second visible chapter')
+  expect([firstName, secondName]).toEqual(
+    screen.getAllByText(/^(First|Second) visible chapter$/),
+  )
+  expect(
+    textService.findChapterDisplay.mock.calls.map(([id]) => id.name),
+  ).toEqual(chapters.map((chapter) => chapter.id.name))
+  const controls = await screen.findAllByRole('button', {
+    name: 'Show 1 more match',
+  })
+  expect(controls).toHaveLength(2)
+  expect(controls[0]).not.toHaveAttribute(
+    'aria-controls',
+    controls[1].getAttribute('aria-controls'),
+  )
+  const descriptions = screen.getAllByTestId('chapter-match-description')
+  const matchRegions = screen.getAllByTestId('chapter-matches')
+  chapters.forEach((chapter, index) => {
+    expect(controls[index]).toHaveAttribute(
+      'aria-describedby',
+      descriptions[index].getAttribute('id'),
+    )
+    expect(controls[index]).toHaveAttribute(
+      'aria-controls',
+      matchRegions[index].getAttribute('id'),
+    )
+    expect(descriptions[index]).toHaveTextContent(chapter.id.name)
+  })
+})
+
 it('leaves out an empty text name', async () => {
   const chapter = chapterDisplayFactory.build({ textName: '' })
   renderResult({ items: [itemOf(chapter)], matchCountTotal: 1 })

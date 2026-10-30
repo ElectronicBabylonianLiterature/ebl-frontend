@@ -1,86 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useId } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import TextService from 'corpus/application/TextService'
-import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
-import { ChapterId } from 'transliteration/domain/chapter-id'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
+import { CorpusMatchPair } from 'corpus/ui/search/CorpusMatchPairs'
+import useCorpusChapterMatches from 'corpus/ui/search/useCorpusChapterMatches'
 import { ChapterViewTable } from 'corpus/ui/ChapterView'
 import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
 import TranslationContext, {
   useTranslationContext,
 } from 'corpus/ui/TranslationContext'
 
-export type CorpusMatchPair = {
-  readonly line: number
-  readonly variant: number
-}
-export const CORPUS_MATCH_BATCH_SIZE = 10
-
-export function uniqueCorpusMatchPairs(
-  lines: readonly number[],
-  variants: readonly number[],
-): CorpusMatchPair[] {
-  const pairs: CorpusMatchPair[] = []
-  const seen = new Set<string>()
-  for (
-    let index = 0;
-    index < Math.min(lines.length, variants.length);
-    index++
-  ) {
-    const line = lines[index]
-    const variant = variants[index]
-    if (
-      !Number.isSafeInteger(line) ||
-      line < 0 ||
-      !Number.isSafeInteger(variant) ||
-      variant < 0
-    ) {
-      continue
-    }
-    const key = `${line}:${variant}`
-    if (!seen.has(key)) {
-      seen.add(key)
-      pairs.push({ line, variant })
-    }
-  }
-  return pairs
-}
-
-export function mergeChapterDisplays(
-  current: ChapterDisplay,
-  additional: ChapterDisplay,
-): ChapterDisplay {
-  const lines = new Map<number, LineDisplay>(
-    current.lines.map((line) => [line.originalIndex, line]),
-  )
-  for (const line of additional.lines) {
-    const previous = lines.get(line.originalIndex)
-    if (!previous) {
-      lines.set(line.originalIndex, line)
-      continue
-    }
-    const variants = new Map(
-      previous.variants.map((variant) => [variant.originalIndex, variant]),
-    )
-    line.variants.forEach((variant) =>
-      variants.set(variant.originalIndex, variant),
-    )
-    lines.set(line.originalIndex, {
-      ...previous,
-      variants: [...variants.values()]
-        .sort((first, second) => first.originalIndex - second.originalIndex)
-        .map((variant, index) => ({
-          ...variant,
-          isPrimaryVariant: index === 0,
-        })),
-    })
-  }
-  return new ChapterDisplay({
-    ...current,
-    lines: [...lines.values()].sort(
-      (first, second) => first.originalIndex - second.originalIndex,
-    ),
-  })
-}
+export {
+  CORPUS_MATCH_BATCH_SIZE,
+  uniqueCorpusMatchPairs,
+  mergeChapterDisplays,
+} from 'corpus/ui/search/CorpusMatchPairs'
 
 function ChapterTable({
   chapter,
@@ -120,90 +55,29 @@ export default function CorpusChapterMatches({
   initiallyVisible: number
   textService: TextService
 }): JSX.Element {
-  const requestVersion = useRef(0)
-  const [chapter, setChapter] = useState(initialChapter)
-  const [loadedPairs, setLoadedPairs] = useState(initiallyVisible)
-  const [expanded, setExpanded] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [unavailable, setUnavailable] = useState(false)
-
-  useEffect(
-    () => () => {
-      requestVersion.current += 1
-    },
-    [],
-  )
-
-  const remaining = Math.max(pairs.length - loadedPairs, 0)
-  const nextBatch = pairs.slice(
+  const {
+    chapter,
     loadedPairs,
-    loadedPairs + CORPUS_MATCH_BATCH_SIZE,
+    expanded,
+    loading,
+    error,
+    unavailable,
+    remaining,
+    nextBatchSize,
+    showMore,
+    collapse,
+  } = useCorpusChapterMatches(
+    initialChapter,
+    chapterId,
+    pairs,
+    initiallyVisible,
+    textService,
   )
+  const matchesId = useId()
+  const descriptionId = useId()
   const shownChapter = expanded ? chapter : initialChapter
-
-  function collapse(): void {
-    requestVersion.current += 1
-    setExpanded(false)
-    setLoading(false)
-    setError(false)
-  }
-
-  function showMore(): void {
-    if (loading) {
-      return
-    }
-    if (!expanded && loadedPairs > initiallyVisible) {
-      setExpanded(true)
-      return
-    }
-    if (nextBatch.length === 0) {
-      return
-    }
-    const currentVersion = ++requestVersion.current
-    setLoading(true)
-    setError(false)
-    textService
-      .findChapterDisplay(
-        chapterId,
-        nextBatch.map((pair) => pair.line),
-        nextBatch.map((pair) => pair.variant),
-      )
-      .then(
-        (additional) => {
-          if (currentVersion !== requestVersion.current) {
-            return
-          }
-          const returnedPairs = new Set(
-            additional.lines.flatMap((line) =>
-              line.variants.map(
-                (variant) => `${line.originalIndex}:${variant.originalIndex}`,
-              ),
-            ),
-          )
-          if (
-            !nextBatch.every((pair) =>
-              returnedPairs.has(`${pair.line}:${pair.variant}`),
-            )
-          ) {
-            setUnavailable(true)
-            setLoading(false)
-            return
-          }
-          setChapter((current) => mergeChapterDisplays(current, additional))
-          setLoadedPairs((count) => count + nextBatch.length)
-          setExpanded(true)
-          setLoading(false)
-        },
-        () => {
-          if (currentVersion !== requestVersion.current) {
-            return
-          }
-          setLoading(false)
-          setError(true)
-        },
-      )
-  }
+  const showControls = pairs.length > initiallyVisible || error || unavailable
+  const canShowMore = !unavailable && (remaining > 0 || !expanded)
 
   const moreLabel = loading
     ? 'Loading chapter matches…'
@@ -211,23 +85,34 @@ export default function CorpusChapterMatches({
       ? 'Retry loading chapter matches'
       : !expanded && loadedPairs > initiallyVisible
         ? 'Show loaded chapter matches'
-        : `Show ${nextBatch.length} more match${nextBatch.length === 1 ? '' : 'es'}`
+        : `Show ${nextBatchSize} more match${nextBatchSize === 1 ? '' : 'es'}`
 
   return (
     <div aria-busy={loading}>
-      <ChapterTable
-        key={`${loadedPairs}:${expanded}`}
-        chapter={shownChapter}
-        textService={textService}
-      />
-      {(pairs.length > initiallyVisible || error || unavailable) && (
+      <span
+        id={descriptionId}
+        className="sr-only"
+        data-testid="chapter-match-description"
+      >
+        Chapter {chapterIdToString(chapterId)}
+      </span>
+      <div id={matchesId} data-testid="chapter-matches">
+        <ChapterTable
+          key={`${loadedPairs}:${expanded}`}
+          chapter={shownChapter}
+          textService={textService}
+        />
+      </div>
+      {showControls && (
         <Row>
           <Col className="corpus-search__match-controls">
-            {!unavailable && (remaining > 0 || !expanded) && (
+            {canShowMore && (
               <button
                 type="button"
                 className="btn btn-link p-0"
                 aria-expanded={expanded}
+                aria-controls={matchesId}
+                aria-describedby={descriptionId}
                 disabled={loading}
                 onClick={showMore}
               >
@@ -239,6 +124,8 @@ export default function CorpusChapterMatches({
                 type="button"
                 className="btn btn-link p-0"
                 aria-expanded={expanded}
+                aria-controls={matchesId}
+                aria-describedby={descriptionId}
                 onClick={collapse}
               >
                 {loading ? 'Cancel loading' : 'Collapse chapter matches'}
