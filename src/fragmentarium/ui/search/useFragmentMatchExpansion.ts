@@ -16,6 +16,52 @@ function textLineIndexes(
   ).filter((index) => fragment.text.allLines[index]?.type === 'TextLine')
 }
 
+function countVisibleTextLines(
+  fragment: Fragment,
+  linesToShow: number,
+): number {
+  return Math.min(
+    linesToShow,
+    fragment.text.lines.filter((line) => line.type === 'TextLine').length,
+  )
+}
+
+function hasMoreMatches(queryItem: QueryItem, visibleCount: number): boolean {
+  const hasMoreIndexes =
+    takeUniqueMatchingLineIndexes(queryItem.matchingLines, visibleCount + 1)
+      .length > visibleCount
+  const hasMoreTotal =
+    typeof queryItem.totalMatchingLines !== 'number' ||
+    queryItem.totalMatchingLines > visibleCount
+  return hasMoreIndexes && hasMoreTotal
+}
+
+function remainingMatches(
+  expanded: boolean,
+  loadedFragment: Fragment | null,
+  availableCount: number,
+  visibleCount: number,
+  totalMatchingLines: number | null | undefined,
+  initialVisibleCount: number,
+): number | null {
+  if (expanded && loadedFragment) {
+    return Math.max(availableCount - visibleCount, 0)
+  }
+  return typeof totalMatchingLines === 'number'
+    ? Math.max(totalMatchingLines - initialVisibleCount, 0)
+    : null
+}
+
+function nextVisibleCount(
+  current: number,
+  expanded: boolean,
+  initialVisibleCount: number,
+  availableCount: number,
+): number {
+  const startingCount = expanded ? current : initialVisibleCount
+  return Math.min(startingCount + EXPANSION_BATCH_SIZE, availableCount)
+}
+
 export default function useFragmentMatchExpansion({
   fragment,
   queryItem,
@@ -57,30 +103,21 @@ export default function useFragmentMatchExpansion({
     }
   }, [queryIdentity, fragmentService, linesToShow])
 
-  const initialVisibleCount = Math.min(
-    linesToShow,
-    fragment.text.lines.filter((line) => line.type === 'TextLine').length,
-  )
-  const hasAdditionalIndexes =
-    takeUniqueMatchingLineIndexes(
-      queryItem.matchingLines,
-      initialVisibleCount + 1,
-    ).length > initialVisibleCount
-  const hasAdditionalTotal =
-    typeof queryItem.totalMatchingLines !== 'number' ||
-    queryItem.totalMatchingLines > initialVisibleCount
+  const initialVisibleCount = countVisibleTextLines(fragment, linesToShow)
   const canExpand =
-    enableExpansion && hasAdditionalIndexes && hasAdditionalTotal
+    enableExpansion && hasMoreMatches(queryItem, initialVisibleCount)
   const selectedIndexes = loadedFragment
     ? textLineIndexes(loadedFragment, queryItem.matchingLines)
     : []
   const availableCount = selectedIndexes.length
-  const remainingCount =
-    expanded && loadedFragment
-      ? Math.max(availableCount - visibleCount, 0)
-      : typeof queryItem.totalMatchingLines === 'number'
-        ? Math.max(queryItem.totalMatchingLines - initialVisibleCount, 0)
-        : null
+  const remainingCount = remainingMatches(
+    expanded,
+    loadedFragment,
+    availableCount,
+    visibleCount,
+    queryItem.totalMatchingLines,
+    initialVisibleCount,
+  )
 
   function collapse(): void {
     requestVersion.current += 1
@@ -92,10 +129,8 @@ export default function useFragmentMatchExpansion({
 
   function revealLoadedFragment(): void {
     setExpanded(true)
-    setVisibleCount(
-      expanded
-        ? (current) => Math.min(current + EXPANSION_BATCH_SIZE, availableCount)
-        : Math.min(initialVisibleCount + EXPANSION_BATCH_SIZE, availableCount),
+    setVisibleCount((current) =>
+      nextVisibleCount(current, expanded, initialVisibleCount, availableCount),
     )
   }
 
