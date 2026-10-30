@@ -20,6 +20,7 @@ function renderPaginationItems(
   hasNextPage = true,
   initialEntry = '/library/search/',
   pageSize = 50,
+  lastPageIndex: number | null = null,
 ) {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>
@@ -28,6 +29,7 @@ function renderPaginationItems(
         activePage={activePage}
         pageSize={pageSize}
         hasNextPage={hasNextPage}
+        lastPageIndex={lastPageIndex}
         position="top"
       />
     </MemoryRouter>,
@@ -40,7 +42,7 @@ beforeEach(() => {
 
 describe('PaginationItems', () => {
   it('renders a named navigation landmark with centered control groups', () => {
-    renderPaginationItems()
+    renderPaginationItems(0, true, '/library/search/', 50, 9)
 
     expect(
       screen.getByRole('navigation', {
@@ -62,7 +64,7 @@ describe('PaginationItems', () => {
   })
 
   it('associates each visible label with its own control', () => {
-    renderPaginationItems()
+    renderPaginationItems(0, true, '/library/search/', 50, 9)
 
     const pageJumpLabel = screen.getByText('Go to page')
     const pageSizeLabel = screen.getByText('Results per page')
@@ -113,8 +115,10 @@ describe('PaginationItems', () => {
     await userEvent.click(screen.getByText('Next'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search:
         'museum=BM&number=000123&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&paginationIndex=1',
+      hash: '',
     })
   })
 
@@ -128,7 +132,9 @@ describe('PaginationItems', () => {
     await userEvent.click(screen.getByText('Previous'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search: 'museum=BM&paginationIndex=3&genre=letters',
+      hash: '',
     })
   })
 
@@ -145,8 +151,10 @@ describe('PaginationItems', () => {
     )
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search:
         'museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123&limit=100&paginationIndex=0',
+      hash: '',
     })
   })
 
@@ -157,20 +165,22 @@ describe('PaginationItems', () => {
   })
 
   it('jumps directly to a requested page and clears the input afterwards', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
+    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
 
     const pageJumpInput = screen.getByLabelText('Go to page')
     await userEvent.type(pageJumpInput, '4')
     await userEvent.click(screen.getByText('Go'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
       search: 'number=K.1&paginationIndex=3',
+      hash: '',
     })
     expect(pageJumpInput).toHaveValue(null)
   })
 
   it('ignores invalid and current page jump requests', async () => {
-    renderPaginationItems(2, true, '/library/search/?number=K.1')
+    renderPaginationItems(2, true, '/library/search/?number=K.1', 50, 9)
 
     await userEvent.type(screen.getByLabelText('Go to page'), '0')
     await userEvent.click(screen.getByText('Go'))
@@ -183,7 +193,7 @@ describe('PaginationItems', () => {
   })
 
   it('rejects a page jump beyond the safe integer range', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
+    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
 
     const unsafePage = '99999999999999999'
     expect(Number(unsafePage)).toBeGreaterThan(Number.MAX_SAFE_INTEGER)
@@ -197,7 +207,7 @@ describe('PaginationItems', () => {
   })
 
   it('requires the page-jump input and rejects an empty submission', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1')
+    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
 
     const pageJumpInput = screen.getByLabelText('Go to page')
     expect(pageJumpInput).toBeRequired()
@@ -206,5 +216,48 @@ describe('PaginationItems', () => {
     await userEvent.click(screen.getByText('Go'))
 
     expect(mockHistoryPush).not.toHaveBeenCalled()
+  })
+
+  it('shows numbered pages and bounded first and last controls', async () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1#library', 50, 4)
+
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getByText('3')).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByText('5')).toBeInTheDocument()
+    await userEvent.click(screen.getByText('5'))
+
+    expect(mockHistoryPush).toHaveBeenCalledWith({
+      pathname: '/library/search/',
+      search: 'number=K.1&paginationIndex=4',
+      hash: '#library',
+    })
+  })
+
+  it('uses ellipses around distant pages without rendering every page', () => {
+    renderPaginationItems(50, true, '/library/search/?number=K.1', 50, 999)
+
+    expect(screen.getAllByText('More')).toHaveLength(2)
+    expect(screen.getByText('51')).toBeInTheDocument()
+    expect(screen.queryByText('500')).not.toBeInTheDocument()
+  })
+
+  it('prevents jumping past a known last page', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 4)
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    expect(pageJumpInput).toHaveAttribute('max', '5')
+    await userEvent.type(pageJumpInput, '6')
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+  })
+
+  it('uses adjacent navigation only when the document total is unknown', () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1')
+
+    expect(screen.getByText('Page 3')).toBeInTheDocument()
+    expect(screen.queryByText('First')).not.toBeInTheDocument()
+    expect(screen.queryByText('Last')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Go to page')).not.toBeInTheDocument()
   })
 })

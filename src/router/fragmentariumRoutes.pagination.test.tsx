@@ -1,6 +1,7 @@
 import React from 'react'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useNavigate } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -39,6 +40,16 @@ function buildQueryResult(query: FragmentQuery): QueryResult {
 
 function renderRoutes(initialEntry: string): FragmentService {
   return renderLibrarySearch(initialEntry, buildQueryResult)
+}
+
+function BrowserHistoryControls(): JSX.Element {
+  const navigate = useNavigate()
+  return (
+    <>
+      <button onClick={() => navigate(-1)}>Back</button>
+      <button onClick={() => navigate(1)}>Forward</button>
+    </>
+  )
 }
 
 describe('FragmentariumRoutes library search pagination', () => {
@@ -165,5 +176,63 @@ describe('FragmentariumRoutes library search pagination', () => {
       offset: 100,
       count: 'page',
     })
+  })
+
+  it('corrects an out-of-range direct URL to the last real page', async () => {
+    const view = renderLibrarySearch(
+      '/library/search/?number=000123&genre=CANONICAL%3ATechnical&paginationIndex=99#library',
+      (query) => ({
+        items:
+          query.offset === 200
+            ? [{ museumNumber: 'K.201', matchingLines: [], matchCount: 0 }]
+            : [],
+        matchCountTotal: null,
+        totalDocuments: 237,
+        hasNextPage: false,
+      }),
+    )
+
+    expect(await screen.findByText('K.201')).toBeInTheDocument()
+    expect(screen.getByTestId('location')).toHaveTextContent(
+      'number=000123&genre=CANONICAL%3ATechnical&paginationIndex=4',
+    )
+    expect(screen.getByTestId('location')).toHaveTextContent('#library')
+    expect(view.query).toHaveBeenLastCalledWith({
+      number: '000123',
+      genre: 'CANONICAL:Technical',
+      limit: 51,
+      offset: 200,
+      count: 'page',
+    })
+    expect(view.query).toHaveBeenCalledTimes(2)
+  })
+
+  it('restores numbered pages through browser Back and Forward', async () => {
+    const view = renderLibrarySearch(
+      '/library/search/?number=K.1#library',
+      (query) => ({
+        items: [
+          {
+            museumNumber: `K.${(query.offset ?? 0) + 1}`,
+            matchingLines: [],
+            matchCount: 0,
+          },
+        ],
+        matchCountTotal: null,
+        totalDocuments: 237,
+      }),
+      <BrowserHistoryControls />,
+    )
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    await userEvent.click(screen.getAllByText('3')[0])
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(screen.getByTestId('location')).toHaveTextContent('#library')
+
+    await userEvent.click(screen.getByText('Back'))
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    await userEvent.click(screen.getByText('Forward'))
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledTimes(4)
   })
 })

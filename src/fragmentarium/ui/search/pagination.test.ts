@@ -1,5 +1,7 @@
 import {
   createPagedFragmentQuery,
+  getLastPageIndex,
+  getNumberedPageIndexes,
   getRequestedPaginationIndex,
   getValidatedPageSize,
   hasNextPageAfter,
@@ -10,6 +12,11 @@ import {
 } from 'fragmentarium/ui/search/pagination'
 
 describe('parseSearchPagination', () => {
+  it('does not create unsafe API offsets from a direct URL', () => {
+    expect(
+      parseSearchPagination('?limit=100&paginationIndex=9007199254740991'),
+    ).toEqual({ pageIndex: 0, pageSize: 100 })
+  })
   it('defaults to the first page and the default page size', () => {
     expect(parseSearchPagination('?number=K.1')).toEqual({
       pageIndex: 0,
@@ -41,6 +48,31 @@ describe('parseSearchPagination', () => {
       )
     },
   )
+})
+
+describe('known document totals', () => {
+  it.each([25, 50, 100])('uses the selected page size %s', (pageSize) => {
+    expect(getLastPageIndex(237, pageSize)).toBe(Math.ceil(237 / pageSize) - 1)
+  })
+
+  it('does not infer a last page from an unknown or invalid total', () => {
+    expect(getLastPageIndex(null, 50)).toBeNull()
+    expect(getLastPageIndex(-1, 50)).toBeNull()
+    expect(getLastPageIndex(Number.NaN, 50)).toBeNull()
+    expect(getLastPageIndex(0, 50)).toBe(0)
+  })
+
+  it('bounds numbered navigation around the active page', () => {
+    expect(getNumberedPageIndexes(50, 999)).toEqual([
+      0,
+      'ellipsis',
+      49,
+      50,
+      51,
+      'ellipsis',
+      999,
+    ])
+  })
 })
 
 describe('getRequestedPaginationIndex safe-integer boundary', () => {
