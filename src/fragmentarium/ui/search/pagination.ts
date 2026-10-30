@@ -34,24 +34,18 @@ function updateRawSearchParams(
   search: string,
   updates: ReadonlyMap<string, string>,
 ): string {
-  const encodedUpdateKeys = new Set(
-    [...updates.keys()].map((key) => encodeURIComponent(key)),
-  )
   const params = search.replace(/^\?/, '').split('&').filter(Boolean)
   const usedKeys = new Set<string>()
 
   const nextParams = params.flatMap((searchParam) => {
-    const [key] = searchParam.split('=')
+    const [encodedKey] = searchParam.split('=')
+    const updateKey = new URLSearchParams(`${encodedKey}=`).keys().next().value
 
-    if (!encodedUpdateKeys.has(key)) {
+    if (!updateKey || !updates.has(updateKey)) {
       return [searchParam]
     }
 
-    const updateKey = [...updates.keys()].find(
-      (candidate) => encodeURIComponent(candidate) === key,
-    )
-
-    if (!updateKey || usedKeys.has(updateKey)) {
+    if (usedKeys.has(updateKey)) {
       return []
     }
 
