@@ -21,7 +21,7 @@ import {
   fragmentService,
   renderFragmentLines,
   resetFragmentLineMocks,
-} from './ExpandableFragmentMatches.testSupport'
+} from 'fragmentarium/ui/search/ExpandableFragmentMatches.testSupport'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
@@ -75,7 +75,7 @@ describe('expanding Library matching lines: rendering', () => {
     })
   }
 
-  it('loads one card on demand, retains first-occurrence order and labels, and reuses loaded data', async () => {
+  it('loads one card on demand, uses source order and labels, and reuses loaded data', async () => {
     const base = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
     const fullFragment = fullFragmentWithMarkers(base)
     const reverse = {
@@ -126,7 +126,7 @@ describe('expanding Library matching lines: rendering', () => {
           cell.classList.contains('fragment-lines-with-lemma__line-number'),
         )
         .map((cell) => cell.textContent),
-    ).toEqual(['r. ii 6', 'o. 6', 'r. ii 7'])
+    ).toEqual(['o. 6', 'r. ii 6', 'r. ii 7'])
     expect(
       screen.getAllByText(
         tokenWithClass('Transliteration__Word--highlight', 'kur'),
@@ -142,6 +142,38 @@ describe('expanding Library matching lines: rendering', () => {
     )
     expect(screen.getAllByRole('row')).toHaveLength(3)
     expect(fragmentService.find).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps already ordered source indexes in order', async () => {
+    const base = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
+    fragmentService.find.mockResolvedValueOnce(fullFragmentWithMarkers(base))
+    renderFragmentLines(
+      {
+        museumNumber: base.number,
+        matchingLines: [1, 5, 5, 6],
+        matchCount: 2,
+        totalMatchingLines: 3,
+        fragment: withPreviewLines(base, [
+          { ...previewLine(6, [readingWord]), index: 1 },
+          { ...previewLine(6, [readingWord]), index: 5 },
+        ]),
+        cardSummary: createFragmentCardSummary(),
+      },
+      2,
+    )
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Show 1 more matching line' }),
+    )
+    expect(await screen.findByRole('link', { name: 'r. ii 7' })).toBeVisible()
+    expect(
+      within(screen.getByRole('table'))
+        .getAllByRole('cell')
+        .filter((cell) =>
+          cell.classList.contains('fragment-lines-with-lemma__line-number'),
+        )
+        .map((cell) => cell.textContent),
+    ).toEqual(['o. 6', 'r. ii 6', 'r. ii 7'])
   })
 
   it('reveals large result sets in bounded batches', async () => {

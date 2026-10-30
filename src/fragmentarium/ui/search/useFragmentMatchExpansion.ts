@@ -10,10 +10,9 @@ function textLineIndexes(
   fragment: Fragment,
   matchingLines: readonly number[],
 ): number[] {
-  return takeUniqueMatchingLineIndexes(
-    matchingLines,
-    Number.MAX_SAFE_INTEGER,
-  ).filter((index) => fragment.text.allLines[index]?.type === 'TextLine')
+  return takeUniqueMatchingLineIndexes(matchingLines, Number.MAX_SAFE_INTEGER)
+    .filter((index) => fragment.text.allLines[index]?.type === 'TextLine')
+    .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
 }
 
 function countVisibleTextLines(

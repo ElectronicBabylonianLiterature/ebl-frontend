@@ -19,7 +19,7 @@ import {
   fragmentLinesElement,
   renderFragmentLines,
   resetFragmentLineMocks,
-} from './ExpandableFragmentMatches.testSupport'
+} from 'fragmentarium/ui/search/ExpandableFragmentMatches.testSupport'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
