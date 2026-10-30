@@ -1,44 +1,9 @@
-import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
-
-const mockHistoryPush = jest.fn()
-
-jest.mock('router/compat', () => ({
-  ...jest.requireActual('router/compat'),
-  useHistory: () => ({
-    push: mockHistoryPush,
-    replace: jest.fn(),
-    location: { pathname: '/library/search/', search: '' },
-  }),
-}))
-
-function renderPaginationItems(
-  activePage = 0,
-  hasNextPage = true,
-  initialEntry = '/library/search/',
-  pageSize = 50,
-  lastPageIndex: number | null = null,
-) {
-  return render(
-    <MemoryRouter initialEntries={[initialEntry]}>
-      <PaginationItems
-        paginationURLParam="paginationIndex"
-        activePage={activePage}
-        pageSize={pageSize}
-        hasNextPage={hasNextPage}
-        lastPageIndex={lastPageIndex}
-        position="top"
-      />
-    </MemoryRouter>,
-  )
-}
-
-beforeEach(() => {
-  mockHistoryPush.mockClear()
-})
+import {
+  mockHistoryPush,
+  renderPaginationItems,
+} from 'fragmentarium/ui/search/PaginationItems.testSupport'
 
 describe('PaginationItems', () => {
   it('renders a named navigation landmark with centered control groups', () => {
@@ -162,102 +127,5 @@ describe('PaginationItems', () => {
     renderPaginationItems(0, true, '/library/search/?limit=50', 25)
 
     expect(screen.getByLabelText('Results per page')).toHaveValue('25')
-  })
-
-  it('jumps directly to a requested page and clears the input afterwards', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    await userEvent.type(pageJumpInput, '4')
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).toHaveBeenLastCalledWith({
-      pathname: '/library/search/',
-      search: 'number=K.1&paginationIndex=3',
-      hash: '',
-    })
-    expect(pageJumpInput).toHaveValue(null)
-  })
-
-  it('ignores invalid and current page jump requests', async () => {
-    renderPaginationItems(2, true, '/library/search/?number=K.1', 50, 9)
-
-    await userEvent.type(screen.getByLabelText('Go to page'), '0')
-    await userEvent.click(screen.getByText('Go'))
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-
-    await userEvent.clear(screen.getByLabelText('Go to page'))
-    await userEvent.type(screen.getByLabelText('Go to page'), '3')
-    await userEvent.click(screen.getByText('Go'))
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-  })
-
-  it('rejects a page jump beyond the safe integer range', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
-
-    const unsafePage = '99999999999999999'
-    expect(Number(unsafePage)).toBeGreaterThan(Number.MAX_SAFE_INTEGER)
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    await userEvent.type(pageJumpInput, unsafePage)
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-    expect(pageJumpInput).toHaveValue(Number(unsafePage))
-  })
-
-  it('requires the page-jump input and rejects an empty submission', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 9)
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    expect(pageJumpInput).toBeRequired()
-    expect(pageJumpInput).toHaveAttribute('min', '1')
-
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-  })
-
-  it('shows numbered pages and bounded first and last controls', async () => {
-    renderPaginationItems(2, true, '/library/search/?number=K.1#library', 50, 4)
-
-    expect(screen.getByText('1')).toBeInTheDocument()
-    expect(screen.getByText('3')).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByText('5')).toBeInTheDocument()
-    await userEvent.click(screen.getByText('5'))
-
-    expect(mockHistoryPush).toHaveBeenCalledWith({
-      pathname: '/library/search/',
-      search: 'number=K.1&paginationIndex=4',
-      hash: '#library',
-    })
-  })
-
-  it('uses ellipses around distant pages without rendering every page', () => {
-    renderPaginationItems(50, true, '/library/search/?number=K.1', 50, 999)
-
-    expect(screen.getAllByText('More')).toHaveLength(2)
-    expect(screen.getByText('51')).toBeInTheDocument()
-    expect(screen.queryByText('500')).not.toBeInTheDocument()
-  })
-
-  it('prevents jumping past a known last page', async () => {
-    renderPaginationItems(0, true, '/library/search/?number=K.1', 50, 4)
-
-    const pageJumpInput = screen.getByLabelText('Go to page')
-    expect(pageJumpInput).toHaveAttribute('max', '5')
-    await userEvent.type(pageJumpInput, '6')
-    await userEvent.click(screen.getByText('Go'))
-
-    expect(mockHistoryPush).not.toHaveBeenCalled()
-  })
-
-  it('uses adjacent navigation only when the document total is unknown', () => {
-    renderPaginationItems(2, true, '/library/search/?number=K.1')
-
-    expect(screen.getByText('Page 3')).toBeInTheDocument()
-    expect(screen.queryByText('First')).not.toBeInTheDocument()
-    expect(screen.queryByText('Last')).not.toBeInTheDocument()
-    expect(screen.queryByLabelText('Go to page')).not.toBeInTheDocument()
   })
 })
