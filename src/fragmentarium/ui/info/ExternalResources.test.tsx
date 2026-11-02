@@ -26,6 +26,9 @@ const kelseyNumber = 'L123'
 const harvardHamNumber = 'L123'
 const etcsriNumber = 'L123'
 const sketchfabNumber = 'L123'
+const mdzNumber = 'L123'
+const deutschesMuseumNumber = 'L123'
+const smaekNumber = 'L123'
 const arkNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const cambridgeMaaNumber = 'L123'
@@ -65,6 +68,9 @@ describe('external resources', () => {
             harvardHamNumber,
             etcsriNumber,
             sketchfabNumber,
+            mdzNumber,
+            deutschesMuseumNumber,
+            smaekNumber,
             arkNumber,
             dublinTcdNumber,
             cambridgeMaaNumber,
@@ -142,6 +148,17 @@ describe('external resources', () => {
     ],
     ['ETCSRI', 'https://oracc.museum.upenn.edu/etcsri/', etcsriNumber],
     ['SketchFab', 'https://sketchfab.com/3d-models/', sketchfabNumber],
+    [
+      'MDZ Digitale Bibliothek',
+      'https://mdz-nbn-resolving.de/details:',
+      mdzNumber,
+    ],
+    [
+      'Deutsches Museum',
+      'https://digital.deutsches-museum.de/item/',
+      deutschesMuseumNumber,
+    ],
+    ['SMÄK', 'https://sammlung.smaek.de/de/object/', smaekNumber],
     ['ark', 'https://n2t.net/ark:/', arkNumber],
     [
       'Trinity College Dublin',
@@ -230,6 +247,9 @@ describe('missing external resources', () => {
     'Harvard Art Museums',
     'ETCSRI',
     'SketchFab',
+    'MDZ Digitale Bibliothek',
+    'Deutsches Museum',
+    'SMÄK',
     'ark',
     'Trinity College Dublin',
     'MAA Cambridge',

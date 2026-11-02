@@ -55,6 +55,13 @@ export const museumsRToZ = {
     country: 'US',
     url: 'https://www.spurlock.illinois.edu/',
   },
+  STAATLICHES_MUSEUM_AEGYPTISCHER_KUNST: {
+    key: 'STAATLICHES_MUSEUM_AEGYPTISCHER_KUNST',
+    name: 'Staatliches Museum Ägyptischer Kunst',
+    city: 'Munich',
+    country: 'DE',
+    url: 'https://smaek.de/',
+  },
   THE_BRITISH_MUSEUM: {
     key: 'THE_BRITISH_MUSEUM',
     name: 'The British Museum',
