@@ -16,12 +16,16 @@ export function getExpandedMatchIndexes(
   availableIndexes: readonly number[],
   linesToShow: number,
   visibleCount: number,
+  initialLineIndexes?: readonly number[],
 ): number[] {
   const available = new Set(availableIndexes)
   const initialIndexes = fragment.text.allLines
-    .filter(isTextLine)
+    .flatMap((line, responseIndex) =>
+      isTextLine(line)
+        ? [initialLineIndexes?.[responseIndex] ?? line.index]
+        : [],
+    )
     .slice(0, linesToShow)
-    .map((line) => line.index)
     .filter(
       (index): index is number =>
         typeof index === 'number' && available.has(index),

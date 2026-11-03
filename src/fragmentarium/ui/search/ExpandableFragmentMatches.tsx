@@ -9,6 +9,7 @@ import useFragmentMatchExpansion, {
 
 export default function ExpandableFragmentMatches({
   fragment,
+  initialLineIndexes,
   queryItem,
   queryLemmas,
   linesToShow,
@@ -16,6 +17,7 @@ export default function ExpandableFragmentMatches({
   enableExpansion,
 }: {
   fragment: Fragment
+  initialLineIndexes?: readonly number[]
   queryItem: QueryItem
   queryLemmas?: readonly string[]
   linesToShow: number
@@ -37,6 +39,7 @@ export default function ExpandableFragmentMatches({
     showMore,
   } = useFragmentMatchExpansion({
     fragment,
+    initialLineIndexes,
     queryItem,
     queryLemmas,
     linesToShow,

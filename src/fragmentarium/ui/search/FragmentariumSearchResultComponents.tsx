@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import FragmentService, {
   ThumbnailBlob,
 } from 'fragmentarium/application/FragmentService'
@@ -27,7 +26,9 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
-import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import loadFragmentMatchPreview, {
+  FragmentMatchPreview,
+} from 'fragmentarium/ui/search/loadFragmentMatchPreview'
 
 export type FragmentLinesService = Pick<
   FragmentService,
@@ -86,13 +87,17 @@ type FragmentLinesProps = {
 
 function FragmentLinesContent({
   fragment,
+  initialLineIndexes,
   queryItem,
   queryLemmas,
   linesToShow,
   includeLatestRecord,
   fragmentService,
   dossiersService,
-}: FragmentLinesProps & { fragment: Fragment }): JSX.Element {
+}: FragmentLinesProps & {
+  fragment: Fragment
+  initialLineIndexes?: readonly number[]
+}): JSX.Element {
   const { containerRef: thumbnailContainerRef, isNearViewport } =
     useNearViewport()
   const script = fragment.script.period.abbreviation
@@ -155,6 +160,7 @@ function FragmentLinesContent({
         <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
           <ExpandableFragmentMatches
             fragment={fragment}
+            initialLineIndexes={initialLineIndexes}
             linesToShow={linesToShow}
             queryItem={queryItem}
             queryLemmas={queryLemmas}
@@ -194,19 +200,12 @@ const HydratedFragmentLines = withData<
   {
     active?: number
   },
-  Fragment
+  FragmentMatchPreview
 >(
-  ({ data: fragment, ...props }): JSX.Element => (
-    <FragmentLinesContent fragment={fragment} {...props} />
+  ({ data, ...props }): JSX.Element => (
+    <FragmentLinesContent {...data} {...props} />
   ),
-  ({ fragmentService, queryItem, linesToShow }) => {
-    const excludeLines = _.isEmpty(queryItem.matchingLines)
-    return fragmentService.find(
-      queryItem.museumNumber,
-      takeUniqueMatchingLineIndexes(queryItem.matchingLines, linesToShow),
-      excludeLines,
-    )
-  },
+  loadFragmentMatchPreview,
   {
     watch: ({ active }) => [active],
   },

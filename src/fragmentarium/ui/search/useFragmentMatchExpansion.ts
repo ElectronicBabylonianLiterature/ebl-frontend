@@ -65,6 +65,7 @@ function nextVisibleCount(
 
 export default function useFragmentMatchExpansion({
   fragment,
+  initialLineIndexes,
   queryItem,
   queryLemmas,
   linesToShow,
@@ -72,6 +73,7 @@ export default function useFragmentMatchExpansion({
   enableExpansion,
 }: {
   fragment: Fragment
+  initialLineIndexes?: readonly number[]
   queryItem: QueryItem
   queryLemmas?: readonly string[]
   linesToShow: number
@@ -116,6 +118,7 @@ export default function useFragmentMatchExpansion({
     availableIndexes,
     linesToShow,
     visibleCount,
+    initialLineIndexes,
   )
   const remainingCount = remainingMatches({
     expanded,
