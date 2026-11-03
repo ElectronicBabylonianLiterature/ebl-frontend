@@ -61,10 +61,14 @@ it('counts the chapters when the line count is unknown', async () => {
   expect(await screen.findByText('Found 0 chapters')).toBeVisible()
 })
 
-it('counts a single line in a single chapter', async () => {
+it('counts a single matching line variant and shows the page chapter range', async () => {
   renderResult({ items: [itemOf()], matchCountTotal: 1 })
 
-  expect(await screen.findByText('Found 1 line in 1 chapter')).toBeVisible()
+  expect(
+    await screen.findByText(
+      'Found 1 matching line variant. Showing chapters 1-1',
+    ),
+  ).toBeVisible()
 })
 
 it('marks an inexact line count and further results', async () => {
@@ -77,7 +81,7 @@ it('marks an inexact line count and further results', async () => {
 
   expect(
     await screen.findByText(
-      'Found about 2,000 lines in 2 chapters; more results are available',
+      'Found about 2,000 matching line variants. Showing chapters 1-2; more results are available',
     ),
   ).toBeVisible()
 })

@@ -28,7 +28,7 @@ function hasNextCorpusPage(
 
 function formattedMatchCount(data: CorpusQueryResult): string | null {
   return typeof data.matchCountTotal === 'number'
-    ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()}`
+    ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line variant${data.matchCountTotal === 1 ? '' : 's'}`
     : null
 }
 
@@ -49,31 +49,26 @@ function chapterRange(
 }
 
 function knownTotalSummary(
-  data: CorpusQueryResult,
   count: string | null,
   totalChapters: number,
   range: string,
 ): string {
-  const lineInfo =
-    count === null
-      ? ''
-      : `${count} matching line variant${data.matchCountTotal === 1 ? '' : 's'} in `
+  const lineInfo = count === null ? '' : `${count} in `
   const chapters = `${totalChapters.toLocaleString()} chapter${totalChapters === 1 ? '' : 's'}`
   return `Found ${lineInfo}${chapters}${range ? `. ${range}` : ''}`
 }
 
 function unknownTotalSummary(
-  data: CorpusQueryResult,
   count: string | null,
   chapterCount: number,
+  range: string,
   hasNextPage: boolean,
 ): string {
-  const lineInfo =
+  const chapterInfo =
     count === null
-      ? ''
-      : `${count} line${data.matchCountTotal === 1 ? '' : 's'} in `
-  const chapters = `${chapterCount.toLocaleString()} chapter${chapterCount === 1 ? '' : 's'}`
-  return `Found ${lineInfo}${chapters}${hasNextPage ? '; more results are available' : ''}`
+      ? `Found ${chapterCount.toLocaleString()} chapter${chapterCount === 1 ? '' : 's'}`
+      : `Found ${count}. ${range || 'Showing 0 chapters'}`
+  return `${chapterInfo}${hasNextPage ? '; more results are available' : ''}`
 }
 
 function corpusSummary(
@@ -86,14 +81,13 @@ function corpusSummary(
   const count = formattedMatchCount(data)
   const range = chapterRange(pagination, chapterCount, totalChapters)
   if (totalChapters !== null) {
-    return knownTotalSummary(data, count, totalChapters, range)
+    return knownTotalSummary(count, totalChapters, range)
   }
   if (pagination.pageIndex > 0) {
-    const lineInfo =
-      count === null ? '' : `Found ${count} matching line variants. `
+    const lineInfo = count === null ? '' : `Found ${count}. `
     return `${lineInfo}${range}`
   }
-  return unknownTotalSummary(data, count, chapterCount, hasNextPage)
+  return unknownTotalSummary(count, chapterCount, range, hasNextPage)
 }
 
 export function getCorpusSearchPresentation(

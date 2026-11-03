@@ -471,13 +471,17 @@ exports[`Display chapter Show manuscripts 1`] = `
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="score-15"
                       aria-expanded="true"
                       aria-label="Show score"
-                      class="fas fa-caret-down"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-caret-down"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__line-number"
@@ -521,24 +525,32 @@ exports[`Display chapter Show manuscripts 1`] = `
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="note-16"
                       aria-expanded="false"
                       aria-label="Show notes"
-                      class="fas fa-book"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-book"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="parallels-17"
                       aria-expanded="false"
                       aria-label="Show parallels"
-                      class="fas fa-quote-right"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-quote-right"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__line-number"
@@ -829,13 +841,17 @@ exports[`Display chapter Show manuscripts 1`] = `
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="score-18"
                       aria-expanded="false"
                       aria-label="Show score"
-                      class="fas fa-caret-right"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-caret-right"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__line-number"
@@ -879,24 +895,32 @@ exports[`Display chapter Show manuscripts 1`] = `
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="note-19"
                       aria-expanded="false"
                       aria-label="Show notes"
-                      class="fas fa-book"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-book"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__toggle"
                   >
-                    <i
+                    <button
                       aria-controls="parallels-20"
                       aria-expanded="false"
                       aria-label="Show parallels"
-                      class="fas fa-quote-right"
-                      role="button"
-                    />
+                      type="button"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fas fa-quote-right"
+                      />
+                    </button>
                   </td>
                   <td
                     class="chapter-display__line-number"
