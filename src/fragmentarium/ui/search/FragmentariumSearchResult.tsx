@@ -122,7 +122,7 @@ export const SearchResult = withData<
       fragmentQuery.transliteration?.trim().includes('\n') &&
       !fragmentQuery.lemmas
         ? 'matching passage'
-        : fragmentQuery.lemmas &&
+        : (fragmentQuery.lemmas?.split('+').length ?? 0) > 1 &&
             fragmentQuery.lemmaOperator === 'phrase' &&
             !fragmentQuery.transliteration
           ? 'matching occurrence'
