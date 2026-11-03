@@ -1,6 +1,13 @@
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 
 describe('takeUniqueMatchingLineIndexes', () => {
+  it('returns no source indexes for a zero reveal limit without mutating the input', () => {
+    const indexes = Object.freeze([0, 2, 2, 5])
+
+    expect(takeUniqueMatchingLineIndexes(indexes, 0)).toEqual([])
+    expect(indexes).toEqual([0, 2, 2, 5])
+  })
+
   it('preserves the first distinct source indexes across overlapping windows', () => {
     expect(
       takeUniqueMatchingLineIndexes([0, 1, 2, 2, 3, 4, 4, 5, 6], 5),
