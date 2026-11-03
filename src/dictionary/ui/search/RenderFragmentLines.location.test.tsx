@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+import { atLineLabelKeys } from 'test-support/sealLocation'
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -139,7 +139,7 @@ describe('scholarly matching-line locations', () => {
       prefix: '@',
       displayValue: 'obverse',
       content: [],
-      surface_label: {
+      [atLineLabelKeys.surface]: {
         surface: 'OBVERSE',
         text: 'obverse',
         abbreviation: 'o',
@@ -151,7 +151,7 @@ describe('scholarly matching-line locations', () => {
       prefix: '@',
       displayValue: 'column ii',
       content: [],
-      column_label: { column: 2, abbreviation: 'ii', status: [] },
+      [atLineLabelKeys.column]: { column: 2, abbreviation: 'ii', status: [] },
     } as const
     const fragment = Fragment.create({
       ...fragmentFactory.build(),

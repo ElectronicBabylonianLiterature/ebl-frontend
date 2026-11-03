@@ -22,7 +22,7 @@ function LemmaPopoverWithNamedEntities({
   )
 }
 
-function createId(labels: Labels | undefined, textLine: TextLine) {
+function createId(labels: Labels | undefined, textLine: TextLine): string {
   const label = labels ? `${labelsAbbreviation(labels)} ` : ''
   return `${label}${lineNumberToAtf(textLine.lineNumber)}`
 }
@@ -35,9 +35,13 @@ export default function DisplayTextLine({
 }: LineProps): JSX.Element {
   const textLine = line as TextLine
   const id = createId(labels, textLine)
+  const legacyId =
+    labels?.sealNumber != null
+      ? createId({ ...labels, sealNumber: null }, textLine)
+      : undefined
   const lineRef = useRef<HTMLAnchorElement>(null)
 
-  useScrollToActiveLine(lineRef, id, activeLine)
+  useScrollToActiveLine(lineRef, id, activeLine, legacyId)
 
   return (
     <>
