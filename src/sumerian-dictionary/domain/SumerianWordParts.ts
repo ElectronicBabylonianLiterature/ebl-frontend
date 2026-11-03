@@ -114,10 +114,16 @@ export interface Attestation {
   readonly periods: readonly string[]
 }
 
+export interface HeadwordMark {
+  readonly start: number
+  readonly end: number
+  readonly style: string
+}
+
 export interface AttingerHeadword {
   readonly text: string
   readonly display: string
-  readonly marks: readonly (readonly [number, number, string])[]
+  readonly marks: readonly HeadwordMark[]
 }
 
 export interface AttingerSourceInfo {

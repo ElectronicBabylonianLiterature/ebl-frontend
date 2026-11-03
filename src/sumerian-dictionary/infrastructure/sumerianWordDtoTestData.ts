@@ -129,7 +129,7 @@ export const fullWordDto: SumerianWordDto = {
       headword: {
         text: 'ĝeš-sar',
         display: '{ĝeš}sar',
-        marks: [[0, 3, 'sup']],
+        marks: [{ start: 0, end: 3, style: 'sup' }],
       },
     },
     epsd2: { oid: 'o1', headword: 'kiri[garden]N', builds: ['package'] },
