@@ -13,22 +13,19 @@ export default class BibliographyRepository {
     this.apiClient = apiClient
   }
 
-  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
+  find(id: string): Promise<BibliographyEntry> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>
-      >(`/bibliography/${encodeURIComponent(id)}`, false, signal)
+      >(`/bibliography/${encodeURIComponent(id)}`, false)
       .then(createEntry)
   }
 
-  findMany(
-    ids: readonly string[],
-    signal?: AbortSignal,
-  ): Promise<readonly BibliographyEntry[]> {
+  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>[]
-      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false, signal)
+      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false)
       .then((result) => result.map(createEntry))
   }
 

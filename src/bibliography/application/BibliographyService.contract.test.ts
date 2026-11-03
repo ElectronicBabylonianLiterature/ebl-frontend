@@ -20,9 +20,5 @@ test('keys canonical-only backend list results by each requested alias', async (
   expect(entries.get('Q123')?.id).toBe('Q123')
   expect(entries.get('RN1971axx')?.id).toBe('Q123')
   expect(api.fetchJson).toHaveBeenCalledTimes(2)
-  expect(api.fetchJson).toHaveBeenCalledWith(
-    '/bibliography/RN1971axx',
-    false,
-    undefined,
-  )
+  expect(api.fetchJson).toHaveBeenCalledWith('/bibliography/RN1971axx', false)
 })

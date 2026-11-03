@@ -22,7 +22,7 @@ const testData: TestData<BibliographyRepository>[] = [
     [id],
     apiClient.fetchJson,
     entry,
-    [`/bibliography/${encodeURIComponent(id)}`, false, undefined],
+    [`/bibliography/${encodeURIComponent(id)}`, false],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -36,7 +36,6 @@ const testData: TestData<BibliographyRepository>[] = [
         { arrayFormat: 'comma' },
       )}`,
       false,
-      undefined,
     ],
     Promise.resolve([resultStub]),
   ),
