@@ -7,6 +7,19 @@
   z-index: 10;
 }
 
-.photo-container:hover .photo-controls {
+.photo-container:hover .photo-controls,
+.photo-container:focus-within .photo-controls {
   opacity: 1;
+}
+
+@media (hover: none) {
+  .photo-controls {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-controls {
+    transition: none;
+  }
 }
