@@ -1,4 +1,5 @@
 import TextService from 'corpus/application/TextService'
+import ApiClient from 'http/ApiClient'
 import {
   chapterDisplayDto,
   createTextServiceTestContext,
@@ -18,6 +19,16 @@ type ChapterCacheTestContext = TextServiceTestContext & {
   readonly service: TextService
 }
 
+export function createHttpSuccessPostJsonMock<Response>(
+  responsePromise: Promise<Response>,
+): (...parameters: Parameters<ApiClient['postJson']>) => Promise<Response> {
+  return (_path, _body, _authenticate, onHttpSuccess) =>
+    responsePromise.then((response) => {
+      onHttpSuccess?.()
+      return response
+    })
+}
+
 export function createChapterCacheTestContext(
   getCacheScope?: () => string,
 ): ChapterCacheTestContext {
@@ -25,11 +36,7 @@ export function createChapterCacheTestContext(
   context.fragmentServiceMock.fetchProvenances.mockResolvedValue([])
   context.apiClient.fetchJson.mockResolvedValue(staleDisplayDto)
   context.apiClient.postJson.mockImplementation(
-    (_path, _body, _authenticate, onHttpSuccess) =>
-      Promise.resolve(chapterDto).then((response) => {
-        onHttpSuccess?.()
-        return response
-      }),
+    createHttpSuccessPostJsonMock(Promise.resolve(chapterDto)),
   )
   return { ...context, service: context.createService(getCacheScope) }
 }

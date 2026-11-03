@@ -122,7 +122,7 @@ export class TextServiceBase extends TextServiceCore {
 
   protected invalidateChapterDisplayCache(id: ChapterId): void {
     this.clearCachesWhenScopeChanges()
-    const chapterPrefix = `${createChapterUrl(id)}?`
+    const chapterPrefix = this.createChapterDisplayCachePrefix(id)
     const cacheKeys = new Set([
       ...this.cachedChapterDisplays.keys(),
       ...this.cachedChapterDisplayRequests.keys(),
@@ -158,12 +158,16 @@ export class TextServiceBase extends TextServiceCore {
     }
   }
 
+  private createChapterDisplayCachePrefix(id: ChapterId): string {
+    return `${createChapterUrl(id)}?`
+  }
+
   protected createChapterDisplayCacheKey(
     id: ChapterId,
     lines: readonly number[],
     variants: readonly number[],
   ): string {
-    return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
+    return `${this.createChapterDisplayCachePrefix(id)}${stringify({ lines, variants })}`
   }
 }
 
