@@ -15,8 +15,8 @@ jest.mock('router/compat', () => ({
 }))
 
 export function renderPaginationItems(
-  activePage = 0,
-  hasNextPage = true,
+  activePage: number,
+  hasNextPage: boolean,
   initialEntry = '/library/search/',
   pageSize = 50,
   lastPageIndex: number | null = null,
