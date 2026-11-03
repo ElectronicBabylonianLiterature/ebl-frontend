@@ -13,19 +13,25 @@ import {
   defaultLabels,
   labelAbbreviation,
   Labels,
+  sealAbbreviation,
 } from 'transliteration/domain/labels'
 import { getCurrentLabels } from 'transliteration/ui/TransliterationLines'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 
 function locationFromLabels(labels: Labels): TextLineLocation | null {
-  if (!labels.object && !labels.surface && !labels.column) {
+  if (
+    !labels.object &&
+    !labels.surface &&
+    !labels.column &&
+    labels.sealNumber == null
+  ) {
     return null
   }
   return {
     object: labels.object ? labelAbbreviation(labels.object) : null,
     surface: labels.surface ? labelAbbreviation(labels.surface) : null,
     column: labels.column ? labelAbbreviation(labels.column) : null,
-    sealNumber: null,
+    sealNumber: labels.sealNumber ?? null,
   }
 }
 
@@ -45,7 +51,15 @@ function formatLineLocation(
     typeof location.column === 'string' ? location.column.trim() : ''
   const surfaceLabel =
     surface && !surface.endsWith('.') ? `${surface}.` : surface
-  return [object, surfaceLabel, column, number].filter(Boolean).join(' ')
+  return [
+    object,
+    surfaceLabel,
+    column,
+    sealAbbreviation(location.sealNumber),
+    number,
+  ]
+    .filter(Boolean)
+    .join(' ')
 }
 
 function lineHash(
@@ -55,7 +69,12 @@ function lineHash(
   if (!location) {
     return null
   }
-  const labels = [location.object, location.surface, location.column].filter(
+  const labels = [
+    location.object,
+    location.surface,
+    location.column,
+    sealAbbreviation(location.sealNumber),
+  ].filter(
     (label): label is string => typeof label === 'string' && !!label.trim(),
   )
   return labels.length

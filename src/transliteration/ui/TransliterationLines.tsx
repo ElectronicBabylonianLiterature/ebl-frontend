@@ -10,6 +10,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import {
   isColumnAtLine,
+  isSealAtLine,
   isObjectAtLine,
   isSurfaceAtLine,
   isTranslationLine,
@@ -77,6 +78,8 @@ export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
     return { ...labels, surface: line.label }
   } else if (isColumnAtLine(line)) {
     return { ...labels, column: line.label }
+  } else if (isSealAtLine(line)) {
+    return { ...labels, sealNumber: line.number }
   } else {
     return labels
   }
