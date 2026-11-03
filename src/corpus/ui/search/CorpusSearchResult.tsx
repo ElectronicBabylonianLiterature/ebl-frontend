@@ -126,10 +126,17 @@ const PagedCorpusSearchResult = withData<
             corpusPaginationURLParam,
             lastPageIndex,
           ),
-          hash: '#corpus',
+          hash: location.hash,
         })
       }
-    }, [history, lastPageIndex, location.pathname, location.search, pageIndex])
+    }, [
+      history,
+      lastPageIndex,
+      location.hash,
+      location.pathname,
+      location.search,
+      pageIndex,
+    ])
 
     if (lastPageIndex !== null && pageIndex > lastPageIndex) {
       return <></>
