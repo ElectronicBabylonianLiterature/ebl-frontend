@@ -3,6 +3,7 @@ import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
+import getLibraryCountUnit from 'fragmentarium/ui/search/getLibraryCountUnit'
 import { Col, Row } from 'react-bootstrap'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
 import { linesToShow } from 'fragmentarium/ui/search/FragmentariumSearch'
@@ -118,15 +119,7 @@ export const SearchResult = withData<
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const countUnit =
-      fragmentQuery.transliteration?.trim().includes('\n') &&
-      !fragmentQuery.lemmas
-        ? 'matching passage'
-        : (fragmentQuery.lemmas?.split('+').length ?? 0) > 1 &&
-            fragmentQuery.lemmaOperator === 'phrase' &&
-            !fragmentQuery.transliteration
-          ? 'matching occurrence'
-          : 'matching line'
+    const countUnit = getLibraryCountUnit(fragmentQuery)
     const isCompleteFirstPage = pageIndex === 0 && !effectiveHasNextPage
     const showPaginationControls = !(
       isCompleteFirstPage && visibleItems.length < RESULT_PAGE_SIZES[0]

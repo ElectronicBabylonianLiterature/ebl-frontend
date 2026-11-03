@@ -923,7 +923,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="row"
         >
           <div
-            class="col-1"
+            class="fragment-lines-with-lemma__identifier col-sm-1 col-12"
           >
             <a
               data-discover="true"
@@ -933,7 +933,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
             </a>
           </div>
           <div
-            class="fragmentlines-column col"
+            class="fragmentlines-column col-sm-11 col-12"
           >
             <table>
               <tbody>
