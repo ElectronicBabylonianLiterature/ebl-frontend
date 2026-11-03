@@ -71,6 +71,7 @@ describe('BibliographyService mutation invalidation', () => {
 
     await expect(service.find(aliasA)).resolves.toBe(staleEntry)
     await expect(service.create(freshEntry)).resolves.toBe(freshEntry)
+    expect(bibliographyRepository.create).toHaveBeenCalledWith(freshEntry)
     await expect(service.find(freshEntry.id)).resolves.toBe(freshEntry)
     await expect(service.find(aliasA)).resolves.toBe(freshEntry)
 

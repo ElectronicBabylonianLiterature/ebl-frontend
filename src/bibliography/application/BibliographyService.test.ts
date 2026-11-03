@@ -85,6 +85,7 @@ describe('BibliographyService', () => {
     const service = new BibliographyService(bibliographyRepository)
 
     await expect(service.findManyById([])).resolves.toEqual(new Map())
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
 

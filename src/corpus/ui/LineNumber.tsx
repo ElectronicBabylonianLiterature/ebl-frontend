@@ -28,6 +28,9 @@ function OldLineNumbers({
     <span
       className={classnames({
         'chapter-display__old-line-numbers': true,
+        'chapter-display__old-line-numbers--with-fallback': oldLineNumbers.some(
+          ({ reference }) => reference.hasUnresolvedDocument,
+        ),
         hidden: !show,
       })}
     >
@@ -37,7 +40,7 @@ function OldLineNumbers({
           {index > 0 && '; '}
           <span>{oldLineNumber.number}</span>
           {oldLineNumber.reference.hasUnresolvedDocument ? (
-            <sup>
+            <sup className="chapter-display__old-line-reference-fallback">
               <Citation reference={oldLineNumber.reference} />
             </sup>
           ) : (
