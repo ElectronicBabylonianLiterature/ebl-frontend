@@ -10,44 +10,14 @@ import CorpusChapterMatches, {
   uniqueCorpusMatchPairs,
 } from 'corpus/ui/search/CorpusChapterMatches'
 import {
-  chapterDisplayFactory,
-  lineDisplayFactory,
-} from 'test-support/chapter-fixtures'
+  baseChapterDisplay as base,
+  chapterWithPairs,
+} from 'corpus/ui/search/CorpusChapterMatches.testSupport'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
-import { lineNumberFactory } from 'test-support/linenumber-factory'
 
 jest.mock('corpus/application/TextService')
 
 const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
-const base = chapterDisplayFactory.build()
-
-function chapterWithPairs(pairs: readonly [number, number][]): ChapterDisplay {
-  const lines = new Map<number, number[]>()
-  pairs.forEach(([line, variant]) => {
-    lines.set(line, [...(lines.get(line) ?? []), variant])
-  })
-  return new ChapterDisplay({
-    ...base,
-    lines: [...lines.entries()].map(([line, variants]) =>
-      lineDisplayFactory.build({
-        originalIndex: line,
-        number: lineNumberFactory.build({ number: line + 1 }),
-        variants: variants.map((variant, index) =>
-          lineVariantDisplayFactory.build({
-            originalIndex: variant,
-            isPrimaryVariant: index === 0,
-            reconstruction: [],
-            manuscripts: [],
-            parallelLines: [],
-            intertext: [],
-            note: null,
-          }),
-        ),
-      }),
-    ),
-  })
-}
-
 function renderMatches(
   initialPairs: readonly [number, number][],
   allPairs: readonly [number, number][],

@@ -74,6 +74,28 @@ const cases: {
     hasNextPage: false,
   },
   {
+    name: 'known chapter total without a global match count',
+    result: {
+      items: [variantMatches],
+      totalChapters: 1,
+      matchCountTotal: null,
+    },
+    pageIndex: 0,
+    summary: 'Found 1 chapter. Showing chapters 1-1 of 1',
+    hasNextPage: false,
+  },
+  {
+    name: 'one visible chapter when neither global count is known',
+    result: {
+      items: [variantMatches],
+      matchCountTotal: null,
+      hasNextPage: false,
+    },
+    pageIndex: 0,
+    summary: 'Found 1 chapter',
+    hasNextPage: false,
+  },
+  {
     name: 'known zero',
     result: {
       items: [],

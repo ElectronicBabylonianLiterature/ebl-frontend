@@ -1,6 +1,8 @@
 import {
   corpusPageSizeURLParam,
   corpusPaginationURLParam,
+  getPageIndex,
+  hasSearchCriteria,
   parseSearchPagination,
   updatePageSizeSearchParam,
 } from 'fragmentarium/ui/search/pagination'
@@ -28,4 +30,21 @@ describe('Corpus pagination parameters', () => {
       'paginationIndex=2&limit=100&corpusPaginationIndex=0&corpusLimit=50',
     )
   })
+})
+
+it('defaults the Library page lookup without consuming the Corpus page', () => {
+  const search =
+    '?paginationIndex=2&limit=100&corpusPaginationIndex=3&corpusLimit=25'
+  expect(getPageIndex(search)).toBe(2)
+  expect(getPageIndex(search, corpusPaginationURLParam)).toBe(3)
+  expect(getPageIndex('?corpusPaginationIndex=3')).toBe(0)
+})
+
+it('distinguishes research-project criteria from pagination-only navigation', () => {
+  expect(hasSearchCriteria('?project=CAIC&corpusPaginationIndex=3')).toBe(true)
+  expect(
+    hasSearchCriteria(
+      '?paginationIndex=2&limit=100&corpusPaginationIndex=3&corpusLimit=25',
+    ),
+  ).toBe(false)
 })
