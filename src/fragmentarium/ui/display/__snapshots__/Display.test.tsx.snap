@@ -188,8 +188,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%201"
-                id="stone wig o?! 1"
+                href="#stone%20wig%20o%3F!%20seal%201%201"
+                id="stone wig o?! seal 1 1"
               >
                 <sup>
                   (
@@ -503,8 +503,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%202"
-                id="stone wig o?! 2"
+                href="#stone%20wig%20o%3F!%20seal%201%202"
+                id="stone wig o?! seal 1 2"
               >
                 <sup>
                   (
@@ -673,8 +673,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%203"
-                id="stone wig o?! 3"
+                href="#stone%20wig%20o%3F!%20seal%201%203"
+                id="stone wig o?! seal 1 3"
               >
                 <sup>
                   (
@@ -955,8 +955,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%204"
-                id="stone wig o?! 4"
+                href="#stone%20wig%20o%3F!%20seal%201%204"
+                id="stone wig o?! seal 1 4"
               >
                 <sup>
                   (
@@ -1191,8 +1191,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%205"
-                id="stone wig o?! 5"
+                href="#stone%20wig%20o%3F!%20seal%201%205"
+                id="stone wig o?! seal 1 5"
               >
                 <sup>
                   (
@@ -1478,8 +1478,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%206"
-                id="stone wig o?! 6"
+                href="#stone%20wig%20o%3F!%20seal%201%206"
+                id="stone wig o?! seal 1 6"
               >
                 <sup>
                   (
@@ -2273,8 +2273,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%201"
-                id="stone wig o?! 1"
+                href="#stone%20wig%20o%3F!%20seal%201%201"
+                id="stone wig o?! seal 1 1"
               >
                 <sup>
                   (
@@ -2548,8 +2548,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%202"
-                id="stone wig o?! 2"
+                href="#stone%20wig%20o%3F!%20seal%201%202"
+                id="stone wig o?! seal 1 2"
               >
                 <sup>
                   (
@@ -2927,8 +2927,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%203"
-                id="stone wig o?! 3"
+                href="#stone%20wig%20o%3F!%20seal%201%203"
+                id="stone wig o?! seal 1 3"
               >
                 <sup>
                   (
@@ -3284,8 +3284,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%204"
-                id="stone wig o?! 4"
+                href="#stone%20wig%20o%3F!%20seal%201%204"
+                id="stone wig o?! seal 1 4"
               >
                 <sup>
                   (
@@ -3641,8 +3641,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%205"
-                id="stone wig o?! 5"
+                href="#stone%20wig%20o%3F!%20seal%201%205"
+                id="stone wig o?! seal 1 5"
               >
                 <sup>
                   (
@@ -4484,8 +4484,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%206"
-                id="stone wig o?! 6"
+                href="#stone%20wig%20o%3F!%20seal%201%206"
+                id="stone wig o?! seal 1 6"
               >
                 <sup>
                   (
@@ -4590,8 +4590,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%207"
-                id="stone wig o?! 7"
+                href="#stone%20wig%20o%3F!%20seal%201%207"
+                id="stone wig o?! seal 1 7"
               >
                 <sup>
                   (
@@ -4753,8 +4753,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20D%2B3'a-4b"
-                id="stone wig o?! D+3'a-4b"
+                href="#stone%20wig%20o%3F!%20seal%201%20D%2B3'a-4b"
+                id="stone wig o?! seal 1 D+3'a-4b"
               >
                 <sup>
                   (
@@ -4862,8 +4862,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20c%2B1"
-                id="stone wig o?! c+1"
+                href="#stone%20wig%20o%3F!%20seal%201%20c%2B1"
+                id="stone wig o?! seal 1 c+1"
               >
                 <sup>
                   (
@@ -5002,8 +5002,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20c%2B2"
-                id="stone wig o?! c+2"
+                href="#stone%20wig%20o%3F!%20seal%201%20c%2B2"
+                id="stone wig o?! seal 1 c+2"
               >
                 <sup>
                   (
@@ -5099,8 +5099,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20c%2B3"
-                id="stone wig o?! c+3"
+                href="#stone%20wig%20o%3F!%20seal%201%20c%2B3"
+                id="stone wig o?! seal 1 c+3"
               >
                 <sup>
                   (
@@ -5210,8 +5210,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%209"
-                id="stone wig o?! 9"
+                href="#stone%20wig%20o%3F!%20seal%201%209"
+                id="stone wig o?! seal 1 9"
               >
                 <sup>
                   (
@@ -5485,8 +5485,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20n%2B1"
-                id="stone wig o?! n+1"
+                href="#stone%20wig%20o%3F!%20seal%201%20n%2B1"
+                id="stone wig o?! seal 1 n+1"
               >
                 <sup>
                   (
@@ -5753,8 +5753,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20n%2B2"
-                id="stone wig o?! n+2"
+                href="#stone%20wig%20o%3F!%20seal%201%20n%2B2"
+                id="stone wig o?! seal 1 n+2"
               >
                 <sup>
                   (
@@ -5880,8 +5880,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20g%2B1"
-                id="stone wig o?! g+1"
+                href="#stone%20wig%20o%3F!%20seal%201%20g%2B1"
+                id="stone wig o?! seal 1 g+1"
               >
                 <sup>
                   (
@@ -5926,8 +5926,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20g%2B1"
-                id="stone wig o?! g+1"
+                href="#stone%20wig%20o%3F!%20seal%201%20g%2B1"
+                id="stone wig o?! seal 1 g+1"
               >
                 <sup>
                   (
@@ -6014,8 +6014,8 @@ exports[`correctly displays simple fragments 1`] = `
             >
               <a
                 class="Transliteration__anchor"
-                href="#stone%20wig%20o%3F!%20g%2B1"
-                id="stone wig o?! g+1"
+                href="#stone%20wig%20o%3F!%20seal%201%20g%2B1"
+                id="stone wig o?! seal 1 g+1"
               >
                 <sup>
                   (
