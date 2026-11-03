@@ -39,7 +39,7 @@ function updateRawSearchParams(
 
   const nextParams = params.flatMap((searchParam) => {
     const [encodedKey] = searchParam.split('=')
-    const updateKey = new URLSearchParams(`${encodedKey}=`).keys().next().value
+    const updateKey = new URLSearchParams(`key=${encodedKey}`).get('key')
 
     if (!updateKey || !updates.has(updateKey)) {
       return [searchParam]
@@ -92,6 +92,10 @@ export function getValidatedPageSize(
     : RESULTS_PER_PAGE
 }
 
+function getMaxNavigablePageIndex(pageSize: number): number {
+  return Math.floor((Number.MAX_SAFE_INTEGER - pageSize - 1) / pageSize)
+}
+
 export function parseSearchPagination(
   search: string,
   indexParam = paginationURLParam,
@@ -102,11 +106,7 @@ export function parseSearchPagination(
   )
   const pageIndex = getPageIndex(search, indexParam)
   return {
-    pageIndex:
-      pageIndex <=
-      Math.floor((Number.MAX_SAFE_INTEGER - pageSize - 1) / pageSize)
-        ? pageIndex
-        : 0,
+    pageIndex: pageIndex <= getMaxNavigablePageIndex(pageSize) ? pageIndex : 0,
     pageSize,
   }
 }
@@ -154,10 +154,16 @@ export function getLastPageIndex(
   totalDocuments: number | null | undefined,
   pageSize: number,
 ): number | null {
-  return typeof totalDocuments === 'number' &&
-    Number.isSafeInteger(totalDocuments) &&
-    totalDocuments >= 0
-    ? Math.max(0, Math.ceil(totalDocuments / pageSize) - 1)
+  if (
+    typeof totalDocuments !== 'number' ||
+    !Number.isSafeInteger(totalDocuments) ||
+    totalDocuments < 0
+  ) {
+    return null
+  }
+  const lastPageIndex = Math.max(0, Math.ceil(totalDocuments / pageSize) - 1)
+  return lastPageIndex <= getMaxNavigablePageIndex(pageSize)
+    ? lastPageIndex
     : null
 }
 
