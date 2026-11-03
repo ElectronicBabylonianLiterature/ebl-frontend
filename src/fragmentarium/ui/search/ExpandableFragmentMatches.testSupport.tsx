@@ -23,7 +23,7 @@ mockObjectUrl('blob:url')
 
 export function fragmentLinesElement(
   queryItem: QueryItem,
-  linesToShow = 3,
+  linesToShow: number,
   queryLemmas?: readonly string[],
 ): JSX.Element {
   return (
@@ -43,7 +43,7 @@ export function fragmentLinesElement(
 
 export function renderFragmentLines(
   queryItem: QueryItem,
-  linesToShow = 3,
+  linesToShow: number,
   queryLemmas?: readonly string[],
 ) {
   return render(fragmentLinesElement(queryItem, linesToShow, queryLemmas))
