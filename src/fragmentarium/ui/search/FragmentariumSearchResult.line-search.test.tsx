@@ -18,10 +18,20 @@ describe('FragmentariumSearchResult line-search counts', () => {
     ).toBeVisible()
   })
 
-  it('labels repeated lemma phrases as occurrences', async () => {
+  it('labels a single lemma with the phrase operator as lines', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ items: 1, matchCountTotal: 2 }),
       fragmentQuery: { lemmas: 'kur I', lemmaOperator: 'phrase' },
+    })
+
+    expect(
+      await screen.findByText('Found 2 matching lines. Showing documents 1-1'),
+    ).toBeVisible()
+  })
+  it('labels true multi-lemma phrases as occurrences', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 1, matchCountTotal: 2 }),
+      fragmentQuery: { lemmas: 'kur I+ša I', lemmaOperator: 'phrase' },
     })
 
     expect(
@@ -30,6 +40,22 @@ describe('FragmentariumSearchResult line-search counts', () => {
       ),
     ).toBeVisible()
   })
+
+  it('keeps mixed transliteration and multi-lemma queries labeled as lines', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 1, matchCountTotal: 2 }),
+      fragmentQuery: {
+        lemmas: 'kur I+ša I',
+        lemmaOperator: 'phrase',
+        transliteration: 'kur',
+      },
+    })
+
+    expect(
+      await screen.findByText('Found 2 matching lines. Showing documents 1-1'),
+    ).toBeVisible()
+  })
+
   it('does not display zero when the total line count is unknown', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ matchCountTotal: null }),
