@@ -3,17 +3,12 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import {
+  getExpandedMatchIndexes,
+  textLineIndexes,
+} from 'fragmentarium/ui/search/fragmentMatchIndexes'
 
 export const EXPANSION_BATCH_SIZE = 10
-
-function textLineIndexes(
-  fragment: Fragment,
-  matchingLines: readonly number[],
-): number[] {
-  return takeUniqueMatchingLineIndexes(matchingLines, Number.MAX_SAFE_INTEGER)
-    .filter((index) => fragment.text.allLines[index]?.type === 'TextLine')
-    .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
-}
 
 function countVisibleTextLines(
   fragment: Fragment,
@@ -112,10 +107,16 @@ export default function useFragmentMatchExpansion({
   const initialVisibleCount = countVisibleTextLines(fragment, linesToShow)
   const canExpand =
     enableExpansion && hasMoreMatches(queryItem, initialVisibleCount)
-  const selectedIndexes = loadedFragment
+  const availableIndexes = loadedFragment
     ? textLineIndexes(loadedFragment, queryItem.matchingLines)
     : []
-  const availableCount = selectedIndexes.length
+  const availableCount = availableIndexes.length
+  const selectedIndexes = getExpandedMatchIndexes(
+    fragment,
+    availableIndexes,
+    linesToShow,
+    visibleCount,
+  )
   const remainingCount = remainingMatches({
     expanded,
     loadedFragment,
