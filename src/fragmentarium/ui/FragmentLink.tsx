@@ -5,14 +5,32 @@ import Folio from 'fragmentarium/domain/Folio'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 import { CANONICAL_ORIGIN } from 'router/domain'
 
+function encodeWellFormedURIComponent(value: string): string {
+  const wellFormedValue = Array.from(value, (character) => {
+    const codePoint = character.charCodeAt(0)
+    return character.length === 1 && codePoint >= 0xd800 && codePoint <= 0xdfff
+      ? '\uFFFD'
+      : character
+  }).join('')
+  return encodeURIComponent(wellFormedValue)
+}
+
 export function encodeFragmentNumber(number: string): string {
-  return encodeURIComponent(number.toWellFormed?.() ?? number)
+  return encodeWellFormedURIComponent(number)
+}
+
+function createFragmentLocation(
+  number: string,
+  hash: string,
+  query = '',
+): string {
+  return `/library/${encodeFragmentNumber(number)}${query && '?'}${query}${
+    hash && '#'
+  }${encodeWellFormedURIComponent(hash)}`
 }
 
 export function createFragmentUrl(number: string, hash = ''): string {
-  return `/library/${encodeFragmentNumber(number)}${
-    hash && '#'
-  }${encodeURIComponent(hash)}`
+  return createFragmentLocation(number, hash)
 }
 
 export function createFragmentCanonicalUrl(number: string): string {
@@ -28,7 +46,7 @@ export function createFragmentUrlWithFolio(
     { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
     { strict: false },
   )
-  return `${createFragmentUrl(number, hash)}?${query}`
+  return createFragmentLocation(number, hash, query)
 }
 
 export function createFragmentUrlWithTab(
@@ -37,7 +55,7 @@ export function createFragmentUrlWithTab(
   hash = '',
 ): string {
   const query = stringify({ tab }, { strict: false })
-  return `${createFragmentUrl(number, hash)}?${query}`
+  return createFragmentLocation(number, hash, query)
 }
 
 export default function FragmentLink({
