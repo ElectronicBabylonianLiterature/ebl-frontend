@@ -127,6 +127,10 @@ export default class BibliographyEntryForm extends Component<Props, State> {
       type: 'json',
       style: 'csl',
     })
+    if (_.isEmpty(parsedCslData)) {
+      this.applyInvalidEntry()
+      return
+    }
     const cslData = normalizeImportedCslData(cite, parsedCslData)
     this.setState({
       ...this.state,

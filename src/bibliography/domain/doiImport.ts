@@ -7,8 +7,19 @@ interface ParseStep {
   readonly type: string
 }
 
-function wasImportedFromDoi(parsedEntry: { _graph?: ParseStep[] }): boolean {
-  return (parsedEntry._graph ?? []).some((step) => step.type === doiApiStep)
+interface ParsedRecord {
+  readonly _graph?: ReadonlyArray<ParseStep>
+}
+
+function wasImportedFromDoi(parsedRecord: ParsedRecord): boolean {
+  return (parsedRecord._graph ?? []).some((step) => step.type === doiApiStep)
+}
+
+function isSingleDoiImport(
+  cite: Cite,
+  cslData: ReadonlyArray<CslData>,
+): boolean {
+  return cslData.length === 1 && wasImportedFromDoi(cite.data[0])
 }
 
 function removeShortTitlesFromJournalArticle(entry: CslData): CslData {
@@ -25,9 +36,7 @@ export function normalizeImportedCslData(
   cite: Cite,
   cslData: ReadonlyArray<CslData>,
 ): ReadonlyArray<CslData> {
-  return cslData.map((entry, index) =>
-    wasImportedFromDoi(cite.data[index])
-      ? removeShortTitlesFromJournalArticle(entry)
-      : entry,
-  )
+  return isSingleDoiImport(cite, cslData)
+    ? cslData.map(removeShortTitlesFromJournalArticle)
+    : cslData
 }

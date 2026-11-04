@@ -40,6 +40,10 @@ export function parsedCitation(
   }
 }
 
+export function parsedCitationWithoutEntries(): unknown {
+  return { data: [], get: () => [], format: () => '' }
+}
+
 export function setUpFakeTimersAroundTests(): void {
   beforeEach(() => {
     jest.useFakeTimers()

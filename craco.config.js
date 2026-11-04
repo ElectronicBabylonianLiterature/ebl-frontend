@@ -30,6 +30,7 @@ const fullyCoveredPaths = [
   'src/afo-register/ui/AfoRegisterSearchPage.tsx',
   'src/auth/InjectedAuth0Provider.tsx',
   'src/bibliography/application/BibliographyEntryLoader.ts',
+  'src/bibliography/domain/doiImport.ts',
   'src/bibliography/ui/BibliographyEntryForm.tsx',
   'src/bibliography/ui/BibliographyEntryFormController.tsx',
   'src/bibliography/ui/BibliographySearchForm.tsx',
