@@ -31,8 +31,10 @@ export function parsedCitation(
   id: string,
   citation: string,
   data: CslData = { id: id, type: 'book' },
+  parseStepTypes: ReadonlyArray<string> = ['@csl/object'],
 ): unknown {
   return {
+    data: [{ ...data, _graph: parseStepTypes.map((type) => ({ type })) }],
     get: () => [data],
     format: () => citation,
   }

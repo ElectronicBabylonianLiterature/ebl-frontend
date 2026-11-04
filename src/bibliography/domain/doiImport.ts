@@ -1,0 +1,33 @@
+import Cite from 'citation-js'
+import { CslData } from 'bibliography/domain/BibliographyEntry'
+
+const doiApiStep = '@doi/api'
+
+interface ParseStep {
+  readonly type: string
+}
+
+function wasImportedFromDoi(parsedEntry: { _graph?: ParseStep[] }): boolean {
+  return (parsedEntry._graph ?? []).some((step) => step.type === doiApiStep)
+}
+
+function removeShortTitlesFromJournalArticle(entry: CslData): CslData {
+  if (entry.type !== 'article-journal') {
+    return entry
+  }
+  const entryWithoutShortTitles = { ...entry }
+  delete entryWithoutShortTitles['container-title-short']
+  delete entryWithoutShortTitles['title-short']
+  return entryWithoutShortTitles
+}
+
+export function normalizeImportedCslData(
+  cite: Cite,
+  cslData: ReadonlyArray<CslData>,
+): ReadonlyArray<CslData> {
+  return cslData.map((entry, index) =>
+    wasImportedFromDoi(cite.data[index])
+      ? removeShortTitlesFromJournalArticle(entry)
+      : entry,
+  )
+}
