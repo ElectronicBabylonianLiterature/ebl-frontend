@@ -188,7 +188,7 @@ describe('encodeFragmentNumber', () => {
     expect(encodeFragmentNumber('K.\uD800')).toBe('K.%EF%BF%BD')
   })
 
-  it('encodes the number as is without String.prototype.toWellFormed', () => {
+  it('encodes lone surrogates without String.prototype.toWellFormed', () => {
     const toWellFormed = Object.getOwnPropertyDescriptor(
       String.prototype,
       'toWellFormed',
