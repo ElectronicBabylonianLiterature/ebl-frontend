@@ -1,5 +1,6 @@
 import { screen, fireEvent, act } from '@testing-library/react'
 import Cite from 'citation-js'
+import { CslData } from 'bibliography/domain/BibliographyEntry'
 
 export const debounceDelayInMilliseconds = 500
 
@@ -26,9 +27,13 @@ export async function advancePastTheDebounce(): Promise<void> {
   })
 }
 
-export function parsedCitation(id: string, citation: string): unknown {
+export function parsedCitation(
+  id: string,
+  citation: string,
+  data: CslData = { id: id, type: 'book' },
+): unknown {
   return {
-    get: () => [{ id: id, type: 'book' }],
+    get: () => [data],
     format: () => citation,
   }
 }

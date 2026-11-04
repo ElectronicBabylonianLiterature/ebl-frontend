@@ -29,6 +29,12 @@ const BibliographyHelp = () => (
   </p>
 )
 
+function isDoiInput(value: string): boolean {
+  return /^(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/|doi:\s*)?10\.\d{4,9}\/\S+$/i.test(
+    value.trim(),
+  )
+}
+
 interface Props {
   value?: BibliographyEntry | null
   disabled: boolean
@@ -116,12 +122,25 @@ export default class BibliographyEntryForm extends Component<Props, State> {
 
   private load = (value: string): Promise<void> =>
     applyWhenCurrent<Cite>(() => Cite.async(value), {
-      onSuccess: this.applyCitation,
+      onSuccess: (cite) => this.applyCitation(cite, value),
       onError: this.applyInvalidEntry,
     })(this.loadOperation.start())
 
-  private applyCitation = (cite: Cite): void => {
-    const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
+  private applyCitation = (cite: Cite, input: string): void => {
+    const parsedCslData = cite.get({
+      format: 'real',
+      type: 'json',
+      style: 'csl',
+    })
+    const cslData = isDoiInput(input)
+      ? parsedCslData.map((entry) => {
+          if (entry.type !== 'article-journal') return entry
+          const entryWithoutShortTitles = { ...entry }
+          delete entryWithoutShortTitles['container-title-short']
+          delete entryWithoutShortTitles['title-short']
+          return entryWithoutShortTitles
+        })
+      : parsedCslData
     this.setState({
       ...this.state,
       citation: this.formatCitation(cite),
