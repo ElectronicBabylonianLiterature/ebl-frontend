@@ -48,8 +48,8 @@ describe('Tools', () => {
     expect(screen.getByText('Sumerian Dictionary Mock')).toBeInTheDocument()
   })
 
-  it('shows the Sumerian Dictionary nav item with the read:sumerian-words scope', () => {
-    renderTools(undefined, new MemorySession(['read:sumerian-words']))
+  it('shows the Sumerian Dictionary nav item with the read:sumerian-lex scope', () => {
+    renderTools(undefined, new MemorySession(['read:sumerian-lex']))
     expect(
       screen.getByRole('link', { name: /Sumerian Dictionary/ }),
     ).toHaveAttribute('href', '/tools/sumerian-dictionary')

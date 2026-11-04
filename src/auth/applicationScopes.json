@@ -43,5 +43,5 @@
   "readSipparIstanbulFragments": "read:SIPPARISTANBUL-fragments",
   "readCopenhagenFragments": "read:COPENHAGEN-fragments",
   "readRealia": "read:realia",
-  "readSumerianWords": "read:sumerian-words"
+  "readSumerianLex": "read:sumerian-lex"
 }

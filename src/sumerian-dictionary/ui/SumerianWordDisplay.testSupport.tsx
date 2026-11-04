@@ -20,7 +20,7 @@ export const markupService = new (MarkupService as jest.Mock<
   jest.Mocked<MarkupService>
 >)()
 
-export const readerSession = new MemorySession(['read:sumerian-words'])
+export const readerSession = new MemorySession(['read:sumerian-lex'])
 
 export function renderWord(
   word: SumerianWord,

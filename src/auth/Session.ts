@@ -163,7 +163,7 @@ export default class MemorySession implements Session {
   }
 
   isAllowedToReadSumerianWords(): boolean {
-    return this.hasApplicationScope('readSumerianWords')
+    return this.hasApplicationScope('readSumerianLex')
   }
 
   isAllowedToReadFolio(folio: Folio): boolean {

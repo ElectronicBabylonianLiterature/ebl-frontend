@@ -14,7 +14,7 @@ export const sumerianDictionaryService =
 
 export function renderSearchPage(
   initialEntry = '/tools/sumerian-dictionary',
-  session: Session = new MemorySession(['read:sumerian-words']),
+  session: Session = new MemorySession(['read:sumerian-lex']),
 ): RenderResult {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>

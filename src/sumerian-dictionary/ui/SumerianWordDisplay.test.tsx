@@ -22,7 +22,7 @@ beforeEach(() => {
   installMockIntersectionObserver()
 })
 
-it('refuses the page without the read:sumerian-words scope and fetches nothing', () => {
+it('refuses the page without the read:sumerian-lex scope and fetches nothing', () => {
   renderWord(sumerianWordFactory.build(), { session: new MemorySession([]) })
   expect(
     screen.getByText(/available to authorised users only/),

@@ -133,9 +133,7 @@ it('SumerianWordDisplay passes its signal to find', async () => {
 
   const { unmount } = render(
     <MemoryRouter>
-      <SessionContext.Provider
-        value={new MemorySession(['read:sumerian-words'])}
-      >
+      <SessionContext.Provider value={new MemorySession(['read:sumerian-lex'])}>
         <SumerianWordDisplay
           id="o0033341"
           sumerianDictionaryService={sumerianDictionaryService}
