@@ -5,16 +5,19 @@ export const MAX_FILTER_LENGTH = 200
 
 const VERSION_PARAM = 'mv'
 const FILTER_PARAM = 'findspot'
+const AREAS_PARAM = 'areas'
 const SURROGATE_CODE_UNIT = /^[\uD800-\uDFFF]$/
 
 export interface MapUrlState {
   readonly version: number
   readonly filter: string
+  readonly showExcavationAreas: boolean
 }
 
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   version: MAP_URL_STATE_VERSION,
   filter: '',
+  showExcavationAreas: false,
 }
 
 export function normalizeMapFilter(filter: string): string {
@@ -29,6 +32,7 @@ export function normalizeMapUrlState(state: MapUrlState): MapUrlState {
   return {
     version: MAP_URL_STATE_VERSION,
     filter: normalizeMapFilter(state.filter),
+    showExcavationAreas: state.showExcavationAreas,
   }
 }
 
@@ -48,13 +52,14 @@ export function parseMapUrlState(search: string): MapUrlState {
   return normalizeMapUrlState({
     version: MAP_URL_STATE_VERSION,
     filter: asString(query[FILTER_PARAM]),
+    showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
   })
 }
 
 export function serializeMapUrlState(state: MapUrlState): string {
-  const { filter } = normalizeMapUrlState(state)
+  const { filter, showExcavationAreas } = normalizeMapUrlState(state)
 
-  if (!filter) {
+  if (!filter && !showExcavationAreas) {
     return ''
   }
 
@@ -62,6 +67,7 @@ export function serializeMapUrlState(state: MapUrlState): string {
     {
       [VERSION_PARAM]: MAP_URL_STATE_VERSION,
       [FILTER_PARAM]: filter,
+      [AREAS_PARAM]: showExcavationAreas ? '1' : undefined,
     },
     { skipEmptyString: true },
   )
@@ -72,14 +78,16 @@ export function mergeMapUrlStateIntoSearch(
   state: MapUrlState,
 ): string {
   const parameters = new URLSearchParams(search)
-  const { filter } = normalizeMapUrlState(state)
+  const { filter, showExcavationAreas } = normalizeMapUrlState(state)
 
   parameters.delete(VERSION_PARAM)
   parameters.delete(FILTER_PARAM)
-  if (filter) {
+  parameters.delete(AREAS_PARAM)
+  if (filter || showExcavationAreas) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
-    parameters.set(FILTER_PARAM, filter)
   }
+  if (filter) parameters.set(FILTER_PARAM, filter)
+  if (showExcavationAreas) parameters.set(AREAS_PARAM, '1')
 
   return parameters.toString()
 }
