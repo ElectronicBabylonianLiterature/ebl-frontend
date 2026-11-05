@@ -13,7 +13,8 @@ import { OldLineNumberDto } from 'corpus/application/dtos'
 import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import SentryErrorReporter from 'common/errors/SentryErrorReporter'
+import reportFallbackError from 'common/errors/reportFallbackError'
+import { ApiError } from 'http/ApiClient'
 
 const markupLineTypes = ['NoteLine', 'TranslationLine']
 
@@ -35,8 +36,7 @@ export default class ReferenceInjector {
 
   constructor(
     bibliographyService: Pick<BibliographyService, 'find' | 'findManyById'>,
-    private readonly reportError: (error: Error) => void = (error) =>
-      new SentryErrorReporter().captureException(error),
+    private readonly reportError: (error: Error) => void = reportFallbackError,
   ) {
     this.bibliographyService = bibliographyService
   }
@@ -138,7 +138,9 @@ export default class ReferenceInjector {
       .find(data.id)
       .then((entry) => reference.setDocument(entry))
       .catch((error) => {
-        this.reportError(error)
+        if (!(error instanceof ApiError && error.status === 404)) {
+          this.reportError(error)
+        }
         return reference.withIdentity(data.id, true)
       })
   }
