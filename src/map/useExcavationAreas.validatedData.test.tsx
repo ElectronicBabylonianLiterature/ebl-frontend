@@ -69,7 +69,8 @@ it('inserts fills and outlines below findspot clusters, labels and points in act
   ]
   markLayersAdded(...layerIds)
   render(<Harness index={INDEX} />)
-  mockAddLayer.mock.calls.forEach(([layer, beforeId]) => {
+  mockAddLayer.mock.calls.forEach((call) => {
+    const [layer, beforeId] = call as [{ id: string }, string?]
     const beforeIndex =
       beforeId === undefined ? layerIds.length : layerIds.indexOf(beforeId)
     expect(beforeIndex).toBeGreaterThanOrEqual(0)
