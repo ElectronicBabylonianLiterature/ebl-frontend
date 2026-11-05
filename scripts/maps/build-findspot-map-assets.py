@@ -8,6 +8,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+from findspot_artifact_manifest import build_manifest
 from findspot_artifact_validation import load_inventory, load_mapping
 from findspot_geometry_identity import geometry_checksum
 
@@ -165,21 +166,27 @@ def atomic_write_outputs(
     findspot_dir: Path,
     collections: dict[str, dict[str, Any]],
     all_sites: dict[str, Any],
+    manifest: dict[str, Any] | None = None,
 ) -> None:
     with tempfile.TemporaryDirectory(dir=findspot_dir) as temporary:
         temporary_dir = Path(temporary)
-        outputs = {**collections, "all": all_sites}
-        output_paths = {name: findspot_dir / f"{name}.geojson" for name in outputs}
+        outputs = {
+            f"{name}.geojson": value
+            for name, value in {**collections, "all": all_sites}.items()
+        }
+        if manifest is not None:
+            outputs["manifest.json"] = manifest
+        output_paths = {name: findspot_dir / name for name in outputs}
         originals = {
             name: path.read_bytes() if path.exists() else None
             for name, path in output_paths.items()
         }
         for name, collection in outputs.items():
-            write_json(temporary_dir / f"{name}.geojson", collection)
+            write_json(temporary_dir / name, collection)
         committed: list[str] = []
         try:
             for name, output_path in output_paths.items():
-                (temporary_dir / f"{name}.geojson").replace(output_path)
+                (temporary_dir / name).replace(output_path)
                 committed.append(name)
         except OSError:
             for name in committed:
@@ -207,7 +214,8 @@ def main() -> None:
     collections, all_sites = build_assets(
         args.findspot_dir, args.artifact_dir, expectations
     )
-    atomic_write_outputs(args.findspot_dir, collections, all_sites)
+    manifest = build_manifest(collections, all_sites, args.artifact_dir)
+    atomic_write_outputs(args.findspot_dir, collections, all_sites, manifest)
     print(
         json.dumps(
             {
