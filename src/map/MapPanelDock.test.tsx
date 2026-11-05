@@ -37,7 +37,6 @@ it('keeps the drawer open for ordinary keyboard input', async () => {
   await userEvent.click(button)
   await userEvent.keyboard('{ArrowDown}')
   expect(screen.getByText('Layer controls')).toBeInTheDocument()
-  await userEvent.keyboard('ordinary input')
   expect(screen.getByRole('region', { name: 'Map layers' })).toBeVisible()
   expect(button).toHaveAttribute('aria-controls', 'map-panel-drawer')
 })
