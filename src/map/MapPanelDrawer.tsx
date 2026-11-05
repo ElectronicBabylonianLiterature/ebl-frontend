@@ -48,7 +48,9 @@ export default function MapPanelDrawer({
           type="button"
           className="map-panel-drawer__handle"
           aria-expanded={!isCollapsed}
-          aria-controls="map-panel-drawer-body"
+          aria-controls={
+            isCollapsed ? undefined : `${MAP_PANEL_CONTAINER_ID}-body`
+          }
           onClick={() => setIsCollapsed((current) => !current)}
         >
           <span className="map-panel-drawer__grip" aria-hidden="true" />
@@ -67,7 +69,10 @@ export default function MapPanelDrawer({
         </Button>
       </div>
       {isCollapsed ? null : (
-        <div id="map-panel-drawer-body" className="map-panel-drawer__body">
+        <div
+          id={`${MAP_PANEL_CONTAINER_ID}-body`}
+          className="map-panel-drawer__body"
+        >
           {children}
         </div>
       )}
