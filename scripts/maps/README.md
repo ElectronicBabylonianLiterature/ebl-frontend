@@ -21,4 +21,6 @@ python3 scripts/maps/build-findspot-map-assets.py \
   --findspot-dir public/map-data/findspots
 ```
 
+Generation publishes `manifest.json` atomically alongside the five GeoJSON files. It records their SHA-256 hashes, canonical polygon and mapping counts, and the mapping source revisions. If backend site manifests are supplied, their input hashes are verified before publication and their revisions are included; absent manifest revisions remain `null`. Research exports can identify the geometry by `manifest.files["all.geojson"]`.
+
 For an intentional metadata revision, review and update the default counts alongside its inputs. `--expectations` remains available for explicitly reviewed alternative datasets; the default regression check deliberately does not use that override.
