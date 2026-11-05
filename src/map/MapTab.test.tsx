@@ -33,7 +33,10 @@ function mixedGeometryProvenances(): ReturnType<typeof makeProvenance>[] {
 }
 
 describe('MapTab', () => {
-  beforeEach(resetMapMocks)
+  beforeEach(() => {
+    resetMapMocks()
+    fetchMock.resetMocks()
+  })
 
   it('renders loading spinner while data is being fetched', () => {
     const fragmentService = {
