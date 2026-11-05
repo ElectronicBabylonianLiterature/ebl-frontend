@@ -10,6 +10,7 @@ import BibliographyEntry, {
   CslData,
 } from 'bibliography/domain/BibliographyEntry'
 import { generateIds } from 'bibliography/domain/GenerateIds'
+import { normalizeImportedCslData } from 'bibliography/domain/doiImport'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
@@ -121,7 +122,16 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     })(this.loadOperation.start())
 
   private applyCitation = (cite: Cite): void => {
-    const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
+    const parsedCslData = cite.get({
+      format: 'real',
+      type: 'json',
+      style: 'csl',
+    })
+    if (_.isEmpty(parsedCslData)) {
+      this.applyInvalidEntry()
+      return
+    }
+    const cslData = normalizeImportedCslData(cite, parsedCslData)
     this.setState({
       ...this.state,
       citation: this.formatCitation(cite),

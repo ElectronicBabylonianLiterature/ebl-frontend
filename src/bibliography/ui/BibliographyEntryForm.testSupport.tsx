@@ -1,5 +1,6 @@
 import { screen, fireEvent, act } from '@testing-library/react'
 import Cite from 'citation-js'
+import { CslData } from 'bibliography/domain/BibliographyEntry'
 
 export const debounceDelayInMilliseconds = 500
 
@@ -26,11 +27,21 @@ export async function advancePastTheDebounce(): Promise<void> {
   })
 }
 
-export function parsedCitation(id: string, citation: string): unknown {
+export function parsedCitation(
+  id: string,
+  citation: string,
+  data: CslData = { id: id, type: 'book' },
+  parseStepTypes: ReadonlyArray<string> = ['@csl/object'],
+): unknown {
   return {
-    get: () => [{ id: id, type: 'book' }],
+    data: [{ ...data, _graph: parseStepTypes.map((type) => ({ type })) }],
+    get: () => [data],
     format: () => citation,
   }
+}
+
+export function parsedCitationWithoutEntries(): unknown {
+  return { data: [], get: () => [], format: () => '' }
 }
 
 export function setUpFakeTimersAroundTests(): void {
