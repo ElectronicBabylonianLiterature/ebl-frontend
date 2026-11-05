@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import MapShareLink from 'map/MapShareLink'
@@ -44,6 +44,34 @@ function StyleBoundaryHarness({
   }, [provenances])
   return <div ref={ref} />
 }
+
+function ExternalUrlHarness(): JSX.Element {
+  const { state, update } = useMapUrlState()
+  const location = useLocation()
+  const navigate = useNavigate()
+  useLayoutEffect(() => {
+    if (location.search === '?mv=1&findspot=Babylon')
+      update({ filter: 'Babylon' })
+  }, [location.search, update])
+  return (
+    <>
+      <button onClick={() => navigate('?mv=1&findspot=Babylon')}>
+        External URL
+      </button>
+      <output>{state.filter}</output>
+    </>
+  )
+}
+
+test('accepts a filter update whose URL was already committed externally', () => {
+  render(
+    <MemoryRouter initialEntries={['/tools/map']}>
+      <ExternalUrlHarness />
+    </MemoryRouter>,
+  )
+  fireEvent.click(screen.getByRole('button', { name: 'External URL' }))
+  expect(screen.getByText('Babylon')).toBeInTheDocument()
+})
 
 beforeEach(resetMapMocks)
 
