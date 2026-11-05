@@ -17,13 +17,17 @@ import {
 
 jest.mock('maplibre-gl')
 
+const POLYGON_INDEX = new Map()
+
 beforeEach(resetMapMocks)
 
 it('ignores stale style events after the map owner replaces its instance', () => {
   const mapRef: { current: MapLibreMap | null } = {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
-  const { unmount } = renderHook(() => useExcavationAreas(mapRef, true))
+  const { unmount } = renderHook(() =>
+    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+  )
   clearMockStyleResources()
   mockAddLayer.mockClear()
   mockAddSource.mockClear()
@@ -44,7 +48,9 @@ it('ignores callbacks captured before the hook unmounts', () => {
   const mapRef: { current: MapLibreMap | null } = {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
-  const { unmount } = renderHook(() => useExcavationAreas(mapRef, true))
+  const { unmount } = renderHook(() =>
+    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+  )
   const callbacks = mockOn.mock.calls
     .filter(([event]) => event === 'style.load')
     .map(([, callback]) => callback)
@@ -61,7 +67,9 @@ it('ignores callbacks captured before the hook unmounts', () => {
 })
 
 it('waits for a map owner before registering listeners', () => {
-  renderHook(() => useExcavationAreas({ current: null }, true))
+  renderHook(() =>
+    useExcavationAreas({ current: null }, true, undefined, POLYGON_INDEX),
+  )
 
   expect(mockOn).not.toHaveBeenCalled()
   expect(mockAddSource).not.toHaveBeenCalled()
@@ -73,7 +81,7 @@ it('reuses source and layers already installed when the style event repeats', ()
   }
   markLayersAdded(...EXCAVATION_AREA_LAYER_IDS)
   mockGetSource.mockReturnValue({})
-  renderHook(() => useExcavationAreas(mapRef, false))
+  renderHook(() => useExcavationAreas(mapRef, false, undefined, POLYGON_INDEX))
   act(() => triggerMapEvent('style.load'))
 
   expect(mockAddSource).not.toHaveBeenCalled()

@@ -1,4 +1,7 @@
 import { act, screen, waitFor } from '@testing-library/react'
+import fs from 'fs'
+import path from 'path'
+import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { buildFragmentSearchLink } from 'map/mapLinks'
@@ -92,6 +95,12 @@ describe('MapTab', () => {
   })
 
   it('passes source and layer configs to map on load', async () => {
+    fetchMock.mockResponseOnce(
+      fs.readFileSync(
+        path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+        'utf8',
+      ),
+    )
     const provenances = [
       makeProvenance(),
       makeProvenance({
@@ -113,7 +122,7 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(5)
+    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(5))
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )

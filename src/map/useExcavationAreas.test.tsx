@@ -19,6 +19,8 @@ import {
 
 jest.mock('maplibre-gl')
 
+const POLYGON_INDEX = new Map()
+
 function Harness({
   isVisible = true,
   onAvailabilityChange,
@@ -29,7 +31,7 @@ function Harness({
   const mapRef = useRef<MapLibreMap | null>(
     mockMapInstance as unknown as MapLibreMap,
   )
-  useExcavationAreas(mapRef, isVisible, onAvailabilityChange)
+  useExcavationAreas(mapRef, isVisible, onAvailabilityChange, POLYGON_INDEX)
   return null
 }
 
@@ -44,7 +46,7 @@ function OwnerTeardownHarness(): null {
     },
     [],
   )
-  useExcavationAreas(mapRef, true)
+  useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX)
   return null
 }
 

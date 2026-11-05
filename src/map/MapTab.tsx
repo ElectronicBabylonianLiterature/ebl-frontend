@@ -80,6 +80,7 @@ function LoadedMapTab({
     mapRef,
     showExcavationAreas,
     handleExcavationAreasAvailabilityChange,
+    isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
   )
 
   return (
@@ -99,6 +100,9 @@ function LoadedMapTab({
           update({ showExcavationAreas: isVisible })
         }
       />
+      {!isPolygonIndexLoaded ? (
+        <p role="status">Loading excavation areas…</p>
+      ) : null}
       {excavationAreasUnavailable ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}

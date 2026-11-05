@@ -1,7 +1,13 @@
 import { useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import {
+  MAP_STYLE_LOAD_EVENT,
+  clusterLayer,
+  clusterCountLayer,
+  unclusteredLayer,
+} from 'map/mapLayers'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
@@ -11,16 +17,23 @@ import {
   excavationAreaOutlineLayer,
 } from 'map/mapExcavationLayers'
 
-function addExcavationAreas(map: MapLibreMap): void {
+function addExcavationAreas(
+  map: MapLibreMap,
+  polygonIndex: ExcavationPolygonIndex,
+): void {
   if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
-    map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
+    map.addSource(
+      EXCAVATION_AREAS_SOURCE_ID,
+      createExcavationAreasSource(polygonIndex),
+    )
   }
-  if (!map.getLayer(excavationAreaFillLayer.id)) {
-    map.addLayer(excavationAreaFillLayer)
-  }
-  if (!map.getLayer(excavationAreaOutlineLayer.id)) {
-    map.addLayer(excavationAreaOutlineLayer)
-  }
+  let beforeId = [clusterLayer, clusterCountLayer, unclusteredLayer].find(
+    (layer) => map.getLayer(layer.id),
+  )?.id
+  ;[excavationAreaOutlineLayer, excavationAreaFillLayer].forEach((layer) => {
+    if (!map.getLayer(layer.id)) map.addLayer(layer, beforeId)
+    beforeId = layer.id
+  })
 }
 
 function removeExcavationAreas(map: MapLibreMap): void {
@@ -46,17 +59,18 @@ function setExcavationAreasVisible(map: MapLibreMap, isVisible: boolean): void {
 
 function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
+  polygonIndex: ExcavationPolygonIndex | null,
   onAvailabilityChange?: (isUnavailable: boolean) => void,
 ): void {
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
+    if (!map || polygonIndex === null) return
 
     let isActive = true
     const ownsMap = (): boolean => mapRef.current === map
     const isCurrentMap = (): boolean => isActive && ownsMap()
     const install = (): void => {
-      if (isCurrentMap()) addExcavationAreas(map)
+      if (isCurrentMap()) addExcavationAreas(map, polygonIndex)
     }
 
     const stopObservingAvailability = observeExcavationAvailability(
@@ -74,12 +88,13 @@ function useExcavationAreaLifecycle(
       map.off(MAP_STYLE_LOAD_EVENT, install)
       if (ownsMap()) removeExcavationAreas(map)
     }
-  }, [mapRef, onAvailabilityChange])
+  }, [mapRef, onAvailabilityChange, polygonIndex])
 }
 
 function useExcavationAreaVisibility(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isVisible: boolean,
+  polygonIndex: ExcavationPolygonIndex | null,
 ): void {
   useEffect(() => {
     const map = mapRef.current
@@ -98,14 +113,15 @@ function useExcavationAreaVisibility(
       isActive = false
       map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
-  }, [mapRef, isVisible])
+  }, [mapRef, isVisible, polygonIndex])
 }
 
 export default function useExcavationAreas(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isVisible: boolean,
-  onAvailabilityChange?: (isUnavailable: boolean) => void,
+  onAvailabilityChange: ((isUnavailable: boolean) => void) | undefined,
+  polygonIndex: ExcavationPolygonIndex | null,
 ): void {
-  useExcavationAreaLifecycle(mapRef, onAvailabilityChange)
-  useExcavationAreaVisibility(mapRef, isVisible)
+  useExcavationAreaLifecycle(mapRef, polygonIndex, onAvailabilityChange)
+  useExcavationAreaVisibility(mapRef, isVisible, polygonIndex)
 }
