@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 import useMapPanelFootprint from 'map/useMapPanelFootprint'
+import type { ActiveMapPanel } from 'map/mapPanel'
 
 const mockObserved = new Map<Element, () => void>()
 const mockDisconnect = jest.fn()
@@ -154,7 +155,7 @@ it('disconnects and resets on presentation, then measures the remounted drawer',
   const drawerRef: { current: HTMLElement | null } = { current: first.drawer }
   const { result, rerender, unmount } = renderHook(
     ({ panel }) => useMapPanelFootprint(containerRef, drawerRef, panel),
-    { initialProps: { panel: 'layers' as string | null } },
+    { initialProps: { panel: 'layers' as ActiveMapPanel } },
   )
   const staleCallback = mockObserved.get(first.drawer)
   drawerRef.current = null
