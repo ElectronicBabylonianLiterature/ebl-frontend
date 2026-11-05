@@ -17,6 +17,12 @@ const expectedSites = {
   nippur: { count: 20, name: 'Nippur' },
   uruk: { count: 128, name: 'Uruk' },
 } as const
+const siteBounds = {
+  assur: [43.25, 35.45, 43.27, 35.47],
+  kalhu: [43.32, 36.09, 43.36, 36.12],
+  nippur: [45.22, 32.11, 45.24, 32.14],
+  uruk: [45.62, 31.31, 45.65, 31.34],
+} as const
 
 type SiteId = keyof typeof expectedSites
 type AssetName = keyof typeof expectedAssetDigests
@@ -106,12 +112,17 @@ describe('normalized findspot GeoJSON', () => {
         expect(feature.properties?.name).toEqual(expect.any(String))
         expect(['Polygon', 'MultiPolygon']).toContain(feature.geometry.type)
         visitCoordinates(feature.geometry, ([longitude, latitude]) => {
+          const [west, south, east, north] = siteBounds[siteId]
           expect(Number.isFinite(longitude)).toBe(true)
           expect(Number.isFinite(latitude)).toBe(true)
           expect(longitude).toBeGreaterThanOrEqual(-180)
           expect(longitude).toBeLessThanOrEqual(180)
           expect(latitude).toBeGreaterThanOrEqual(-90)
           expect(latitude).toBeLessThanOrEqual(90)
+          expect(longitude).toBeGreaterThanOrEqual(west)
+          expect(longitude).toBeLessThanOrEqual(east)
+          expect(latitude).toBeGreaterThanOrEqual(south)
+          expect(latitude).toBeLessThanOrEqual(north)
         })
       }
     }

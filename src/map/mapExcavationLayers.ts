@@ -1,5 +1,5 @@
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
-import { EXCAVATION_POLYGON_GEOJSON_URL } from 'map/excavationPolygonIndex'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 
 export const EXCAVATION_AREAS_SOURCE_ID = 'excavation-areas'
 export const EXCAVATION_AREA_FILL_LAYER_ID = 'excavation-area-fill'
@@ -8,10 +8,26 @@ export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'excavation-area-outline'
 const NEUTRAL_FILL_COLOR = '#6c757d'
 const NEUTRAL_OUTLINE_COLOR = '#343a40'
 
-export function createExcavationAreasSource(): GeoJSONSourceSpecification {
+export function createExcavationAreasSource(
+  index: ExcavationPolygonIndex,
+): GeoJSONSourceSpecification {
   return {
     type: 'geojson',
-    data: EXCAVATION_POLYGON_GEOJSON_URL,
+    data: {
+      type: 'FeatureCollection',
+      features: [...index.values()].flatMap((polygons) =>
+        polygons.map((polygon) => ({
+          type: 'Feature',
+          id: polygon.polygonId,
+          properties: {
+            id: polygon.polygonId,
+            siteId: polygon.siteId,
+            name: polygon.name,
+          },
+          geometry: polygon.geometry,
+        })),
+      ),
+    },
     promoteId: 'id',
   }
 }

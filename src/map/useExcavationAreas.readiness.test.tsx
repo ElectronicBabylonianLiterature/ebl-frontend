@@ -14,11 +14,13 @@ import {
 
 jest.mock('maplibre-gl')
 
+const POLYGON_INDEX = new Map()
+
 function Harness({ isVisible }: { isVisible: boolean }): null {
   const mapRef = useRef<MapLibreMap | null>(
     mockMapInstance as unknown as MapLibreMap,
   )
-  useExcavationAreas(mapRef, isVisible)
+  useExcavationAreas(mapRef, isVisible, undefined, POLYGON_INDEX)
   return null
 }
 
