@@ -19,7 +19,10 @@ function findAddedLayer(layerId: string): { id: string } | undefined {
   return addedLayerIds.has(layerId) ? { id: layerId } : undefined
 }
 export const mockAddSource = jest.fn()
-export const mockAddLayer = jest.fn(rememberAddedLayer)
+export const mockAddLayer = jest.fn<
+  void,
+  [layer: { id: string }, beforeId?: string]
+>(rememberAddedLayer)
 export const mockGetLayer = jest.fn(findAddedLayer)
 export const mockRemoveLayer = jest.fn((layerId: string) => {
   addedLayerIds.delete(layerId)
