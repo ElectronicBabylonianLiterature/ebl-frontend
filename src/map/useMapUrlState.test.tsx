@@ -6,6 +6,7 @@ import { MAX_FILTER_LENGTH, parseMapUrlState } from 'map/mapUrlState'
 import useMapUrlState from 'map/useMapUrlState'
 
 const FILTER_TEST_ID = 'harness-filter'
+const AREAS_TEST_ID = 'harness-areas'
 const SEARCH_TEST_ID = 'harness-search'
 const HASH_TEST_ID = 'harness-hash'
 const STATE_TEST_ID = 'harness-state'
@@ -30,7 +31,14 @@ function Harness(): JSX.Element {
   return (
     <div>
       <div data-testid={FILTER_TEST_ID}>{state.filter}</div>
+      <div data-testid={AREAS_TEST_ID}>{String(state.showExcavationAreas)}</div>
       <button onClick={() => update({ filter: 'Babylon' })}>set-babylon</button>
+      <button onClick={() => update({ showExcavationAreas: true })}>
+        show-areas
+      </button>
+      <button onClick={() => update({ showExcavationAreas: false })}>
+        hide-areas
+      </button>
       <button onClick={() => update({ filter: OVERLONG_FILTER })}>
         set-overlong
       </button>
@@ -64,6 +72,12 @@ describe('useMapUrlState', () => {
     renderHarness('/tools/map?mv=1&findspot=Babylon')
 
     expect(screen.getByTestId(FILTER_TEST_ID)).toHaveTextContent('Babylon')
+  })
+
+  it('parses the excavation-area flag already present in the URL', () => {
+    renderHarness('/tools/map?mv=1&areas=1')
+
+    expect(screen.getByTestId(AREAS_TEST_ID)).toHaveTextContent('true')
   })
 
   it('does not rewrite the URL on a plain visit with no query', async () => {
@@ -105,6 +119,34 @@ describe('useMapUrlState', () => {
     await waitFor(() => {
       expect(screen.getByTestId(SEARCH_TEST_ID)).toBeEmptyDOMElement()
     })
+  })
+
+  it('writes and clears the excavation-area flag', async () => {
+    renderHarness('/tools/map?source=archive')
+
+    act(() => {
+      screen.getByText('show-areas').click()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(AREAS_TEST_ID)).toHaveTextContent('true')
+    })
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(/areas=1/)
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(/mv=1/)
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      /source=archive/,
+    )
+
+    act(() => {
+      screen.getByText('hide-areas').click()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(AREAS_TEST_ID)).toHaveTextContent('false')
+    })
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      '?source=archive',
+    )
   })
 
   it('preserves query parameters not owned by the map', async () => {
