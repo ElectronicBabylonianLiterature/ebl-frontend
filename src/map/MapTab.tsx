@@ -10,15 +10,9 @@ import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
 import useMapPresentationFocus from 'map/useMapPresentationFocus'
-import MapLayerPanel from 'map/MapLayerPanel'
-import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
-import MapVisualizationControl from 'map/MapVisualizationControl'
-import MapMeasurePanel from 'map/MapMeasurePanel'
-import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/MapSelectionPill'
-import { findMapSite, isMapSiteId } from 'map/mapSites'
-import type { MapPanelDefinition } from 'map/MapToolbar'
+import buildMapToolPanels from 'map/mapToolPanels'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import 'map/MapTab.sass'
@@ -61,74 +55,7 @@ function LoadedMapTab({
     panel.close()
   }
 
-  const selectedSiteData =
-    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
-      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
-      : undefined
-
-  const panels: readonly MapPanelDefinition[] = [
-    {
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: selectedPolygon !== null,
-      render: () =>
-        selectedPolygon ? (
-          <MapInspector
-            key={selectedPolygon.polygonId}
-            polygon={selectedPolygon}
-            summary={selectedSiteData?.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={
-              findMapSite(selectedPolygon.siteId)?.siteName ??
-              selectedPolygon.siteId
-            }
-            status={selectedSiteData?.status ?? 'not-configured'}
-            onClear={clearSelection}
-          />
-        ) : (
-          <p>No excavation area is selected.</p>
-        ),
-    },
-    {
-      id: 'visualization',
-      label: 'Visualization',
-      isSupported: state.canShowExcavationAreas,
-      render: () => (
-        <MapVisualizationControl
-          mode={state.visualization.effectiveMode}
-          legend={state.visualization.legend}
-          isDensityAvailable={state.visualization.isDensityAvailable}
-          hasUnavailableData={state.visualization.hasUnavailableData}
-          onModeChange={experience.setVisualization}
-        />
-      ),
-    },
-    {
-      id: 'measurement',
-      label: 'Measure',
-      isSupported: !state.isBackgroundUnavailable,
-      render: () => <MapMeasurePanel measurement={state.measurement} />,
-    },
-    {
-      id: 'spatial-search',
-      label: 'Search area',
-      isSupported:
-        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
-      render: () => (
-        <MapSpatialSearchPanel
-          spatialSearch={state.spatialSearch}
-          findspots={state.fragmentMapData.findspots}
-        />
-      ),
-    },
-    {
-      id: 'layers',
-      label: 'Map layers',
-      isSupported: true,
-      render: () => <MapLayerPanel state={state} />,
-    },
-  ]
+  const panels = buildMapToolPanels(state, clearSelection)
 
   const excavationStatus =
     state.isExcavationAreasUnavailable &&
