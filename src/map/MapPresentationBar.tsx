@@ -4,9 +4,7 @@ import { Button } from 'react-bootstrap'
 interface Props {
   readonly onExit: () => void
 }
-export default function MapPresentationBar({
-  onExit,
-}: Props): JSX.Element {
+export default function MapPresentationBar({ onExit }: Props): JSX.Element {
   const exitRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
