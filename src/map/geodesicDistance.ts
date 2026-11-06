@@ -6,13 +6,9 @@ function toRadians(degrees: number): number {
 }
 
 function isPosition(value: unknown): value is Position {
-  return (
-    Array.isArray(value) &&
-    value.length >= 2 &&
-    Number.isFinite(value[0]) &&
-    Number.isFinite(value[1]) &&
-    Math.abs(value[1]) <= 90
-  )
+  if (!Array.isArray(value) || value.length < 2) return false
+  if (!Number.isFinite(value[0]) || !Number.isFinite(value[1])) return false
+  return Math.abs(value[1]) <= 90
 }
 export function geodesicDistanceMetres(
   from: Position,
