@@ -24,6 +24,7 @@ export const CSV_COLUMNS = [
   'mappingSourceRevisions',
   'artifactManifestSha256',
   'polygonGeometrySha256',
+  'artifactContractRevision',
 ] as const
 
 function startsWithFormula(value: string): boolean {
@@ -81,6 +82,7 @@ function csvCells(row: MapExportRow, context: MapExportContext): string[] {
     provenance.mappingSourceRevisions.join('|'),
     provenance.artifactManifestSha256 ?? '',
     provenance.polygonGeometrySha256 ?? '',
+    provenance.artifactContractRevision ?? '',
   ]
 }
 

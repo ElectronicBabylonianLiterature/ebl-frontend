@@ -60,6 +60,7 @@ export function polygonResearchMarkdown(
     'Feature type: Excavation area',
     `Site ID: ${inline(summary.siteId)}`,
     `Polygon ID: ${inline(summary.polygonId)}`,
+    `Metadata contract revision: ${provenance.artifactContractRevision ?? 'unknown'}`,
     `Artifact source revision: ${provenance.artifactSourceRevision ?? 'unknown'}`,
     `Mapping source revisions: ${provenance.mappingSourceRevisions.join(' | ') || 'unknown'}`,
     `Polygon geometry source SHA256: ${provenance.polygonGeometrySha256 ?? 'unknown'}`,
