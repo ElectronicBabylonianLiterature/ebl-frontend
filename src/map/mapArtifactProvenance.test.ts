@@ -43,6 +43,7 @@ it('keeps unknown provenance null instead of inventing a revision', () => {
     artifactSourceRevision: null,
     mappingSourceRevisions: [],
     artifactManifestSha256: null,
+    artifactContractRevision: null,
     polygonGeometrySha256: null,
   })
 })
