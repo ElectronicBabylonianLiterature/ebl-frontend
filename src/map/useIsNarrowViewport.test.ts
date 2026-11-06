@@ -1,6 +1,12 @@
 import { act, renderHook } from '@testing-library/react'
 import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
+const originalMatchMedia = window.matchMedia
+
+afterEach(() => {
+  window.matchMedia = originalMatchMedia
+})
+
 function mockMatchMedia(initialMatches: boolean): {
   changeListeners: Set<(event: { matches: boolean }) => void>
   setMatches: (matches: boolean) => void
@@ -62,12 +68,8 @@ describe('useIsNarrowViewport', () => {
   })
 
   it('is false when matchMedia is unavailable', () => {
-    const original = window.matchMedia
-    // @ts-expect-error simulating an environment without matchMedia
-    delete window.matchMedia
+    Reflect.deleteProperty(window, 'matchMedia')
 
     expect(renderHook(() => useIsNarrowViewport()).result.current).toBe(false)
-
-    window.matchMedia = original
   })
 })

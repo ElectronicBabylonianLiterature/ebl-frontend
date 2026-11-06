@@ -21,11 +21,11 @@ export default function MapExperienceHeader({
     <header className="map-experience__topbar">
       <div className="map-experience__heading">
         <span>eBL interactive map</span>
-        <h1>Archaeological atlas</h1>
+        <h3>Archaeological atlas</h3>
       </div>
       <div className="map-experience__search">{filterControl}</div>
       <div className="map-experience__actions">
-        <span aria-live="polite">
+        <span>
           {visibleSiteCount} visible{' '}
           {visibleSiteCount === 1 ? 'findspot' : 'findspots'}
         </span>
