@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Spinner from 'common/ui/Spinner'
@@ -20,6 +20,7 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
+import useMapPresentationFocus from 'map/useMapPresentationFocus'
 import MapLayerControls from 'map/MapLayerControls'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
@@ -40,7 +41,16 @@ function LoadedMapTab({
   const mapContainer = useRef<HTMLDivElement>(null)
   const drawerRef = useRef<HTMLElement>(null)
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
-  const wasPresentingRef = useRef(false)
+  useMapPresentationFocus(presentationTriggerRef, isPresenting)
+  const description = isPresenting
+    ? {
+        className: 'visually-hidden',
+        content: 'Interactive findspot map in presentation mode.',
+      }
+    : {
+        className: 'map-tab__description',
+        content: 'Matching tablet search links are available below the map.',
+      }
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const [cameraResetVersion, setCameraResetVersion] = useState(0)
@@ -103,13 +113,6 @@ function LoadedMapTab({
     isPresenting ? null : panel.active,
   )
 
-  useEffect(() => {
-    if (wasPresentingRef.current && !isPresenting) {
-      presentationTriggerRef.current?.focus()
-    }
-    wasPresentingRef.current = isPresenting
-  }, [isPresenting])
-
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)
     experience.resetState()
@@ -125,9 +128,6 @@ function LoadedMapTab({
         <>
           {!isPolygonIndexLoaded ? (
             <p role="status">Loading excavation areas…</p>
-          ) : null}
-          {excavationAreasUnavailable ? (
-            <Alert variant="warning">Excavation areas are unavailable.</Alert>
           ) : null}
           <MapLayerControls
             showExcavationAreas={showExcavationAreas}
@@ -167,8 +167,8 @@ function LoadedMapTab({
         />
       )}
       {excavationAreasUnavailable &&
-      experience.showExcavationAreas &&
-      (isPresenting || panel.active !== 'layers') ? (
+      (experience.showExcavationAreas ||
+        (!isPresenting && panel.active === 'layers')) ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <div className="map-experience__body">
@@ -188,13 +188,8 @@ function LoadedMapTab({
           }
         />
       </div>
-      <p
-        id="findspot-map-description"
-        className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
-      >
-        {isPresenting
-          ? 'Interactive findspot map in presentation mode.'
-          : 'Matching tablet search links are available below the map.'}
+      <p id="findspot-map-description" className={description.className}>
+        {description.content}
       </p>
       {isPresenting ? null : (
         <>
