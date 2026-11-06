@@ -8,6 +8,7 @@ import type WordService from 'dictionary/application/WordService'
 import type BibliographyService from 'bibliography/application/BibliographyService'
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
+import type SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type DossiersService from 'dossiers/application/DossiersService'
 import SessionContext from 'auth/SessionContext'
@@ -36,6 +37,9 @@ jest.mock('afo-register/ui/AfoRegisterSearchPage', () =>
   mockToolsContent('afoRegister'),
 )
 jest.mock('realia/ui/RealiaSearchPage', () => mockToolsContent('realia'))
+jest.mock('sumerian-dictionary/ui/SumerianDictionarySearchPage', () =>
+  mockToolsContent('sumerianDictionary'),
+)
 jest.mock('dossiers/ui/DossiersSearchPage', () => mockToolsContent('dossiers'))
 jest.mock('fragmentarium/ui/GenresPage', () => mockToolsContent('genres'))
 jest.mock('chronology/ui/DateConverter/DateConverterForm', () =>
@@ -60,6 +64,7 @@ export function toolsServiceProps(): Omit<ToolsProps, 'activeTab'> {
     bibliographyService: {} as BibliographyService,
     afoRegisterService: {} as AfoRegisterService,
     realiaService: {} as RealiaService,
+    sumerianDictionaryService: {} as SumerianDictionaryService,
     dossiersService: {} as DossiersService,
     fragmentService: {} as FragmentService,
   }

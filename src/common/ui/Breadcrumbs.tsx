@@ -32,6 +32,7 @@ export class SectionCrumb implements Crumb {
     ['Akkadian Dictionary', '/tools/dictionary'],
     ['Library', '/library'],
     ['Realia', '/tools/realia'],
+    ['Sumerian Dictionary', '/tools/sumerian-dictionary'],
     ['Signs', '/tools/signs'],
     ['About', '/about'],
     ['Tools', '/tools'],

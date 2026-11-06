@@ -36,12 +36,12 @@ describe('RealiaDisplay navigation menu structure', () => {
     expect(topLink).toHaveAttribute('href', '#realia-top')
     expect(
       within(navMenu).getByText('Königsinschriften', {
-        selector: '.Realia__nav-top-title',
+        selector: '.EntryPage__nav-top-title',
       }),
     ).toBeInTheDocument()
     expect(
       within(navMenu).getByText('Royal inscriptions', {
-        selector: '.Realia__nav-top-type',
+        selector: '.EntryPage__nav-top-type',
       }),
     ).toBeInTheDocument()
   })
@@ -52,11 +52,13 @@ describe('RealiaDisplay navigation menu structure', () => {
     await waitForSpinnerToBeRemoved(screen)
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     expect(
-      within(navMenu).getByText('Anu', { selector: '.Realia__nav-top-title' }),
+      within(navMenu).getByText('Anu', {
+        selector: '.EntryPage__nav-top-title',
+      }),
     ).toBeInTheDocument()
     expect(
       within(navMenu).queryByText(/\w/, {
-        selector: '.Realia__nav-top-type',
+        selector: '.EntryPage__nav-top-type',
       }),
     ).not.toBeInTheDocument()
   })

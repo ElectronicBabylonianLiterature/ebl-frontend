@@ -14,6 +14,11 @@ import type WordService from 'dictionary/application/WordService'
 import type BibliographyService from 'bibliography/application/BibliographyService'
 import type RealiaService from 'realia/application/RealiaService'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
+import type SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
+import SumerianWordDisplay, {
+  sumerianWordDescription,
+} from 'sumerian-dictionary/ui/SumerianWordDisplay'
+import type { CachedMarkupService } from 'markup/application/MarkupService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type TextService from 'corpus/application/TextService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
@@ -28,6 +33,8 @@ export const tabDescriptions: Record<TabId, string> = {
     'Search and explore cuneiform signs with palaeographic details at the eBL.',
   dictionary:
     'Browse the Akkadian dictionary with CDA guide words and references at the eBL.',
+  'sumerian-dictionary':
+    'Search the Sumerian Dictionary of Attinger, ePSD2 and Borger lemmas at the eBL.',
   references:
     'Search the comprehensive bibliography of cuneiform publications at the eBL.',
   'afo-register':
@@ -53,6 +60,8 @@ export function getEntityRoutes({
   textService,
   bibliographyService,
   realiaService,
+  sumerianDictionaryService,
+  cachedMarkupService,
   fragmentService,
   signSlugs,
   dictionarySlugs,
@@ -65,6 +74,8 @@ export function getEntityRoutes({
   textService: TextService
   bibliographyService: BibliographyService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
+  cachedMarkupService: CachedMarkupService
   fragmentService: FragmentService
   signSlugs?: SignSlugs
   dictionarySlugs?: DictionarySlugs
@@ -91,6 +102,23 @@ export function getEntityRoutes({
         ...sitemapDefaults,
         slugs: realiaSlugs,
       })}
+    />,
+    <Route
+      key="tools-sumerian-dictionary-display"
+      path="/tools/sumerian-dictionary/:id"
+      exact
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Sumerian Dictionary - eBL"
+          description={sumerianWordDescription}
+        >
+          <SumerianWordDisplay
+            sumerianDictionaryService={sumerianDictionaryService}
+            markupService={cachedMarkupService}
+            id={decodeURIComponent(match.params.id ?? '')}
+          />
+        </HeadTagsService>
+      )}
     />,
     <Route
       key="tools-sign-display"

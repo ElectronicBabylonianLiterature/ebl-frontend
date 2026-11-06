@@ -43,6 +43,25 @@ describe('Tools', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('renders sumerian dictionary content', () => {
+    renderTools('sumerian-dictionary')
+    expect(screen.getByText('Sumerian Dictionary Mock')).toBeInTheDocument()
+  })
+
+  it('shows the Sumerian Dictionary nav item with the read:sumerian-lex scope', () => {
+    renderTools(undefined, new MemorySession(['read:sumerian-lex']))
+    expect(
+      screen.getByRole('link', { name: /Sumerian Dictionary/ }),
+    ).toHaveAttribute('href', '/tools/sumerian-dictionary')
+  })
+
+  it('hides the Sumerian Dictionary nav item without the scope', () => {
+    renderTools(undefined, new MemorySession(['read:realia']))
+    expect(
+      screen.queryByRole('link', { name: /Sumerian Dictionary/ }),
+    ).not.toBeInTheDocument()
+  })
+
   it('renders dossiers content', () => {
     renderTools('dossiers')
     expect(screen.getByText('Dossiers Mock')).toBeInTheDocument()
