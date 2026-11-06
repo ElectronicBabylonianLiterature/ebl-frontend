@@ -111,3 +111,36 @@ describe('MapTab spatial-search interactions', () => {
     )
   })
 })
+
+it('cancels keyboard rectangle drawing before Escape dismisses the drawer', async () => {
+  resetMapMocks()
+  fetchMock.resetMocks()
+  fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Search area' }),
+  )
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Draw a rectangle' }),
+  )
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Add corner at map center' }),
+  )
+  expect(
+    within(screen.getByRole('region', { name: 'Search area' })).getByRole(
+      'status',
+    ),
+  ).toHaveTextContent('Add corner 2 of 2.')
+  await userEvent.keyboard('{Escape}')
+  expect(
+    within(screen.getByRole('region', { name: 'Search area' })).getByRole(
+      'status',
+    ),
+  ).toHaveTextContent(
+    'Search excavation areas by the current view or a drawn rectangle.',
+  )
+  await userEvent.keyboard('{Escape}')
+  expect(
+    screen.queryByRole('region', { name: 'Search area' }),
+  ).not.toBeInTheDocument()
+})
