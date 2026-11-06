@@ -166,6 +166,11 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
+      {excavationAreasUnavailable &&
+      (isPresenting ||
+        (experience.showExcavationAreas && panel.active !== 'layers')) ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       <div className="map-experience__body">
         <MapStage
           containerRef={mapContainer}
@@ -183,9 +188,6 @@ function LoadedMapTab({
           }
         />
       </div>
-      {isPresenting && excavationAreasUnavailable ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
       <p
         id="findspot-map-description"
         className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
