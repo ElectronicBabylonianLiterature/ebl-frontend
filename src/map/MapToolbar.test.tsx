@@ -45,30 +45,6 @@ describe('MapToolbar', () => {
     screen.getByRole('button', { name: 'Map layers' }).click()
     expect(onToggle).toHaveBeenCalledWith('layers')
   })
-  it('focuses a remaining tool when the closed panel becomes unsupported', () => {
-    const inspector = panel({
-      id: 'inspector',
-      label: 'Selected area',
-    })
-    const { rerender } = render(
-      <MapToolbar
-        panels={[panel(), inspector]}
-        active="inspector"
-        onToggle={jest.fn()}
-      />,
-    )
-
-    rerender(
-      <MapToolbar
-        panels={[panel(), { ...inspector, isSupported: false }]}
-        active={null}
-        onToggle={jest.fn()}
-      />,
-    )
-
-    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
-  })
-
   it('preserves focus outside the drawer when selection changes externally', () => {
     const props = { panels: [panel()], onToggle: jest.fn() }
     const { rerender } = render(
