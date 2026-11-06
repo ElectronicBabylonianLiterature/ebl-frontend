@@ -103,14 +103,7 @@ export default function buildMapToolPanels(
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
-      render: () => (
-        <MapLayerPanel
-          state={state}
-          showUnavailableWarning={
-            !experience.showExcavationAreas && experience.selection === null
-          }
-        />
-      ),
+      render: () => <MapLayerPanel state={state} />,
     },
   ]
 }
