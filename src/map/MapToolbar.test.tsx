@@ -1,5 +1,7 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import MapSelectionPill from 'map/MapSelectionPill'
 import MapToolbar, { type MapPanelDefinition } from 'map/MapToolbar'
 
 function panel(
@@ -15,6 +17,28 @@ function panel(
 }
 
 describe('MapToolbar', () => {
+  it('keeps the selection shortcut inside the measured wrapping toolbar', async () => {
+    const showSelection = jest.fn()
+    const props = { panels: [panel()], active: null, onToggle: jest.fn() }
+    const { rerender } = render(
+      <MapToolbar
+        {...props}
+        extraAction={
+          <MapSelectionPill label="Show selected area" onShow={showSelection} />
+        }
+      />,
+    )
+    const toolbar = within(screen.getByRole('group', { name: 'Map tools' }))
+    await userEvent.click(
+      toolbar.getByRole('button', { name: 'Show selected area' }),
+    )
+    expect(showSelection).toHaveBeenCalledTimes(1)
+    rerender(<MapToolbar {...props} />)
+    expect(
+      toolbar.queryByRole('button', { name: 'Show selected area' }),
+    ).not.toBeInTheDocument()
+  })
+
   it('renders nothing when no panel is supported', () => {
     const { container } = render(
       <MapToolbar
