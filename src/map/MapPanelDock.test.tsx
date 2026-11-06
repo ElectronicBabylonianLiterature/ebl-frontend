@@ -32,8 +32,12 @@ it('closes a focused drawer with Escape and returns focus to its toolbar button'
 
 it('keeps the drawer open for ordinary keyboard input', async () => {
   render(<Harness />)
-  await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
+  const button = screen.getByRole('button', { name: 'Map layers' })
+  expect(button).not.toHaveAttribute('aria-controls')
+  await userEvent.click(button)
   await userEvent.keyboard('{ArrowDown}')
-
   expect(screen.getByText('Layer controls')).toBeInTheDocument()
+  await userEvent.keyboard('ordinary input')
+  expect(screen.getByRole('region', { name: 'Map layers' })).toBeVisible()
+  expect(button).toHaveAttribute('aria-controls', 'map-panel-drawer')
 })

@@ -1,5 +1,6 @@
 import { useEffect, useState, type RefObject } from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
+import type { ActiveMapPanel } from 'map/mapPanel'
 
 interface PanelFootprint {
   readonly width: number
@@ -11,7 +12,7 @@ const ZERO_FOOTPRINT: PanelFootprint = { width: 0, height: 0 }
 export default function useMapPanelFootprint(
   containerRef: RefObject<HTMLElement>,
   drawerRef: RefObject<HTMLElement>,
-  remeasureKey: unknown,
+  remeasureKey: ActiveMapPanel,
 ): PanelFootprint {
   const [footprint, setFootprint] = useState(ZERO_FOOTPRINT)
 

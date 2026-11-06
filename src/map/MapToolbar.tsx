@@ -23,15 +23,24 @@ export default function MapToolbar({
 }: Props): JSX.Element | null {
   const buttonRefs = useRef(new Map<MapPanelId, HTMLButtonElement>())
   const previousActiveRef = useRef<ActiveMapPanel>(active)
+  const supported = panels.filter((panel) => panel.isSupported)
+  const firstSupportedId = supported[0]?.id
 
   useEffect(() => {
-    if (previousActiveRef.current !== null && active === null) {
-      buttonRefs.current.get(previousActiveRef.current)?.focus()
+    if (
+      previousActiveRef.current !== null &&
+      active === null &&
+      document.activeElement === document.body
+    ) {
+      const previousButton = buttonRefs.current.get(previousActiveRef.current)
+      if (previousButton && document.contains(previousButton)) {
+        previousButton.focus()
+      } else {
+        if (firstSupportedId) buttonRefs.current.get(firstSupportedId)?.focus()
+      }
     }
     previousActiveRef.current = active
-  }, [active])
-
-  const supported = panels.filter((panel) => panel.isSupported)
+  }, [active, firstSupportedId])
   if (supported.length === 0) return null
 
   return (
@@ -55,7 +64,7 @@ export default function MapToolbar({
             size="sm"
             variant={isOpen ? 'secondary' : 'outline-secondary'}
             aria-expanded={isOpen}
-            aria-controls={MAP_PANEL_CONTAINER_ID}
+            aria-controls={isOpen ? MAP_PANEL_CONTAINER_ID : undefined}
             onClick={() => onToggle(panel.id)}
           >
             {panel.label}
