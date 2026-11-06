@@ -126,7 +126,8 @@ export default class MapTerrainLifecycle {
   }
 
   private handleError = (event?: unknown): void => {
-    if (isTerrainError(event)) this.fail('Elevation tiles could not be loaded.')
+    if (this.options.isRequested && isTerrainError(event))
+      this.fail('Elevation tiles could not be loaded.')
   }
 
   private handleStyleLoad = (): void => {
