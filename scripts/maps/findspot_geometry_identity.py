@@ -32,13 +32,13 @@ def _canonical_ring(value: object) -> list[list[float]]:
         for point in vertices
     ):
         raise RuntimeError("Polygon coordinates must be finite numeric pairs")
-    if any(not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90) for point in vertices):
+    if any(
+        not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90) for point in vertices
+    ):
         raise RuntimeError("Polygon coordinates fall outside EPSG:4326 bounds")
     if len({tuple(point) for point in vertices}) < 3:
         raise RuntimeError("Polygon rings require three distinct points")
-    candidates = [
-        vertices[index:] + vertices[:index] for index in range(len(vertices))
-    ]
+    candidates = [vertices[index:] + vertices[:index] for index in range(len(vertices))]
     reversed_vertices = list(reversed(vertices))
     candidates.extend(
         reversed_vertices[index:] + reversed_vertices[:index]

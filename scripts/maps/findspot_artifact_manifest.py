@@ -5,17 +5,34 @@ import json
 from pathlib import Path
 from typing import Any
 
+from findspot_json import load_json
+from findspot_transfer_contract import TransferContract, load_transfer_contract
+
 
 def json_bytes(value: object) -> bytes:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
 
 
-def _input_revision(artifact_dir: Path, site: str) -> dict[str, Any]:
+def _input_revision(
+    artifact_dir: Path, site: str, contract: TransferContract | None
+) -> dict[str, Any]:
+    if contract is not None:
+        return {
+            "artifactSourceRevision": contract.payload["sites"][site.upper()][
+                "sourceRevision"
+            ],
+            "artifactManifestSha256": contract.sha256,
+            "artifactContractRevision": contract.payload["contractRevision"],
+        }
     path = artifact_dir / f"{site}_artifact_manifest.json"
     if not path.exists():
-        return {"artifactSourceRevision": None, "artifactManifestSha256": None}
+        return {
+            "artifactSourceRevision": None,
+            "artifactManifestSha256": None,
+            "artifactContractRevision": None,
+        }
     contents = path.read_bytes()
-    manifest = json.loads(contents)
+    manifest = load_json(contents)
     if not isinstance(manifest, dict):
         raise RuntimeError(f"{site} artifact manifest is invalid")
     schema_version = manifest.get("schemaVersion")
@@ -30,10 +47,13 @@ def _input_revision(artifact_dir: Path, site: str) -> dict[str, Any]:
         name = f"{site}_{suffix}.json"
         actual = hashlib.sha256((artifact_dir / name).read_bytes()).hexdigest()
         if manifest["files"].get(name) != actual:
-            raise RuntimeError(f"{site} artifact manifest checksum disagrees with {name}")
+            raise RuntimeError(
+                f"{site} artifact manifest checksum disagrees with {name}"
+            )
     return {
         "artifactSourceRevision": manifest["sourceRevision"],
         "artifactManifestSha256": hashlib.sha256(contents).hexdigest(),
+        "artifactContractRevision": None,
     }
 
 
@@ -42,13 +62,14 @@ def build_manifest(
     all_sites: dict[str, Any],
     artifact_dir: Path,
 ) -> dict[str, Any]:
+    contract = load_transfer_contract(artifact_dir)
     files = {
         f"{name}.geojson": hashlib.sha256(json_bytes(collection)).hexdigest()
         for name, collection in {**collections, "all": all_sites}.items()
     }
     sites: dict[str, Any] = {}
     for site, collection in collections.items():
-        mappings = json.loads(
+        mappings = load_json(
             (artifact_dir / f"{site}_findspot_polygon_mappings.json").read_text(
                 encoding="utf-8"
             )
@@ -63,6 +84,25 @@ def build_manifest(
                 {row["sourceRevision"] for row in mappings}
             ),
             "mappingSources": sorted({row["source"] for row in mappings}),
-            **_input_revision(artifact_dir, site),
+            **_input_revision(artifact_dir, site, contract),
         }
-    return {"schemaVersion": 1, "algorithm": "sha256", "files": files, "sites": sites}
+    handoff = (
+        None
+        if contract is None
+        else {
+            key: contract.payload[key]
+            for key in (
+                "contractVersion",
+                "contractRevision",
+                "generatorVersion",
+                "producer",
+            )
+        }
+    )
+    return {
+        "schemaVersion": 1,
+        "algorithm": "sha256",
+        "files": files,
+        "sites": sites,
+        "handoffContract": handoff,
+    }

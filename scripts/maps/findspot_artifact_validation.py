@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
+from findspot_json import load_json
 from findspot_geometry_identity import area_name, polygon_id as build_polygon_id
 
 MAX_FINDSPOT_ID = 2**63 - 1
@@ -16,7 +16,7 @@ SITE_NAMES = {
 
 
 def _read_json(path: Path) -> object:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return load_json(path.read_text(encoding="utf-8"))
 
 
 def load_inventory(
@@ -38,9 +38,7 @@ def load_inventory(
         site_name = record.get("siteName")
         record_area_name = record.get("areaName")
         required_strings = (polygon_id, checksum, name, site_name, record_area_name)
-        if not all(
-            isinstance(item, str) and item.strip() for item in required_strings
-        ):
+        if not all(isinstance(item, str) and item.strip() for item in required_strings):
             raise RuntimeError(f"{site} inventory row {index} is invalid")
         if site_name != SITE_NAMES[site] or area_name(name) != record_area_name:
             raise RuntimeError(f"{site} inventory row {index} has invalid labels")

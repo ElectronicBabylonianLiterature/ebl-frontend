@@ -8,6 +8,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+from findspot_json import load_json
 from findspot_artifact_manifest import build_manifest
 from findspot_artifact_validation import load_inventory, load_mapping
 from findspot_geometry_identity import geometry_checksum
@@ -24,7 +25,7 @@ DEFAULT_EXPECTATIONS = {
 
 
 def read_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return load_json(path.read_text(encoding="utf-8"))
 
 
 def write_json(path: Path, value: Any) -> None:

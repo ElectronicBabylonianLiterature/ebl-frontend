@@ -30,6 +30,9 @@ class FindspotMapHandoffTest(unittest.TestCase):
         self.geometry = directory / "geometry"
         self.artifacts.mkdir()
         self.geometry.mkdir()
+        contract = self.artifact_source / "ARTIFACT_MANIFEST.json"
+        if contract.exists():
+            shutil.copyfile(contract, self.artifacts / contract.name)
         for site in ASSETS.SITES:
             shutil.copyfile(
                 self.geometry_source / f"{site}.geojson",
@@ -79,7 +82,23 @@ class FindspotMapHandoffTest(unittest.TestCase):
                 {record["polygonId"] for record in inventory},
             )
             supplied_manifest = self.artifact_source / f"{site}_artifact_manifest.json"
-            if supplied_manifest.exists():
+            contract = self.artifact_source / "ARTIFACT_MANIFEST.json"
+            if contract.exists():
+                output_manifest = ASSETS.read_json(self.geometry / "manifest.json")
+                source = ASSETS.read_json(contract)
+                revision = output_manifest["sites"][site.upper()]
+                self.assertEqual(
+                    revision["artifactSourceRevision"],
+                    source["sites"][site.upper()]["sourceRevision"],
+                )
+                self.assertEqual(
+                    revision["artifactContractRevision"], source["contractRevision"]
+                )
+                self.assertEqual(
+                    revision["artifactManifestSha256"],
+                    hashlib.sha256(contract.read_bytes()).hexdigest(),
+                )
+            elif supplied_manifest.exists():
                 output_manifest = ASSETS.read_json(self.geometry / "manifest.json")
                 revision = output_manifest["sites"][site.upper()]
                 self.assertEqual(
@@ -98,23 +117,47 @@ class FindspotMapHandoffTest(unittest.TestCase):
 
     def test_tampered_supplied_manifest_preserves_all_outputs(self) -> None:
         site = ASSETS.SITES[0]
-        path = self.artifacts / f"{site}_artifact_manifest.json"
-        manifest = ASSETS.read_json(path) if path.exists() else {
-            "schemaVersion": 1,
-            "sourceRevision": "handoff-regression",
-            "files": {
-                item.name: hashlib.sha256(item.read_bytes()).hexdigest()
-                for item in self.artifacts.iterdir()
-                if item.name.startswith(f"{site}_")
-            },
-        }
-        manifest["files"][f"{site}_polygon_inventory.json"] = "0" * 64
-        path.write_text(json.dumps(manifest), encoding="utf-8")
+        contract_path = self.artifacts / "ARTIFACT_MANIFEST.json"
+        if contract_path.exists():
+            manifest = ASSETS.read_json(contract_path)
+            manifest["fileChecksums"][f"{site}_polygon_inventory.json"] = "0" * 64
+            stable = {
+                key: value
+                for key, value in manifest.items()
+                if key not in {"producer", "contractRevision"}
+            }
+            canonical = json.dumps(
+                stable, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+            )
+            manifest["contractRevision"] = (
+                "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()
+            )
+            contract_path.write_text(json.dumps(manifest), encoding="utf-8")
+        else:
+            self.tamper_site_manifest(site)
         original = self.outputs()
         result = self.generate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("artifact manifest checksum disagrees", result.stderr)
+        self.assertIn("checksum disagrees", result.stderr)
         self.assertEqual(self.outputs(), original)
+
+    def tamper_site_manifest(self, site: str) -> None:
+        path = self.artifacts / f"{site}_artifact_manifest.json"
+        manifest = (
+            ASSETS.read_json(path)
+            if path.exists()
+            else {
+                "schemaVersion": 1,
+                "sourceRevision": "handoff-regression",
+                "files": {
+                    item.name: hashlib.sha256(item.read_bytes()).hexdigest()
+                    for item in self.artifacts.iterdir()
+                    if item.name.startswith(f"{site}_")
+                },
+            }
+        )
+        manifest["files"][f"{site}_polygon_inventory.json"] = "0" * 64
+        path.write_text(json.dumps(manifest), encoding="utf-8")
 
     def test_repeat_generation_is_byte_identical(self) -> None:
         first = self.generate()
