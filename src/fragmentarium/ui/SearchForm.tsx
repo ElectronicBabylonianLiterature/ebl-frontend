@@ -18,6 +18,7 @@ import {
   initializeSearchFormState,
   flattenSearchFormState,
   isValidNumber,
+  isValidFindspotId,
 } from 'fragmentarium/ui/SearchForm.state'
 import 'fragmentarium/ui/SearchForm.sass'
 
@@ -116,7 +117,10 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
     }
 
   private onChangeNumber = (value: string): void => {
-    this.setState({ number: value, isValid: isValidNumber(value) })
+    this.setState({
+      number: value,
+      isValid: isValidNumber(value) && isValidFindspotId(this.state.findspotId),
+    })
   }
 
   private onChangeBibliographyReference = (event: BibliographyEntry): void => {
@@ -147,8 +151,12 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   }
 
   private clearFindspotConstraint = (): void => {
-    const state = { ...this.state, findspotId: null }
-    this.setState({ findspotId: null })
+    const state = {
+      ...this.state,
+      findspotId: null,
+      isValid: isValidNumber(this.state.number ?? undefined),
+    }
+    this.setState({ findspotId: null, isValid: state.isValid })
     this.navigateWithState(state)
   }
 
