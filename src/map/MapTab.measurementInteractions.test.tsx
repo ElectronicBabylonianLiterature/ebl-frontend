@@ -80,6 +80,12 @@ it('clears keyboard-added points before Escape dismisses the measurement drawer'
   await userEvent.click(
     screen.getByRole('button', { name: 'Add point at map center' }),
   )
+  const addPoint = screen.getByRole('button', {
+    name: 'Add point at map center',
+  })
+  const undoPoint = screen.getByRole('button', { name: 'Undo point' })
+  expect(addPoint).toHaveFocus()
+  expect(undoPoint).toBeEnabled()
   expect(
     within(screen.getByRole('region', { name: 'Measure' })).getByRole('status'),
   ).toHaveTextContent('Add 1 more point.')
@@ -87,6 +93,8 @@ it('clears keyboard-added points before Escape dismisses the measurement drawer'
   expect(
     within(screen.getByRole('region', { name: 'Measure' })).getByRole('status'),
   ).toHaveTextContent('Select points on the map to measure a distance.')
+  expect(addPoint).toHaveFocus()
+  expect(undoPoint).toBeDisabled()
   await userEvent.keyboard('{Escape}')
   expect(
     screen.queryByRole('region', { name: 'Measure' }),
