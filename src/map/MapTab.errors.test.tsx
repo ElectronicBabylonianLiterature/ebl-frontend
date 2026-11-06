@@ -1,3 +1,4 @@
+import { openLayerControls } from 'map/mapLayerControls.testSupport'
 import fs from 'fs'
 import path from 'path'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -157,8 +158,14 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
+    await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
   })
 
   it('shows an unavailable state for a malformed HTTP-200 asset', async () => {
@@ -168,6 +175,7 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
+    await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
   })
@@ -175,6 +183,7 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    await openLayerControls()
 
     await waitFor(() =>
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
