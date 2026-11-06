@@ -79,3 +79,15 @@ describe('derivePolygonResearchSummary', () => {
     expect(research.mappingEvidence).toBe('verified-source')
   })
 })
+
+it('derives inspector identity and counts from canonical geometry and displayed rows', () => {
+  const research = derivePolygonResearchSummary({
+    polygonId: 'stale-caller-id',
+    polygon: excavationPolygon({ polygonId: 'canonical-area' }),
+    siteName: 'Assur',
+    summary: { polygonId: 'canonical-area', findspotIds: [1], findspotCount: 999, accessibleFragmentCount: 999, findspots: [findspotMapDataDto({ findspotId: 1, accessibleFragmentCount: 3 })] },
+  })
+  expect(research.polygonId).toBe('canonical-area')
+  expect(research.mappedFindspotCount).toBe(research.findspots.length)
+  expect(research.accessibleFragmentCount).toBe(3)
+})
