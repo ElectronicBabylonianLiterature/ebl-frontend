@@ -17,10 +17,6 @@ export class FindspotService {
     return this.findspotRepository.fetchFindspots()
   }
 
-  supportsMapData(siteId: string): boolean {
-    return mapDataSiteParam(siteId) !== null
-  }
-
   fetchMapData(
     siteId: string,
     signal?: AbortSignal,

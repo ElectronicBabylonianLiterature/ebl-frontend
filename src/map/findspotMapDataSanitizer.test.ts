@@ -1,10 +1,10 @@
 import {
   IncompatibleFindspotMapDataError,
   requireCompatibleFindspotMapDataResponse,
-  sanitizeFindspotMapDataResponse,
   sanitizeFindspotMapDataResponseWithDiagnostics,
 } from 'map/findspotMapDataSanitizer'
 import type { FindspotMapData } from 'map/findspotMapData'
+import { sanitizeFindspotMapDataResponse } from 'map/findspotMapDataSanitizer.testSupport'
 
 function findspot(overrides: Partial<FindspotMapData> = {}): FindspotMapData {
   return {
