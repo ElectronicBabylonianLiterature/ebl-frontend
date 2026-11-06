@@ -8,7 +8,11 @@ import {
 import { TextLineDto } from 'transliteration/domain/text-line'
 import { QueryItem } from 'query/QueryResult'
 
-function summaryItem(lines: readonly unknown[], matchCount: number): QueryItem {
+function summaryItem(
+  lines: readonly unknown[],
+  matchCount: number,
+  totalMatchingLines?: number | null,
+): QueryItem {
   return createQueryResult({
     matchCountTotal: matchCount,
     items: [
@@ -18,7 +22,10 @@ function summaryItem(lines: readonly unknown[], matchCount: number): QueryItem {
         description: 'summary',
         script: { ...fragmentDto.script, period: 'LB' },
         matchingLines: [1, 2, 3],
-        matchingLinePreview: { lines: lines as readonly TextLineDto[] },
+        matchingLinePreview: {
+          lines: lines as readonly TextLineDto[],
+          totalMatchingLines,
+        },
         matchCount,
         hasPhoto: false,
       },
@@ -31,6 +38,20 @@ const cappedPreview = Array.from({ length: 5 }, (_unused, index) =>
 )
 
 describe('preview line cap', () => {
+  it('maps distinct matching text lines separately from occurrences', () => {
+    const item = summaryItem(cappedPreview, 3, 7)
+
+    expect(item.matchCount).toBe(3)
+    expect(item.totalMatchingLines).toBe(7)
+    expect(item.fragment?.text.lines).toHaveLength(5)
+  })
+
+  it('does not trust a malformed matching-line total', () => {
+    const item = summaryItem(cappedPreview, 3, -1)
+
+    expect(item.totalMatchingLines).toBeNull()
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+  })
   it('keeps the authoritative match count independent of the capped preview', () => {
     const item = summaryItem(cappedPreview, 12)
 

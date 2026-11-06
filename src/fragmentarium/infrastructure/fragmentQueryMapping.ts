@@ -85,8 +85,12 @@ function createSummaryQueryItem(
   bibliographyDocuments: BibliographyDocumentsDto,
 ): QueryItem {
   try {
+    const totalMatchingLines = dto.matchingLinePreview?.totalMatchingLines
     return {
       ...queryItem,
+      totalMatchingLines: isSummaryMatchCount(totalMatchingLines)
+        ? totalMatchingLines
+        : null,
       fragment: createQuerySummaryFragment(dto, bibliographyDocuments),
       cardSummary: { type: 'FragmentCardSummary' },
       thumbnailPath: dto.thumbnailPath ?? null,
