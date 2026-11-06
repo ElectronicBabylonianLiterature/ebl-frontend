@@ -54,6 +54,43 @@ it('keeps keyboard focus on collapse after the final batch and on show after col
   ).toHaveFocus()
 })
 
+it('retains a focusable loading action while preventing repeated pointer and keyboard requests', async () => {
+  const pending = deferred<ChapterDisplay>()
+  textService.findChapterDisplay.mockReturnValue(pending.promise)
+  renderMatches(1)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show 1 more match' }),
+  )
+  const loading = screen.getByRole('button', {
+    name: 'Loading chapter matches…',
+  })
+  expect(loading).toHaveAttribute('aria-disabled', 'true')
+  expect(loading).toBeEnabled()
+  expect(loading).toHaveFocus()
+  await userEvent.click(loading)
+  await userEvent.keyboard('{Enter} ')
+  expect(textService.findChapterDisplay).toHaveBeenCalledTimes(1)
+  await act(async () => pending.resolve(chapterWithPairs([[1, 0]])))
+  expect(
+    screen.getByRole('button', { name: 'Collapse chapter matches' }),
+  ).toHaveFocus()
+})
+
+it('moves focus from a disappearing Cancel action to Collapse when the final batch completes', async () => {
+  const pending = deferred<ChapterDisplay>()
+  textService.findChapterDisplay.mockReturnValue(pending.promise)
+  renderMatches(1)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show 1 more match' }),
+  )
+  await userEvent.tab()
+  expect(screen.getByRole('button', { name: 'Cancel loading' })).toHaveFocus()
+  await act(async () => pending.resolve(chapterWithPairs([[1, 0]])))
+  expect(
+    screen.getByRole('button', { name: 'Collapse chapter matches' }),
+  ).toHaveFocus()
+})
+
 it('returns focus to the surviving expansion control when collapsing a partial expansion', async () => {
   textService.findChapterDisplay.mockResolvedValue(
     chapterWithPairs(

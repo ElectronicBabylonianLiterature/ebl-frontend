@@ -201,7 +201,8 @@ it('ignores a response after loading is cancelled', async () => {
   )
   expect(
     screen.getByRole('button', { name: 'Loading chapter matches…' }),
-  ).toBeDisabled()
+  ).toHaveAttribute('aria-disabled', 'true')
+  expect(textService.findChapterDisplay).toHaveBeenCalledTimes(1)
   await userEvent.click(screen.getByRole('button', { name: 'Cancel loading' }))
   await act(async () => {
     resolveRequest(chapterWithPairs([[1, 0]]))

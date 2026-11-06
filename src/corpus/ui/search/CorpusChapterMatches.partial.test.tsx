@@ -90,3 +90,57 @@ it.each([false, true])(
     expect(textService.findChapterDisplay).toHaveBeenCalledTimes(1)
   },
 )
+
+it('reopens valid cached matches after a later incomplete batch and collapse', async () => {
+  const pairs: [number, number][] = Array.from(
+    { length: 24 },
+    (_unused, line) => [line, 0],
+  )
+  textService.findChapterDisplay
+    .mockResolvedValueOnce(chapterWithPairs(pairs.slice(3, 13)))
+    .mockResolvedValueOnce(chapterWithPairs(pairs.slice(13, 22)))
+  render(
+    <MemoryRouter>
+      <CorpusChapterMatches
+        initialChapter={chapterWithPairs(pairs.slice(0, 3))}
+        chapterId={baseChapterDisplay.id}
+        pairs={pairs.map(([line, variant]) => ({ line, variant }))}
+        initiallyVisible={3}
+        textService={textService}
+      />
+    </MemoryRouter>,
+  )
+  const region = screen.getByTestId('chapter-matches')
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show 10 more matches' }),
+  )
+  await screen.findByRole('button', { name: 'Collapse chapter matches' })
+  expect(within(region).getAllByRole('link')).toHaveLength(13)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show 10 more matches' }),
+  )
+  expect(await screen.findByRole('alert')).toHaveTextContent(
+    'Additional chapter matches are unavailable.',
+  )
+  expect(within(region).getAllByRole('link')).toHaveLength(13)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Collapse chapter matches' }),
+  )
+  expect(within(region).getAllByRole('link')).toHaveLength(3)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show loaded chapter matches' }),
+  )
+  expect(within(region).getAllByRole('link')).toHaveLength(13)
+  expect(screen.getByRole('alert')).toHaveTextContent(
+    'Additional chapter matches are unavailable.',
+  )
+  expect(
+    screen.getByRole('button', { name: 'Collapse chapter matches' }),
+  ).toHaveFocus()
+  expect(textService.findChapterDisplay).toHaveBeenCalledTimes(2)
+  expect(textService.findChapterDisplay).toHaveBeenLastCalledWith(
+    baseChapterDisplay.id,
+    pairs.slice(13, 23).map(([line]) => line),
+    Array(10).fill(0),
+  )
+})

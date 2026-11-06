@@ -17,6 +17,25 @@ export {
   mergeChapterDisplays,
 } from 'corpus/ui/search/CorpusMatchPairs'
 
+function useMatchControlRef(
+  restoreFocus: React.MutableRefObject<boolean>,
+): readonly [
+  React.MutableRefObject<HTMLButtonElement | null>,
+  React.RefCallback<HTMLButtonElement>,
+] {
+  const control = useRef<HTMLButtonElement | null>(null)
+  const setControl = useCallback(
+    (element: HTMLButtonElement | null): void => {
+      if (element === null && control.current === document.activeElement) {
+        restoreFocus.current = true
+      }
+      control.current = element
+    },
+    [restoreFocus],
+  )
+  return [control, setControl]
+}
+
 function ChapterTable({
   chapter,
   textService,
@@ -75,25 +94,22 @@ export default function CorpusChapterMatches({
   )
   const matchesId = useId()
   const descriptionId = useId()
-  const primaryControl = useRef<HTMLButtonElement | null>(null)
   const controls = useRef<HTMLDivElement>(null)
   const restoreFocus = useRef(false)
-  const setPrimaryControl = useCallback((element: HTMLButtonElement | null) => {
-    if (element === null && primaryControl.current === document.activeElement) {
-      restoreFocus.current = true
-    }
-    primaryControl.current = element
-  }, [])
+  const [primaryControl, setPrimaryControl] = useMatchControlRef(restoreFocus)
+  const [, setSecondaryControl] = useMatchControlRef(restoreFocus)
   const shownChapter = expanded ? chapter : initialChapter
   const showControls = pairs.length > initiallyVisible || error || unavailable
-  const canShowMore = !unavailable && (remaining > 0 || !expanded)
+  const canShowMore =
+    (!expanded && loadedPairs > initiallyVisible) ||
+    (!unavailable && (remaining > 0 || !expanded))
 
   useEffect(() => {
     if (restoreFocus.current) {
       ;(primaryControl.current ?? controls.current)?.focus()
       restoreFocus.current = false
     }
-  }, [expanded, loading, unavailable])
+  }, [expanded, loading, primaryControl, unavailable])
 
   function collapseMatches(): void {
     restoreFocus.current = true
@@ -142,7 +158,7 @@ export default function CorpusChapterMatches({
                 aria-expanded={expanded}
                 aria-controls={matchesId}
                 aria-describedby={descriptionId}
-                disabled={loading}
+                aria-disabled={loading}
                 onClick={canShowMore ? showMore : collapseMatches}
               >
                 {canShowMore ? moreLabel : 'Collapse chapter matches'}
@@ -150,6 +166,7 @@ export default function CorpusChapterMatches({
             )}
             {(expanded || loading) && canShowMore && (
               <button
+                ref={setSecondaryControl}
                 type="button"
                 className="btn btn-link p-0"
                 aria-expanded={expanded}
