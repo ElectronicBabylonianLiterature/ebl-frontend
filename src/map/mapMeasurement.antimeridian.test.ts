@@ -75,3 +75,31 @@ it('closes dateline areas in the same world without mutating the input', () => {
   })
   expect(positions[1]).toEqual([-179, -1])
 })
+
+it('recognizes an explicitly closed area whose final longitude uses another world copy', () => {
+  const normal = measure(
+    'area',
+    [
+      [180, 0],
+      [181, 0],
+      [181, 1],
+      [180, 1],
+    ],
+    'metric',
+  )
+  const wrapped = measure(
+    'area',
+    [
+      [180, 0],
+      [-179, 0],
+      [-179, 1],
+      [180, 1],
+      [-180, 0],
+    ],
+    'metric',
+  )
+  expect(wrapped.valueInBaseUnits).toBeCloseTo(
+    normal.valueInBaseUnits as number,
+    6,
+  )
+})
