@@ -71,7 +71,8 @@ function hasValidEvidence(dto: Record<string, unknown>): boolean {
 
 function hasValidLocationMetadata(dto: Record<string, unknown>): boolean {
   return [dto.sector, dto.area, dto.building, dto.room].every(
-    (value) => value === null || typeof value === 'string',
+    (value) =>
+      value === undefined || value === null || typeof value === 'string',
   )
 }
 
