@@ -168,7 +168,7 @@ it('disconnects and resets on presentation, then measures the remounted drawer',
   const next = fixture()
   next.setDrawerBox(box(430, 120, 368, 400))
   drawerRef.current = next.drawer
-  rerender({ panel: 'export' })
+  rerender({ panel: 'layers' })
   expect(result.current).toEqual({ width: 380, height: 500 })
   expect(mockObserved.has(next.drawer)).toBe(true)
   unmount()
