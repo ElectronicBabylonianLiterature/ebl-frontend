@@ -1,8 +1,9 @@
 import type { Geometry, Position } from 'geojson'
 import { segmentsIntersect } from 'map/segmentIntersection'
-export { segmentsIntersect } from 'map/segmentIntersection'
 import type { BoundingBox } from 'map/mapGeometry'
 import { isCoordinateInRange } from 'map/spatialCoordinateValidation'
+
+export { segmentsIntersect } from 'map/segmentIntersection'
 
 export type Ring = readonly Position[]
 
