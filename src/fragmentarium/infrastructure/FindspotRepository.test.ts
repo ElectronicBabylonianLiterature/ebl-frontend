@@ -79,6 +79,24 @@ describe('fetchMapData compatibility', () => {
     )
   })
 
+  it('accepts omitted optional location metadata at the HTTP boundary', async () => {
+    const row = Object.fromEntries(
+      Object.entries(expectedMapData[0]).filter(
+        ([key]) => !['sector', 'area', 'building', 'room'].includes(key),
+      ),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce({ findspots: [row] })
+    await expect(findspotRepository.fetchMapData('ASSUR')).resolves.toEqual([
+      {
+        ...expectedMapData[0],
+        sector: null,
+        area: null,
+        building: null,
+        room: null,
+      },
+    ])
+  })
+
   it('rejects a noncanonical site without making a request', async () => {
     await expect(
       findspotRepository.fetchMapData('assur'),
