@@ -101,7 +101,10 @@ export function derivePolygonResearchSummary({
     siteName,
     displayName: polygonDisplayName(polygon, canonicalPolygonId),
     mappedFindspotCount: findspots.length,
-    accessibleFragmentCount: findspots.reduce((total, findspot) => total + findspot.accessibleFragmentCount, 0),
+    accessibleFragmentCount: findspots.reduce(
+      (total, findspot) => total + findspot.accessibleFragmentCount,
+      0,
+    ),
     findspots: findspots.map(toFindspotSummary),
     mappingEvidence: mappingEvidenceOf(findspots),
     locationPrecision: summaryLocationPrecisionOf(findspots),
