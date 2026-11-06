@@ -43,13 +43,10 @@ export function isValidNumber(number?: string): boolean {
 export function isValidFindspotId(
   value: FragmentQuery['findspotId'] | null,
 ): boolean {
-  return (
-    value === undefined ||
-    value === null ||
-    ((typeof value === 'number' || /^\d+$/.test(value)) &&
-      Number.isSafeInteger(Number(value)) &&
-      Number(value) >= 0)
-  )
+  if (value === undefined || value === null) return true
+  if (typeof value === 'string' && !/^\d+$/.test(value)) return false
+  const numericValue = Number(value)
+  return Number.isSafeInteger(numericValue) && numericValue >= 0
 }
 
 export function initializeSearchFormState(

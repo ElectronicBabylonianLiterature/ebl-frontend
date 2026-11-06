@@ -56,20 +56,6 @@ testDelegation(findspotRepository, testData)
 describe('fetchMapData compatibility', () => {
   beforeEach(() => jest.clearAllMocks())
 
-  it('accepts a complete site response with omitted optional location metadata', async () => {
-    const {
-      sector: _sector,
-      area: _area,
-      building: _building,
-      room: _room,
-      ...row
-    } = expectedMapData[0]
-    apiClient.fetchJson.mockResolvedValueOnce({ findspots: [row] })
-    await expect(findspotRepository.fetchMapData('ASSUR')).resolves.toEqual([
-      row,
-    ])
-  })
-
   it.each([
     ['ASSUR', 'Aššur'],
     ['KALHU', 'Kalḫu'],
@@ -91,6 +77,24 @@ describe('fetchMapData compatibility', () => {
       `/findspots/map-data?site=${siteId}`,
       false,
     )
+  })
+
+  it('accepts omitted optional location metadata at the HTTP boundary', async () => {
+    const row = Object.fromEntries(
+      Object.entries(expectedMapData[0]).filter(
+        ([key]) => !['sector', 'area', 'building', 'room'].includes(key),
+      ),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce({ findspots: [row] })
+    await expect(findspotRepository.fetchMapData('ASSUR')).resolves.toEqual([
+      {
+        ...expectedMapData[0],
+        sector: null,
+        area: null,
+        building: null,
+        room: null,
+      },
+    ])
   })
 
   it('rejects a noncanonical site without making a request', async () => {
