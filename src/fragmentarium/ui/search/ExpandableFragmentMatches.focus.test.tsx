@@ -21,18 +21,20 @@ jest.mock('dictionary/application/WordService')
 
 beforeEach(resetFragmentLineMocks)
 
-function setup(): {
+function setup(lineCount = 3): {
   fullFragment: Fragment
   queryItem: QueryItem
   view: ReturnType<typeof renderFragmentLines>
 } {
   const base = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
-  const lines = [previewLine(1, []), previewLine(2, []), previewLine(3, [])]
+  const lines = Array.from({ length: lineCount }, (_unused, index) =>
+    previewLine(index + 1, []),
+  )
   const queryItem = {
     museumNumber: base.number,
-    matchingLines: [0, 1, 2],
-    matchCount: 3,
-    totalMatchingLines: 3,
+    matchingLines: lines.map((_line, index) => index),
+    matchCount: lineCount,
+    totalMatchingLines: lineCount,
     fragment: withPreviewLines(base, lines.slice(0, 2)),
     cardSummary: createFragmentCardSummary(),
   }
@@ -136,4 +138,37 @@ test('a replacement query without controls does not focus a removed target', () 
 
   expect(screen.queryByRole('group')).not.toBeInTheDocument()
   expect(document.body).toHaveFocus()
+})
+
+test('a pending load keeps its focused button operable without duplicate requests', async () => {
+  const { fullFragment } = setup(15)
+  let completeRequest: (fragment: Fragment) => void = () => undefined
+  fragmentService.find.mockReturnValueOnce(
+    new Promise<Fragment>((resolve) => {
+      completeRequest = resolve
+    }),
+  )
+  screen.getByRole('button', { name: 'Show 10 more matching lines' }).focus()
+
+  await userEvent.keyboard('{Enter}')
+
+  const loadingButton = screen.getByRole('button', {
+    name: 'Loading matching lines…',
+  })
+  expect(loadingButton).toHaveAttribute('aria-disabled', 'true')
+  expect(loadingButton).toBeEnabled()
+  expect(loadingButton).toHaveFocus()
+  await userEvent.keyboard('{Enter} ')
+  await userEvent.click(loadingButton)
+  expect(fragmentService.find).toHaveBeenCalledTimes(1)
+
+  await act(async () => completeRequest(fullFragment))
+
+  const nextBatch = screen.getByRole('button', {
+    name: 'Show 3 more matching lines',
+  })
+  expect(nextBatch).toHaveAttribute('aria-disabled', 'false')
+  expect(nextBatch).toHaveFocus()
+  expect(screen.getAllByRole('row')).toHaveLength(12)
+  expect(fragmentService.find).toHaveBeenCalledTimes(1)
 })

@@ -116,7 +116,7 @@ export default function ExpandableFragmentMatches({
               aria-controls={matchesId}
               aria-describedby={cardDescriptionId}
               ref={moreButtonRef}
-              disabled={loading}
+              aria-disabled={loading}
               onClick={showMore}
             >
               {moreLabel}

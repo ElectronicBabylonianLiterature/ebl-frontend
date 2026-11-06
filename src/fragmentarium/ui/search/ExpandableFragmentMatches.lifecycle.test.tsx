@@ -83,7 +83,7 @@ describe('expanding Library matching lines: lifecycle', () => {
     )
     expect(
       screen.getByRole('button', { name: 'Loading matching lines…' }),
-    ).toBeDisabled()
+    ).toHaveAttribute('aria-disabled', 'true')
     await userEvent.click(
       screen.getByRole('button', { name: 'Cancel loading' }),
     )
