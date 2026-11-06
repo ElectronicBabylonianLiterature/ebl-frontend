@@ -36,9 +36,10 @@ it('keeps inactive controls valid and handles backwards wrapping, Home and End',
   const overview = screen.getByRole('tab', { name: 'Overview' })
   const evidence = screen.getByRole('tab', { name: 'Evidence' })
   expect(evidence).not.toHaveAttribute('aria-controls')
-  expect(
-    document.getElementById(overview.getAttribute('aria-controls') ?? ''),
-  ).toBe(screen.getByRole('tabpanel'))
+  expect(overview).toHaveAttribute(
+    'aria-controls',
+    screen.getByRole('tabpanel').getAttribute('id'),
+  )
   overview.focus()
   await userEvent.keyboard('{ArrowLeft}')
   expect(evidence).toHaveFocus()
