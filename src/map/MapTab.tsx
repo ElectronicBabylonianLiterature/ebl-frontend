@@ -59,6 +59,14 @@ function LoadedMapTab({
     },
   ]
 
+  const excavationStatus =
+    state.isExcavationAreasUnavailable &&
+    (experience.showExcavationAreas ||
+      experience.selection !== null ||
+      (!isPresenting && panel.active === 'layers')) ? (
+      <Alert variant="warning">Excavation areas are unavailable.</Alert>
+    ) : null
+
   return (
     <div
       className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
@@ -86,12 +94,7 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-      {state.isExcavationAreasUnavailable &&
-      (experience.showExcavationAreas ||
-        experience.selection !== null ||
-        (!isPresenting && panel.active === 'layers')) ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
+
       <div className="map-experience__body">
         <MapStage
           containerRef={state.mapContainer}
@@ -99,21 +102,20 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
-            isPresenting ? null : (
-              <>
-                <MapPanelDock
-                  panels={panels}
-                  panel={panel}
-                  drawerRef={state.drawerRef}
+            <>
+              <MapPanelDock
+                panels={isPresenting ? [] : panels}
+                status={excavationStatus}
+                panel={panel}
+                drawerRef={state.drawerRef}
+              />
+              {!isPresenting && selectedPolygon && panel.active !== 'layers' ? (
+                <MapSelectionPill
+                  label="Show selected area"
+                  onShow={() => panel.open('layers')}
                 />
-                {selectedPolygon && panel.active !== 'layers' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('layers')}
-                  />
-                ) : null}
-              </>
-            )
+              ) : null}
+            </>
           }
         />
       </div>
@@ -122,10 +124,6 @@ function LoadedMapTab({
       </p>
       {isPresenting ? null : (
         <>
-          <FindspotEmptyState
-            provenances={filteredProvenances}
-            filter={experience.filter}
-          />
           <FindspotSearchList provenances={filteredProvenances} />
         </>
       )}

@@ -24,13 +24,16 @@ jest.mock('maplibre-gl')
 
 const BACKGROUND_WARNING = /The interactive map could not be loaded/
 const EXCAVATION_WARNING = 'Excavation areas are unavailable.'
+const REQUESTED_AREAS_URL = '/tools/map?mv=1&areas=1'
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
   'utf8',
 )
 
-async function renderMapWithProvenance(): Promise<void> {
-  renderMapTab(makeFragmentService([makeProvenance()]))
+async function renderMapWithProvenance(
+  initialEntry = '/tools/map',
+): Promise<void> {
+  renderMapTab(makeFragmentService([makeProvenance()]), initialEntry)
   await act(() => Promise.resolve())
 }
 
@@ -160,7 +163,7 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the polygon index fails', async () => {
     fetchMock.mockRejectOnce(new Error('asset unavailable'))
 
-    await renderMapWithProvenance()
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
@@ -177,7 +180,7 @@ describe('MapTab map errors', () => {
       JSON.stringify({ type: 'FeatureCollection', features: [] }),
     )
 
-    await renderMapWithProvenance()
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
@@ -186,7 +189,7 @@ describe('MapTab map errors', () => {
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
-    await renderMapWithProvenance()
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
     await openLayerControls()
 
     await waitFor(() =>
