@@ -1,11 +1,13 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MAX_FILTER_LENGTH, parseMapUrlState } from 'map/mapUrlState'
+import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/mapCamera'
 
 import {
   CURRENT_LOCATION_TEST_ID,
   makeFragmentService,
   makeProvenance,
+  mockEaseTo,
   renderMapTab,
   resetMapMocks,
 } from 'map/MapTab.testSupport'
@@ -74,5 +76,33 @@ describe('MapTab URL state', () => {
     const location = screen.getByTestId(CURRENT_LOCATION_TEST_ID).textContent
     const search = location?.split('?')[1] ?? ''
     expect(parseMapUrlState(search).filter).toBe(cappedFilter)
+  })
+
+  it('resets the filter, active panel and camera while preserving unrelated URL state', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?outside=keep&mv=1&findspot=bab',
+    )
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: 'Reset view' }))
+
+    await waitFor(() => expect(input).toHaveValue(''))
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+      '/tools/map?outside=keep',
+    )
+    expect(mockEaseTo).toHaveBeenCalledWith({
+      center: INITIAL_CENTER,
+      zoom: INITIAL_ZOOM,
+    })
   })
 })
