@@ -18,15 +18,6 @@ it.each([
   ).toBeNull()
 })
 
-it.each(['sector', 'area', 'building', 'room'])(
-  'accepts omitted optional location field %s',
-  (field) => {
-    const value: Record<string, unknown> = { ...findspotMapDataDto() }
-    delete value[field]
-    expect(sanitizeFindspotMapData(value)).toEqual(value)
-  },
-)
-
 it('preserves nullable location fields and strips unknown response fields', () => {
   const expected = findspotMapDataDto({
     matchMethod: 'curated',
@@ -40,3 +31,13 @@ it('preserves nullable location fields and strips unknown response fields', () =
     sanitizeFindspotMapData({ ...expected, privateNotes: 'hidden' }),
   ).toEqual(expected)
 })
+
+it.each(['sector', 'area', 'building', 'room'] as const)(
+  'normalizes optional undefined %s metadata to null',
+  (field) => {
+    const expected = findspotMapDataDto({ [field]: null })
+    expect(
+      sanitizeFindspotMapData({ ...expected, [field]: undefined }),
+    ).toEqual(expected)
+  },
+)

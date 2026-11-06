@@ -110,9 +110,9 @@ export function sanitizeFindspotMapData(
     accessibleFragmentCount,
     locationPrecision,
     matchMethod,
-    sector,
-    area,
-    building,
-    room,
+    sector: sector ?? null,
+    area: area ?? null,
+    building: building ?? null,
+    room: room ?? null,
   }
 }
