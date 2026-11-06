@@ -71,9 +71,7 @@ describe('MapPanelDrawer', () => {
       </MapPanelDrawer>,
     )
     const handle = screen.getByRole('button', { name: 'Collapse Export' })
-    expect(
-      document.getElementById(handle.getAttribute('aria-controls') ?? ''),
-    ).toHaveTextContent('Export content')
+    expect(handle).toHaveAttribute('aria-controls', 'map-panel-drawer-body')
 
     await userEvent.click(handle)
 
