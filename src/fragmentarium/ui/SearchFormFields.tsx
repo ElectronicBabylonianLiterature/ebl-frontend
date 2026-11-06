@@ -17,6 +17,7 @@ import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransli
 import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 import {
+  isValidNumber,
   SearchFormState,
   SearchFormValue,
 } from 'fragmentarium/ui/SearchForm.state'
@@ -73,7 +74,7 @@ export default function SearchFormFields({
           <Col>
             <NumberSearchForm
               value={state.number}
-              isValid={state.isValid}
+              isValid={isValidNumber(state.number ?? undefined)}
               onChangeNumber={onChangeNumber}
             />
             <ReferenceSearchForm
