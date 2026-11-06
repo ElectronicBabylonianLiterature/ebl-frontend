@@ -1,4 +1,4 @@
-import React, { useId } from 'react'
+import React, { useCallback, useEffect, useId, useRef } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import TextService from 'corpus/application/TextService'
 import { ChapterDisplay } from 'corpus/domain/chapter'
@@ -75,9 +75,30 @@ export default function CorpusChapterMatches({
   )
   const matchesId = useId()
   const descriptionId = useId()
+  const primaryControl = useRef<HTMLButtonElement | null>(null)
+  const controls = useRef<HTMLDivElement>(null)
+  const restoreFocus = useRef(false)
+  const setPrimaryControl = useCallback((element: HTMLButtonElement | null) => {
+    if (element === null && primaryControl.current === document.activeElement) {
+      restoreFocus.current = true
+    }
+    primaryControl.current = element
+  }, [])
   const shownChapter = expanded ? chapter : initialChapter
   const showControls = pairs.length > initiallyVisible || error || unavailable
   const canShowMore = !unavailable && (remaining > 0 || !expanded)
+
+  useEffect(() => {
+    if (restoreFocus.current) {
+      ;(primaryControl.current ?? controls.current)?.focus()
+      restoreFocus.current = false
+    }
+  }, [expanded, loading, unavailable])
+
+  function collapseMatches(): void {
+    restoreFocus.current = true
+    collapse()
+  }
 
   const moreLabel = loading
     ? 'Loading chapter matches…'
@@ -91,7 +112,7 @@ export default function CorpusChapterMatches({
     <div aria-busy={loading}>
       <span
         id={descriptionId}
-        className="sr-only"
+        className="visually-hidden"
         data-testid="chapter-match-description"
       >
         Chapter {chapterIdToString(chapterId)}
@@ -105,28 +126,36 @@ export default function CorpusChapterMatches({
       </div>
       {showControls && (
         <Row>
-          <Col className="corpus-search__match-controls">
-            {canShowMore && (
+          <Col
+            ref={controls}
+            className="corpus-search__match-controls"
+            role="group"
+            aria-label="Chapter match controls"
+            aria-describedby={descriptionId}
+            tabIndex={-1}
+          >
+            {(canShowMore || expanded || loading) && (
               <button
+                ref={setPrimaryControl}
                 type="button"
                 className="btn btn-link p-0"
                 aria-expanded={expanded}
                 aria-controls={matchesId}
                 aria-describedby={descriptionId}
                 disabled={loading}
-                onClick={showMore}
+                onClick={canShowMore ? showMore : collapseMatches}
               >
-                {moreLabel}
+                {canShowMore ? moreLabel : 'Collapse chapter matches'}
               </button>
             )}
-            {(expanded || loading) && (
+            {(expanded || loading) && canShowMore && (
               <button
                 type="button"
                 className="btn btn-link p-0"
                 aria-expanded={expanded}
                 aria-controls={matchesId}
                 aria-describedby={descriptionId}
-                onClick={collapse}
+                onClick={collapseMatches}
               >
                 {loading ? 'Cancel loading' : 'Collapse chapter matches'}
               </button>
