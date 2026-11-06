@@ -15,11 +15,7 @@ it('shows the pending geometry state in the layers panel', (): void => {
           setShowExcavationAreas: jest.fn(),
           setSelection: jest.fn(),
         },
-        fragmentMapData: {
-          sites: new Map(),
-          findspots: [],
-          polygonSummaries: new Map(),
-        },
+        panel: { open: jest.fn() },
       }}
     />,
   )
