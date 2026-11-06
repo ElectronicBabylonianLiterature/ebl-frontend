@@ -69,4 +69,3 @@ it('accepts a simple ring across the antimeridian after longitude unwrapping', (
   expect(area).toBeGreaterThan(0)
   expect(area).toBeLessThan(3_000_000_000)
 })
-
