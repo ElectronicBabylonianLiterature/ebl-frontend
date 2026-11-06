@@ -173,7 +173,7 @@ describe('MapTab map errors', () => {
       JSON.stringify({ type: 'FeatureCollection', features: [] }),
     )
 
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
