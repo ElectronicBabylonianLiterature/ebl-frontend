@@ -155,7 +155,10 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the polygon index fails', async () => {
     fetchMock.mockRejectOnce(new Error('asset unavailable'))
 
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+    )
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()

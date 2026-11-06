@@ -24,10 +24,15 @@ describe('excavation failure visibility with closed controls', () => {
 
   it('places an invalid requested asset warning before the map', async () => {
     fetchMock.mockResponseOnce('{"type":"FeatureCollection","features":[]}')
-    renderMapTab(makeFragmentService([makeProvenance()]), '/tools/map?mv=1&areas=1')
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+    )
 
     const warning = await screen.findByText(WARNING)
-    expect(screen.queryByRole('region', { name: 'Map layers' })).toBeNull()
+    expect(
+      screen.queryByRole('region', { name: 'Map layers' }),
+    ).not.toBeInTheDocument()
     expect(
       warning.compareDocumentPosition(
         screen.getByRole('region', { name: 'Interactive findspot map' }),
@@ -42,7 +47,10 @@ describe('excavation failure visibility with closed controls', () => {
         'utf8',
       ),
     )
-    renderMapTab(makeFragmentService([makeProvenance()]), '/tools/map?mv=1&areas=1')
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+    )
     await userEvent.click(
       await screen.findByRole('button', { name: 'Map layers' }),
     )
@@ -64,7 +72,14 @@ describe('excavation failure visibility with closed controls', () => {
     fetchMock.mockRejectOnce(new Error('unavailable'))
     renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByLabelText('Filter findspots by name')
-    expect(screen.queryByText(WARNING)).toBeNull()
+    expect(screen.queryByText(WARNING)).not.toBeInTheDocument()
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.queryByText(WARNING)).not.toBeInTheDocument()
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Exit presentation mode' }),
+    )
     await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
     expect(await screen.findByText(WARNING)).toBeInTheDocument()
   })

@@ -167,8 +167,8 @@ function LoadedMapTab({
         />
       )}
       {excavationAreasUnavailable &&
-      (isPresenting ||
-        (experience.showExcavationAreas && panel.active !== 'layers')) ? (
+      experience.showExcavationAreas &&
+      (isPresenting || panel.active !== 'layers') ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <div className="map-experience__body">
