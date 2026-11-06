@@ -21,6 +21,7 @@ import { createTransliteration } from 'transliteration/application/dtos'
 import { TextLineDto } from 'transliteration/domain/text-line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { BaseToken, Token } from 'transliteration/domain/token'
+import sortFragmentQueryPreviewLines from 'fragmentarium/infrastructure/sortFragmentQueryPreviewLines'
 
 export type QueryMuseumNumberDto = {
   prefix: string
@@ -220,7 +221,9 @@ export function createQuerySummaryFragment(
     folios: [],
     record: [],
     text: createTransliteration({
-      lines: dto.matchingLinePreview?.lines ?? [],
+      lines: sortFragmentQueryPreviewLines(
+        dto.matchingLinePreview?.lines ?? [],
+      ),
     }),
     notes: { text: '', parts: [] },
     museum: Museums.HYPERURANION,
