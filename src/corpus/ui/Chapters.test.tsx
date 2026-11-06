@@ -41,7 +41,7 @@ async function renderAndExpandFirstChapter(): Promise<void> {
 beforeEach(() => {
   textService = new MockTextService()
   fragmentService = new MockFragmentService()
-  fragmentService.isInFragmentarium.mockReturnValue(false)
+  fragmentService.isInFragmentarium.mockResolvedValue(false)
   textService.findManuscripts.mockReturnValue(
     Promise.resolve(manuscriptFactory.buildList(1)),
   )
