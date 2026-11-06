@@ -26,30 +26,9 @@ function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
 
 function stableFindspotFingerprint(findspot: FindspotMapData): string {
   return JSON.stringify({
-    accessibleFragmentCount: findspot.accessibleFragmentCount,
-    area: findspot.area,
-    building: findspot.building,
-    findspotId: findspot.findspotId,
-    locationPrecision: findspot.locationPrecision,
-    matchMethod: findspot.matchMethod,
+    ...findspot,
     polygonIds: [...findspot.polygonIds].sort(),
-    room: findspot.room,
-    sector: findspot.sector,
-    siteId: findspot.siteId,
-    siteName: findspot.siteName,
   })
-}
-
-export function sanitizeFindspotMapDataResponse(
-  response: unknown,
-  expectedSiteId?: string,
-  expectedSiteName?: string,
-): readonly FindspotMapData[] {
-  return sanitizeFindspotMapDataResponseWithDiagnostics(
-    response,
-    expectedSiteId,
-    expectedSiteName,
-  ).findspots
 }
 
 interface FindspotGroup {
