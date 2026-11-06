@@ -1,4 +1,4 @@
-import { parse, stringify } from 'common/utils/queryString'
+import { parse } from 'common/utils/queryString'
 import {
   type MapSelection,
   parseMapSelection,
@@ -67,22 +67,7 @@ export function parseMapUrlState(search: string): MapUrlState {
 }
 
 export function serializeMapUrlState(state: MapUrlState): string {
-  const { filter, showExcavationAreas, selection } = normalizeMapUrlState(state)
-  const serializedSelection = serializeMapSelection(selection)
-
-  if (!filter && !showExcavationAreas && !serializedSelection) {
-    return ''
-  }
-
-  return stringify(
-    {
-      [VERSION_PARAM]: MAP_URL_STATE_VERSION,
-      [FILTER_PARAM]: filter,
-      [AREAS_PARAM]: showExcavationAreas ? '1' : undefined,
-      [SELECTION_PARAM]: serializedSelection || undefined,
-    },
-    { skipEmptyString: true },
-  )
+  return mergeMapUrlStateIntoSearch('', state)
 }
 
 export function mergeMapUrlStateIntoSearch(
