@@ -125,7 +125,7 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(5))
+    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(6))
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
