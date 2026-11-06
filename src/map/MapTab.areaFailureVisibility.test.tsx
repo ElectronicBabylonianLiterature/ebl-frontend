@@ -121,5 +121,8 @@ it('keeps a requested source failure visible with the narrow drawer collapsed', 
       error: { message: 'unavailable' },
     })
   })
-  expect(await screen.findByText(WARNING)).toBeInTheDocument()
+  expect(await screen.findByText(WARNING)).toBeVisible()
+  expect(
+    screen.getByRole('button', { name: 'Expand Map layers' }),
+  ).toHaveAttribute('aria-expanded', 'false')
 })
