@@ -74,11 +74,11 @@ export function subscribeMeasurement(
   map.on(MAP_STYLE_LOAD_EVENT, install)
   if (map.getStyle()) install()
   map.on('click', handleClick)
-  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keydown', handleKeyDown, true)
 
   return () => {
     isDisposed = true
-    window.removeEventListener('keydown', handleKeyDown)
+    window.removeEventListener('keydown', handleKeyDown, true)
     map.off(MAP_STYLE_LOAD_EVENT, install)
     map.off('click', handleClick)
     if (mapRef.current === map) removeMeasurementLayers(map)
