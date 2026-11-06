@@ -5,9 +5,9 @@ import type { FeatureCollection, Geometry } from 'geojson'
 
 const root = path.resolve(__dirname, '../..')
 const expectedAssetDigests = {
-  all: 'a100921caa5afe22136d9cdce563ff2ab0c9a495976f276d041d582dc7be6e93',
+  all: '76889053fc36d671273acddce6628f134f1cee0115b62cd3772e3607ca2cc041',
   assur: 'd3691796dfe4167898e6cc89db37c8cf0353b0c2360db358e44659096bafecb3',
-  kalhu: 'b2a662485a2bad09955c7bda294ed0427d696fea592cd29823b9634ae0c0bfef',
+  kalhu: 'c0196f4d76c9b049bc162b6cf7b42769c423a615e906e08a3352c8918b98936f',
   nippur: '1cb185a16c6b8b07f0e3c405bf5d139678b0bb811a521332823fca530dda4aeb',
   uruk: 'f26ade32a7113e8a6448b39b4a1f1da08b6f2152dbc0c3f25d7f9ff8e295e37b',
 } as const
@@ -103,6 +103,9 @@ describe('normalized findspot GeoJSON', () => {
     }
 
     expect(ids.size).toBe(294)
+    expect(ids.has('kalhu-ekal-masarti-fort-shalmaneser-d7b0dc777aa9')).toBe(
+      true,
+    )
   })
 
   it('contains polygonal EPSG:4326 geometry and display properties', () => {
