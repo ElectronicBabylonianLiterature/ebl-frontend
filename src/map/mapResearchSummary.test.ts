@@ -85,7 +85,15 @@ it('derives inspector identity and counts from canonical geometry and displayed 
     polygonId: 'stale-caller-id',
     polygon: excavationPolygon({ polygonId: 'canonical-area' }),
     siteName: 'Assur',
-    summary: { polygonId: 'canonical-area', findspotIds: [1], findspotCount: 999, accessibleFragmentCount: 999, findspots: [findspotMapDataDto({ findspotId: 1, accessibleFragmentCount: 3 })] },
+    summary: {
+      polygonId: 'canonical-area',
+      findspotIds: [1],
+      findspotCount: 999,
+      accessibleFragmentCount: 999,
+      findspots: [
+        findspotMapDataDto({ findspotId: 1, accessibleFragmentCount: 3 }),
+      ],
+    },
   })
   expect(research.polygonId).toBe('canonical-area')
   expect(research.mappedFindspotCount).toBe(research.findspots.length)
