@@ -25,6 +25,7 @@ export interface QueryItem {
 export interface QueryResult {
   readonly items: readonly QueryItem[]
   readonly matchCountTotal: number | null
+  readonly totalDocuments?: number | null
   readonly isMatchCountTotalExact?: boolean
   readonly hasNextPage?: boolean | null
 }

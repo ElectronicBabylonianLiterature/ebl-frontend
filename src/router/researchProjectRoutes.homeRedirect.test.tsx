@@ -39,7 +39,7 @@ describe('project home with search criteria', () => {
       number: 'K.1',
       limit: 51,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 

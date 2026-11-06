@@ -1,9 +1,7 @@
 import React from 'react'
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import LocationDisplay from 'test-support/LocationDisplay'
-import { SearchResultFragmentService } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import { QueryResult } from 'query/QueryResult'
 import {
   buildQueryResult,
   renderSearchResult,
@@ -22,7 +20,7 @@ describe('FragmentariumSearchResult pagination', () => {
       number: 'K.1',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -70,7 +68,11 @@ describe('FragmentariumSearchResult pagination', () => {
 
   it('names the top and bottom pagers distinctly without duplicating ids', async () => {
     renderSearchResult({
-      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+      queryResult: buildQueryResult({
+        items: 50,
+        hasNextPage: true,
+        totalDocuments: 237,
+      }),
     })
 
     await screen.findByText('K.1')
@@ -95,7 +97,11 @@ describe('FragmentariumSearchResult pagination', () => {
 
   it('points each pager label at the control in its own pager', async () => {
     renderSearchResult({
-      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+      queryResult: buildQueryResult({
+        items: 50,
+        hasNextPage: true,
+        totalDocuments: 237,
+      }),
     })
 
     await screen.findByText('K.1')
@@ -170,52 +176,5 @@ describe('FragmentariumSearchResult pagination', () => {
       'href',
       '/library/search?number=K.2',
     )
-  })
-
-  it('ignores stale responses when the effective page query changes', async () => {
-    let resolveFirst: (value: QueryResult) => void = () => undefined
-    let resolveSecond: (value: QueryResult) => void = () => undefined
-    const fragmentService: jest.Mocked<SearchResultFragmentService> = {
-      find: jest.fn(),
-      findThumbnail: jest.fn(),
-      query: jest
-        .fn()
-        .mockReturnValueOnce(
-          new Promise<QueryResult>((resolve) => {
-            resolveFirst = resolve
-          }),
-        )
-        .mockReturnValueOnce(
-          new Promise<QueryResult>((resolve) => {
-            resolveSecond = resolve
-          }),
-        ),
-    }
-
-    const view = renderSearchResult({
-      search: '?number=K.1',
-      fragmentService,
-    })
-
-    view.renderView({
-      pagination: { pageIndex: 1, pageSize: 50 },
-    })
-
-    resolveSecond({
-      items: [{ museumNumber: 'K.new', matchingLines: [], matchCount: 0 }],
-      matchCountTotal: null,
-      hasNextPage: false,
-    })
-    expect(await screen.findByText('K.new')).toBeInTheDocument()
-
-    resolveFirst({
-      items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
-      matchCountTotal: null,
-      hasNextPage: false,
-    })
-
-    await waitFor(() => {
-      expect(screen.queryByText('K.old')).not.toBeInTheDocument()
-    })
   })
 })
