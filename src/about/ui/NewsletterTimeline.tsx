@@ -63,6 +63,7 @@ export default function NewsletterTimeline({
                 </div>
                 <div className="newsletter-tree-item__date">
                   {newsletter.date.toLocaleDateString('en-US', {
+                    timeZone: 'UTC',
                     month: 'short',
                     year: 'numeric',
                   })}

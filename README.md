@@ -335,3 +335,74 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
 You can get the full distributions from [Download page](https://www.hethport.uni-wuerzburg.de/cuneifont/).
 
 `Annotation.js` in the annotation-tool is from [Arian Allenson Valdez](https://github.com/Secretmapper/react-image-annotation)
+
+## Media gallery rollout
+
+The frontend gallery uses the existing media domain, defensive mappers and
+fragment-scoped API. It is disabled by default and does not run any database
+migration or create indexes.
+
+### Dependencies and merge order
+
+1. Merge the backend media persistence PR first.
+2. The backend API and migration tooling PRs both depend on persistence and may
+   merge independently after it. The frontend PR may merge with its flag disabled.
+3. After the migration tooling is available, separately schedule its documented
+   index preparation, fresh audit and authorized backfill/preview generation.
+   Index preparation is an operator command, not a separate PR.
+4. Deploy and enable the backend API with the legacy routes preserved. Verify
+   media availability, access controls and migration results before enabling and
+   deploying the frontend gallery.
+
+Backend API activation requires `MEDIA_API_ENABLED=true`. Frontend activation
+requires the build-time variable `REACT_APP_MEDIA_GALLERY_ENABLED=true`. Docker
+accepts that name as a build argument. The GitHub image build obtains it from the
+repository variable `MEDIA_GALLERY_ENABLED`, defaulting to `false`. Changing a
+build-time flag requires a new frontend build and deployment.
+
+For rollback, deploy a frontend image built with the flag disabled. Existing
+photo, thumbnail, folio and CDLI functionality remains available. No legacy
+binary deletion or data rollback is triggered by the frontend.
+
+### HTTP contract
+
+- `GET /media?fragment=<museum-number>` returns `{ "media": [...] }`.
+- `GET /media/<media-id>/file?fragment=<museum-number>` downloads the original.
+- `GET /media/<media-id>/display?fragment=<museum-number>` loads a raster display.
+- `GET /media/<media-id>/thumbnail/<size>?fragment=<museum-number>` loads a raster
+  thumbnail; sizes are `small`, `medium` and `large`.
+
+Museum numbers are encoded query values, so slashes do not depend on Falcon
+preserving an encoded path separator. Requests use the existing API client's
+access-token handling. The loader reconstructs the route from the current
+fragment and media identity; it never fetches arbitrary response URLs.
+
+Empty media lists and an unavailable listing endpoint (404) retain the legacy
+photo. Authentication failures and server errors remain visible with retry and
+never trigger legacy fallback. Malformed or unsupported successful responses show
+an explicit diagnostic and offer a lazy Legacy photo choice when available.
+An explicit Legacy photo choice also preserves photographs during partial
+migration, including fragments whose new media currently contain only copies.
+The additive `legacyHasPhoto` field distinguishes existing legacy photographs
+from the combined `hasPhoto` value, including when the frontend flag is disabled.
+
+### Behavior and data requirements
+
+The gallery supports original-only records and does not require a primary flag.
+It selects the first ordered image when no primary exists. Only the selected
+image's display or raster original is loaded. Thumbnail pages contain at most
+12 items, with at most four binary requests in flight. Vector originals are
+available as downloads and are never displayed inline.
+
+Search and latest-fragment cards use an authenticated primary thumbnail when a
+valid media summary supplies one. Otherwise existing legacy thumbnails remain
+available. COPY-only and new-format photos do not depend on the legacy photo
+boolean for gallery discovery.
+
+Attribution uses the migrated metadata and existing museum copyright. An already
+loaded original can also supply an EXIF Artist credit when attribution is absent.
+Preview generation must preserve source credits in media metadata; loading a
+preview does not download a large original just to inspect its EXIF.
+
+No production migration, index provisioning or deployment was performed as part
+of this frontend implementation.
