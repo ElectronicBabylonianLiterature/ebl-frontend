@@ -41,6 +41,13 @@ function LoadedMapTab({
   const mapContainer = useRef<HTMLDivElement>(null)
   const drawerRef = useRef<HTMLElement>(null)
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
+  const [mapBackgroundError, setMapBackgroundError] = useState(false)
+  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
+  const [cameraResetVersion, setCameraResetVersion] = useState(0)
+
+  const experience = useMapExperience()
+  const panel = useMapPanel()
+  const isPresenting = experience.presentation.isActive
   useMapPresentationFocus(presentationTriggerRef, isPresenting)
   const description = isPresenting
     ? {
@@ -51,13 +58,6 @@ function LoadedMapTab({
         className: 'map-tab__description',
         content: 'Matching tablet search links are available below the map.',
       }
-  const [mapBackgroundError, setMapBackgroundError] = useState(false)
-  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
-  const [cameraResetVersion, setCameraResetVersion] = useState(0)
-
-  const experience = useMapExperience()
-  const panel = useMapPanel()
-  const isPresenting = experience.presentation.isActive
 
   const {
     index: polygonIndex,
