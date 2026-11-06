@@ -12,6 +12,9 @@ import useFragmentMapData, {
 } from 'map/useFragmentMapData'
 import useMapExperience, { type MapExperience } from 'map/useMapExperience'
 import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapVisualization, {
+  type MapVisualization,
+} from 'map/useMapVisualization'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -38,6 +41,7 @@ export interface MapTabState {
   readonly showExcavationAreas: boolean
   readonly fragmentMapData: FragmentMapDataState
   readonly selectedPolygon: ExcavationPolygon | null
+  readonly visualization: MapVisualization
   readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly resetView: () => void
 }
@@ -111,6 +115,12 @@ export default function useMapTabState(
   )
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
 
+  const visualization = useMapVisualization(
+    fragmentMapData,
+    polygonIndex,
+    experience.visualization,
+  )
+
   const { setSelection } = experience
   const { open: openPanel, close: closePanel } = panel
   const onSelectPolygon = useCallback(
@@ -149,13 +159,18 @@ export default function useMapTabState(
     if (selectedPolygonId === null && panel.active === 'inspector') {
       closePanel()
     }
-  }, [closePanel, panel.active, selectedPolygonId])
+    if (!canShowExcavationAreas && panel.active === 'visualization') {
+      closePanel()
+    }
+  }, [canShowExcavationAreas, closePanel, panel.active, selectedPolygonId])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     polygonIndex:
       isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
     selectedPolygonId,
+    paint: visualization.paint,
+    values: visualization.values,
     onSelectPolygon,
     onAvailabilityChange: setIsRenderedAreasUnavailable,
   })
@@ -202,6 +217,7 @@ export default function useMapTabState(
     fragmentMapData,
     selectedPolygon,
     excavationPolygons,
+    visualization,
     resetView,
   }
 }
