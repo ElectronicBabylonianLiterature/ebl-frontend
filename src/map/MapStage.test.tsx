@@ -45,6 +45,25 @@ describe('MapStage', () => {
     ).toBeInTheDocument()
   })
 
+  it('only advertises fallback links when they are rendered', () => {
+    const containerRef = createRef<HTMLDivElement>()
+    const { rerender } = render(
+      <MapStage
+        containerRef={containerRef}
+        isBackgroundUnavailable
+        showFallbackHint
+      />,
+    )
+    expect(
+      screen.getByText(/Findspot links remain available below/),
+    ).toBeInTheDocument()
+
+    rerender(<MapStage containerRef={containerRef} isBackgroundUnavailable />)
+    expect(
+      screen.queryByText(/Findspot links remain available below/),
+    ).not.toBeInTheDocument()
+  })
+
   it('renders the overlay when provided', () => {
     const containerRef = createRef<HTMLDivElement>()
     render(

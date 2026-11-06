@@ -1,3 +1,4 @@
+import { openLayerControls } from 'map/mapLayerControls.testSupport'
 import fs from 'fs'
 import path from 'path'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -23,7 +24,6 @@ jest.mock('maplibre-gl')
 
 const BACKGROUND_WARNING = /The interactive map could not be loaded/
 const EXCAVATION_WARNING = 'Excavation areas are unavailable.'
-const REQUESTED_AREAS_URL = '/tools/map?mv=1&areas=1'
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
   'utf8',
@@ -155,10 +155,16 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the polygon index fails', async () => {
     fetchMock.mockRejectOnce(new Error('asset unavailable'))
 
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
   })
 
   it('shows an unavailable state for a malformed HTTP-200 asset', async () => {
@@ -166,15 +172,17 @@ describe('MapTab map errors', () => {
       JSON.stringify({ type: 'FeatureCollection', features: [] }),
     )
 
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
   })
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await openLayerControls()
 
     await waitFor(() =>
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
