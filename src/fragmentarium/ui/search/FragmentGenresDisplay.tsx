@@ -7,11 +7,11 @@ export default function FragmentGenresDisplay({
   genres: Genres
 }): JSX.Element {
   return (
-    <ul>
+    <ul className="list-unstyled">
       {genres.genres.map((genreItem, index) => (
-        <ul key={index}>
+        <li key={index}>
           <small>{genreItem.toString()}</small>
-        </ul>
+        </li>
       ))}
     </ul>
   )
