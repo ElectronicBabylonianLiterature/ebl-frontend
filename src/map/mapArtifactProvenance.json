@@ -13,65 +13,49 @@
       "polygonCount": 134,
       "mappingCount": 315,
       "mappedPolygonCount": 133,
-      "mappingSourceRevisions": [
-        "2026-07-27"
-      ],
-      "mappingSources": [
-        "Assur Tafeln.ods"
-      ],
+      "mappingSourceRevisions": ["2026-07-27"],
+      "mappingSources": ["Assur Tafeln.ods"],
       "artifactSourceRevision": "2026-07-27",
-      "artifactManifestSha256": "63b019e78685e9a205b721d917cdde709f5fee0d04e3cfc1cb822be5bcadff5f",
-      "artifactContractRevision": "sha256:20af80336c094e36f49b25f6411ebcec5d026198f33e8f8bde37b2e357d00edd"
+      "artifactManifestSha256": "bff23b5bcea986d7914cdb6e624708a13a7866fce75782e0db91dff95adcd656",
+      "artifactContractRevision": "sha256:b40cd2c2c0b16f06793bba0d8fb5af2172e702cf7f1a2b4d92692759091db7ea"
     },
     "KALHU": {
       "polygonCount": 12,
       "mappingCount": 7,
       "mappedPolygonCount": 7,
-      "mappingSourceRevisions": [
-        "2026-08-05"
-      ],
-      "mappingSources": [
-        "Kalhu Tafeln.ods"
-      ],
+      "mappingSourceRevisions": ["2026-08-05"],
+      "mappingSources": ["Kalhu Tafeln.ods"],
       "artifactSourceRevision": "2026-08-05",
-      "artifactManifestSha256": "63b019e78685e9a205b721d917cdde709f5fee0d04e3cfc1cb822be5bcadff5f",
-      "artifactContractRevision": "sha256:20af80336c094e36f49b25f6411ebcec5d026198f33e8f8bde37b2e357d00edd"
+      "artifactManifestSha256": "bff23b5bcea986d7914cdb6e624708a13a7866fce75782e0db91dff95adcd656",
+      "artifactContractRevision": "sha256:b40cd2c2c0b16f06793bba0d8fb5af2172e702cf7f1a2b4d92692759091db7ea"
     },
     "NIPPUR": {
       "polygonCount": 20,
       "mappingCount": 18,
       "mappedPolygonCount": 9,
-      "mappingSourceRevisions": [
-        "2026-08-05"
-      ],
-      "mappingSources": [
-        "Nippur Tafeln.ods"
-      ],
+      "mappingSourceRevisions": ["2026-08-05"],
+      "mappingSources": ["Nippur Tafeln.ods"],
       "artifactSourceRevision": "2026-08-05",
-      "artifactManifestSha256": "63b019e78685e9a205b721d917cdde709f5fee0d04e3cfc1cb822be5bcadff5f",
-      "artifactContractRevision": "sha256:20af80336c094e36f49b25f6411ebcec5d026198f33e8f8bde37b2e357d00edd"
+      "artifactManifestSha256": "bff23b5bcea986d7914cdb6e624708a13a7866fce75782e0db91dff95adcd656",
+      "artifactContractRevision": "sha256:b40cd2c2c0b16f06793bba0d8fb5af2172e702cf7f1a2b4d92692759091db7ea"
     },
     "URUK": {
       "polygonCount": 128,
       "mappingCount": 129,
       "mappedPolygonCount": 125,
-      "mappingSourceRevisions": [
-        "2026-08-05"
-      ],
-      "mappingSources": [
-        "Uruk Tafeln aktualisiert 24-07-25.ods"
-      ],
+      "mappingSourceRevisions": ["2026-08-05"],
+      "mappingSources": ["Uruk Tafeln aktualisiert 24-07-25.ods"],
       "artifactSourceRevision": "2026-08-05",
-      "artifactManifestSha256": "63b019e78685e9a205b721d917cdde709f5fee0d04e3cfc1cb822be5bcadff5f",
-      "artifactContractRevision": "sha256:20af80336c094e36f49b25f6411ebcec5d026198f33e8f8bde37b2e357d00edd"
+      "artifactManifestSha256": "bff23b5bcea986d7914cdb6e624708a13a7866fce75782e0db91dff95adcd656",
+      "artifactContractRevision": "sha256:b40cd2c2c0b16f06793bba0d8fb5af2172e702cf7f1a2b4d92692759091db7ea"
     }
   },
   "handoffContract": {
     "contractVersion": "ebl-map-metadata/1",
-    "contractRevision": "sha256:20af80336c094e36f49b25f6411ebcec5d026198f33e8f8bde37b2e357d00edd",
+    "contractRevision": "sha256:b40cd2c2c0b16f06793bba0d8fb5af2172e702cf7f1a2b4d92692759091db7ea",
     "generatorVersion": "map_artifact_generator/3",
     "producer": {
-      "commit": "6cfb42114dba57d7c1a619d4967c32773938bf27",
+      "commit": "ad91d1ee6ca0d9d6fb726569ea09052b5f046f67",
       "dirtyWorktree": false,
       "repository": "ElectronicBabylonianLiterature/ebl-api"
     }
