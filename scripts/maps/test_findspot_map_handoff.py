@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -77,6 +78,18 @@ class FindspotMapHandoffTest(unittest.TestCase):
                 {feature["id"] for feature in actual["features"]},
                 {record["polygonId"] for record in inventory},
             )
+            supplied_manifest = self.artifact_source / f"{site}_artifact_manifest.json"
+            if supplied_manifest.exists():
+                output_manifest = ASSETS.read_json(self.geometry / "manifest.json")
+                revision = output_manifest["sites"][site.upper()]
+                self.assertEqual(
+                    revision["artifactSourceRevision"],
+                    ASSETS.read_json(supplied_manifest)["sourceRevision"],
+                )
+                self.assertEqual(
+                    revision["artifactManifestSha256"],
+                    hashlib.sha256(supplied_manifest.read_bytes()).hexdigest(),
+                )
             expected_features.extend(actual["features"])
         self.assertEqual(
             ASSETS.read_json(self.geometry / "all.geojson")["features"],
@@ -86,7 +99,15 @@ class FindspotMapHandoffTest(unittest.TestCase):
     def test_tampered_supplied_manifest_preserves_all_outputs(self) -> None:
         site = ASSETS.SITES[0]
         path = self.artifacts / f"{site}_artifact_manifest.json"
-        manifest = ASSETS.read_json(path)
+        manifest = ASSETS.read_json(path) if path.exists() else {
+            "schemaVersion": 1,
+            "sourceRevision": "handoff-regression",
+            "files": {
+                item.name: hashlib.sha256(item.read_bytes()).hexdigest()
+                for item in self.artifacts.iterdir()
+                if item.name.startswith(f"{site}_")
+            },
+        }
         manifest["files"][f"{site}_polygon_inventory.json"] = "0" * 64
         path.write_text(json.dumps(manifest), encoding="utf-8")
         original = self.outputs()
