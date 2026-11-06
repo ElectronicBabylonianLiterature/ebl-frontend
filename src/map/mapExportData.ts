@@ -153,7 +153,7 @@ export function buildExportGeoJson(
       polygonSource: EXCAVATION_POLYGON_GEOJSON_URL,
       note: EXCAVATION_AREA_NOTE,
       accessNote:
-        'Counts are caller-authorized snapshots at the export time; blank linked-data fields mean that site data was unavailable.',
+        'Counts are caller-authorized snapshots at the export time; blank linked-data fields mean that site data was unavailable. Artifact provenance identifies the shipped geometry and metadata handoff, rather than a database revision.',
       crs: 'EPSG:4326',
       visualization: context.visualization,
       siteFilter: context.siteFilter,
