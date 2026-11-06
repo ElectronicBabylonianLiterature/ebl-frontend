@@ -9,6 +9,7 @@ import type {
   MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
 import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import { mockGetCenter } from 'map/mapLibreMockEvents.testSupport'
 export * from 'map/mapLibreMockObjects.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
 
@@ -32,6 +33,8 @@ export const mockRemoveLayer = mockMapMethods.removeLayer.mockImplementation(
 )
 export const mockRemoveSource = mockMapMethods.removeSource
 export const mockSetLayoutProperty = mockMapMethods.setLayoutProperty
+export const mockSetTerrain = mockMapMethods.setTerrain
+export const mockResize = mockMapMethods.resize
 export const mockSetPaintProperty = mockMapMethods.setPaintProperty
 export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = mockMapMethods.isStyleLoaded
@@ -64,6 +67,7 @@ export const mockMapInstance = {
   getCanvas: mockGetCanvas,
   queryRenderedFeatures: queryRenderedFeaturesFromStyle,
   getZoom: mockGetZoom,
+  getCenter: mockGetCenter,
 }
 
 function eventKey(event: string, layerId?: string): string {
@@ -161,6 +165,7 @@ export function resetMapMocks(): void {
   mockIsStyleLoaded.mockReturnValue(true)
   mockGetStyle.mockReturnValue({})
   mockGetZoom.mockReturnValue(5)
+  mockGetCenter.mockReturnValue({ lng: 43.25, lat: 35.45 })
   mockQueryRenderedFeatures.mockReturnValue([])
   mockAddLayer.mockImplementation(rememberAddedLayer)
   mockGetLayer.mockImplementation(findAddedLayer)

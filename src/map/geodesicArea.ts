@@ -7,6 +7,14 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
+function longitudeDeltaRadians(from: number, to: number): number {
+  const delta = toRadians(to) - toRadians(from)
+  if (delta >= -Math.PI && delta <= Math.PI) return delta
+
+  const fullTurn = 2 * Math.PI
+  return ((((delta + Math.PI) % fullTurn) + fullTurn) % fullTurn) - Math.PI
+}
+
 function isValidLatitude(value: unknown): value is number {
   return (
     typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
@@ -42,7 +50,7 @@ function ringArea(ring: readonly Position[]): number {
     const [upperLongitude, upperLatitude] = ring[index + 1]
 
     total +=
-      (toRadians(upperLongitude) - toRadians(lowerLongitude)) *
+      longitudeDeltaRadians(lowerLongitude, upperLongitude) *
       (2 +
         Math.sin(toRadians(lowerLatitude)) +
         Math.sin(toRadians(upperLatitude)))
