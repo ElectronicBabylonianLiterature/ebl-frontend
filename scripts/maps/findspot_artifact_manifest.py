@@ -16,14 +16,15 @@ def _input_revision(artifact_dir: Path, site: str) -> dict[str, Any]:
         return {"artifactSourceRevision": None, "artifactManifestSha256": None}
     contents = path.read_bytes()
     manifest = json.loads(contents)
-    if (
-        not isinstance(manifest, dict)
-        or type(manifest.get("schemaVersion")) is not int
-        or manifest["schemaVersion"] != 1
-        or not isinstance(manifest.get("sourceRevision"), str)
-        or not manifest["sourceRevision"].strip()
-        or not isinstance(manifest.get("files"), dict)
-    ):
+    if not isinstance(manifest, dict):
+        raise RuntimeError(f"{site} artifact manifest is invalid")
+    schema_version = manifest.get("schemaVersion")
+    if type(schema_version) is not int or schema_version != 1:
+        raise RuntimeError(f"{site} artifact manifest is invalid")
+    source_revision = manifest.get("sourceRevision")
+    if not isinstance(source_revision, str) or not source_revision.strip():
+        raise RuntimeError(f"{site} artifact manifest is invalid")
+    if not isinstance(manifest.get("files"), dict):
         raise RuntimeError(f"{site} artifact manifest is invalid")
     for suffix in ("polygon_inventory", "findspot_polygon_mappings"):
         name = f"{site}_{suffix}.json"

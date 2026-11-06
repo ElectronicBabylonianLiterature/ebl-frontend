@@ -54,7 +54,11 @@ def polygon_id(site: str, name: str, checksum: str) -> str:
     slug = re.sub(
         r"[^a-z0-9]+",
         "-",
-        unicodedata.normalize("NFKC", name).casefold(),
+        "".join(
+            character
+            for character in unicodedata.normalize("NFKD", name).casefold()
+            if not unicodedata.combining(character)
+        ),
     ).strip("-")
     if not slug:
         slug = "u" + "-".join(f"{ord(character):04x}" for character in name)

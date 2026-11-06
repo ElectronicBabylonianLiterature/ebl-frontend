@@ -37,6 +37,9 @@ class FindspotMapHandoffTest(unittest.TestCase):
             for suffix in ("polygon_inventory", "findspot_polygon_mappings"):
                 name = f"{site}_{suffix}.json"
                 shutil.copyfile(self.artifact_source / name, self.artifacts / name)
+            manifest = self.artifact_source / f"{site}_artifact_manifest.json"
+            if manifest.exists():
+                shutil.copyfile(manifest, self.artifacts / manifest.name)
 
     def generate(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
@@ -79,6 +82,18 @@ class FindspotMapHandoffTest(unittest.TestCase):
             ASSETS.read_json(self.geometry / "all.geojson")["features"],
             expected_features,
         )
+
+    def test_tampered_supplied_manifest_preserves_all_outputs(self) -> None:
+        site = ASSETS.SITES[0]
+        path = self.artifacts / f"{site}_artifact_manifest.json"
+        manifest = ASSETS.read_json(path)
+        manifest["files"][f"{site}_polygon_inventory.json"] = "0" * 64
+        path.write_text(json.dumps(manifest), encoding="utf-8")
+        original = self.outputs()
+        result = self.generate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("artifact manifest checksum disagrees", result.stderr)
+        self.assertEqual(self.outputs(), original)
 
     def test_repeat_generation_is_byte_identical(self) -> None:
         first = self.generate()
