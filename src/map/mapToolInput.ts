@@ -13,7 +13,9 @@ export function finitePosition(
   longitude: number,
   latitude: number,
 ): Position | null {
-  return Number.isFinite(longitude) && Number.isFinite(latitude)
+  return Number.isFinite(longitude) &&
+    Number.isFinite(latitude) &&
+    Math.abs(latitude) <= 90
     ? [longitude, latitude]
     : null
 }

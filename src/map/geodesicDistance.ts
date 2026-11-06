@@ -10,7 +10,8 @@ function isPosition(value: unknown): value is Position {
     Array.isArray(value) &&
     value.length >= 2 &&
     Number.isFinite(value[0]) &&
-    Number.isFinite(value[1])
+    Number.isFinite(value[1]) &&
+    Math.abs(value[1]) <= 90
   )
 }
 export function geodesicDistanceMetres(
@@ -22,7 +23,7 @@ export function geodesicDistanceMetres(
   const fromLatitude = toRadians(from[1])
   const toLatitude = toRadians(to[1])
   const deltaLatitude = toLatitude - fromLatitude
-  const deltaLongitude = toRadians(to[0] - from[0])
+  const deltaLongitude = toRadians((to[0] % 360) - (from[0] % 360))
 
   const haversine =
     Math.sin(deltaLatitude / 2) ** 2 +
