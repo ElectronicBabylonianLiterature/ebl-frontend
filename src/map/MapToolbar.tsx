@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import type { ActiveMapPanel, MapPanelId } from 'map/mapPanel'
+import useMapToolbarFocus from 'map/useMapToolbarFocus'
 
 export interface MapPanelDefinition {
   readonly id: MapPanelId
@@ -21,26 +22,8 @@ export default function MapToolbar({
   active,
   onToggle,
 }: Props): JSX.Element | null {
-  const buttonRefs = useRef(new Map<MapPanelId, HTMLButtonElement>())
-  const previousActiveRef = useRef<ActiveMapPanel>(active)
   const supported = panels.filter((panel) => panel.isSupported)
-  const firstSupportedId = supported[0]?.id
-
-  useEffect(() => {
-    if (
-      previousActiveRef.current !== null &&
-      active === null &&
-      document.activeElement === document.body
-    ) {
-      const previousButton = buttonRefs.current.get(previousActiveRef.current)
-      if (previousButton && document.contains(previousButton)) {
-        previousButton.focus()
-      } else {
-        if (firstSupportedId) buttonRefs.current.get(firstSupportedId)?.focus()
-      }
-    }
-    previousActiveRef.current = active
-  }, [active, firstSupportedId])
+  const buttonRefs = useMapToolbarFocus(active, supported[0]?.id)
   if (supported.length === 0) return null
 
   return (

@@ -6,21 +6,16 @@ import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
 import useProvenances, { ProvenanceSource } from 'map/useProvenances'
-import useExcavationAreas from 'map/useExcavationAreas'
-import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
+import useMapExcavationAreas from 'map/useMapExcavationAreas'
 import useMapExperience from 'map/useMapExperience'
 import useMapPanel from 'map/useMapPanel'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
-import {
-  anySiteHasExcavationPolygons,
-  deriveMapSiteCapabilities,
-} from 'map/mapSiteCapabilities'
 import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import MapLayerControls from 'map/MapLayerControls'
+import MapExcavationLayerPanel from 'map/MapExcavationLayerPanel'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -42,29 +37,11 @@ function LoadedMapTab({
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
   const wasPresentingRef = useRef(false)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
-  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const [cameraResetVersion, setCameraResetVersion] = useState(0)
 
   const experience = useMapExperience()
   const panel = useMapPanel()
   const isPresenting = experience.presentation.isActive
-
-  const {
-    index: polygonIndex,
-    isLoaded: isPolygonIndexLoaded,
-    error: polygonIndexError,
-  } = useExcavationPolygonIndex()
-  const excavationAreasUnavailable =
-    polygonIndexError !== null || mapExcavationAreasError
-  const canShowExcavationAreas = useMemo(
-    () =>
-      isPolygonIndexLoaded &&
-      !excavationAreasUnavailable &&
-      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
-    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
-  )
-  const showExcavationAreas =
-    experience.showExcavationAreas && canShowExcavationAreas
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, experience.filter),
@@ -77,12 +54,6 @@ function LoadedMapTab({
   const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
     setMapBackgroundError(hasError)
   }, [])
-  const handleExcavationAreasAvailabilityChange = useCallback(
-    (isUnavailable: boolean) => {
-      setMapExcavationAreasError(isUnavailable)
-    },
-    [],
-  )
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
@@ -90,12 +61,12 @@ function LoadedMapTab({
     cameraResetVersion,
   )
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
-  useExcavationAreas(
-    mapRef,
+  const {
+    isLoaded: isPolygonIndexLoaded,
+    isUnavailable: excavationAreasUnavailable,
+    canShowExcavationAreas,
     showExcavationAreas,
-    handleExcavationAreasAvailabilityChange,
-    isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
-  )
+  } = useMapExcavationAreas(mapRef, experience.showExcavationAreas)
   useMapLayoutEffects(
     mapContainer,
     mapRef,
@@ -122,19 +93,13 @@ function LoadedMapTab({
       label: 'Map layers',
       isSupported: true,
       render: () => (
-        <>
-          {!isPolygonIndexLoaded ? (
-            <p role="status">Loading excavation areas…</p>
-          ) : null}
-          {excavationAreasUnavailable ? (
-            <Alert variant="warning">Excavation areas are unavailable.</Alert>
-          ) : null}
-          <MapLayerControls
-            showExcavationAreas={showExcavationAreas}
-            canShowExcavationAreas={canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-        </>
+        <MapExcavationLayerPanel
+          isLoaded={isPolygonIndexLoaded}
+          isUnavailable={excavationAreasUnavailable}
+          showExcavationAreas={showExcavationAreas}
+          canShowExcavationAreas={canShowExcavationAreas}
+          onShowExcavationAreasChange={experience.setShowExcavationAreas}
+        />
       ),
     },
   ]
