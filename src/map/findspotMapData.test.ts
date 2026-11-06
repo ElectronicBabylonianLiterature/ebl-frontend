@@ -11,10 +11,6 @@ it.each([
   { siteId: null },
   { polygonIds: null },
   { polygonIds: ['valid', 1] },
-  { sector: undefined },
-  { area: undefined },
-  { building: undefined },
-  { room: undefined },
   { sector: 42 },
 ])('rejects malformed required fields %j', (fields) => {
   expect(
@@ -35,3 +31,13 @@ it('preserves nullable location fields and strips unknown response fields', () =
     sanitizeFindspotMapData({ ...expected, privateNotes: 'hidden' }),
   ).toEqual(expected)
 })
+
+it.each(['sector', 'area', 'building', 'room'] as const)(
+  'normalizes optional undefined %s metadata to null',
+  (field) => {
+    const expected = findspotMapDataDto({ [field]: null })
+    expect(
+      sanitizeFindspotMapData({ ...expected, [field]: undefined }),
+    ).toEqual(expected)
+  },
+)
