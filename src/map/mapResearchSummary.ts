@@ -93,14 +93,15 @@ export function derivePolygonResearchSummary({
   siteName,
 }: PolygonResearchSummaryInput): PolygonResearchSummary {
   const findspots = summary?.findspots ?? []
+  const canonicalPolygonId = polygon?.polygonId ?? polygonId
 
   return {
-    polygonId,
+    polygonId: canonicalPolygonId,
     siteId: polygon?.siteId ?? '',
     siteName,
-    displayName: polygonDisplayName(polygon, polygonId),
-    mappedFindspotCount: summary?.findspotCount ?? 0,
-    accessibleFragmentCount: summary?.accessibleFragmentCount ?? 0,
+    displayName: polygonDisplayName(polygon, canonicalPolygonId),
+    mappedFindspotCount: findspots.length,
+    accessibleFragmentCount: findspots.reduce((total, findspot) => total + findspot.accessibleFragmentCount, 0),
     findspots: findspots.map(toFindspotSummary),
     mappingEvidence: mappingEvidenceOf(findspots),
     locationPrecision: summaryLocationPrecisionOf(findspots),
