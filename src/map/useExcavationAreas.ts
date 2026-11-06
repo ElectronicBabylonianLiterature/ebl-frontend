@@ -32,24 +32,7 @@ export interface ExcavationAreaOptions {
   readonly values?: PolygonVisualizationValues
   readonly onSelectPolygon: (polygonId: string) => void
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
-}
-
-function observeExcavationClicks(
-  map: MapLibreMap,
-  getOptions: () => ExcavationAreaOptions,
-  isCurrentMap: () => boolean,
-): () => void {
-  const handleClick = (event: MapMouseEvent): void => {
-    if (!isCurrentMap()) return
-    const [feature] = map.queryRenderedFeatures(event.point, {
-      layers: [EXCAVATION_AREA_FILL_LAYER_ID],
-    })
-    if (typeof feature?.id === 'string') {
-      getOptions().onSelectPolygon(feature.id)
-    }
-  }
-  map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-  return () => map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
+  readonly isInteractionEnabled?: boolean
 }
 
 function useExcavationAreaLifecycle(
@@ -71,11 +54,19 @@ function useExcavationAreaLifecycle(
       if (isCurrentMap()) addExcavationAreas(map, polygonIndex)
     }
 
-    const stopObservingClicks = observeExcavationClicks(
-      map,
-      () => latestOptionsRef.current,
-      isCurrentMap,
-    )
+    const handleClick = (event: MapMouseEvent): void => {
+      if (
+        !isCurrentMap() ||
+        latestOptionsRef.current.isInteractionEnabled === false
+      )
+        return
+      const [feature] = map.queryRenderedFeatures(event.point, {
+        layers: [EXCAVATION_AREA_FILL_LAYER_ID],
+      })
+      if (typeof feature?.id === 'string') {
+        latestOptionsRef.current.onSelectPolygon(feature.id)
+      }
+    }
 
     const stopObservingAvailability = observeExcavationAvailability(
       map,
@@ -84,6 +75,7 @@ function useExcavationAreaLifecycle(
         latestOptionsRef.current.onAvailabilityChange?.(unavailable),
       isCurrentMap,
     )
+    map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
     map.on(MAP_STYLE_LOAD_EVENT, install)
     if (map.getStyle()) install()
 
@@ -91,7 +83,7 @@ function useExcavationAreaLifecycle(
       isActive = false
       stopObservingAvailability()
       map.off(MAP_STYLE_LOAD_EVENT, install)
-      stopObservingClicks()
+      map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
       if (ownsMap()) removeExcavationAreas(map)
     }
   }, [mapRef, polygonIndex])

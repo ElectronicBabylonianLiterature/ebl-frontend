@@ -14,6 +14,7 @@ import MapLayerPanel from 'map/MapLayerPanel'
 import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
+import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSelectionPill from 'map/MapSelectionPill'
 import { findMapSite, isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
@@ -101,6 +102,12 @@ function LoadedMapTab({
           onModeChange={experience.setVisualization}
         />
       ),
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
     {
       id: 'layers',
