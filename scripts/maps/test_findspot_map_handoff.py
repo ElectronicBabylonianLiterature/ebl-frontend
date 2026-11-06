@@ -37,6 +37,9 @@ class FindspotMapHandoffTest(unittest.TestCase):
             for suffix in ("polygon_inventory", "findspot_polygon_mappings"):
                 name = f"{site}_{suffix}.json"
                 shutil.copyfile(self.artifact_source / name, self.artifacts / name)
+            manifest = self.artifact_source / f"{site}_artifact_manifest.json"
+            if manifest.exists():
+                shutil.copyfile(manifest, self.artifacts / manifest.name)
 
     def generate(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
