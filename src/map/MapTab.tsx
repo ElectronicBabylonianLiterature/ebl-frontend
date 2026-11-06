@@ -102,22 +102,20 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
-            (
-              <>
-                <MapPanelDock
-                  panels={isPresenting ? [] : panels}
-                  status={excavationStatus}
-                  panel={panel}
-                  drawerRef={state.drawerRef}
+            <>
+              <MapPanelDock
+                panels={isPresenting ? [] : panels}
+                status={excavationStatus}
+                panel={panel}
+                drawerRef={state.drawerRef}
+              />
+              {!isPresenting && selectedPolygon && panel.active !== 'layers' ? (
+                <MapSelectionPill
+                  label="Show selected area"
+                  onShow={() => panel.open('layers')}
                 />
-                {!isPresenting && selectedPolygon && panel.active !== 'layers' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('layers')}
-                  />
-                ) : null}
-              </>
-            )
+              ) : null}
+            </>
           }
         />
       </div>
