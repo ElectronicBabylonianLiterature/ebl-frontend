@@ -56,6 +56,20 @@ testDelegation(findspotRepository, testData)
 describe('fetchMapData compatibility', () => {
   beforeEach(() => jest.clearAllMocks())
 
+  it('accepts a complete site response with omitted optional location metadata', async () => {
+    const {
+      sector: _sector,
+      area: _area,
+      building: _building,
+      room: _room,
+      ...row
+    } = expectedMapData[0]
+    apiClient.fetchJson.mockResolvedValueOnce({ findspots: [row] })
+    await expect(findspotRepository.fetchMapData('ASSUR')).resolves.toEqual([
+      row,
+    ])
+  })
+
   it.each([
     ['ASSUR', 'Aššur'],
     ['KALHU', 'Kalḫu'],
