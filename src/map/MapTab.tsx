@@ -94,6 +94,14 @@ function LoadedMapTab({
     },
   ]
 
+  const excavationStatus =
+    state.isExcavationAreasUnavailable &&
+    (experience.showExcavationAreas ||
+      experience.selection !== null ||
+      (!isPresenting && panel.active === 'layers')) ? (
+      <Alert variant="warning">Excavation areas are unavailable.</Alert>
+    ) : null
+
   return (
     <div
       className={`map-tab map-experience${
@@ -123,12 +131,7 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-      {state.isExcavationAreasUnavailable &&
-      (experience.showExcavationAreas ||
-        experience.selection !== null ||
-        (!isPresenting && panel.active === 'layers')) ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
+
       <div className="map-experience__body">
         <MapStage
           containerRef={state.mapContainer}
@@ -136,21 +139,20 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
-            isPresenting ? null : (
-              <MapPanelDock
-                panels={panels}
-                panel={panel}
-                drawerRef={state.drawerRef}
-                selectionAction={
-                  selectedPolygon && panel.active !== 'inspector' ? (
-                    <MapSelectionPill
-                      label="Show selected area"
-                      onShow={() => panel.open('inspector')}
-                    />
-                  ) : null
-                }
-              />
-            )
+            <MapPanelDock
+              panels={isPresenting ? [] : panels}
+              status={excavationStatus}
+              panel={panel}
+              drawerRef={state.drawerRef}
+              selectionAction={
+                selectedPolygon && panel.active !== 'inspector' ? (
+                  <MapSelectionPill
+                    label="Show selected area"
+                    onShow={() => panel.open('inspector')}
+                  />
+                ) : null
+              }
+            />
           }
         />
       </div>
