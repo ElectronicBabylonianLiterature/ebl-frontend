@@ -11,16 +11,21 @@ it.each([
   { siteId: null },
   { polygonIds: null },
   { polygonIds: ['valid', 1] },
-  { sector: undefined },
-  { area: undefined },
-  { building: undefined },
-  { room: undefined },
   { sector: 42 },
 ])('rejects malformed required fields %j', (fields) => {
   expect(
     sanitizeFindspotMapData({ ...findspotMapDataDto(), ...fields }),
   ).toBeNull()
 })
+
+it.each(['sector', 'area', 'building', 'room'])(
+  'accepts omitted optional location field %s',
+  (field) => {
+    const value: Record<string, unknown> = { ...findspotMapDataDto() }
+    delete value[field]
+    expect(sanitizeFindspotMapData(value)).toEqual(value)
+  },
+)
 
 it('preserves nullable location fields and strips unknown response fields', () => {
   const expected = findspotMapDataDto({
