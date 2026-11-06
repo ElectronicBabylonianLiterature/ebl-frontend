@@ -10,6 +10,7 @@ import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
 import type { PolygonFindspotSummary } from 'map/findspotMapData'
 import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 import { isMapSiteId } from 'map/mapSites'
+import orientExportGeometry from 'map/mapExportOrientation'
 import type {
   FragmentMapDataState,
   FragmentMapDataStatus,
@@ -106,7 +107,7 @@ function toFeature(row: MapExportRow): Feature {
   return {
     type: 'Feature',
     id: row.polygonId,
-    geometry: row.geometry,
+    geometry: orientExportGeometry(row.geometry),
     properties: {
       siteId: row.siteId,
       ...exportPolygonProvenance(row.siteId),
