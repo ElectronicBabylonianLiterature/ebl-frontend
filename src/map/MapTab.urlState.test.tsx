@@ -103,6 +103,8 @@ describe('MapTab URL state', () => {
     expect(mockEaseTo).toHaveBeenCalledWith({
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
+      pitch: 0,
+      bearing: 0,
     })
   })
 })
