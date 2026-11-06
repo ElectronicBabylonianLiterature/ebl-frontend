@@ -1,13 +1,16 @@
 import { act, renderHook } from '@testing-library/react'
 import { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/useExcavationAreas'
-import { EXCAVATION_AREA_LAYER_IDS } from 'map/mapExcavationLayers'
+import {
+  EXCAVATION_AREA_LAYER_IDS,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+} from 'map/mapExcavationLayers'
 import {
   clearMockStyleResources,
   mockAddLayer,
   mockAddSource,
-  mockGetSource,
   markLayersAdded,
+  mockGetSource,
   mockOff,
   mockOn,
   mockSetLayoutProperty,
@@ -26,7 +29,13 @@ it('ignores stale style events after the map owner replaces its instance', () =>
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(mapRef, {
+      isVisible: true,
+      onAvailabilityChange: undefined,
+      selectedPolygonId: null,
+      onSelectPolygon: jest.fn(),
+      polygonIndex: POLYGON_INDEX,
+    }),
   )
   clearMockStyleResources()
   mockAddLayer.mockClear()
@@ -49,7 +58,13 @@ it('ignores callbacks captured before the hook unmounts', () => {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(mapRef, {
+      isVisible: true,
+      onAvailabilityChange: undefined,
+      selectedPolygonId: null,
+      onSelectPolygon: jest.fn(),
+      polygonIndex: POLYGON_INDEX,
+    }),
   )
   const callbacks = mockOn.mock.calls
     .filter(([event]) => event === 'style.load')
@@ -68,7 +83,15 @@ it('ignores callbacks captured before the hook unmounts', () => {
 
 it('waits for a map owner before registering listeners', () => {
   renderHook(() =>
-    useExcavationAreas({ current: null }, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(
+      { current: null },
+      {
+        isVisible: true,
+        selectedPolygonId: null,
+        onSelectPolygon: jest.fn(),
+        polygonIndex: POLYGON_INDEX,
+      },
+    ),
   )
 
   expect(mockOn).not.toHaveBeenCalled()
@@ -79,9 +102,20 @@ it('reuses source and layers already installed when the style event repeats', ()
   const mapRef = {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
-  markLayersAdded(...EXCAVATION_AREA_LAYER_IDS)
+  markLayersAdded(
+    ...EXCAVATION_AREA_LAYER_IDS,
+    EXCAVATION_AREA_SELECTED_LAYER_ID,
+  )
   mockGetSource.mockReturnValue({})
-  renderHook(() => useExcavationAreas(mapRef, false, undefined, POLYGON_INDEX))
+  renderHook(() =>
+    useExcavationAreas(mapRef, {
+      isVisible: false,
+      onAvailabilityChange: undefined,
+      selectedPolygonId: null,
+      onSelectPolygon: jest.fn(),
+      polygonIndex: POLYGON_INDEX,
+    }),
+  )
   act(() => triggerMapEvent('style.load'))
 
   expect(mockAddSource).not.toHaveBeenCalled()

@@ -20,7 +20,13 @@ function Harness({ isVisible }: { isVisible: boolean }): null {
   const mapRef = useRef<MapLibreMap | null>(
     mockMapInstance as unknown as MapLibreMap,
   )
-  useExcavationAreas(mapRef, isVisible, undefined, POLYGON_INDEX)
+  useExcavationAreas(mapRef, {
+    isVisible: isVisible,
+    onAvailabilityChange: undefined,
+    selectedPolygonId: null,
+    onSelectPolygon: jest.fn(),
+    polygonIndex: POLYGON_INDEX,
+  })
   return null
 }
 
