@@ -43,9 +43,17 @@ export default function MapSpatialSearchPanel({
   )
   const drawButtonRef = useRef<HTMLButtonElement>(null)
   const addCornerButtonRef = useRef<HTMLButtonElement>(null)
+  const addCornerHadFocus = useRef(false)
   useEffect(() => {
-    if (!isDrawing && document.activeElement === addCornerButtonRef.current) {
-      drawButtonRef.current?.focus()
+    if (!isDrawing && addCornerHadFocus.current) {
+      const activeElement = document.activeElement
+      if (
+        activeElement === document.body ||
+        activeElement === addCornerButtonRef.current
+      ) {
+        drawButtonRef.current?.focus()
+      }
+      addCornerHadFocus.current = false
     }
   }, [isDrawing])
   const searchViewport = (): void => {
@@ -79,6 +87,17 @@ export default function MapSpatialSearchPanel({
           size="sm"
           variant="outline-secondary"
           ref={addCornerButtonRef}
+          onFocus={() => {
+            addCornerHadFocus.current = true
+          }}
+          onBlur={(event) => {
+            if (
+              event.relatedTarget instanceof HTMLElement &&
+              event.relatedTarget !== document.body
+            ) {
+              addCornerHadFocus.current = false
+            }
+          }}
           disabled={!isDrawing}
           onClick={spatialSearch.addCornerAtCenter}
         >
