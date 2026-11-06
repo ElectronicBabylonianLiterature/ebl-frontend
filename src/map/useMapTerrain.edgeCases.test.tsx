@@ -174,3 +174,17 @@ test('keeps hillshade below findspot markers while canonical excavation geometry
     'ebl-clusters',
   )
 })
+
+test('ignores late DEM failures after terrain is turned off', () => {
+  const onUnavailable = jest.fn()
+  const { result, rerender } = renderHook(
+    ({ requested }) => useMapTerrain(mapRef, requested, { onUnavailable }),
+    { initialProps: { requested: true } },
+  )
+  rerender({ requested: false })
+  expect(result.current.status).toBe('off')
+  act(() => triggerMapEvent('error', { sourceId: TERRAIN_SOURCE_ID }))
+  expect(result.current.status).toBe('off')
+  expect(result.current.errorMessage).toBeNull()
+  expect(onUnavailable).not.toHaveBeenCalled()
+})
