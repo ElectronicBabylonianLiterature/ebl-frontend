@@ -12,6 +12,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 export interface SearchFormState {
   number: string | null
   referenceEntry: { id: string; label: string }
+  referenceLabelError: string | null
   pages: string | null
   lemmas: string | null
   lemmaOperator: QueryType | null
@@ -24,6 +25,7 @@ export interface SearchFormState {
   site: string | null
   museum: string | null
   dossier: string | null
+  findspotId: number | string | null
 }
 
 export type SearchFormValue =
@@ -38,6 +40,16 @@ export function isValidNumber(number?: string): boolean {
   return !number || !/^\[.*\]+$/.test(number.trim())
 }
 
+export function isValidFindspotId(value: FragmentQuery['findspotId']): boolean {
+  return (
+    value === undefined ||
+    value === null ||
+    ((typeof value === 'number' || /^\d+$/.test(value)) &&
+      Number.isSafeInteger(Number(value)) &&
+      Number(value) >= 0)
+  )
+}
+
 export function initializeSearchFormState(
   fragmentQuery: FragmentQuery,
 ): SearchFormState {
@@ -47,6 +59,7 @@ export function initializeSearchFormState(
       id: fragmentQuery.bibId || '',
       label: fragmentQuery.bibLabel || '',
     },
+    referenceLabelError: null,
     pages: fragmentQuery.pages || null,
     lemmas: fragmentQuery.lemmas || '',
     lemmaOperator: fragmentQuery.lemmaOperator || 'line',
@@ -55,10 +68,13 @@ export function initializeSearchFormState(
     scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
     genre: fragmentQuery.genre || '',
     site: fragmentQuery.site || '',
-    isValid: isValidNumber(fragmentQuery.number),
+    isValid:
+      isValidNumber(fragmentQuery.number) &&
+      isValidFindspotId(fragmentQuery.findspotId),
     project: fragmentQuery.project || null,
     museum: fragmentQuery.museum || null,
     dossier: fragmentQuery.dossier || null,
+    findspotId: fragmentQuery.findspotId ?? null,
   }
 }
 
@@ -82,8 +98,9 @@ export function flattenSearchFormState(state: SearchFormState): FragmentQuery {
       project: state.project,
       museum: state.museum,
       dossier: state.dossier,
+      findspotId: state.findspotId,
     },
-    (value) => !value,
+    (value) => value === null || value === undefined || value === '',
   )
   return _.omit(stateWithoutNull, 'isValid')
 }
