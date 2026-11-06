@@ -1,4 +1,4 @@
-import React, { useId } from 'react'
+import React, { useId, useLayoutEffect, useRef } from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
@@ -25,6 +25,11 @@ export default function ExpandableFragmentMatches({
   enableExpansion: boolean
 }): JSX.Element {
   const cardDescriptionId = useId()
+  const matchesId = useId()
+  const controlsRef = useRef<HTMLDivElement>(null)
+  const moreButtonRef = useRef<HTMLButtonElement>(null)
+  const collapseButtonRef = useRef<HTMLButtonElement>(null)
+  const controlsHadFocus = useRef(false)
   const {
     loadedFragment,
     expanded,
@@ -61,21 +66,46 @@ export default function ExpandableFragmentMatches({
         ? 'Show more matching lines'
         : `Show ${nextBatchCount} more matching line${nextBatchCount === 1 ? '' : 's'}`
 
+  useLayoutEffect(() => {
+    if (controlsHadFocus.current && document.activeElement === document.body) {
+      const control =
+        expanded || loading ? collapseButtonRef.current : moreButtonRef.current
+      const focusTarget = control ?? controlsRef.current
+      focusTarget?.focus()
+    }
+  })
+
   return (
     <div aria-busy={loading}>
-      <RenderFragmentLines
-        fragment={displayFragment}
-        linesToShow={expanded ? visibleCount : linesToShow}
-        selectedLineIndexes={expanded ? selectedIndexes : undefined}
-        hideRemainingMessage={canExpand}
-        totalMatchingLines={queryItem.totalMatchingLines}
-        totalLines={enableExpansion ? undefined : queryItem.matchCount}
-        matchingLineIndexes={queryItem.matchingLines}
-        lemmaIds={queryLemmas}
-      />
+      <div id={matchesId}>
+        <RenderFragmentLines
+          fragment={displayFragment}
+          linesToShow={expanded ? visibleCount : linesToShow}
+          selectedLineIndexes={expanded ? selectedIndexes : undefined}
+          hideRemainingMessage={canExpand}
+          totalMatchingLines={queryItem.totalMatchingLines}
+          totalLines={enableExpansion ? undefined : queryItem.matchCount}
+          matchingLineIndexes={queryItem.matchingLines}
+          lemmaIds={queryLemmas}
+        />
+      </div>
       {canExpand && (
-        <div className="fragment-result__match-controls">
-          <span id={cardDescriptionId} className="sr-only">
+        <div
+          className="fragment-result__match-controls"
+          ref={controlsRef}
+          role="group"
+          aria-labelledby={cardDescriptionId}
+          tabIndex={-1}
+          onFocusCapture={() => {
+            controlsHadFocus.current = true
+          }}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) {
+              controlsHadFocus.current = false
+            }
+          }}
+        >
+          <span id={cardDescriptionId} className="visually-hidden">
             Matching lines in {queryItem.museumNumber}
           </span>
           {showMoreButton && (
@@ -83,7 +113,9 @@ export default function ExpandableFragmentMatches({
               type="button"
               className="btn btn-link p-0"
               aria-expanded={expanded}
+              aria-controls={matchesId}
               aria-describedby={cardDescriptionId}
+              ref={moreButtonRef}
               disabled={loading}
               onClick={showMore}
             >
@@ -95,7 +127,9 @@ export default function ExpandableFragmentMatches({
               type="button"
               className="btn btn-link p-0"
               aria-expanded={expanded}
+              aria-controls={matchesId}
               aria-describedby={cardDescriptionId}
+              ref={collapseButtonRef}
               onClick={collapse}
             >
               {loading ? 'Cancel loading' : 'Collapse matching lines'}
