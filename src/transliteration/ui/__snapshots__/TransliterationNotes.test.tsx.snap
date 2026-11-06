@@ -95,11 +95,7 @@ exports[`Snapshot 1`] = `
         <span
           class="badge bg-danger"
         >
-          @bib{
-          RN1
-          @
-          5
-          }
+          @bib{RN1@5}
         </span>
       </span>
     </li>
@@ -193,11 +189,7 @@ exports[`Snapshot 1`] = `
         <span
           class="badge bg-danger"
         >
-          @bib{
-          RN1
-          @
-          5
-          }
+          @bib{RN1@5}
         </span>
       </span>
     </li>
@@ -215,11 +207,7 @@ exports[`Snapshot 1`] = `
         <span
           class="badge bg-danger"
         >
-          @bib{
-          RN1
-          @
-          5
-          }
+          @bib{RN1@5}
         </span>
         <span
           class="reference-popover__citation"

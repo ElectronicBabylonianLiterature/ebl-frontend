@@ -13,6 +13,8 @@ import { OldLineNumberDto } from 'corpus/application/dtos'
 import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import reportFallbackError from 'common/errors/reportFallbackError'
+import { ApiError } from 'http/ApiClient'
 
 const markupLineTypes = ['NoteLine', 'TranslationLine']
 
@@ -27,9 +29,15 @@ function isMarkupDraftLine(
 }
 
 export default class ReferenceInjector {
-  private readonly bibliographyService: BibliographyService
+  private readonly bibliographyService: Pick<
+    BibliographyService,
+    'find' | 'findManyById'
+  >
 
-  constructor(bibliographyService: BibliographyService) {
+  constructor(
+    bibliographyService: Pick<BibliographyService, 'find' | 'findManyById'>,
+    private readonly reportError: (error: Error) => void = reportFallbackError,
+  ) {
     this.bibliographyService = bibliographyService
   }
 
@@ -54,19 +62,19 @@ export default class ReferenceInjector {
 
   private mergeEntries(
     parts: readonly MarkupPart[],
-    entries: readonly BibliographyEntry[],
+    entriesById: ReadonlyMap<string, BibliographyEntry>,
   ): MarkupPart[] {
-    const entryMap = _.keyBy(entries, 'id')
-
     return parts.map((part) => {
       if (isBibliographyPart(part)) {
         const dto = part.reference
+        const entry = entriesById.get(dto.id)
+        if (!entry) return part
         const reference = new Reference(
           dto.type,
           dto.pages,
           dto.notes,
           dto.linesCited,
-          entryMap[dto.id],
+          entry,
         )
         return { ...part, reference }
       }
@@ -81,14 +89,21 @@ export default class ReferenceInjector {
     const ids = _.uniq(
       parts.filter(isBibliographyPart).map((part) => part.reference.id),
     )
+    const reportedErrors = new Set<Error>()
+    const reportError = (error: Error): void => {
+      if (!reportedErrors.has(error)) {
+        reportedErrors.add(error)
+        this.reportError(error)
+      }
+    }
 
     return _.isEmpty(ids)
       ? Promise.resolve(parts as MarkupPart[])
       : this.bibliographyService
-          .findMany(ids)
+          .findManyById(ids, reportError)
           .then((entries) => this.mergeEntries(parts, entries))
           .catch((error) => {
-            console.error(error)
+            reportError(error)
             return parts as MarkupPart[]
           })
   }
@@ -120,17 +135,20 @@ export default class ReferenceInjector {
   }
 
   private createReference(data: ReferenceDto): Promise<Reference> {
+    const reference = new Reference(
+      data.type,
+      data.pages,
+      data.notes,
+      data.linesCited,
+    )
     return this.bibliographyService
       .find(data.id)
-      .then(
-        (entry) =>
-          new Reference(
-            data.type,
-            data.pages,
-            data.notes,
-            data.linesCited,
-            entry,
-          ),
-      )
+      .then((entry) => reference.setDocument(entry))
+      .catch((error) => {
+        if (!(error instanceof ApiError && error.status === 404)) {
+          this.reportError(error)
+        }
+        return reference.withIdentity(data.id, true)
+      })
   }
 }

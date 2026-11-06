@@ -39,7 +39,7 @@ export interface CacheTestFixtures {
 
 export function setupCacheTest(): CacheTestFixtures {
   jest.clearAllMocks()
-  bibliographyService.findMany.mockResolvedValue([])
+  bibliographyService.findManyById.mockResolvedValue(new Map())
 
   return {
     service: createFragmentService(),

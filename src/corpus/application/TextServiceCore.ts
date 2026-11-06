@@ -1,4 +1,5 @@
 import { produce, castDraft } from 'immer'
+import reportFallbackError from 'common/errors/reportFallbackError'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterDisplay, LineVariantDisplay } from 'corpus/domain/chapter'
@@ -35,7 +36,7 @@ export class TextServiceCore {
     return Promise.resolve(this.fragmentService.fetchProvenances())
       .then(() => undefined)
       .catch((error) => {
-        console.error('Failed to preload provenances', error)
+        reportFallbackError(error)
       })
   }
   protected readonly referenceInjector: ReferenceInjector
