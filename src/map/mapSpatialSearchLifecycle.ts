@@ -51,13 +51,13 @@ export function subscribeSpatialSearch(
   }
 
   map.on('click', handleClick)
-  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keydown', handleKeyDown, true)
 
   return {
     update: lifecycle.update,
     dispose(): void {
       isDisposed = true
-      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keydown', handleKeyDown, true)
       map.off('click', handleClick)
       lifecycle.dispose()
     },

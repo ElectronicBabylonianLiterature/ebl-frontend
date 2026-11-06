@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import type { FindspotMapData } from 'map/findspotMapData'
 import { spatialSearchDescription } from 'map/spatialSearch'
@@ -41,6 +41,13 @@ export default function MapSpatialSearchPanel({
     () => JSON.stringify([searchVersion, shape]),
     [searchVersion, shape],
   )
+  const drawButtonRef = useRef<HTMLButtonElement>(null)
+  const addCornerButtonRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!isDrawing && document.activeElement === addCornerButtonRef.current) {
+      drawButtonRef.current?.focus()
+    }
+  }, [isDrawing])
   const searchViewport = (): void => {
     setSearchVersion((current) => current + 1)
     spatialSearch.searchViewport()
@@ -61,6 +68,7 @@ export default function MapSpatialSearchPanel({
           type="button"
           size="sm"
           variant={isDrawing ? 'secondary' : 'outline-secondary'}
+          ref={drawButtonRef}
           aria-pressed={isDrawing}
           onClick={isDrawing ? spatialSearch.clear : spatialSearch.startDrawing}
         >
@@ -70,6 +78,7 @@ export default function MapSpatialSearchPanel({
           type="button"
           size="sm"
           variant="outline-secondary"
+          ref={addCornerButtonRef}
           disabled={!isDrawing}
           onClick={spatialSearch.addCornerAtCenter}
         >
