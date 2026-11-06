@@ -1,0 +1,12 @@
+[
+  {
+    "findspotId": 2,
+    "polygonIds": [
+      "kalhu-area-1-ec3aa053947b"
+    ],
+    "locationPrecision": "excavation-area",
+    "matchMethod": "verified-source",
+    "source": "kalhu-fixture.ods",
+    "sourceRevision": "fixture-v1"
+  }
+]
