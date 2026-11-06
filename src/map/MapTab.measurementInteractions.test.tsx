@@ -31,6 +31,32 @@ describe('MapTab measurement interaction ownership', () => {
     fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
   })
 
+  it('clears points before Escape dismisses the focused measurement drawer', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Measure' }),
+    )
+    const addPoint = screen.getByRole('button', {
+      name: 'Add point at map center',
+    })
+    await userEvent.click(addPoint)
+    expect(addPoint).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Undo point' })).toBeEnabled()
+    await userEvent.keyboard('{Escape}')
+    expect(screen.getByRole('region', { name: 'Measure' })).toBeInTheDocument()
+    expect(addPoint).toHaveFocus()
+    expect(
+      within(screen.getByRole('region', { name: 'Measure' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('Select points on the map to measure a distance.')
+    expect(screen.getByRole('button', { name: 'Undo point' })).toBeDisabled()
+    await userEvent.keyboard('{Escape}')
+    expect(
+      screen.queryByRole('region', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
+  })
+
   it('measures a click without expanding clusters or selecting areas', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     mockCanvas.style.cursor = 'pointer'
