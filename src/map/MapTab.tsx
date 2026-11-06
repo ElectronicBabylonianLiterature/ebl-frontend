@@ -122,11 +122,19 @@ function LoadedMapTab({
       label: 'Map layers',
       isSupported: true,
       render: () => (
-        <MapLayerControls
-          showExcavationAreas={showExcavationAreas}
-          canShowExcavationAreas={canShowExcavationAreas}
-          onShowExcavationAreasChange={experience.setShowExcavationAreas}
-        />
+        <>
+          {!isPolygonIndexLoaded ? (
+            <p role="status">Loading excavation areas…</p>
+          ) : null}
+          {excavationAreasUnavailable ? (
+            <Alert variant="warning">Excavation areas are unavailable.</Alert>
+          ) : null}
+          <MapLayerControls
+            showExcavationAreas={showExcavationAreas}
+            canShowExcavationAreas={canShowExcavationAreas}
+            onShowExcavationAreasChange={experience.setShowExcavationAreas}
+          />
+        </>
       ),
     },
   ]
@@ -136,10 +144,7 @@ function LoadedMapTab({
       className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
     >
       {isPresenting ? (
-        <MapPresentationBar
-          title={null}
-          onExit={experience.presentation.exit}
-        />
+        <MapPresentationBar onExit={experience.presentation.exit} />
       ) : (
         <MapExperienceHeader
           visibleSiteCount={visibleFindspotCount}
@@ -153,6 +158,12 @@ function LoadedMapTab({
               onFilterChange={experience.setFilter}
             />
           }
+        />
+      )}
+      {isPresenting ? null : (
+        <FindspotEmptyState
+          provenances={filteredProvenances}
+          filter={experience.filter}
         />
       )}
       <div className="map-experience__body">
@@ -172,12 +183,6 @@ function LoadedMapTab({
           }
         />
       </div>
-      {!isPolygonIndexLoaded ? (
-        <p role="status">Loading excavation areas…</p>
-      ) : null}
-      {excavationAreasUnavailable ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
       <p
         id="findspot-map-description"
         className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
@@ -188,10 +193,6 @@ function LoadedMapTab({
       </p>
       {isPresenting ? null : (
         <>
-          <FindspotEmptyState
-            provenances={filteredProvenances}
-            filter={experience.filter}
-          />
           <FindspotSearchList provenances={filteredProvenances} />
         </>
       )}
