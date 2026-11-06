@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import BibliographyBatchLoader, {
-  isNotFoundError,
+  handleLookupError,
 } from 'bibliography/application/BibliographyBatchLoader'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
@@ -64,11 +64,12 @@ export default class BibliographyEntryLoader {
 
   findManyById(
     ids: readonly string[],
+    reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const uniqueIds = _.uniq(ids)
     return _.isEmpty(uniqueIds)
       ? Promise.resolve(new Map<string, BibliographyEntry>())
-      : this.loadEntriesByIds(uniqueIds)
+      : this.loadEntriesByIds(uniqueIds, reportError)
   }
 
   cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
@@ -102,13 +103,14 @@ export default class BibliographyEntryLoader {
 
   loadEntriesByIds(
     ids: readonly string[],
+    reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const entriesById = new Map<string, BibliographyEntry>()
     const missingIds: string[] = []
     const inFlightRequests: Array<Promise<void>> = []
 
     ids.forEach((id) => {
-      const existingEntry = this.findAvailableEntry(id)
+      const existingEntry = this.findAvailableEntry(id, reportError)
       if (existingEntry) {
         inFlightRequests.push(
           existingEntry.then((entry) => {
@@ -124,7 +126,7 @@ export default class BibliographyEntryLoader {
 
     const fetchMissingEntries = _.isEmpty(missingIds)
       ? Promise.resolve(new Map<string, BibliographyEntry>())
-      : this.batchLoader.load(missingIds, this.generation)
+      : this.batchLoader.load(missingIds, this.generation, reportError)
 
     return Promise.all([
       Promise.all(inFlightRequests),
@@ -139,6 +141,7 @@ export default class BibliographyEntryLoader {
 
   private findAvailableEntry(
     id: string,
+    reportError?: (error: Error) => void,
   ): Promise<BibliographyEntry | undefined> | undefined {
     const cachedEntry = getCachedValue(this.entries, id)
     if (cachedEntry) {
@@ -147,13 +150,10 @@ export default class BibliographyEntryLoader {
 
     const directFindRequest = this.findRequests.get(id)
     return directFindRequest
-      ? directFindRequest.catch((error) => {
-          if (!isNotFoundError(error)) {
-            throw error
-          }
-          return undefined
-        })
-      : this.batchLoader.findManyInFlight(id)
+      ? directFindRequest.catch((error: Error) =>
+          handleLookupError(error, reportError),
+        )
+      : this.batchLoader.findManyInFlight(id, reportError)
   }
 
   private invalidateInFlightRequests(): void {

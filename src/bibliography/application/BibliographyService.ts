@@ -45,9 +45,10 @@ export default class BibliographyService implements BibliographySearch {
 
   findManyById(
     ids: readonly string[],
+    reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     this.clearCachesWhenScopeChanges()
-    return this.cache.findManyById(ids)
+    return this.cache.findManyById(ids, reportError)
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {

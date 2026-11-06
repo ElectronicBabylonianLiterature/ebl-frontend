@@ -58,9 +58,10 @@ describe('bibliography errors', () => {
     bibliographyService.findManyById.mockRejectedValue(error)
 
     await expect(service.find(number)).resolves.toEqual(fragmentWithCitation)
-    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
-      'unavailable',
-    ])
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith(
+      ['unavailable'],
+      expect.any(Function),
+    )
   })
 })
 

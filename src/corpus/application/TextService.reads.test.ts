@@ -158,9 +158,10 @@ test('injects note paratext and preserves non-note paratext', async () => {
   const result = await textService.findChapterLine(chapterId, 0, 0)
   const paratext = result.variants[0].manuscripts[0].paratext
 
-  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
-    reference.id,
-  ])
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith(
+    [reference.id],
+    expect.any(Function),
+  )
   expect(paratext[0]).toMatchObject({
     type: 'NoteLine',
     parts: [

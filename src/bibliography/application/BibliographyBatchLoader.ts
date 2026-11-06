@@ -8,7 +8,7 @@ interface FoundEntry {
 }
 
 interface MissingEntry {
-  readonly error: ApiError
+  readonly error: Error
 }
 
 type EntryResult = FoundEntry | MissingEntry
@@ -25,6 +25,20 @@ export function isNotFoundError(error: unknown): error is ApiError {
   return error instanceof ApiError && error.status === 404
 }
 
+export function handleLookupError(
+  error: Error,
+  reportError?: (error: Error) => void,
+  ignoreNotFound = true,
+): undefined {
+  if (!ignoreNotFound || !isNotFoundError(error)) {
+    if (!reportError) {
+      throw error
+    }
+    reportError(error)
+  }
+  return undefined
+}
+
 export default class BibliographyBatchLoader {
   private readonly cachedRequests = new Map<string, BatchRequest>()
   private readonly inFlightRequestsById = new Map<string, EntryRequest>()
@@ -37,12 +51,13 @@ export default class BibliographyBatchLoader {
   load(
     ids: readonly string[],
     generation: number,
+    reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const sortedUniqueIds = _.uniq(ids).sort()
     const requestKey = JSON.stringify(sortedUniqueIds)
     const cachedRequest = this.cachedRequests.get(requestKey)
     if (cachedRequest) {
-      return this.onlyFoundEntries(cachedRequest)
+      return this.onlyFoundEntries(cachedRequest, reportError)
     }
 
     const batchRequest = this.bibliographyRepository.findMany(sortedUniqueIds)
@@ -84,7 +99,7 @@ export default class BibliographyBatchLoader {
         this.inFlightRequestsById.set(id, entryRequest)
       }
     })
-    return this.onlyFoundEntries(request)
+    return this.onlyFoundEntries(request, reportError)
   }
 
   findInFlight(id: string): Promise<BibliographyEntry> | undefined {
@@ -99,11 +114,16 @@ export default class BibliographyBatchLoader {
 
   findManyInFlight(
     id: string,
+    reportError?: (error: Error) => void,
   ): Promise<BibliographyEntry | undefined> | undefined {
     const request = this.inFlightRequestsById.get(id)
-    return request?.then((result) => {
-      return 'entry' in result ? result.entry : undefined
-    })
+    return request?.then(
+      (result) =>
+        'entry' in result
+          ? result.entry
+          : handleLookupError(result.error, reportError),
+      (error: Error) => handleLookupError(error, reportError, false),
+    )
   }
 
   clear(): void {
@@ -130,25 +150,29 @@ export default class BibliographyBatchLoader {
         this.cacheEntry(entry.id, entry, generation)
         return { entry }
       })
-      .catch((error) => {
-        if (isNotFoundError(error)) {
-          return { error }
-        }
-        throw error
-      })
+      .catch((error: Error) => ({ error }))
   }
 
   private onlyFoundEntries(
     request: BatchRequest,
+    reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
-    return request.then((results) => {
-      const entries = new Map<string, BibliographyEntry>()
-      results.forEach((result, id) => {
-        if ('entry' in result) {
-          entries.set(id, result.entry)
-        }
-      })
-      return entries
-    })
+    return request.then(
+      (results) => {
+        const entries = new Map<string, BibliographyEntry>()
+        results.forEach((result, id) => {
+          if ('entry' in result) {
+            entries.set(id, result.entry)
+          } else {
+            handleLookupError(result.error, reportError)
+          }
+        })
+        return entries
+      },
+      (error: Error) => {
+        handleLookupError(error, reportError, false)
+        return new Map<string, BibliographyEntry>()
+      },
+    )
   }
 }

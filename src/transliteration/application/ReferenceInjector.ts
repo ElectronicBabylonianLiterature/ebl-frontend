@@ -89,14 +89,21 @@ export default class ReferenceInjector {
     const ids = _.uniq(
       parts.filter(isBibliographyPart).map((part) => part.reference.id),
     )
+    const reportedErrors = new Set<Error>()
+    const reportError = (error: Error): void => {
+      if (!reportedErrors.has(error)) {
+        reportedErrors.add(error)
+        this.reportError(error)
+      }
+    }
 
     return _.isEmpty(ids)
       ? Promise.resolve(parts as MarkupPart[])
       : this.bibliographyService
-          .findManyById(ids)
+          .findManyById(ids, reportError)
           .then((entries) => this.mergeEntries(parts, entries))
           .catch((error) => {
-            this.reportError(error)
+            reportError(error)
             return parts as MarkupPart[]
           })
   }

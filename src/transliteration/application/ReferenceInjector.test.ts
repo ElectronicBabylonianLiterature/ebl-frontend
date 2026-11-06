@@ -125,10 +125,10 @@ describe('ReferenceInjector', () => {
       { type: 'BibliographyPart', reference: canonicalReference },
       ...injectedParts,
     ])
-    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
-      referenceId,
-      requestedAlias,
-    ])
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith(
+      [referenceId, requestedAlias],
+      expect.any(Function),
+    )
   })
 
   it('injects references to OldLineNumbers', async () => {

@@ -108,12 +108,14 @@ test('inject ChapterDisplay', async () => {
     `${chapterUrl}/display`,
     false,
   )
-  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
-    translationReference.id,
-  ])
-  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
-    intertextReference.id,
-  ])
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith(
+    [translationReference.id],
+    expect.any(Function),
+  )
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith(
+    [intertextReference.id],
+    expect.any(Function),
+  )
 })
 
 describe('findChapterDisplay caching', () => {
