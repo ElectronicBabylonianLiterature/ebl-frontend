@@ -1,107 +1,44 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import useFindspotMap from 'map/useFindspotMap'
-import useMapSourceData from 'map/useMapSourceData'
+import useMapTabState, { type MapTabState } from 'map/useMapTabState'
 import useProvenances, { ProvenanceSource } from 'map/useProvenances'
-import useExcavationAreas from 'map/useExcavationAreas'
-import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
-import useMapExperience from 'map/useMapExperience'
-import useMapPanel from 'map/useMapPanel'
-import useMapLayoutEffects from 'map/useMapLayoutEffects'
-import { resetMapCamera } from 'map/mapCamera'
-import {
-  anySiteHasExcavationPolygons,
-  deriveMapSiteCapabilities,
-} from 'map/mapSiteCapabilities'
 import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import MapLayerControls from 'map/MapLayerControls'
+import MapSelectionPill from 'map/MapSelectionPill'
+import MapLayerPanel from 'map/MapLayerPanel'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
-import { filterProvenances } from 'map/findspotFilter'
-import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 import 'map/MapTab.sass'
 
 interface Props {
-  fragmentService: ProvenanceSource
+  readonly findspotService: FindspotService
+  readonly fragmentService: ProvenanceSource
 }
 
 function LoadedMapTab({
+  findspotService,
   provenances,
 }: {
-  provenances: readonly ProvenanceRecord[]
+  readonly findspotService: FindspotService
+  readonly provenances: MapTabState['provenances']
 }): JSX.Element {
-  const mapContainer = useRef<HTMLDivElement>(null)
-  const drawerRef = useRef<HTMLElement>(null)
+  const state = useMapTabState(findspotService, provenances)
+  const {
+    experience,
+    panel,
+    filteredProvenances,
+    selectedPolygon,
+    visibleFindspotCount,
+  } = state
+  const isPresenting = experience.presentation.isActive
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
   const wasPresentingRef = useRef(false)
-  const [mapBackgroundError, setMapBackgroundError] = useState(false)
-  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
-  const [cameraResetVersion, setCameraResetVersion] = useState(0)
-
-  const experience = useMapExperience()
-  const panel = useMapPanel()
-  const isPresenting = experience.presentation.isActive
-
-  const {
-    index: polygonIndex,
-    isLoaded: isPolygonIndexLoaded,
-    error: polygonIndexError,
-  } = useExcavationPolygonIndex()
-  const excavationAreasUnavailable =
-    polygonIndexError !== null || mapExcavationAreasError
-  const canShowExcavationAreas = useMemo(
-    () =>
-      isPolygonIndexLoaded &&
-      !excavationAreasUnavailable &&
-      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
-    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
-  )
-  const showExcavationAreas =
-    experience.showExcavationAreas && canShowExcavationAreas
-
-  const filteredProvenances = useMemo(
-    () => filterProvenances(provenances, experience.filter),
-    [provenances, experience.filter],
-  )
-  const visibleFindspotCount = useMemo(
-    () => provenanceToGeoJson(filteredProvenances).features.length,
-    [filteredProvenances],
-  )
-  const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
-    setMapBackgroundError(hasError)
-  }, [])
-  const handleExcavationAreasAvailabilityChange = useCallback(
-    (isUnavailable: boolean) => {
-      setMapExcavationAreasError(isUnavailable)
-    },
-    [],
-  )
-  const mapRef = useFindspotMap(
-    mapContainer,
-    filteredProvenances,
-    handleMapBackgroundErrorChange,
-    cameraResetVersion,
-  )
-  useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
-  useExcavationAreas(
-    mapRef,
-    showExcavationAreas,
-    handleExcavationAreasAvailabilityChange,
-    isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
-  )
-  useMapLayoutEffects(
-    mapContainer,
-    mapRef,
-    drawerRef,
-    isPresenting ? null : panel.active,
-  )
 
   useEffect(() => {
     if (wasPresentingRef.current && !isPresenting) {
@@ -110,32 +47,12 @@ function LoadedMapTab({
     wasPresentingRef.current = isPresenting
   }, [isPresenting])
 
-  const resetView = useCallback(() => {
-    setCameraResetVersion((current) => current + 1)
-    experience.resetState()
-    resetMapCamera(mapRef.current)
-  }, [experience, mapRef])
-
   const panels: readonly MapPanelDefinition[] = [
     {
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
-      render: () => (
-        <>
-          {!isPolygonIndexLoaded ? (
-            <p role="status">Loading excavation areas…</p>
-          ) : null}
-          {excavationAreasUnavailable ? (
-            <Alert variant="warning">Excavation areas are unavailable.</Alert>
-          ) : null}
-          <MapLayerControls
-            showExcavationAreas={showExcavationAreas}
-            canShowExcavationAreas={canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-        </>
-      ),
+      render: () => <MapLayerPanel state={state} />,
     },
   ]
 
@@ -148,12 +65,12 @@ function LoadedMapTab({
       ) : (
         <MapExperienceHeader
           visibleSiteCount={visibleFindspotCount}
-          onResetView={resetView}
+          onResetView={state.resetView}
           presentationTriggerRef={presentationTriggerRef}
           onEnterPresentation={experience.presentation.enter}
           filterControl={
             <FindspotFilterInput
-              provenances={provenances}
+              provenances={state.provenances}
               filter={experience.filter}
               onFilterChange={experience.setFilter}
             />
@@ -166,24 +83,32 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-      {excavationAreasUnavailable &&
-      experience.showExcavationAreas &&
+      {state.isExcavationAreasUnavailable &&
+      (experience.showExcavationAreas || experience.selection !== null) &&
       (isPresenting || panel.active !== 'layers') ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <div className="map-experience__body">
         <MapStage
-          containerRef={mapContainer}
-          isBackgroundUnavailable={mapBackgroundError}
+          containerRef={state.mapContainer}
+          isBackgroundUnavailable={state.isBackgroundUnavailable}
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
             isPresenting ? null : (
-              <MapPanelDock
-                panels={panels}
-                panel={panel}
-                drawerRef={drawerRef}
-              />
+              <>
+                <MapPanelDock
+                  panels={panels}
+                  panel={panel}
+                  drawerRef={state.drawerRef}
+                />
+                {selectedPolygon && panel.active !== 'layers' ? (
+                  <MapSelectionPill
+                    label="Show selected area"
+                    onShow={() => panel.open('layers')}
+                  />
+                ) : null}
+              </>
             )
           }
         />
@@ -198,6 +123,10 @@ function LoadedMapTab({
       </p>
       {isPresenting ? null : (
         <>
+          <FindspotEmptyState
+            provenances={filteredProvenances}
+            filter={experience.filter}
+          />
           <FindspotSearchList provenances={filteredProvenances} />
         </>
       )}
@@ -205,7 +134,10 @@ function LoadedMapTab({
   )
 }
 
-export default function MapTab({ fragmentService }: Props): JSX.Element {
+export default function MapTab({
+  findspotService,
+  fragmentService,
+}: Props): JSX.Element {
   const { provenances, error } = useProvenances(fragmentService)
 
   if (error) {
@@ -216,5 +148,7 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
     return <Spinner>Loading map data...</Spinner>
   }
 
-  return <LoadedMapTab provenances={provenances} />
+  return (
+    <LoadedMapTab findspotService={findspotService} provenances={provenances} />
+  )
 }

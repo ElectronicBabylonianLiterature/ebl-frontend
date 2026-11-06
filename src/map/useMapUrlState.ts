@@ -5,6 +5,7 @@ import {
   mergeMapUrlStateIntoSearch,
   normalizeMapUrlState,
   parseMapUrlState,
+  serializeMapUrlState,
 } from 'map/mapUrlState'
 
 export interface MapUrlStateController {
@@ -28,9 +29,8 @@ export default function useMapUrlState(): MapUrlStateController {
     (patch: Partial<MapUrlState>) => {
       const next = normalizeMapUrlState({ ...latestStateRef.current, ...patch })
       if (
-        next.version === latestStateRef.current.version &&
-        next.filter === latestStateRef.current.filter &&
-        next.showExcavationAreas === latestStateRef.current.showExcavationAreas
+        serializeMapUrlState(next) ===
+        serializeMapUrlState(latestStateRef.current)
       ) {
         return
       }
