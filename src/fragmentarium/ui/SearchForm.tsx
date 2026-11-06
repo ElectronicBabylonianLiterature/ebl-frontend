@@ -187,7 +187,9 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   }
 }
 
-function SearchFormWithRouter(props: Omit<SearchFormProps, 'navigate'>) {
+function SearchFormWithRouter(
+  props: Omit<SearchFormProps, 'navigate'>,
+): JSX.Element {
   const navigate = useNavigate()
   return <SearchForm {...props} navigate={navigate} />
 }

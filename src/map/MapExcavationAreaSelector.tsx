@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
 import { findMapSite } from 'map/mapSites'
@@ -14,15 +14,25 @@ export default function MapExcavationAreaSelector({
   selectedPolygonId,
   onSelect,
 }: Props): JSX.Element {
-  const baseLabels = polygons.map(
-    (polygon) =>
-      (findMapSite(polygon.siteId)?.siteName ?? polygon.siteId) +
-      ' — ' +
-      (polygon.name ?? polygon.polygonId),
+  const baseLabels = useMemo(
+    () =>
+      polygons.map(
+        (polygon) =>
+          (findMapSite(polygon.siteId)?.siteName ?? polygon.siteId) +
+          ' — ' +
+          (polygon.name ?? polygon.polygonId),
+      ),
+    [polygons],
   )
-  const duplicateLabels = new Set(
-    baseLabels.filter((label, index) => baseLabels.indexOf(label) !== index),
-  )
+  const duplicateLabels = useMemo(() => {
+    const seen = new Set<string>()
+    const duplicates = new Set<string>()
+    for (const label of baseLabels) {
+      if (seen.has(label)) duplicates.add(label)
+      seen.add(label)
+    }
+    return duplicates
+  }, [baseLabels])
 
   return (
     <Form.Group controlId="map-excavation-area-selector">
