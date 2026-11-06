@@ -183,6 +183,9 @@ function LoadedMapTab({
           }
         />
       </div>
+      {isPresenting && excavationAreasUnavailable ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       <p
         id="findspot-map-description"
         className={isPresenting ? 'visually-hidden' : 'map-tab__description'}

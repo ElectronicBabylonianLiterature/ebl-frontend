@@ -158,8 +158,8 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
-    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     await openLayerControls()
+    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
 
     await userEvent.click(
@@ -175,8 +175,8 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
-    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     await openLayerControls()
+    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
   })
 
