@@ -40,7 +40,9 @@ export function isValidNumber(number?: string): boolean {
   return !number || !/^\[.*\]+$/.test(number.trim())
 }
 
-export function isValidFindspotId(value: FragmentQuery['findspotId'] | null): boolean {
+export function isValidFindspotId(
+  value: FragmentQuery['findspotId'] | null,
+): boolean {
   return (
     value === undefined ||
     value === null ||
