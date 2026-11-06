@@ -3,6 +3,12 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MapPanelDrawer from 'map/MapPanelDrawer'
 
+const originalMatchMedia = window.matchMedia
+
+afterEach(() => {
+  window.matchMedia = originalMatchMedia
+})
+
 function mockMatchMedia(initialMatches: boolean): (matches: boolean) => void {
   let matches = initialMatches
   const listeners = new Set<() => void>()
@@ -65,12 +71,16 @@ describe('MapPanelDrawer', () => {
       </MapPanelDrawer>,
     )
     const handle = screen.getByRole('button', { name: 'Collapse Export' })
+    expect(
+      document.getElementById(handle.getAttribute('aria-controls') ?? ''),
+    ).toHaveTextContent('Export content')
 
     await userEvent.click(handle)
 
     expect(screen.queryByText('Export content')).not.toBeInTheDocument()
     const expandHandle = screen.getByRole('button', { name: 'Expand Export' })
     expect(expandHandle).toHaveAttribute('aria-expanded', 'false')
+    expect(expandHandle).not.toHaveAttribute('aria-controls')
 
     await userEvent.click(expandHandle)
 
