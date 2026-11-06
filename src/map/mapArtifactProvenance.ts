@@ -4,6 +4,7 @@ import { mapDataSiteParam } from 'map/mapSites'
 interface SiteProvenance {
   readonly artifactSourceRevision: string | null
   readonly mappingSourceRevisions: readonly string[]
+  readonly artifactContractRevision?: string | null
   readonly artifactManifestSha256: string | null
 }
 
@@ -16,6 +17,7 @@ export function exportPolygonProvenance(siteId: string): {
   readonly artifactSourceRevision: string | null
   readonly mappingSourceRevisions: readonly string[]
   readonly artifactManifestSha256: string | null
+  readonly artifactContractRevision: string | null
   readonly polygonGeometrySha256: string | null
 } {
   const canonicalSiteId = mapDataSiteParam(siteId)
@@ -25,6 +27,7 @@ export function exportPolygonProvenance(siteId: string): {
     artifactSourceRevision: site?.artifactSourceRevision ?? null,
     mappingSourceRevisions: site?.mappingSourceRevisions ?? [],
     artifactManifestSha256: site?.artifactManifestSha256 ?? null,
+    artifactContractRevision: site?.artifactContractRevision ?? null,
     polygonGeometrySha256: files[siteId + '.geojson'] ?? null,
   }
 }
