@@ -126,7 +126,7 @@ function LoadedMapTab({
           {!isPolygonIndexLoaded ? (
             <p role="status">Loading excavation areas…</p>
           ) : null}
-          {excavationAreasUnavailable ? (
+          {excavationAreasUnavailable && !experience.showExcavationAreas ? (
             <Alert variant="warning">Excavation areas are unavailable.</Alert>
           ) : null}
           <MapLayerControls
@@ -166,9 +166,7 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-      {excavationAreasUnavailable &&
-      experience.showExcavationAreas &&
-      (isPresenting || panel.active !== 'layers') ? (
+      {excavationAreasUnavailable && experience.showExcavationAreas ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <div className="map-experience__body">
