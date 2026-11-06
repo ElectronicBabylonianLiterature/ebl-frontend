@@ -15,6 +15,11 @@ import { EXCAVATION_AREAS_SOURCE_ID } from 'map/mapExcavationLayers'
 jest.mock('maplibre-gl')
 
 const WARNING = 'Excavation areas are unavailable.'
+const originalMatchMedia = window.matchMedia
+
+afterEach(() => {
+  window.matchMedia = originalMatchMedia
+})
 
 describe('excavation failure visibility with closed controls', () => {
   beforeEach(() => {
@@ -83,4 +88,38 @@ describe('excavation failure visibility with closed controls', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
     expect(await screen.findByText(WARNING)).toBeInTheDocument()
   })
+})
+
+it('keeps a requested source failure visible with the narrow drawer collapsed', async () => {
+  window.matchMedia = jest.fn().mockReturnValue({
+    matches: true,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  })
+  resetMapMocks()
+  fetchMock.resetMocks()
+  fetchMock.mockResponseOnce(
+    fs.readFileSync(
+      path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+      'utf8',
+    ),
+  )
+  renderMapTab(
+    makeFragmentService([makeProvenance()]),
+    '/tools/map?mv=1&areas=1',
+  )
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Map layers' }),
+  )
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Collapse Map layers' }),
+  )
+  expect(screen.queryByLabelText('Excavation areas')).not.toBeInTheDocument()
+  act(() => {
+    triggerMapEvent('error', {
+      sourceId: EXCAVATION_AREAS_SOURCE_ID,
+      error: { message: 'unavailable' },
+    })
+  })
+  expect(await screen.findByText(WARNING)).toBeInTheDocument()
 })

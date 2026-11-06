@@ -16,6 +16,19 @@ interface Props {
   readonly active: ActiveMapPanel
   readonly onToggle: (panel: MapPanelId) => void
 }
+function focusClosedTool(
+  buttons: ReadonlyMap<MapPanelId, HTMLButtonElement>,
+  previous: MapPanelId,
+  firstSupportedId: MapPanelId | undefined,
+): void {
+  const previousButton = buttons.get(previous)
+  if (previousButton && document.contains(previousButton)) {
+    previousButton.focus()
+    return
+  }
+  if (firstSupportedId) buttons.get(firstSupportedId)?.focus()
+}
+
 export default function MapToolbar({
   panels,
   active,
@@ -32,12 +45,11 @@ export default function MapToolbar({
       active === null &&
       document.activeElement === document.body
     ) {
-      const previousButton = buttonRefs.current.get(previousActiveRef.current)
-      if (previousButton && document.contains(previousButton)) {
-        previousButton.focus()
-      } else {
-        if (firstSupportedId) buttonRefs.current.get(firstSupportedId)?.focus()
-      }
+      focusClosedTool(
+        buttonRefs.current,
+        previousActiveRef.current,
+        firstSupportedId,
+      )
     }
     previousActiveRef.current = active
   }, [active, firstSupportedId])
