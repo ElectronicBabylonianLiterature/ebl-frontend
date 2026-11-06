@@ -17,6 +17,7 @@ describe('MapLegend', () => {
       'aria-expanded',
       'false',
     )
+    expect(screen.getByRole('button', { name: 'Legend' })).not.toHaveAttribute('aria-controls')
     expect(screen.queryByLabelText('Map legend')).not.toBeInTheDocument()
   })
 
@@ -27,6 +28,7 @@ describe('MapLegend', () => {
     await userEvent.click(toggle)
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(document.getElementById(toggle.getAttribute('aria-controls') ?? '')).toBe(screen.getByRole('region', { name: 'Map legend details' }))
     const body = screen.getByLabelText('Map legend')
     expect(body).toHaveTextContent('Linked tablet data unavailable or loading')
     expect(body).toHaveTextContent('No mapped findspot')
