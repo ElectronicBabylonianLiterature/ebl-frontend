@@ -70,3 +70,25 @@ describe('MapTab measurement interaction ownership', () => {
     ).not.toBeInTheDocument()
   })
 })
+
+it('clears keyboard-added points before Escape dismisses the measurement drawer', async () => {
+  resetMapMocks()
+  fetchMock.resetMocks()
+  fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await userEvent.click(await screen.findByRole('button', { name: 'Measure' }))
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Add point at map center' }),
+  )
+  expect(
+    within(screen.getByRole('region', { name: 'Measure' })).getByRole('status'),
+  ).toHaveTextContent('Add 1 more point.')
+  await userEvent.keyboard('{Escape}')
+  expect(
+    within(screen.getByRole('region', { name: 'Measure' })).getByRole('status'),
+  ).toHaveTextContent('Select points on the map to measure a distance.')
+  await userEvent.keyboard('{Escape}')
+  expect(
+    screen.queryByRole('region', { name: 'Measure' }),
+  ).not.toBeInTheDocument()
+})
