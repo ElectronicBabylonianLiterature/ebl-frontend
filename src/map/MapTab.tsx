@@ -11,6 +11,8 @@ import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
 import MapLayerPanel from 'map/MapLayerPanel'
 import MapInspector from 'map/MapInspector'
+import MapLegend from 'map/MapLegend'
+import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapSelectionPill from 'map/MapSelectionPill'
 import { findMapSite, isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
@@ -84,6 +86,20 @@ function LoadedMapTab({
         ),
     },
     {
+      id: 'visualization',
+      label: 'Visualization',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapVisualizationControl
+          mode={state.visualization.effectiveMode}
+          legend={state.visualization.legend}
+          isDensityAvailable={state.visualization.isDensityAvailable}
+          hasUnavailableData={state.visualization.hasUnavailableData}
+          onModeChange={experience.setVisualization}
+        />
+      ),
+    },
+    {
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
@@ -137,6 +153,14 @@ function LoadedMapTab({
           isBackgroundUnavailable={state.isBackgroundUnavailable}
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
+          legend={
+            state.showExcavationAreas ? (
+              <MapLegend
+                mode={state.visualization.effectiveMode}
+                legend={state.visualization.legend}
+              />
+            ) : null
+          }
           overlay={
             isPresenting ? null : (
               <MapPanelDock
