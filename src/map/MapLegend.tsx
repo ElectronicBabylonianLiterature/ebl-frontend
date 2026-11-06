@@ -52,7 +52,7 @@ export default function MapLegend({ mode, legend }: Props): JSX.Element {
         size="sm"
         variant="outline-secondary"
         aria-expanded={isExpanded}
-        aria-controls="map-legend-body"
+        aria-controls={isExpanded ? "map-legend-body" : undefined}
         onClick={() => setIsExpanded((current) => !current)}
       >
         Legend
