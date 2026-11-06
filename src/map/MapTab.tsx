@@ -102,7 +102,7 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
-            isPresenting ? null : (
+            (
               <>
                 <MapPanelDock
                   panels={isPresenting ? [] : panels}
@@ -110,7 +110,7 @@ function LoadedMapTab({
                   panel={panel}
                   drawerRef={state.drawerRef}
                 />
-                {selectedPolygon && panel.active !== 'layers' ? (
+                {!isPresenting && selectedPolygon && panel.active !== 'layers' ? (
                   <MapSelectionPill
                     label="Show selected area"
                     onShow={() => panel.open('layers')}
