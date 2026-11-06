@@ -139,6 +139,13 @@ function LoadedMapTab({
     },
   ]
 
+  const excavationStatus =
+    excavationAreasUnavailable &&
+    (experience.showExcavationAreas ||
+      (!isPresenting && panel.active === 'layers')) ? (
+      <Alert variant="warning">Excavation areas are unavailable.</Alert>
+    ) : null
+
   return (
     <div
       className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
@@ -166,11 +173,7 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-      {excavationAreasUnavailable &&
-      (experience.showExcavationAreas ||
-        (!isPresenting && panel.active === 'layers')) ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
+
       <div className="map-experience__body">
         <MapStage
           containerRef={mapContainer}
@@ -178,13 +181,12 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           overlay={
-            isPresenting ? null : (
-              <MapPanelDock
-                panels={panels}
-                panel={panel}
-                drawerRef={drawerRef}
-              />
-            )
+            <MapPanelDock
+              panels={isPresenting ? [] : panels}
+              status={excavationStatus}
+              panel={panel}
+              drawerRef={drawerRef}
+            />
           }
         />
       </div>
