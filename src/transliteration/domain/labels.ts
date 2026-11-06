@@ -29,6 +29,7 @@ export interface Labels {
   readonly object: ObjectLabel | null
   readonly surface: SurfaceLabel | null
   readonly column: ColumnLabel | null
+  readonly sealNumber?: number | null
 }
 
 export const defaultLabels: Labels = {
@@ -54,10 +55,18 @@ export function labelAbbreviation(label: Label): string {
   return `${label.abbreviation}${label.status.map(statusAbbreviation).join('')}`
 }
 
+export function sealAbbreviation(
+  sealNumber: number | null | undefined,
+): string {
+  return sealNumber == null ? '' : `seal ${sealNumber}`
+}
+
 export function labelsAbbreviation(labels: Labels): string {
-  return flow(
+  const abbreviation = flow(
     reject(isNil),
     map(labelAbbreviation),
     join(' '),
   )([labels.object, labels.surface, labels.column])
+  const seal = sealAbbreviation(labels.sealNumber)
+  return seal ? [abbreviation, seal].filter(Boolean).join(' ') : abbreviation
 }
