@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -9,6 +9,7 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
+import useMapPresentationFocus from 'map/useMapPresentationFocus'
 import MapLegend from 'map/MapLegend'
 import MapSelectionPill from 'map/MapSelectionPill'
 import buildMapToolPanels from 'map/mapToolPanels'
@@ -38,14 +39,16 @@ function LoadedMapTab({
   } = state
   const isPresenting = experience.presentation.isActive
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
-  const wasPresentingRef = useRef(false)
-
-  useEffect(() => {
-    if (wasPresentingRef.current && !isPresenting) {
-      presentationTriggerRef.current?.focus()
-    }
-    wasPresentingRef.current = isPresenting
-  }, [isPresenting])
+  useMapPresentationFocus(presentationTriggerRef, isPresenting)
+  const description = isPresenting
+    ? {
+        className: 'visually-hidden',
+        content: 'Interactive findspot map in presentation mode.',
+      }
+    : {
+        className: 'map-tab__description',
+        content: 'Matching tablet search links are available below the map.',
+      }
 
   const clearSelection = (): void => {
     experience.setSelection(null)
@@ -84,7 +87,9 @@ function LoadedMapTab({
         />
       )}
       {state.isExcavationAreasUnavailable &&
-      (experience.showExcavationAreas || experience.selection !== null) ? (
+      (experience.showExcavationAreas ||
+        experience.selection !== null ||
+        (!isPresenting && panel.active === 'layers')) ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <div className="map-experience__body">
@@ -120,13 +125,8 @@ function LoadedMapTab({
           }
         />
       </div>
-      <p
-        id="findspot-map-description"
-        className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
-      >
-        {isPresenting
-          ? 'Interactive findspot map in presentation mode.'
-          : 'Matching tablet search links are available below the map.'}
+      <p id="findspot-map-description" className={description.className}>
+        {description.content}
       </p>
       {isPresenting ? null : (
         <>
