@@ -155,7 +155,10 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the polygon index fails', async () => {
     fetchMock.mockRejectOnce(new Error('asset unavailable'))
 
-    await renderMapWithProvenance()
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+    )
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
@@ -181,7 +184,10 @@ describe('MapTab map errors', () => {
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+    )
     await openLayerControls()
 
     await waitFor(() =>
@@ -215,6 +221,9 @@ describe('MapTab map errors', () => {
 
     expect(await screen.findByText(BACKGROUND_WARNING)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
     expect(mockCaptureException).toHaveBeenCalledWith(
       new Error('Failed to initialize WebGL'),
     )
