@@ -10,22 +10,41 @@ import {
   mockMapInstance,
   mockSetLayoutProperty,
   resetMapMocks,
+  mockSetPaintProperty,
+  mockSetFeatureState,
 } from 'map/mapLibreMock.testSupport'
+import type { PolygonVisualizationValues } from 'map/mapVisualizationValues'
+import {
+  EVIDENCE_PAINT,
+  type ExcavationPaint,
+  excavationPaintProperties,
+} from 'map/mapExcavationPaint'
 
 jest.mock('maplibre-gl')
 
 const POLYGON_INDEX = new Map()
 
-function Harness({ isVisible }: { isVisible: boolean }): null {
+function Harness({
+  isVisible,
+  selectedPolygonId = null,
+  values,
+  paint,
+}: {
+  isVisible: boolean
+  selectedPolygonId?: string | null
+  values?: PolygonVisualizationValues
+  paint?: ExcavationPaint
+}): null {
   const mapRef = useRef<MapLibreMap | null>(
     mockMapInstance as unknown as MapLibreMap,
   )
   useExcavationAreas(mapRef, {
-    isVisible: isVisible,
-    onAvailabilityChange: undefined,
-    selectedPolygonId: null,
-    onSelectPolygon: jest.fn(),
+    isVisible,
     polygonIndex: POLYGON_INDEX,
+    selectedPolygonId,
+    onSelectPolygon: jest.fn(),
+    values,
+    paint,
   })
   return null
 }
@@ -67,4 +86,50 @@ it('applies newly enabled visibility while source data is pending without anothe
     'visibility',
     'visible',
   )
+})
+
+it('applies the latest selected polygon while source data is pending', () => {
+  const { rerender } = render(<Harness isVisible={false} />)
+  mockIsStyleLoaded.mockReturnValue(false)
+  rerender(<Harness isVisible selectedPolygonId="area-1" />)
+  expect(mockSetFeatureState).toHaveBeenCalledWith(
+    { source: 'excavation-areas', id: 'area-1' },
+    { selected: true },
+  )
+})
+
+it('updates paint and values on existing resources while source data is pending', () => {
+  const { rerender } = render(<Harness isVisible={false} />)
+  mockIsStyleLoaded.mockReturnValue(false)
+  const value = {
+    polygonId: 'area-1',
+    dataAvailable: true,
+    findspotCount: 2,
+    accessibleFragmentCount: 7,
+    areaSquareKm: 3.5,
+    densityAvailable: true,
+    densityPerSquareKm: 2,
+    mappingEvidence: 'verified-source' as const,
+  }
+  const values = new Map([['area-1', value]])
+  rerender(<Harness isVisible values={values} paint={EVIDENCE_PAINT} />)
+  expect(mockSetFeatureState).toHaveBeenCalledWith(
+    { source: 'excavation-areas', id: 'area-1' },
+    expect.objectContaining({ accessibleFragmentCount: 7 }),
+  )
+  expect(mockSetPaintProperty).toHaveBeenCalledWith(
+    'excavation-area-fill',
+    'fill-color',
+    excavationPaintProperties(EVIDENCE_PAINT).fillColor,
+  )
+  mockGetSource.mockReturnValue(undefined)
+  mockSetFeatureState.mockClear()
+  rerender(
+    <Harness
+      isVisible
+      selectedPolygonId="missing-source"
+      values={new Map(values)}
+    />,
+  )
+  expect(mockSetFeatureState).not.toHaveBeenCalled()
 })
