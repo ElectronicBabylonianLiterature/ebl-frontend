@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -9,16 +9,9 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import useMapPresentationFocus from 'map/useMapPresentationFocus'
-import MapLayerPanel from 'map/MapLayerPanel'
-import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
-import MapVisualizationControl from 'map/MapVisualizationControl'
-import MapMeasurePanel from 'map/MapMeasurePanel'
-import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/MapSelectionPill'
-import { findMapSite, isMapSiteId } from 'map/mapSites'
-import type { MapPanelDefinition } from 'map/MapToolbar'
+import buildMapToolPanels from 'map/mapToolPanels'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import 'map/MapTab.sass'
@@ -45,98 +38,21 @@ function LoadedMapTab({
   } = state
   const isPresenting = experience.presentation.isActive
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
-  useMapPresentationFocus(presentationTriggerRef, isPresenting)
-  const description = isPresenting
-    ? {
-        className: 'visually-hidden',
-        content: 'Interactive findspot map in presentation mode.',
-      }
-    : {
-        className: 'map-tab__description',
-        content: 'Matching tablet search links are available below the map.',
-      }
+  const wasPresentingRef = useRef(false)
+
+  useEffect(() => {
+    if (wasPresentingRef.current && !isPresenting) {
+      presentationTriggerRef.current?.focus()
+    }
+    wasPresentingRef.current = isPresenting
+  }, [isPresenting])
 
   const clearSelection = (): void => {
     experience.setSelection(null)
     panel.close()
   }
 
-  const selectedSiteData =
-    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
-      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
-      : undefined
-
-  const panels: readonly MapPanelDefinition[] = [
-    {
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: selectedPolygon !== null,
-      render: () =>
-        selectedPolygon ? (
-          <MapInspector
-            key={selectedPolygon.polygonId}
-            polygon={selectedPolygon}
-            summary={selectedSiteData?.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={
-              findMapSite(selectedPolygon.siteId)?.siteName ??
-              selectedPolygon.siteId
-            }
-            status={selectedSiteData?.status ?? 'not-configured'}
-            onClear={clearSelection}
-          />
-        ) : (
-          <p>No excavation area is selected.</p>
-        ),
-    },
-    {
-      id: 'visualization',
-      label: 'Visualization',
-      isSupported: state.canShowExcavationAreas,
-      render: () => (
-        <MapVisualizationControl
-          mode={state.visualization.effectiveMode}
-          legend={state.visualization.legend}
-          isDensityAvailable={state.visualization.isDensityAvailable}
-          hasUnavailableData={state.visualization.hasUnavailableData}
-          onModeChange={experience.setVisualization}
-        />
-      ),
-    },
-    {
-      id: 'measurement',
-      label: 'Measure',
-      isSupported: !state.isBackgroundUnavailable,
-      render: () => <MapMeasurePanel measurement={state.measurement} />,
-    },
-    {
-      id: 'spatial-search',
-      label: 'Search area',
-      isSupported:
-        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
-      render: () => (
-        <MapSpatialSearchPanel
-          spatialSearch={state.spatialSearch}
-          findspots={state.fragmentMapData.findspots}
-        />
-      ),
-    },
-    {
-      id: 'layers',
-      label: 'Map layers',
-      isSupported: true,
-      render: () => <MapLayerPanel state={state} />,
-    },
-  ]
-
-  const excavationStatus =
-    state.isExcavationAreasUnavailable &&
-    (experience.showExcavationAreas ||
-      experience.selection !== null ||
-      (!isPresenting && panel.active === 'layers')) ? (
-      <Alert variant="warning">Excavation areas are unavailable.</Alert>
-    ) : null
+  const panels = buildMapToolPanels(state, clearSelection)
 
   return (
     <div
@@ -167,7 +83,10 @@ function LoadedMapTab({
           filter={experience.filter}
         />
       )}
-
+      {state.isExcavationAreasUnavailable &&
+      (experience.showExcavationAreas || experience.selection !== null) ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       <div className="map-experience__body">
         <MapStage
           containerRef={state.mapContainer}
@@ -183,25 +102,31 @@ function LoadedMapTab({
             ) : null
           }
           overlay={
-            <MapPanelDock
-              panels={isPresenting ? [] : panels}
-              status={excavationStatus}
-              panel={panel}
-              drawerRef={state.drawerRef}
-              selectionAction={
-                selectedPolygon && panel.active !== 'inspector' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('inspector')}
-                  />
-                ) : null
-              }
-            />
+            isPresenting ? null : (
+              <MapPanelDock
+                panels={panels}
+                panel={panel}
+                drawerRef={state.drawerRef}
+                selectionAction={
+                  selectedPolygon && panel.active !== 'inspector' ? (
+                    <MapSelectionPill
+                      label="Show selected area"
+                      onShow={() => panel.open('inspector')}
+                    />
+                  ) : null
+                }
+              />
+            )
           }
         />
       </div>
-      <p id="findspot-map-description" className={description.className}>
-        {description.content}
+      <p
+        id="findspot-map-description"
+        className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
+      >
+        {isPresenting
+          ? 'Interactive findspot map in presentation mode.'
+          : 'Matching tablet search links are available below the map.'}
       </p>
       {isPresenting ? null : (
         <>
