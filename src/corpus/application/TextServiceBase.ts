@@ -120,6 +120,22 @@ export class TextServiceBase extends TextServiceCore {
     this.cachedChapterDisplayRequests.clear()
   }
 
+  protected invalidateChapterDisplayCache(id: ChapterId): void {
+    this.clearCachesWhenScopeChanges()
+    const chapterPrefix = this.createChapterDisplayCachePrefix(id)
+    const cacheKeys = new Set([
+      ...this.cachedChapterDisplays.keys(),
+      ...this.cachedChapterDisplayRequests.keys(),
+    ])
+
+    for (const cacheKey of cacheKeys) {
+      if (cacheKey.startsWith(chapterPrefix)) {
+        this.cachedChapterDisplays.delete(cacheKey)
+        this.cachedChapterDisplayRequests.delete(cacheKey)
+      }
+    }
+  }
+
   protected clearCachesWhenScopeChanges(): void {
     const nextScope = this.resolveCacheScope()
 
@@ -142,12 +158,16 @@ export class TextServiceBase extends TextServiceCore {
     }
   }
 
+  private createChapterDisplayCachePrefix(id: ChapterId): string {
+    return `${createChapterUrl(id)}?`
+  }
+
   protected createChapterDisplayCacheKey(
     id: ChapterId,
     lines: readonly number[],
     variants: readonly number[],
   ): string {
-    return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
+    return `${this.createChapterDisplayCachePrefix(id)}${stringify({ lines, variants })}`
   }
 }
 

@@ -211,9 +211,13 @@ export default class ApiClient {
     path: string,
     body: unknown,
     authenticate = true,
+    onHttpSuccess?: () => void,
   ): Promise<T> {
     return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
-      deserializeJson,
+      (response) => {
+        onHttpSuccess?.()
+        return deserializeJson(response)
+      },
     ) as Promise<T>
   }
 
