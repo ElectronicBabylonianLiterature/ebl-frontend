@@ -9,8 +9,10 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import MapSelectionPill from 'map/MapSelectionPill'
 import MapLayerPanel from 'map/MapLayerPanel'
+import MapInspector from 'map/MapInspector'
+import MapSelectionPill from 'map/MapSelectionPill'
+import { findMapSite, isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -47,7 +49,40 @@ function LoadedMapTab({
     wasPresentingRef.current = isPresenting
   }, [isPresenting])
 
+  const clearSelection = (): void => {
+    experience.setSelection(null)
+    panel.close()
+  }
+
+  const selectedSiteData =
+    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
+      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
+      : undefined
+
   const panels: readonly MapPanelDefinition[] = [
+    {
+      id: 'inspector',
+      label: 'Selected area',
+      isSupported: selectedPolygon !== null,
+      render: () =>
+        selectedPolygon ? (
+          <MapInspector
+            key={selectedPolygon.polygonId}
+            polygon={selectedPolygon}
+            summary={selectedSiteData?.polygonSummaries.get(
+              selectedPolygon.polygonId,
+            )}
+            siteName={
+              findMapSite(selectedPolygon.siteId)?.siteName ??
+              selectedPolygon.siteId
+            }
+            status={selectedSiteData?.status ?? 'not-configured'}
+            onClear={clearSelection}
+          />
+        ) : (
+          <p>No excavation area is selected.</p>
+        ),
+    },
     {
       id: 'layers',
       label: 'Map layers',
@@ -65,7 +100,9 @@ function LoadedMapTab({
 
   return (
     <div
-      className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
+      className={`map-tab map-experience${
+        isPresenting ? ' map-experience--presenting' : ''
+      }`}
     >
       {isPresenting ? (
         <MapPresentationBar onExit={experience.presentation.exit} />
@@ -102,19 +139,19 @@ function LoadedMapTab({
           showFallbackHint={!isPresenting}
           overlay={
             isPresenting ? null : (
-              <>
-                <MapPanelDock
-                  panels={panels}
-                  panel={panel}
-                  drawerRef={state.drawerRef}
-                />
-                {selectedPolygon && panel.active !== 'layers' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('layers')}
-                  />
-                ) : null}
-              </>
+              <MapPanelDock
+                panels={panels}
+                panel={panel}
+                drawerRef={state.drawerRef}
+                selectionAction={
+                  selectedPolygon && panel.active !== 'inspector' ? (
+                    <MapSelectionPill
+                      label="Show selected area"
+                      onShow={() => panel.open('inspector')}
+                    />
+                  ) : null
+                }
+              />
             )
           }
         />
@@ -129,10 +166,6 @@ function LoadedMapTab({
       </p>
       {isPresenting ? null : (
         <>
-          <FindspotEmptyState
-            provenances={filteredProvenances}
-            filter={experience.filter}
-          />
           <FindspotSearchList provenances={filteredProvenances} />
         </>
       )}

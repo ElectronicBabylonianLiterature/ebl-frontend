@@ -7,12 +7,14 @@ import type { MapPanelController } from 'map/useMapPanel'
 interface Props {
   readonly panels: readonly MapPanelDefinition[]
   readonly panel: MapPanelController
+  readonly selectionAction?: React.ReactNode
   readonly drawerRef?: RefObject<HTMLElement>
 }
 
 export default function MapPanelDock({
   panels,
   panel,
+  selectionAction,
   drawerRef,
 }: Props): JSX.Element {
   const activePanel = panels.find(
@@ -25,6 +27,7 @@ export default function MapPanelDock({
         panels={panels}
         active={panel.active}
         onToggle={panel.toggle}
+        extraAction={selectionAction}
       />
       {activePanel ? (
         <MapPanelDrawer
