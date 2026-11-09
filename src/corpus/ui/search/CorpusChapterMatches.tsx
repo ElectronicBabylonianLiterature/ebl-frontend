@@ -103,6 +103,9 @@ export default function CorpusChapterMatches({
   const canShowMore =
     (!expanded && loadedPairs > initiallyVisible) ||
     (!unavailable && (remaining > 0 || !expanded))
+  const expandedOrLoading = expanded || loading
+  const showPrimaryControl = canShowMore || expandedOrLoading
+  const showSecondaryControl = canShowMore && expandedOrLoading
 
   useEffect(() => {
     if (restoreFocus.current) {
@@ -161,7 +164,7 @@ export default function CorpusChapterMatches({
             aria-describedby={descriptionId}
             tabIndex={-1}
           >
-            {(canShowMore || expanded || loading) && (
+            {showPrimaryControl && (
               <button
                 ref={setPrimaryControl}
                 type="button"
@@ -175,7 +178,7 @@ export default function CorpusChapterMatches({
                 {canShowMore ? moreLabel : 'Collapse chapter matches'}
               </button>
             )}
-            {(expanded || loading) && canShowMore && (
+            {showSecondaryControl && (
               <button
                 ref={setSecondaryControl}
                 type="button"
