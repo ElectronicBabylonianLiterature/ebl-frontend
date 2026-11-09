@@ -1,9 +1,9 @@
 import _ from 'lodash'
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren, useMemo } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from 'transliteration/ui/note-links'
 import DisplayRulingDollarLine from 'transliteration/ui/rulings'
-import DisplayTextLine from 'transliteration/ui/text-line'
+import DisplayTextLine, { createTextLineId } from 'transliteration/ui/text-line'
 import { DisplayDollarAndAtLine } from 'transliteration/ui/dollar-and-at-lines'
 import { LineProps } from 'transliteration/ui/LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
@@ -13,6 +13,7 @@ import {
   isSealAtLine,
   isObjectAtLine,
   isSurfaceAtLine,
+  isTextLine,
   isTranslationLine,
 } from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
@@ -24,6 +25,7 @@ export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 interface TextDisplayProps {
   text: Text
   activeLine?: string
+  matchLegacyLineIds: boolean
   language: string | null
 }
 
@@ -71,18 +73,36 @@ function FirstLineNotes({
   )
 }
 
+function clearSeal(labels: Labels): Labels {
+  return labels.sealNumber == null ? labels : { ...labels, sealNumber: null }
+}
+
 export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
   if (isObjectAtLine(line)) {
-    return { ...labels, object: line.label }
+    return { ...clearSeal(labels), object: line.label }
   } else if (isSurfaceAtLine(line)) {
-    return { ...labels, surface: line.label }
+    return { ...clearSeal(labels), surface: line.label }
   } else if (isColumnAtLine(line)) {
-    return { ...labels, column: line.label }
+    return { ...clearSeal(labels), column: line.label }
   } else if (isSealAtLine(line)) {
     return { ...labels, sealNumber: line.number }
   } else {
     return labels
   }
+}
+
+function hasTextLineWithId(
+  lines: readonly AbstractLine[],
+  lineId: string,
+): boolean {
+  let labels = defaultLabels
+  for (const line of lines) {
+    if (isTextLine(line) && createTextLineId(labels, line) === lineId) {
+      return true
+    }
+    labels = getCurrentLabels(labels, line)
+  }
+  return false
 }
 
 export type TranslationStyle = 'inline' | 'standoff'
@@ -93,6 +113,7 @@ function DisplayRow({
   columns,
   labels,
   activeLine,
+  matchLegacyLineIds,
   notes,
   children,
 }: PropsWithChildren<
@@ -112,6 +133,7 @@ function DisplayRow({
         columns={columns}
         labels={labels}
         activeLine={activeLine}
+        matchLegacyLineIds={matchLegacyLineIds}
       />
       <td>
         <NoteLinks notes={notes} lineNumber={lineNumber} />
@@ -128,6 +150,7 @@ function skipLine(line: AbstractLine, language: string | null): boolean {
 function DisplaySingleColumnText({
   text,
   activeLine,
+  matchLegacyLineIds,
   language,
 }: TextDisplayProps): JSX.Element {
   return (
@@ -150,6 +173,7 @@ function DisplaySingleColumnText({
                     columns={text.numberOfColumns}
                     labels={labels}
                     activeLine={activeLine}
+                    matchLegacyLineIds={matchLegacyLineIds}
                     notes={text.notes}
                   />,
                 ]
@@ -164,6 +188,7 @@ function DisplaySingleColumnText({
 function DisplayTwoColumnText({
   text,
   activeLine,
+  matchLegacyLineIds,
   language,
 }: TextDisplayProps): JSX.Element {
   return (
@@ -186,6 +211,7 @@ function DisplayTwoColumnText({
                     columns={text.numberOfColumns}
                     labels={labels}
                     activeLine={activeLine}
+                    matchLegacyLineIds={matchLegacyLineIds}
                     notes={text.notes}
                   >
                     {language && (
@@ -221,6 +247,10 @@ export default function TransliterationLines({
     translationStyle === 'standoff'
       ? DisplayTwoColumnText
       : DisplaySingleColumnText
+  const matchLegacyLineIds = useMemo(
+    () => !hasTextLineWithId(text.lines, activeLine),
+    [text.lines, activeLine],
+  )
   return (
     <table className="Transliteration__lines">
       <tbody>
@@ -228,6 +258,7 @@ export default function TransliterationLines({
         <DisplayTextComponent
           text={text}
           activeLine={activeLine}
+          matchLegacyLineIds={matchLegacyLineIds}
           language={language}
         />
       </tbody>

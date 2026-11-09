@@ -115,5 +115,10 @@ it.each([
   )
   expect(visibleLabels()).toEqual(labels(fixture.firstExpandedIndexes))
   expect(fragmentService.find).toHaveBeenCalledTimes(1)
-  expect(fragmentService.find).toHaveBeenCalledWith(base.number)
+  expect(fragmentService.find).toHaveBeenCalledWith(
+    base.number,
+    undefined,
+    undefined,
+    expect.any(AbortSignal),
+  )
 })

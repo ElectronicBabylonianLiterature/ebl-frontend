@@ -1,7 +1,7 @@
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
+
 function sourceIndex(line: { readonly index?: number }): number {
-  return line.index !== undefined &&
-    Number.isSafeInteger(line.index) &&
-    line.index >= 0
+  return isNonNegativeInteger(line.index)
     ? line.index
     : Number.POSITIVE_INFINITY
 }

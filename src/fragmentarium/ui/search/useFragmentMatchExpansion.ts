@@ -3,6 +3,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import AbortableOperation from 'common/utils/AbortableOperation'
 import {
   getExpandedMatchIndexes,
   textLineIndexes,
@@ -81,6 +82,7 @@ export default function useFragmentMatchExpansion({
   enableExpansion: boolean
 }) {
   const requestVersion = useRef(0)
+  const fullFragmentRequest = useRef(new AbortableOperation())
   const [loadedFragment, setLoadedFragment] = useState<Fragment | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -101,8 +103,10 @@ export default function useFragmentMatchExpansion({
     setError(false)
     setUnavailable(false)
     setVisibleCount(linesToShow)
+    const request = fullFragmentRequest.current
     return () => {
       requestVersion.current += 1
+      request.abort()
     }
   }, [queryIdentity, fragmentService, linesToShow])
 
@@ -131,6 +135,7 @@ export default function useFragmentMatchExpansion({
 
   function collapse(): void {
     requestVersion.current += 1
+    fullFragmentRequest.current.abort()
     setExpanded(false)
     setLoading(false)
     setError(false)
@@ -175,10 +180,17 @@ export default function useFragmentMatchExpansion({
     const version = ++requestVersion.current
     setLoading(true)
     setError(false)
-    fragmentService.find(queryItem.museumNumber).then(
-      (fullFragment) => handleLoadedFragment(fullFragment, version),
-      () => handleLoadError(version),
-    )
+    fragmentService
+      .find(
+        queryItem.museumNumber,
+        undefined,
+        undefined,
+        fullFragmentRequest.current.start(),
+      )
+      .then(
+        (fullFragment) => handleLoadedFragment(fullFragment, version),
+        () => handleLoadError(version),
+      )
   }
 
   function showMore(): void {

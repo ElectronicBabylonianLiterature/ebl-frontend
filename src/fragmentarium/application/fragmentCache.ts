@@ -1,8 +1,8 @@
-import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { QueryResult } from 'query/QueryResult'
 import { hasPrefetchableFullFragment } from 'query/queryItemRenderReady'
+import fragmentPreviewLookup from 'query/fragmentPreviewLookup'
 import { CacheEntry, setCachedValue } from 'common/utils/cache'
 import { ThumbnailBlob } from 'fragmentarium/application/fragmentServicePorts'
 import {
@@ -24,6 +24,7 @@ export const maximumCachedThumbnails = 250
 export const maximumCachedProvenanceRecords = 250
 export const maximumCachedProvenanceChildren = 250
 export const maximumCachedQueryResults = 250
+const prefetchedFragmentLinesToShow = 3
 
 type QueryItemWithPrefetchedFragment = QueryResult['items'][number]
 
@@ -226,8 +227,10 @@ export class FragmentCache {
     }
 
     const prefetchedFragment = queryItem.fragment
-    const lines = _.take(queryItem.matchingLines, 3)
-    const excludeLines = _.isEmpty(queryItem.matchingLines)
+    const { lines, excludeLines } = fragmentPreviewLookup(
+      queryItem.matchingLines,
+      prefetchedFragmentLinesToShow,
+    )
 
     this.prefetchedFragments.set(
       fragmentKey(queryItem.museumNumber, lines, excludeLines),

@@ -157,7 +157,12 @@ describe('expanding Library matching lines: lifecycle', () => {
     expect(
       await screen.findByRole('button', { name: 'Collapse matching lines' }),
     ).toBeVisible()
-    expect(fragmentService.find).toHaveBeenCalledWith(first.number)
+    expect(fragmentService.find).toHaveBeenCalledWith(
+      first.number,
+      undefined,
+      undefined,
+      expect.any(AbortSignal),
+    )
     expect(fragmentService.find).toHaveBeenCalledTimes(1)
     expect(
       screen

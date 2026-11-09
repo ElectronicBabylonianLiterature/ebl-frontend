@@ -116,7 +116,12 @@ describe('expanding Library matching lines: rendering', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Show 1 more matching line' }),
     )
-    expect(fragmentService.find).toHaveBeenCalledWith(base.number)
+    expect(fragmentService.find).toHaveBeenCalledWith(
+      base.number,
+      undefined,
+      undefined,
+      expect.any(AbortSignal),
+    )
     expect(fragmentService.find).toHaveBeenCalledTimes(1)
     expect(await screen.findByRole('link', { name: 'r. ii 7' })).toBeVisible()
     expect(

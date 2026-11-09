@@ -116,6 +116,6 @@ it.each([
   expect(visibleSourceIndexes()).toEqual(firstExpandedIndexes)
   expect(fragmentService.find.mock.calls).toEqual([
     ['K.1', fixture.requestIndexes, false],
-    ['K.1'],
+    ['K.1', undefined, undefined, expect.any(AbortSignal)],
   ])
 })

@@ -1,7 +1,7 @@
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { QueryItem } from 'query/QueryResult'
-import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import fragmentPreviewLookup from 'query/fragmentPreviewLookup'
 
 export type FragmentMatchPreview = {
   fragment: Fragment
@@ -17,15 +17,11 @@ export default function loadFragmentMatchPreview({
   queryItem: QueryItem
   linesToShow: number
 }): Promise<FragmentMatchPreview> {
-  const initialLineIndexes = takeUniqueMatchingLineIndexes(
+  const { lines: initialLineIndexes, excludeLines } = fragmentPreviewLookup(
     queryItem.matchingLines,
     linesToShow,
   )
   return fragmentService
-    .find(
-      queryItem.museumNumber,
-      initialLineIndexes,
-      queryItem.matchingLines.length === 0,
-    )
+    .find(queryItem.museumNumber, initialLineIndexes, excludeLines)
     .then((fragment) => ({ fragment, initialLineIndexes }))
 }

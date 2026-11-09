@@ -5,7 +5,15 @@ import useScrollToActiveLine from 'transliteration/ui/useScrollToActiveLine'
 import { act, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
-import { fullSealText } from 'test-support/sealLocation'
+import {
+  atLineLabelKeys,
+  fullSealText,
+  sealContext,
+  sealContextMarkers,
+  sealMarker,
+} from 'test-support/sealLocation'
+import { previewLine, readingWord } from 'test-support/fragment-query-preview'
+import { createTransliteration } from 'transliteration/application/dtos'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -18,11 +26,11 @@ let completeFonts: () => void
 let originalFonts: PropertyDescriptor | undefined
 let scroll: jest.SpyInstance
 
-function lines(activeLine: string): JSX.Element {
+function lines(activeLine: string, displayed = text): JSX.Element {
   return (
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
-        <TransliterationLines text={text} activeLine={activeLine} />
+        <TransliterationLines text={displayed} activeLine={activeLine} />
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
@@ -72,6 +80,58 @@ test('legacy ambiguous router hash preserves both matching refs in order', async
     await Promise.resolve()
   })
   expect(calls).toEqual([...ids, ...ids])
+})
+
+const [objectMarker, surfaceMarker, columnMarker] = sealContextMarkers
+const ordinaryLine = previewLine(1, [readingWord])
+
+test.each([
+  [
+    'main-text line before the seal',
+    [
+      objectMarker,
+      surfaceMarker,
+      columnMarker,
+      ordinaryLine,
+      sealMarker(1),
+      ordinaryLine,
+    ],
+  ],
+  [
+    'main-text line after the seal',
+    [
+      objectMarker,
+      surfaceMarker,
+      columnMarker,
+      sealMarker(1),
+      ordinaryLine,
+      columnMarker,
+      ordinaryLine,
+    ],
+  ],
+])('old hash scrolls only the real line with a %s', (_name, atfLines) => {
+  render(lines(legacy, createTransliteration({ lines: atfLines })))
+  expect(calls).toEqual([legacy])
+})
+
+test('lines after a later surface marker lose the seal label', () => {
+  const reverse = {
+    ...surfaceMarker,
+    [atLineLabelKeys.surface]: {
+      ...sealContext.surface,
+      surface: 'REVERSE',
+      abbreviation: 'r',
+    },
+  }
+  render(
+    lines(
+      'r 1',
+      createTransliteration({
+        lines: [sealMarker(1), ordinaryLine, reverse, ordinaryLine],
+      }),
+    ),
+  )
+  expect(calls).toEqual(['r 1'])
 })
 
 test('changing active hash cancels pending corrections and missing hash does nothing', async () => {

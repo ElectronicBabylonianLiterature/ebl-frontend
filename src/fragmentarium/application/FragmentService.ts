@@ -37,6 +37,7 @@ import {
 } from 'fragmentarium/application/fragmentProvenance'
 import { FragmentServiceBase } from 'fragmentarium/application/fragmentServiceBase'
 import { prefetchFrom } from 'fragmentarium/application/fragmentPrefetch'
+import { rejectOnAbort } from 'common/utils/abortError'
 
 export * from 'fragmentarium/application/fragmentServicePorts'
 
@@ -56,12 +57,28 @@ export class FragmentService extends FragmentServiceBase {
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     const cacheKey = fragmentKey(number, lines, excludeLines)
-    return this.cache.fragment(cacheKey, () =>
-      this.fragmentFetchLimiter.run(() =>
-        this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
-      ),
+    return this.fragmentRequests.run(
+      cacheKey,
+      signal,
+      (start) => this.cache.fragment(cacheKey, start),
+      (requestSignal) =>
+        this.fragmentFetchLimiter.run(
+          () =>
+            rejectOnAbort(
+              this.findAndInjectFragment(
+                number,
+                lines,
+                excludeLines,
+                cacheKey,
+                requestSignal,
+              ),
+              requestSignal,
+            ),
+          requestSignal,
+        ),
     )
   }
 
@@ -231,6 +248,7 @@ export class FragmentService extends FragmentServiceBase {
     lines: readonly number[] | undefined,
     excludeLines: boolean | undefined,
     cacheKey: string,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     const prefetchedFragment = this.cache.takePrefetchedFragment(cacheKey)
 
@@ -239,7 +257,7 @@ export class FragmentService extends FragmentServiceBase {
     }
 
     return this.fragmentRepository
-      .find(number, lines, excludeLines)
+      .find(number, lines, excludeLines, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .catch(onError)
   }

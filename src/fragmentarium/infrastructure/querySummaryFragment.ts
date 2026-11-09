@@ -22,6 +22,7 @@ import { TextLineDto } from 'transliteration/domain/text-line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { BaseToken, Token } from 'transliteration/domain/token'
 import sortFragmentQueryPreviewLines from 'fragmentarium/infrastructure/sortFragmentQueryPreviewLines'
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 
 export type QueryMuseumNumberDto = {
   prefix: string
@@ -121,10 +122,6 @@ function hasRenderablePreview(dto: Partial<QuerySummaryItemDto>): boolean {
   return (
     Array.isArray(preview.lines) && preview.lines.every(isRenderablePreviewLine)
   )
-}
-
-function isNonNegativeInteger(value: unknown): value is number {
-  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
 }
 
 export function isSummaryLineIndexes(

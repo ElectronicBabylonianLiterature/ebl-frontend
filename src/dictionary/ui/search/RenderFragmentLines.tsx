@@ -9,6 +9,7 @@ import { TextLine, TextLineLocation } from 'transliteration/domain/text-line'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import 'dictionary/ui/search/FragmentLemmaLines.sass'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 import {
   defaultLabels,
   labelAbbreviation,
@@ -183,12 +184,9 @@ export default function RenderFragmentLines({
     : matchingLines
   const visibleLines = orderedLines.slice(0, linesToShow)
   const knownTotal = totalMatchingLines ?? totalLines
-  const remainingLines =
-    typeof knownTotal === 'number' &&
-    Number.isSafeInteger(knownTotal) &&
-    knownTotal >= 0
-      ? Math.max(knownTotal - visibleLines.length, 0)
-      : null
+  const remainingLines = isNonNegativeInteger(knownTotal)
+    ? Math.max(knownTotal - visibleLines.length, 0)
+    : null
   const mayHaveMoreLines =
     remainingLines === null &&
     (orderedLines.length > visibleLines.length ||

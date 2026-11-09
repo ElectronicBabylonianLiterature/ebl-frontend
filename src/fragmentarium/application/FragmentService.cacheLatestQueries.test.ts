@@ -163,6 +163,7 @@ describe('latest query caching', () => {
       number,
       [1, 2, 3],
       false,
+      undefined,
     )
   })
 

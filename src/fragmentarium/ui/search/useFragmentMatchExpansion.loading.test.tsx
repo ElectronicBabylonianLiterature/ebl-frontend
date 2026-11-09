@@ -12,6 +12,7 @@ import {
 type ExpansionState = ReturnType<typeof useFragmentMatchExpansion>
 type PendingExpansion = {
   result: RenderHookResult<ExpansionState, void>['result']
+  unmount: () => void
   find: jest.Mock<Promise<Fragment>, Parameters<FragmentService['find']>>
   fullFragment: Fragment
   resolveRequest: (fragment: Fragment) => void
@@ -38,7 +39,7 @@ function renderPendingExpansion(): PendingExpansion {
     .fn<Promise<Fragment>, Parameters<FragmentService['find']>>()
     .mockReturnValue(pendingRequest)
   const fragmentService: Pick<FragmentService, 'find'> = { find }
-  const { result } = renderHook<ExpansionState, void>(() =>
+  const { result, unmount } = renderHook<ExpansionState, void>(() =>
     useFragmentMatchExpansion({
       fragment: previewFragment,
       queryItem,
@@ -47,7 +48,11 @@ function renderPendingExpansion(): PendingExpansion {
       enableExpansion: true,
     }),
   )
-  return { result, find, fullFragment, resolveRequest, rejectRequest }
+  return { result, unmount, find, fullFragment, resolveRequest, rejectRequest }
+}
+
+function expansionCall(fragment: Fragment): unknown[] {
+  return [fragment.number, undefined, undefined, expect.any(AbortSignal)]
 }
 
 it('reuses a pending request when showMore is invoked after the loading rerender', async () => {
@@ -64,14 +69,14 @@ it('reuses a pending request when showMore is invoked after the loading rerender
   act(() => result.current.showMore())
   expect(result.current.loading).toBe(true)
   expect(result.current.expanded).toBe(false)
-  expect(find.mock.calls).toEqual([[fullFragment.number]])
+  expect(find.mock.calls).toEqual([expansionCall(fullFragment)])
 
   await act(async () => resolveRequest(fullFragment))
   expect(result.current.loading).toBe(false)
   expect(result.current.expanded).toBe(true)
   expect(result.current.selectedIndexes).toEqual([0, 1, 2])
   expect(result.current.remainingCount).toBe(0)
-  expect(find.mock.calls).toEqual([[fullFragment.number]])
+  expect(find.mock.calls).toEqual([expansionCall(fullFragment)])
 })
 
 it('ignores a cancelled request rejection and permits a fresh successful request', async () => {
@@ -94,7 +99,50 @@ it('ignores a cancelled request rejection and permits a fresh successful request
   expect(result.current.expanded).toBe(true)
   expect(result.current.selectedIndexes).toEqual([0, 1, 2])
   expect(find.mock.calls).toEqual([
-    [fullFragment.number],
-    [fullFragment.number],
+    expansionCall(fullFragment),
+    expansionCall(fullFragment),
   ])
+})
+
+function requestSignal(find: PendingExpansion['find'], call = 0): AbortSignal {
+  return find.mock.calls[call][3] as AbortSignal
+}
+
+it('aborts the in-flight request when loading is cancelled', async () => {
+  const { result, find, rejectRequest } = renderPendingExpansion()
+
+  act(() => result.current.showMore())
+  expect(requestSignal(find).aborted).toBe(false)
+  act(() => result.current.collapse())
+  expect(requestSignal(find).aborted).toBe(true)
+
+  await act(async () =>
+    rejectRequest(new DOMException('Aborted', 'AbortError')),
+  )
+  expect(result.current.error).toBe(false)
+  expect(result.current.loading).toBe(false)
+})
+
+it('aborts the in-flight request on unmount', () => {
+  const { result, find, unmount } = renderPendingExpansion()
+
+  act(() => result.current.showMore())
+  expect(requestSignal(find).aborted).toBe(false)
+  unmount()
+  expect(requestSignal(find).aborted).toBe(true)
+})
+
+it('reuses the loaded fragment after collapsing a completed request', async () => {
+  const { result, find, fullFragment, resolveRequest } =
+    renderPendingExpansion()
+
+  act(() => result.current.showMore())
+  await act(async () => resolveRequest(fullFragment))
+  expect(result.current.expanded).toBe(true)
+  act(() => result.current.collapse())
+
+  expect(result.current.loadedFragment).toBe(fullFragment)
+  act(() => result.current.showMore())
+  expect(result.current.expanded).toBe(true)
+  expect(find).toHaveBeenCalledTimes(1)
 })

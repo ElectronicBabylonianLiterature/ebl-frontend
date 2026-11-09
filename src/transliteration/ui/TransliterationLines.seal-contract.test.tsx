@@ -78,13 +78,26 @@ test('default label shape and shared seal spelling preserve absent values and ze
   expect(labelsAbbreviation(sealContext)).toBe('tablet o iii')
 })
 
-test('seal and ordinary label markers update only their own state', () => {
-  let labels: Labels = { ...defaultLabels, sealNumber: 9 }
+test.each([9, 0])(
+  'object, surface and column markers clear seal %s',
+  (sealNumber) => {
+    for (const marker of sealContextMarkers) {
+      const labels = getCurrentLabels(
+        { ...sealContext, sealNumber },
+        fromTransliterationLineDto(marker),
+      )
+      expect(labels.sealNumber).toBeNull()
+    }
+  },
+)
+
+test('ordinary markers do not add a seal key and seal markers keep the context', () => {
+  let labels: Labels = defaultLabels
   for (const marker of sealContextMarkers) {
     labels = getCurrentLabels(labels, fromTransliterationLineDto(marker))
-    expect(labels.sealNumber).toBe(9)
   }
-  expect(labels).toEqual({ ...sealContext, sealNumber: 9 })
+  expect(Object.keys(labels)).toEqual(['object', 'surface', 'column'])
+  expect(labels).toEqual(sealContext)
   const zero = getCurrentLabels(
     labels,
     fromTransliterationLineDto(sealMarker(0)),
