@@ -5,10 +5,10 @@ import {
   busy,
   selectUploadEntries,
   sharedUploadMetadata,
+  withUploadMetadata,
   type UploadEntry,
 } from './mediaUploadEntries'
 import { uploadBatch, uploadEntry } from './mediaUploadRequest'
-import mediaUploadId from './mediaUploadId'
 
 export function useMediaUploadQueue(
   fragment: string,
@@ -88,6 +88,12 @@ export function useMediaUploadQueue(
         current.map((entry) => sharedUploadMetadata(entry, metadata)),
       ),
     edit: (id: string, metadata: MediaMetadata) =>
-      update(id, { metadata, key: mediaUploadId(), state: 'Ready to upload' }),
+      setEntries((current) =>
+        current.map((entry) =>
+          entry.id === id
+            ? withUploadMetadata(entry, metadata, 'Ready to upload')
+            : entry,
+        ),
+      ),
   }
 }

@@ -39,6 +39,7 @@ function canonical(response: unknown, id?: string): MediaResource {
 export default class ApiMediaManagementRepository implements MediaManagementRepository {
   private readonly requests = new Set<AbortController>()
   private disposed = false
+  private lifecycleGeneration = 0
 
   constructor(
     private readonly api: Pick<ApiClient, 'uploadBinary' | 'requestJson'>,
@@ -51,27 +52,50 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
 
   dispose(): void {
     this.disposed = true
+    this.lifecycleGeneration += 1
     this.requests.forEach((request) => request.abort())
     this.requests.clear()
+  }
+
+  private isCurrent(generation: number): boolean {
+    return !this.disposed && generation === this.lifecycleGeneration
   }
 
   private async run<T>(
     fragment: string,
     signal: AbortSignal | undefined,
-    request: (signal: AbortSignal) => Promise<T>,
+    request: (signal: AbortSignal, onDispatched: () => void) => Promise<T>,
   ): Promise<T> {
+    const generation = this.lifecycleGeneration
     const controller = new AbortController()
     const abort = (): void => controller.abort()
     if (this.disposed || signal?.aborted)
       throw new DOMException('Media request cancelled', 'AbortError')
     signal?.addEventListener('abort', abort, { once: true })
     this.requests.add(controller)
+    let reported = false
+    let dispatched = false
     try {
-      const result = await request(controller.signal)
-      if (this.disposed || controller.signal.aborted)
+      const result = await request(controller.signal, () => {
+        dispatched = true
+      })
+      if (!this.isCurrent(generation) || controller.signal.aborted) {
         throw new DOMException('Media request cancelled', 'AbortError')
+      }
+      reported = true
       this.onChanged(fragment)
       return result
+    } catch (error) {
+      // Only a sent request can have committed despite cancellation. Disposal
+      // permanently fences this request even if the adapter is activated again.
+      if (
+        !reported &&
+        dispatched &&
+        this.isCurrent(generation) &&
+        controller.signal.aborted
+      )
+        this.onChanged(fragment)
+      throw error
     } finally {
       signal?.removeEventListener('abort', abort)
       this.requests.delete(controller)
@@ -85,7 +109,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     idempotencyKey: string,
     options: MediaUploadOptions = {},
   ): Promise<MediaResource> {
-    return this.run(fragment, options.signal, async (signal) =>
+    return this.run(fragment, options.signal, async (signal, onDispatched) =>
       canonical(
         await this.api.uploadBinary(
           fragmentMediaListUrl(fragment),
@@ -97,7 +121,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
               JSON.stringify({ ...metadata, originalFilename: file.name }),
             ),
           },
-          { ...options, signal },
+          { ...options, signal, onDispatched },
         ),
       ),
     )
@@ -109,13 +133,14 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     metadata: Partial<MediaUploadMetadata>,
     signal?: AbortSignal,
   ): Promise<MediaResource> {
-    return this.run(fragment, signal, async (requestSignal) =>
+    return this.run(fragment, signal, async (requestSignal, onDispatched) =>
       canonical(
         await this.api.requestJson(
           mediaUrl(fragment, id),
           'PATCH',
           metadata,
           requestSignal,
+          onDispatched,
         ),
         id,
       ),
@@ -155,13 +180,14 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     reason?: string,
     signal?: AbortSignal,
   ): Promise<MediaResource> {
-    return this.run(fragment, signal, async (requestSignal) =>
+    return this.run(fragment, signal, async (requestSignal, onDispatched) =>
       canonical(
         await this.api.requestJson(
           mediaUrl(fragment, id, action),
           'POST',
           reason ? { reason } : {},
           requestSignal,
+          onDispatched,
         ),
         id,
       ),
@@ -169,12 +195,13 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
   }
 
   remove(fragment: string, id: string, signal?: AbortSignal): Promise<void> {
-    return this.run(fragment, signal, async (requestSignal) => {
+    return this.run(fragment, signal, async (requestSignal, onDispatched) => {
       await this.api.requestJson(
         mediaUrl(fragment, id),
         'DELETE',
         undefined,
         requestSignal,
+        onDispatched,
       )
     })
   }

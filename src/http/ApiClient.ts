@@ -1,6 +1,6 @@
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
-import { isAbortError } from 'common/utils/abortError'
+import { createAbortError, isAbortError } from 'common/utils/abortError'
 import { ApiError } from './ApiError'
 import { BinaryUploadOptions, uploadBinaryRequest } from './binaryUpload'
 
@@ -100,6 +100,7 @@ export default class ApiClient {
     authenticate: boolean,
     options: Options,
     signal?: AbortSignal,
+    onDispatched?: () => void,
   ): Promise<Response> {
     try {
       const headers = await this.createHeaders(
@@ -107,11 +108,14 @@ export default class ApiClient {
         options.headers ?? {},
         path,
       )
-      const response = await fetch(apiUrl(path), {
+      if (signal?.aborted) throw createAbortError(signal)
+      const pending = fetch(apiUrl(path), {
         ...options,
         headers,
         ...(signal ? { signal } : {}),
       })
+      onDispatched?.()
+      const response = await pending
       if (response.ok) {
         return response
       }
@@ -179,10 +183,15 @@ export default class ApiClient {
     method: 'POST' | 'PATCH' | 'DELETE',
     body: unknown,
     signal?: AbortSignal,
+    onDispatched?: () => void,
   ): Promise<T> {
-    return this.fetch(path, true, createOptions(body, method), signal).then(
-      deserializeJson,
-    ) as Promise<T>
+    return this.fetch(
+      path,
+      true,
+      createOptions(body, method),
+      signal,
+      onDispatched,
+    ).then(deserializeJson) as Promise<T>
   }
 
   async uploadBinary<T = unknown>(

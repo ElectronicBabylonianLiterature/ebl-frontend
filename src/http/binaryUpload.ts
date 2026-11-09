@@ -2,6 +2,7 @@ import { ApiError } from './ApiError'
 
 export interface BinaryUploadOptions {
   signal?: AbortSignal
+  onDispatched?: () => void
   onProgress?: (loaded: number, total?: number) => void
   onProcessing?: () => void
 }
@@ -98,5 +99,6 @@ export function uploadBinaryRequest<T>(
       return
     }
     request.send(file)
+    options.onDispatched?.()
   })
 }

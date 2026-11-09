@@ -58,6 +58,7 @@ test.each(['publish', 'reject'] as const)(
       'POST',
       { reason: 'Reviewed' },
       expect.any(AbortSignal),
+      expect.any(Function),
     )
   },
 )
@@ -77,6 +78,7 @@ test('metadata-only patch and primary actions select canonical target from fragm
     'PATCH',
     { caption: 'Reverse' },
     expect.any(AbortSignal),
+    expect.any(Function),
   )
   expect(api.requestJson).toHaveBeenNthCalledWith(
     2,
@@ -84,6 +86,7 @@ test('metadata-only patch and primary actions select canonical target from fragm
     'POST',
     {},
     expect.any(AbortSignal),
+    expect.any(Function),
   )
 })
 
@@ -135,4 +138,129 @@ test('rejects unknown publication states and missing canonical mutation response
     'missing',
   )
   expect(changed).not.toHaveBeenCalled()
+})
+
+describe('ambiguous cancellation of a dispatched request', () => {
+  const file = new File(['png'], 'a.png', { type: 'image/png' })
+  const abortable = () =>
+    api.uploadBinary.mockImplementation((_url, _file, _headers, options) => {
+      options.onDispatched()
+      return new Promise((_resolve, reject) =>
+        options.signal.addEventListener('abort', () =>
+          reject(new DOMException('Upload cancelled', 'AbortError')),
+        ),
+      )
+    })
+
+  test('a caller abort after dispatch invalidates exactly that fragment once and rejects AbortError', async () => {
+    abortable()
+    const caller = new AbortController()
+    const pending = repository.upload('K.1', file, metadata, 'key', {
+      signal: caller.signal,
+    })
+    await Promise.resolve()
+    expect(api.uploadBinary).toHaveBeenCalledTimes(1)
+    caller.abort()
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed).toHaveBeenCalledTimes(1)
+    expect(changed).toHaveBeenCalledWith('K.1')
+  })
+
+  test('a response arriving after the abort reports once, never as success', async () => {
+    let resolve: (value: unknown) => void = () => undefined
+    api.requestJson.mockImplementation(
+      (_path, _method, _body, _signal, onDispatched) => {
+        onDispatched()
+        return new Promise((done) => {
+          resolve = done
+        })
+      },
+    )
+    const caller = new AbortController()
+    const pending = repository.publish(
+      'K.1',
+      mediaFixture().id,
+      undefined,
+      caller.signal,
+    )
+    caller.abort()
+    resolve({ media: [mediaFixture()] })
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed).toHaveBeenCalledTimes(1)
+  })
+
+  test('disposed sessions and cancelled-before-dispatch requests never report', async () => {
+    abortable()
+    const pending = repository.upload('K.1', file, metadata, 'key')
+    repository.dispose()
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    const caller = new AbortController()
+    caller.abort()
+    repository.activate()
+    await expect(
+      repository.upload('K.1', file, metadata, 'key', {
+        signal: caller.signal,
+      }),
+    ).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed).not.toHaveBeenCalled()
+  })
+
+  test('ordinary failures do not invalidate caches', async () => {
+    api.uploadBinary.mockRejectedValue(new Error('Denied'))
+    await expect(
+      repository.upload('K.1', file, metadata, 'key'),
+    ).rejects.toThrow('Denied')
+    expect(changed).not.toHaveBeenCalled()
+  })
+
+  test('dispose then activate before an abort rejection settles never revives the old request', async () => {
+    abortable()
+    const pending = repository.upload('K.1', file, metadata, 'old-key')
+    repository.dispose()
+    repository.activate()
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed).not.toHaveBeenCalled()
+
+    const media = mediaFixture()
+    api.uploadBinary.mockResolvedValueOnce({ media: [media] })
+    await expect(
+      repository.upload('K.2', file, metadata, 'new-key'),
+    ).resolves.toEqual(media)
+    expect(changed.mock.calls).toEqual([['K.2']])
+  })
+
+  test('dispose then activate fences a late successful response too', async () => {
+    let resolve: (value: unknown) => void = () => undefined
+    api.requestJson.mockImplementation(
+      (_path, _method, _body, _signal, onDispatched) => {
+        onDispatched()
+        return new Promise((done) => {
+          resolve = done
+        })
+      },
+    )
+    const pending = repository.publish('K.1', mediaFixture().id)
+    repository.dispose()
+    repository.activate()
+    resolve({ media: [mediaFixture()] })
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed).not.toHaveBeenCalled()
+  })
+
+  test('simultaneous dispatched aborts invalidate each active fragment exactly once', async () => {
+    abortable()
+    const first = new AbortController()
+    const second = new AbortController()
+    const pending = repository.upload('K.1', file, metadata, 'first', {
+      signal: first.signal,
+    })
+    const other = repository.upload('K.2', file, metadata, 'second', {
+      signal: second.signal,
+    })
+    first.abort()
+    second.abort()
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    await expect(other).rejects.toMatchObject({ name: 'AbortError' })
+    expect(changed.mock.calls).toEqual([['K.1'], ['K.2']])
+  })
 })

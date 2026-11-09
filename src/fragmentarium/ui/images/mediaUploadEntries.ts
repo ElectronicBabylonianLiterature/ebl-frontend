@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 import mediaUploadId from './mediaUploadId'
 
@@ -15,6 +16,8 @@ export interface UploadEntry {
   file: File
   metadata: MediaMetadata
   state: UploadState
+  /** Identity and payload of every request that was started. */
+  attempted?: readonly { key: string; metadata: MediaMetadata }[]
   percent?: number
   error?: string
 }
@@ -59,18 +62,44 @@ export function selectUploadEntries(
   })
   return { entries, error: errors.join(' ') }
 }
+/**
+ * Compares the metadata that would be sent: JSON drops undefined fields, so
+ * an absent optional field equals an explicitly undefined one.
+ */
+export function sameUploadMetadata(
+  first: MediaMetadata,
+  second: MediaMetadata,
+): boolean {
+  return isEqual(
+    JSON.parse(JSON.stringify(first)),
+    JSON.parse(JSON.stringify(second)),
+  )
+}
+/**
+ * Replaces an entry's metadata. The idempotency key rotates only when the
+ * effective metadata changed: an unchanged retry must replay the original
+ * request, while changed metadata would be rejected under the old key.
+ */
+export function withUploadMetadata(
+  entry: UploadEntry,
+  metadata: MediaMetadata,
+  state: UploadState = entry.state,
+): UploadEntry {
+  if (sameUploadMetadata(entry.metadata, metadata)) return entry
+  // Returning to exactly what was already sent restores that request identity.
+  const key =
+    entry.attempted?.find((sent) => sameUploadMetadata(sent.metadata, metadata))
+      ?.key ?? mediaUploadId()
+  return { ...entry, metadata, state, key }
+}
 export function sharedUploadMetadata(
   entry: UploadEntry,
   metadata: MediaMetadata,
 ): UploadEntry {
   return completed(entry)
     ? entry
-    : {
-        ...entry,
-        metadata: {
-          ...metadata,
-          caption: metadata.caption || entry.metadata.caption,
-        },
-        key: mediaUploadId(),
-      }
+    : withUploadMetadata(entry, {
+        ...metadata,
+        caption: metadata.caption || entry.metadata.caption,
+      })
 }

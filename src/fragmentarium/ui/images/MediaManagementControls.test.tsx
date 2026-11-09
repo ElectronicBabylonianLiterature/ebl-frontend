@@ -319,3 +319,25 @@ test('previous legacy rights annotations populate the correction form without pu
   )
   expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
 })
+
+test('a fresh reject dialog never prefills a reason from a dismissed one', async () => {
+  const media = mediaFixture({
+    publicationStatus: 'PENDING_REVIEW',
+    permissionAttested: true,
+    rightsStatement: 'Permission granted',
+  })
+  setup({ media })
+  await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
+  await userEvent.type(
+    screen.getByLabelText('Review reason (optional)'),
+    'Private note',
+  )
+  await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+  await waitFor(() =>
+    expect(
+      screen.queryByLabelText('Review reason (optional)'),
+    ).not.toBeInTheDocument(),
+  )
+  await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
+  expect(screen.getByLabelText('Review reason (optional)')).toHaveValue('')
+})

@@ -352,3 +352,154 @@ test('blurring unchanged optional metadata preserves the failed upload retry ide
   expect(upload.mock.calls[1][3]).toBe(upload.mock.calls[0][3])
   expect(upload.mock.calls[1][2]).toEqual(upload.mock.calls[0][2])
 })
+
+async function fillShared(caption = 'Obverse') {
+  // The shared fields precede every entry in document order.
+  fireEvent.change(
+    screen.getAllByLabelText('Caption or short description')[0],
+    {
+      target: { value: caption },
+    },
+  )
+  fireEvent.change(
+    screen.getAllByLabelText('Rights / reproduction statement')[0],
+    { target: { value: 'Permission for eBL reproduction' } },
+  )
+  await userEvent.click(screen.getAllByRole('checkbox')[0])
+}
+async function submitOne(upload: jest.Mock) {
+  await userEvent.upload(
+    screen.getByLabelText('Choose images or drop them here'),
+    file(),
+  )
+  await fill()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await waitFor(() => expect(upload).toHaveBeenCalledTimes(1))
+}
+const applyShared = () =>
+  userEvent.click(
+    screen.getByRole('button', { name: 'Apply to selected images' }),
+  )
+const abortable = () =>
+  jest.fn(
+    (_fragment, _file, _metadata, _key, options) =>
+      new Promise((_resolve, reject) =>
+        options.signal.addEventListener('abort', () =>
+          reject(new DOMException('Cancelled', 'AbortError')),
+        ),
+      ),
+  )
+const pending = () => mediaFixture({ publicationStatus: 'PENDING_REVIEW' })
+
+test('applying identical shared metadata to a failed entry keeps the retry identity', async () => {
+  const upload = jest
+    .fn()
+    .mockRejectedValueOnce(new Error('Network interrupted'))
+    .mockResolvedValue(pending())
+  setup(upload)
+  await submitOne(upload)
+  await screen.findByRole('alert')
+  await fillShared()
+  await applyShared()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Retry obverse.png' }),
+  )
+  await screen.findByText('Submitted for review')
+  expect(upload.mock.calls[1][3]).toBe(upload.mock.calls[0][3])
+  expect(upload.mock.calls[1][2]).toEqual(upload.mock.calls[0][2])
+})
+
+test('applying identical shared metadata to a cancelled entry keeps the retry identity', async () => {
+  const upload: jest.Mock = jest.fn(
+    (_fragment, _file, _metadata, _key, options) =>
+      new Promise((resolve, reject) => {
+        if (upload.mock.calls.length > 1) resolve(pending())
+        else
+          options.signal.addEventListener('abort', () =>
+            reject(new DOMException('Cancelled', 'AbortError')),
+          )
+      }),
+  )
+  setup(upload)
+  await submitOne(upload)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Cancel obverse.png' }),
+  )
+  await screen.findByRole('button', { name: 'Retry obverse.png' })
+  await fillShared()
+  await applyShared()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Retry obverse.png' }),
+  )
+  await screen.findByText('Submitted for review')
+  expect(upload.mock.calls[1][3]).toBe(upload.mock.calls[0][3])
+})
+
+test('genuinely changed shared metadata gives a failed entry a new request identity', async () => {
+  const upload = jest
+    .fn()
+    .mockRejectedValueOnce(new Error('Network interrupted'))
+    .mockResolvedValue(pending())
+  setup(upload)
+  await submitOne(upload)
+  await screen.findByRole('alert')
+  await fillShared('Changed caption')
+  await applyShared()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Retry obverse.png' }),
+  )
+  await screen.findByText('Submitted for review')
+  expect(upload.mock.calls[1][3]).not.toBe(upload.mock.calls[0][3])
+  expect(upload.mock.calls[1][2].caption).toBe('Changed caption')
+})
+
+test('editing a failed entry rotates the identity and restoring the sent metadata restores it', async () => {
+  const upload = jest
+    .fn()
+    .mockRejectedValueOnce(new Error('Network interrupted'))
+    .mockRejectedValueOnce(new Error('Network interrupted'))
+    .mockResolvedValue(pending())
+  setup(upload)
+  await submitOne(upload)
+  await screen.findByRole('alert')
+  const caption = () =>
+    within(
+      screen.getByRole('region', { name: 'Upload obverse.png' }),
+    ).getByLabelText('Caption or short description')
+  fireEvent.change(caption(), { target: { value: 'Edited' } })
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await waitFor(() => expect(upload).toHaveBeenCalledTimes(2))
+  expect(upload.mock.calls[1][3]).not.toBe(upload.mock.calls[0][3])
+  await screen.findByRole('alert')
+  fireEvent.change(caption(), { target: { value: 'Obverse' } })
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await waitFor(() => expect(upload).toHaveBeenCalledTimes(3))
+  expect(upload.mock.calls[2][3]).toBe(upload.mock.calls[0][3])
+})
+
+test('cancelling an in-flight upload refreshes the gallery because the server may have committed it', async () => {
+  const upload = abortable()
+  const { onChanged } = setup(upload)
+  await submitOne(upload)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Cancel obverse.png' }),
+  )
+  await screen.findByRole('button', { name: 'Retry obverse.png' })
+  expect(onChanged).toHaveBeenCalledTimes(1)
+  expect(screen.queryByText('Submitted for review')).not.toBeInTheDocument()
+})
+
+test('unmounting an in-flight upload never refreshes', async () => {
+  const upload = abortable()
+  const { onChanged, unmount } = setup(upload)
+  await submitOne(upload)
+  unmount()
+  await act(async () => undefined)
+  expect(onChanged).not.toHaveBeenCalled()
+})

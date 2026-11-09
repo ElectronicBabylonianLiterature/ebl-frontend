@@ -58,6 +58,7 @@ export default function MediaManagementControls({
   const management = services.management
   const open = (next: ManagementDialog): void => {
     if (next === 'edit') setMetadata(metadataOf(media))
+    if (next === 'reject') setReason('')
     operation.clearError()
     setDialog(next)
   }

@@ -44,7 +44,15 @@ export async function uploadEntry(
   const updateActive = (changes: Partial<UploadEntry>): void => {
     if (!controller.signal.aborted) update(entry.id, changes)
   }
-  update(entry.id, { state: 'Uploading', error: undefined, percent: undefined })
+  update(entry.id, {
+    state: 'Uploading',
+    error: undefined,
+    percent: undefined,
+    attempted: [
+      ...(entry.attempted ?? []),
+      { key: entry.key, metadata: entry.metadata },
+    ],
+  })
   try {
     const saved = await management.upload(
       fragment,
@@ -71,6 +79,9 @@ export async function uploadEntry(
     }
   } catch (error) {
     update(entry.id, failedEntry(error as Error, controller))
+    // An aborted request may already have been committed server-side. Refresh
+    // the gallery of this still-mounted fragment; success is never assumed.
+    if (controller.signal.aborted && runtime.mounted.current) onChanged()
   } finally {
     runtime.controllers.delete(entry.id)
   }
