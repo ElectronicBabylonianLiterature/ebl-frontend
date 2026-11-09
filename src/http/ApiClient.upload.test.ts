@@ -1,0 +1,250 @@
+import { createApiClientTestContext } from './ApiClient.testSupport'
+import { waitFor } from '@testing-library/react'
+
+let xhr: {
+  open: jest.Mock
+  setRequestHeader: jest.Mock
+  send: jest.Mock
+  abort: jest.Mock
+  upload: {
+    onprogress?: (event: Partial<ProgressEvent>) => void
+    onload?: () => void
+  }
+  onload?: () => void
+  onabort?: () => void
+  onerror?: () => void
+  status: number
+  statusText: string
+  responseText: string
+}
+let originalXHR: typeof XMLHttpRequest
+
+beforeEach(() => {
+  originalXHR = window.XMLHttpRequest
+  xhr = {
+    open: jest.fn(),
+    setRequestHeader: jest.fn(),
+    send: jest.fn(),
+    abort: jest.fn(() => xhr.onabort?.()),
+    upload: {},
+    status: 201,
+    statusText: 'Created',
+    responseText: '{"media":[]}',
+  }
+  window.XMLHttpRequest = jest.fn(() => xhr) as unknown as typeof XMLHttpRequest
+})
+afterEach(() => {
+  window.XMLHttpRequest = originalXHR
+})
+
+test('uses authenticated binary transport and reports only actual upload progress followed by processing', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const onProgress = jest.fn()
+  const onProcessing = jest.fn()
+  const file = new File(['file'], 'tablet.png', { type: 'image/png' })
+  const pending = apiClient.uploadBinary(
+    '/media?fragment=K.1',
+    file,
+    { 'Content-Type': file.type },
+    { onProgress, onProcessing },
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  expect(xhr.setRequestHeader).toHaveBeenCalledWith(
+    'authorization',
+    'Bearer test-token',
+  )
+  expect(xhr.send).toHaveBeenCalledWith(file)
+  xhr.upload.onprogress?.({ loaded: 2, total: 4, lengthComputable: true })
+  expect(onProgress).toHaveBeenCalledWith(2, 4)
+  expect(onProcessing).not.toHaveBeenCalled()
+  xhr.upload.onload?.()
+  expect(onProcessing).toHaveBeenCalledTimes(1)
+  xhr.onload?.()
+  await expect(pending).resolves.toEqual({ media: [] })
+})
+
+test('cancels active transport with AbortError', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const controller = new AbortController()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+    { signal: controller.signal },
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  controller.abort()
+  await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+  expect(xhr.abort).toHaveBeenCalledTimes(1)
+})
+
+test('parses API errors without turning them into successful uploads', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.status = 403
+  xhr.responseText = '{"description":"Insufficient permission"}'
+  xhr.onload?.()
+  await expect(pending).rejects.toMatchObject({
+    status: 403,
+    message: 'Insufficient permission',
+  })
+})
+
+test('JSON management mutations preserve method, body, cancellation and 204 response semantics', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const controller = new AbortController()
+  fetchMock.mockResponseOnce('', { status: 204 })
+  await expect(
+    apiClient.requestJson(
+      '/media/id?fragment=K.1',
+      'DELETE',
+      undefined,
+      controller.signal,
+    ),
+  ).resolves.toBeNull()
+  expect(fetch).toHaveBeenCalledWith(
+    expect.stringContaining('/media/id?fragment=K.1'),
+    expect.objectContaining({ method: 'DELETE', signal: controller.signal }),
+  )
+})
+
+test('already cancelled requests never create or send a transport', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const controller = new AbortController()
+  controller.abort()
+  await expect(
+    apiClient.uploadBinary(
+      '/media',
+      new File(['file'], 'tablet.png'),
+      {},
+      { signal: controller.signal },
+    ),
+  ).rejects.toMatchObject({ name: 'AbortError' })
+  expect(window.XMLHttpRequest).not.toHaveBeenCalled()
+})
+
+test('cancellation racing transport setup never sends the original', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const controller = new AbortController()
+  xhr.open.mockImplementation(() => controller.abort())
+  await expect(
+    apiClient.uploadBinary(
+      '/media',
+      new File(['file'], 'tablet.png'),
+      {},
+      { signal: controller.signal },
+    ),
+  ).rejects.toMatchObject({ name: 'AbortError' })
+  expect(xhr.send).not.toHaveBeenCalled()
+})
+
+test('unknown transfer size reports bytes without an invented total and suppresses late cancelled callbacks', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const controller = new AbortController()
+  const onProgress = jest.fn()
+  const onProcessing = jest.fn()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+    { signal: controller.signal, onProgress, onProcessing },
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.upload.onprogress?.({ loaded: 2, lengthComputable: false })
+  expect(onProgress).toHaveBeenCalledWith(2, undefined)
+  controller.abort()
+  xhr.upload.onprogress?.({ loaded: 4, total: 4, lengthComputable: true })
+  xhr.upload.onload?.()
+  expect(onProgress).toHaveBeenCalledTimes(1)
+  expect(onProcessing).not.toHaveBeenCalled()
+  await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+})
+
+test('network upload failure reports a structured API error', async () => {
+  const { apiClient, errorReporter } = createApiClientTestContext()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.onerror?.()
+  await expect(pending).rejects.toMatchObject({
+    status: 0,
+    message: 'Upload connection failed',
+  })
+  expect(errorReporter.captureException).toHaveBeenCalledWith(
+    expect.any(Error),
+    expect.objectContaining({ endpoint: '/media', method: 'POST', status: 0 }),
+  )
+})
+
+test('malformed upload response remains a failure and successful empty bodies are represented as null', async () => {
+  const { apiClient } = createApiClientTestContext()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.responseText = 'not JSON'
+  xhr.onload?.()
+  await expect(pending).rejects.toMatchObject({
+    message: 'The upload response could not be read.',
+  })
+  xhr.send.mockClear()
+  const next = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.responseText = ''
+  xhr.onload?.()
+  await expect(next).resolves.toBeNull()
+})
+
+test.each([
+  [{ title: 'Upload unavailable' }, 'Upload unavailable'],
+  [
+    { description: { reason: 'Quota reached' } },
+    'Created: {"reason":"Quota reached"}',
+  ],
+  ['Unavailable', '{}'],
+])('handles bounded server error response shape %p', async (body, message) => {
+  const { apiClient } = createApiClientTestContext()
+  const pending = apiClient.uploadBinary(
+    '/media',
+    new File(['file'], 'tablet.png'),
+    {},
+  )
+  await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+  xhr.status = 503
+  xhr.responseText = JSON.stringify(body)
+  xhr.onload?.()
+  await expect(pending).rejects.toMatchObject({ status: 503, message })
+})
+
+test.each([false, true])(
+  'transport exceptions respect existing capture state %p',
+  async (alreadyCaptured) => {
+    const { apiClient, errorReporter } = createApiClientTestContext()
+    const error = Object.assign(new Error('Transport unavailable'), {
+      __captured: alreadyCaptured,
+    })
+    xhr.send.mockImplementation(() => {
+      throw error
+    })
+    await expect(
+      apiClient.uploadBinary('/media', new File(['file'], 'tablet.png'), {}),
+    ).rejects.toBe(error)
+    expect(errorReporter.captureException).toHaveBeenCalledTimes(
+      alreadyCaptured ? 0 : 1,
+    )
+  },
+)

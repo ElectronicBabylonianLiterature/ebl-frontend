@@ -222,4 +222,108 @@ export default class ApiClient {
       deserializeJson,
     ) as Promise<T>
   }
+
+  requestJson<T = unknown>(
+    path: string,
+    method: 'POST' | 'PATCH' | 'DELETE',
+    body: unknown,
+    signal?: AbortSignal,
+  ): Promise<T> {
+    return this.fetch(path, true, createOptions(body, method), signal).then(
+      deserializeJson,
+    ) as Promise<T>
+  }
+
+  async uploadBinary<T = unknown>(
+    path: string,
+    file: File,
+    headers: Record<string, string>,
+    options: {
+      signal?: AbortSignal
+      onProgress?: (loaded: number, total?: number) => void
+      onProcessing?: () => void
+    } = {},
+  ): Promise<T> {
+    const authenticatedHeaders = await this.createHeaders(true, headers, path)
+    if (options.signal?.aborted)
+      throw new DOMException('Upload cancelled', 'AbortError')
+    return new Promise<T>((resolve, reject) => {
+      const request = new XMLHttpRequest()
+      const abort = (): void => request.abort()
+      const cleanup = (): void =>
+        options.signal?.removeEventListener('abort', abort)
+      request.open('POST', apiUrl(path))
+      authenticatedHeaders.forEach((value, name) =>
+        request.setRequestHeader(name, value),
+      )
+      request.upload.onprogress = (event) =>
+        !options.signal?.aborted &&
+        options.onProgress?.(
+          event.loaded,
+          event.lengthComputable ? event.total : undefined,
+        )
+      request.upload.onload = () => {
+        if (!options.signal?.aborted) options.onProcessing?.()
+      }
+      request.onabort = () => {
+        cleanup()
+        reject(new DOMException('Upload cancelled', 'AbortError'))
+      }
+      request.onerror = () => {
+        cleanup()
+        reject(new ApiError('Upload connection failed', {}, 0))
+      }
+      request.onload = () => {
+        cleanup()
+        let body: unknown
+        try {
+          body = request.responseText ? JSON.parse(request.responseText) : null
+        } catch {
+          reject(
+            new ApiError(
+              'The upload response could not be read.',
+              {},
+              request.status,
+            ),
+          )
+          return
+        }
+        if (request.status >= 200 && request.status < 300) resolve(body as T)
+        else
+          reject(
+            new ApiError(
+              ApiError.bodyToMessage(
+                (body && typeof body === 'object' ? body : {}) as Record<
+                  string,
+                  unknown
+                >,
+                request.statusText,
+              ),
+              body,
+              request.status,
+            ),
+          )
+      }
+      options.signal?.addEventListener('abort', abort, { once: true })
+      if (options.signal?.aborted) {
+        cleanup()
+        reject(new DOMException('Upload cancelled', 'AbortError'))
+        return
+      }
+      request.send(file)
+    }).catch((error) => {
+      if (!isAbortError(error)) {
+        const captured = error as Error & { __captured?: boolean }
+        if (!captured.__captured) {
+          captured.__captured = true
+          this.errorReporter.captureException(captured, {
+            endpoint: path,
+            method: 'POST',
+            ...(error instanceof ApiError ? { status: error.status } : {}),
+          })
+        }
+      }
+      throw error
+    })
+  }
 }

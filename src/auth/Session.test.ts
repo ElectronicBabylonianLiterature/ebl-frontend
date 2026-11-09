@@ -30,6 +30,8 @@ describe('GuestSession', () => {
 })
 
 describe.each([
+  ['upload:fragment_media', 'isAllowedToUploadFragmentMedia'],
+  ['manage:fragment_media', 'isAllowedToManageFragmentMedia'],
   ['read:words', 'isAllowedToReadWords'],
   ['write:words', 'isAllowedToWriteWords'],
   ['read:fragments', 'isAllowedToReadFragments'],

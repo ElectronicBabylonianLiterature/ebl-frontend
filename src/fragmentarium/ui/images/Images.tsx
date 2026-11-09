@@ -80,7 +80,9 @@ function Images({
   const mediaServices = useContext(MediaGalleryContext)
   const hasLegacyPhoto = fragment.legacyHasPhoto ?? fragment.hasPhoto
   const hasMedia = mediaServices
-    ? fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)
+    ? fragment.hasPhoto ||
+      Boolean(fragment.mediaSummary?.count) ||
+      Boolean(mediaServices.canUpload || mediaServices.canManage)
     : hasLegacyPhoto
   const controller = new TabController(
     fragment,

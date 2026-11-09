@@ -193,6 +193,23 @@ export class FragmentCache {
     this.scoped.bumpGeneration()
   }
 
+  invalidateMedia(number: string): void {
+    this.scoped.clearWhenScopeChanges()
+    this.clearFragments(number)
+    const prefix = fragmentKeyPrefix(number)
+    deleteByPrefix(this.thumbnails, prefix)
+    deleteByPrefix(this.thumbnailRequests, prefix)
+    deleteByPrefix(this.prefetchedFragments, prefix)
+    for (const [key, entry] of this.queryResults) {
+      if (entry.value.items.some((item) => item.museumNumber === number))
+        this.queryResults.delete(key)
+    }
+    // In-flight query membership is unknown until it completes. Detaching
+    // requests prevents pre-mutation responses from repopulating this cache.
+    this.queryResultRequests.clear()
+    this.scoped.bumpGeneration()
+  }
+
   storePrefetchedFragments(queryResult: QueryResult): void {
     this.prefetchedFragments.clear()
     queryResult.items.forEach((queryItem) =>

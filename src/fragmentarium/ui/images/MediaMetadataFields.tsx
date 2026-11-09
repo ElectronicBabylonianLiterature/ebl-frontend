@@ -1,0 +1,141 @@
+import React, { useEffect, useState } from 'react'
+import { Form } from 'react-bootstrap'
+import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
+
+export const emptyMediaMetadata: MediaMetadata = {
+  type: 'PHOTO',
+  caption: '',
+  sourceInstitution: '',
+  rightsStatement: '',
+  permissionAttested: false,
+}
+
+function DelimitedField({
+  id,
+  label,
+  value,
+  disabled,
+  onChange,
+}: {
+  id: string
+  label: string
+  value: string
+  disabled: boolean
+  onChange: (items: string[]) => void
+}): JSX.Element {
+  const [draft, setDraft] = useState(value)
+  useEffect(() => setDraft(value), [value])
+  return (
+    <Form.Group controlId={id} className="mb-2">
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        value={draft}
+        disabled={disabled}
+        onChange={(event) => setDraft(event.target.value)}
+        onBlur={() => {
+          const items = draft
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean)
+          setDraft(items.join(', '))
+          if (items.join(', ') !== value) onChange(items)
+        }}
+      />
+    </Form.Group>
+  )
+}
+
+export default function MediaMetadataFields({
+  value,
+  onChange,
+  id,
+  disabled = false,
+  rightsEditable = true,
+  requiredFields = true,
+  legacy = false,
+}: {
+  value: MediaMetadata
+  onChange: (metadata: MediaMetadata) => void
+  id: string
+  disabled?: boolean
+  rightsEditable?: boolean
+  requiredFields?: boolean
+  legacy?: boolean
+}): JSX.Element {
+  const field = (key: keyof MediaMetadata, label: string, required = false) => (
+    <Form.Group controlId={`${id}-${key}`} className="mb-2">
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        value={String(value[key] ?? '')}
+        required={required && requiredFields}
+        maxLength={2000}
+        disabled={
+          disabled ||
+          (!rightsEditable &&
+            ['rightsStatement', 'copyrightHolder'].includes(key))
+        }
+        onChange={(event) => onChange({ ...value, [key]: event.target.value })}
+      />
+    </Form.Group>
+  )
+  return (
+    <div className="MediaMetadataFields">
+      <Form.Group controlId={`${id}-type`} className="mb-2">
+        <Form.Label>Image type</Form.Label>
+        <Form.Select
+          value={value.type}
+          disabled={disabled}
+          onChange={(event) =>
+            onChange({
+              ...value,
+              type: event.target.value as MediaMetadata['type'],
+            })
+          }
+        >
+          <option value="PHOTO">Photograph</option>
+          <option value="COPY">Hand copy</option>
+        </Form.Select>
+      </Form.Group>
+      {field('caption', 'Caption or short description', !legacy)}
+      {field('attribution', 'Attribution')}
+      {field('sourceInstitution', 'Source institution (where applicable)')}
+      {field('creator', 'Photographer or creator')}
+      {field('copyrightHolder', 'Copyright holder')}
+      {field('rightsStatement', 'Rights / reproduction statement', !legacy)}
+      {field('description', 'Additional context')}
+      <DelimitedField
+        id={`${id}-references`}
+        label="Bibliography identifiers (comma separated)"
+        value={
+          value.references?.map((reference) => reference.id).join(', ') ?? ''
+        }
+        disabled={disabled}
+        onChange={(items) =>
+          onChange({ ...value, references: items.map((id) => ({ id })) })
+        }
+      />
+      {!legacy && (
+        <DelimitedField
+          id={`${id}-projects`}
+          label="Research projects (CAIC, ALU_GENEVA, AMPS, RECC; comma separated)"
+          value={value.projects?.join(', ') ?? ''}
+          disabled={disabled}
+          onChange={(projects) => onChange({ ...value, projects })}
+        />
+      )}
+      {!legacy && (
+        <Form.Check
+          id={`${id}-permission`}
+          type="checkbox"
+          required={requiredFields}
+          checked={value.permissionAttested}
+          disabled={disabled || !rightsEditable}
+          label="I am authorized to submit this image under the stated rights."
+          onChange={(event) =>
+            onChange({ ...value, permissionAttested: event.target.checked })
+          }
+        />
+      )}
+    </div>
+  )
+}

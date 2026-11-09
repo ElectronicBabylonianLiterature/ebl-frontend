@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import App from 'App'
 
 import ApiClient from 'http/ApiClient'
@@ -198,6 +198,10 @@ export default function InjectedApp({
     () => new FindspotService(findspotRepository),
     [findspotRepository],
   )
+  const onMediaChanged = useCallback(
+    (number: string) => fragmentService.invalidateMedia(number),
+    [fragmentService],
+  )
   useEffect(() => {
     fragmentService.fetchProvenances().catch((error) => {
       errorReporter.captureException(error)
@@ -213,6 +217,7 @@ export default function InjectedApp({
     <MediaGalleryProvider
       scope={`${authenticationService.isAuthenticated()}:${resolveAuthenticatedIdentity(authenticationService) ?? ''}`}
       apiClient={apiClient}
+      onMediaChanged={onMediaChanged}
     >
       <RealiaServiceContext.Provider value={realiaService}>
         <App

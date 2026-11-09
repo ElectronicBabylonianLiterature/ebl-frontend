@@ -77,6 +77,8 @@ export function normalizeMediaResource(
 
   const normalizedCaption = normalizeNonEmptyString(caption)
   const normalizedAttribution = normalizeNonEmptyString(attribution)
+  const lifecycle = normalizeLifecycle(resource)
+  if (!lifecycle) return undefined
 
   return {
     id: normalizedId,
@@ -87,7 +89,62 @@ export function normalizeMediaResource(
     ...(normalizedAttribution ? { attribution: normalizedAttribution } : {}),
     references: normalizeMediaReferences(references),
     representations: normalizedRepresentations,
+    ...lifecycle,
   }
+}
+
+function normalizeLifecycle(
+  resource: Record<string, unknown>,
+): Partial<MediaResource> | undefined {
+  if (resource.publicationStatus === undefined) {
+    if (resource.rightsAnnotated !== true) return {}
+    const rights: Partial<MediaResource> = { rightsAnnotated: true }
+    for (const field of [
+      'creator',
+      'sourceInstitution',
+      'copyrightHolder',
+      'rightsStatement',
+      'description',
+    ] as const) {
+      if (typeof resource[field] === 'string')
+        Object.assign(rights, { [field]: resource[field] })
+    }
+    return rights
+  }
+  const result: Record<string, unknown> = {}
+  if (resource.publicationStatus !== undefined) {
+    if (
+      typeof resource.publicationStatus !== 'string' ||
+      !['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'].includes(
+        resource.publicationStatus,
+      )
+    )
+      return undefined
+    result.publicationStatus = resource.publicationStatus
+  }
+  for (const field of [
+    'uploaderId',
+    'uploadedAt',
+    'reviewerId',
+    'reviewedAt',
+    'reviewReason',
+    'originalFilename',
+    'creator',
+    'sourceInstitution',
+    'copyrightHolder',
+    'rightsStatement',
+    'description',
+  ]) {
+    if (typeof resource[field] === 'string') result[field] = resource[field]
+  }
+  if (typeof resource.permissionAttested === 'boolean')
+    result.permissionAttested = resource.permissionAttested
+  if (
+    Array.isArray(resource.projects) &&
+    resource.projects.every((project) => typeof project === 'string')
+  )
+    result.projects = resource.projects
+  return result as Partial<MediaResource>
 }
 
 export function normalizeFragmentMediaResponse(

@@ -44,6 +44,7 @@ describe('media architecture isolation: real source tree', () => {
       'InjectedApp.tsx',
       'fragmentarium/infrastructure/ApiMediaBinaryLoader.ts',
       'fragmentarium/infrastructure/ApiMediaRepository.ts',
+      'fragmentarium/infrastructure/ApiMediaManagementRepository.ts',
       'fragmentarium/infrastructure/fragmentFactories.ts',
       'fragmentarium/infrastructure/querySummaryFragment.ts',
       'fragmentarium/ui/search/FragmentCardThumbnail.tsx',

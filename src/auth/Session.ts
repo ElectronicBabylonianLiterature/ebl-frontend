@@ -2,6 +2,8 @@ import Folio from 'fragmentarium/domain/Folio'
 import applicationScopes from 'auth/applicationScopes.json'
 
 export interface Session {
+  isAllowedToUploadFragmentMedia?(): boolean
+  isAllowedToManageFragmentMedia?(): boolean
   isAllowedToReadWords(): boolean
 
   isAllowedToWriteWords(): boolean
@@ -34,6 +36,12 @@ export interface Session {
 }
 
 class GuestSession implements Session {
+  isAllowedToUploadFragmentMedia(): boolean {
+    return false
+  }
+  isAllowedToManageFragmentMedia(): boolean {
+    return false
+  }
   isAllowedToReadWords(): boolean {
     return true
   }
@@ -98,6 +106,12 @@ class GuestSession implements Session {
 export const guestSession = new GuestSession()
 
 export default class MemorySession implements Session {
+  isAllowedToUploadFragmentMedia(): boolean {
+    return this.hasApplicationScope('uploadFragmentMedia')
+  }
+  isAllowedToManageFragmentMedia(): boolean {
+    return this.hasApplicationScope('manageFragmentMedia')
+  }
   private readonly scopes: ReadonlySet<string>
 
   constructor(scopes: readonly string[]) {

@@ -1,4 +1,6 @@
 {
+  "uploadFragmentMedia": "upload:fragment_media",
+  "manageFragmentMedia": "manage:fragment_media",
   "readWords": "read:words",
   "writeWords": "write:words",
   "readFragments": "read:fragments",
