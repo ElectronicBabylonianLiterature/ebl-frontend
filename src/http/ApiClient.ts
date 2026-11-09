@@ -1,8 +1,10 @@
-import _ from 'lodash'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
 import { isAbortError } from 'common/utils/abortError'
-import captureStackTrace from 'common/utils/captureStackTrace'
+import { ApiError } from './ApiError'
+import { BinaryUploadOptions, uploadBinaryRequest } from './binaryUpload'
+
+export { ApiError } from './ApiError'
 
 export type AccessTokenProvider = Pick<
   AuthenticationService,
@@ -39,57 +41,6 @@ function createOptions(body: unknown, method: string): Options {
     method: method,
   }
 }
-export class ApiError extends Error {
-  readonly data: unknown
-  readonly status?: number
-
-  constructor(message: string, data: unknown, status?: number) {
-    super(message)
-    this.name = this.constructor.name
-    this.data = data
-    this.status = status
-    captureStackTrace(this, this.constructor)
-  }
-
-  static async fromResponse(response: Response): Promise<ApiError> {
-    return response
-      .json()
-      .then(
-        (body) =>
-          new ApiError(
-            ApiError.bodyToMessage(body, response.statusText),
-            body,
-            response.status,
-          ),
-      )
-      .catch(() => new ApiError(response.statusText, {}, response.status))
-  }
-
-  static bodyToMessage(
-    body: { [key: string]: unknown },
-    statusText: string,
-  ): string {
-    if (_.isString(body.description)) {
-      return body.description
-    } else if (body.description || body.title) {
-      return ApiError.titleAndDescriptionToMessage(body, statusText)
-    } else {
-      return JSON.stringify(body)
-    }
-  }
-
-  private static titleAndDescriptionToMessage(
-    body: { [key: string]: unknown },
-    statusText: string,
-  ): string {
-    const title = body.title || statusText
-    const description = body.description
-      ? ': ' + JSON.stringify(body.description)
-      : ''
-    return `${title}${description}`
-  }
-}
-
 export default class ApiClient {
   private readonly auth: AccessTokenProvider
   private readonly errorReporter: ErrorCapturer
@@ -238,92 +189,28 @@ export default class ApiClient {
     path: string,
     file: File,
     headers: Record<string, string>,
-    options: {
-      signal?: AbortSignal
-      onProgress?: (loaded: number, total?: number) => void
-      onProcessing?: () => void
-    } = {},
+    options: BinaryUploadOptions = {},
   ): Promise<T> {
     const authenticatedHeaders = await this.createHeaders(true, headers, path)
-    if (options.signal?.aborted)
-      throw new DOMException('Upload cancelled', 'AbortError')
-    return new Promise<T>((resolve, reject) => {
-      const request = new XMLHttpRequest()
-      const abort = (): void => request.abort()
-      const cleanup = (): void =>
-        options.signal?.removeEventListener('abort', abort)
-      request.open('POST', apiUrl(path))
-      authenticatedHeaders.forEach((value, name) =>
-        request.setRequestHeader(name, value),
-      )
-      request.upload.onprogress = (event) =>
-        !options.signal?.aborted &&
-        options.onProgress?.(
-          event.loaded,
-          event.lengthComputable ? event.total : undefined,
-        )
-      request.upload.onload = () => {
-        if (!options.signal?.aborted) options.onProcessing?.()
-      }
-      request.onabort = () => {
-        cleanup()
-        reject(new DOMException('Upload cancelled', 'AbortError'))
-      }
-      request.onerror = () => {
-        cleanup()
-        reject(new ApiError('Upload connection failed', {}, 0))
-      }
-      request.onload = () => {
-        cleanup()
-        let body: unknown
-        try {
-          body = request.responseText ? JSON.parse(request.responseText) : null
-        } catch {
-          reject(
-            new ApiError(
-              'The upload response could not be read.',
-              {},
-              request.status,
-            ),
-          )
-          return
-        }
-        if (request.status >= 200 && request.status < 300) resolve(body as T)
-        else
-          reject(
-            new ApiError(
-              ApiError.bodyToMessage(
-                (body && typeof body === 'object' ? body : {}) as Record<
-                  string,
-                  unknown
-                >,
-                request.statusText,
-              ),
-              body,
-              request.status,
-            ),
-          )
-      }
-      options.signal?.addEventListener('abort', abort, { once: true })
-      if (options.signal?.aborted) {
-        cleanup()
-        reject(new DOMException('Upload cancelled', 'AbortError'))
-        return
-      }
-      request.send(file)
-    }).catch((error) => {
-      if (!isAbortError(error)) {
-        const captured = error as Error & { __captured?: boolean }
-        if (!captured.__captured) {
-          captured.__captured = true
-          this.errorReporter.captureException(captured, {
-            endpoint: path,
-            method: 'POST',
-            ...(error instanceof ApiError ? { status: error.status } : {}),
-          })
-        }
-      }
+    return uploadBinaryRequest<T>(
+      apiUrl(path),
+      file,
+      authenticatedHeaders,
+      options,
+    ).catch((error) => {
+      if (!isAbortError(error)) this.captureUploadError(error, path)
       throw error
+    })
+  }
+
+  private captureUploadError(error: Error, path: string): void {
+    const captured = error as Error & { __captured?: boolean }
+    if (captured.__captured) return
+    captured.__captured = true
+    this.errorReporter.captureException(captured, {
+      endpoint: path,
+      method: 'POST',
+      ...(error instanceof ApiError ? { status: error.status } : {}),
     })
   }
 }

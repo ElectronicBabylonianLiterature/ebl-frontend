@@ -191,6 +191,45 @@ test('keyboard dismissal returns focus to the management action', async () => {
   expect(trigger).toHaveFocus()
 })
 
+test.each(['Cancel', 'Escape'])(
+  'discarded metadata drafts reset when reopening after %s',
+  async (dismissal) => {
+    const { management } = setup({
+      media: mediaFixture({
+        caption: 'Original caption',
+        rightsStatement: 'Original rights',
+        publicationStatus: 'PUBLISHED',
+        permissionAttested: true,
+      }),
+    })
+    const open = () =>
+      userEvent.click(
+        screen.getByRole('button', { name: 'Edit image metadata' }),
+      )
+    await open()
+    const rights = screen.getByLabelText('Rights / reproduction statement')
+    await userEvent.clear(rights)
+    await userEvent.type(rights, 'Cancelled rights correction')
+    if (dismissal === 'Escape') await userEvent.keyboard('{Escape}')
+    else await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
+    await open()
+    expect(
+      screen.getByLabelText('Rights / reproduction statement'),
+    ).toHaveValue('Original rights')
+    const caption = screen.getByLabelText('Caption or short description')
+    await userEvent.clear(caption)
+    await userEvent.type(caption, 'New caption')
+    await userEvent.click(screen.getByRole('button', { name: 'Save metadata' }))
+    await waitFor(() => expect(management.update).toHaveBeenCalledTimes(1))
+    expect(management.update.mock.calls[0][2]).toEqual({
+      caption: 'New caption',
+    })
+  },
+)
+
 test('bibliography and research project lists can be typed with comma delimiters', async () => {
   const { management } = setup({
     media: mediaFixture({
