@@ -121,25 +121,26 @@ export default class ApiClient {
       }
       throw await ApiError.fromResponse(response)
     } catch (error) {
-      if (isAbortError(error)) {
-        throw error
-      }
-      const capturedError = error as Error & { __captured?: boolean }
-      if (!capturedError.__captured) {
-        const errorInfo: Record<string, unknown> = {
-          endpoint: path,
-          method: options.method ?? 'GET',
-        }
-        if (error instanceof ApiError && error.status) {
-          errorInfo.status = error.status
-          if (error.status === 401 || error.status === 403) {
-            errorInfo.authError = true
-          }
-        }
-        this.errorReporter.captureException(capturedError, errorInfo)
-      }
+      if (!isAbortError(error))
+        this.captureRequestError(error as Error, path, options.method ?? 'GET')
       throw error
     }
+  }
+
+  private captureRequestError(
+    error: Error & { __captured?: boolean },
+    path: string,
+    method: string,
+  ): void {
+    if (error.__captured) return
+    const errorInfo: Record<string, unknown> = { endpoint: path, method }
+    if (error instanceof ApiError && error.status) {
+      errorInfo.status = error.status
+      if (error.status === 401 || error.status === 403) {
+        errorInfo.authError = true
+      }
+    }
+    this.errorReporter.captureException(error, errorInfo)
   }
 
   fetchJson<T = unknown>(
