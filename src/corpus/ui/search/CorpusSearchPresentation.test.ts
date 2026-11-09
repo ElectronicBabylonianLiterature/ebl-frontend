@@ -136,3 +136,62 @@ it.each(cases)('$name', ({ result, pageIndex, summary, hasNextPage }) => {
   )
   expect(presentation.showPaginationControls).toBe(pageIndex > 0 || hasNextPage)
 })
+
+describe('page boundaries without chapter totals', () => {
+  const chapters = (count: number) =>
+    corpusQueryItemFactory.buildList(count, {
+      lines: [0],
+      variants: [0],
+      matchCount: 1,
+    })
+  const pagination = { pageIndex: 0, pageSize: 25 }
+
+  it('treats an exactly full page as the last page', () => {
+    const presentation = getCorpusSearchPresentation(
+      { items: chapters(25), matchCountTotal: null },
+      pagination,
+    )
+    expect(presentation.hasNextPage).toBe(false)
+    expect(presentation.visibleChapters).toHaveLength(25)
+  })
+
+  it('uses the extra requested chapter as the next-page signal', () => {
+    const presentation = getCorpusSearchPresentation(
+      { items: chapters(26), matchCountTotal: null },
+      pagination,
+    )
+    expect(presentation.hasNextPage).toBe(true)
+    expect(presentation.visibleChapters).toHaveLength(25)
+  })
+})
+
+describe('backend that ignores limit and offset', () => {
+  const allChapters = corpusQueryItemFactory.buildList(60, {
+    lines: [0],
+    variants: [0],
+    matchCount: 1,
+  })
+  const result = { items: allChapters, matchCountTotal: null }
+
+  it('slices the requested page from the full response', () => {
+    const presentation = getCorpusSearchPresentation(result, {
+      pageIndex: 1,
+      pageSize: 25,
+    })
+    expect(presentation.visibleChapters).toEqual(allChapters.slice(25, 50))
+    expect(presentation.lastPageIndex).toBe(2)
+    expect(presentation.hasNextPage).toBe(true)
+    expect(presentation.summary).toBe(
+      'Found 60 chapters. Showing chapters 26-50 of 60',
+    )
+  })
+
+  it('stops at the real last page', () => {
+    const presentation = getCorpusSearchPresentation(result, {
+      pageIndex: 2,
+      pageSize: 25,
+    })
+    expect(presentation.visibleChapters).toEqual(allChapters.slice(50))
+    expect(presentation.hasNextPage).toBe(false)
+  })
+})

@@ -57,6 +57,7 @@ it('ignores another public showMore call while loading and fetches no empty batc
     baseChapterDisplay.id,
     [0, 1],
     [2, 0],
+    expect.any(AbortSignal),
   )
 
   await act(async () => {
@@ -118,6 +119,58 @@ it('retains the loaded chapter and pair count when a response lacks a requested 
   })
   expect(view.result.current.chapter).toBe(initialChapter)
   expect(textService.findChapterDisplay).toHaveBeenCalledTimes(1)
+})
+
+it.each(['collapse', 'unmount'] as const)(
+  'aborts the in-flight batch on %s without surfacing an error',
+  async (transition) => {
+    let signal!: AbortSignal
+    textService.findChapterDisplay.mockImplementationOnce(
+      (_id, _lines, _variants, batchSignal) =>
+        new Promise<ChapterDisplay>((_resolve, reject) => {
+          signal = batchSignal as AbortSignal
+          signal.addEventListener('abort', () =>
+            reject(new DOMException('Aborted', 'AbortError')),
+          )
+        }),
+    )
+    const { view } = renderMatchesHook()
+    act(() => view.result.current.showMore())
+    expect(signal.aborted).toBe(false)
+
+    if (transition === 'collapse') act(() => view.result.current.collapse())
+    else view.unmount()
+    expect(signal.aborted).toBe(true)
+    await act(async () => undefined)
+
+    expect(view.result.current).toMatchObject({
+      error: false,
+      unavailable: false,
+    })
+    if (transition === 'collapse') {
+      expect(view.result.current.loading).toBe(false)
+    }
+  },
+)
+
+it('does not abort a completed batch when collapsing later', async () => {
+  let signal!: AbortSignal
+  textService.findChapterDisplay.mockImplementationOnce(
+    async (_id, _lines, _variants, batchSignal) => {
+      signal = batchSignal as AbortSignal
+      return chapterWithPairs([
+        [0, 2],
+        [1, 0],
+      ])
+    },
+  )
+  const { view } = renderMatchesHook()
+  act(() => view.result.current.showMore())
+  await waitFor(() => expect(view.result.current.expanded).toBe(true))
+
+  act(() => view.result.current.collapse())
+
+  expect(signal.aborted).toBe(false)
 })
 
 it.each(['collapse', 'unmount'] as const)(

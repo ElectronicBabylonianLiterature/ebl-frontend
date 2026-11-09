@@ -104,7 +104,7 @@ it('keeps bounded Corpus pagination and independent Library state on the shared 
   ).toBeVisible()
   expect(corpusQuery.mock.calls[0][0]).toEqual({
     transliteration: 'a+b',
-    limit: 25,
+    limit: 26,
     offset: 0,
   })
   expect(libraryQuery.mock.calls[0][0]).toEqual({
@@ -128,7 +128,7 @@ it('keeps bounded Corpus pagination and independent Library state on the shared 
   ).toBeVisible()
   expect(corpusQuery.mock.calls[1][0]).toEqual({
     transliteration: 'a+b',
-    limit: 25,
+    limit: 26,
     offset: 25,
   })
   expect(screen.getByTestId('location')).toHaveTextContent(
@@ -146,7 +146,7 @@ it('keeps bounded Corpus pagination and independent Library state on the shared 
   ).toBeVisible()
   expect(corpusQuery.mock.calls[2][0]).toEqual({
     transliteration: 'a+b',
-    limit: 25,
+    limit: 26,
     offset: 0,
   })
   expect(screen.getByTestId('location')).toHaveTextContent(

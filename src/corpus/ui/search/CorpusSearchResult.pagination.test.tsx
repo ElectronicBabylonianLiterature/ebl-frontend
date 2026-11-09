@@ -75,7 +75,7 @@ it('requests bounded pages, preserves the Corpus tab, and supports Back', async 
   ).toBeVisible()
   expect(textService.query.mock.calls[0][0]).toEqual({
     transliteration: 'a+b',
-    limit: 25,
+    limit: 26,
     offset: 0,
   })
   expect(textService.findChapterDisplay).not.toHaveBeenCalled()
@@ -92,7 +92,7 @@ it('requests bounded pages, preserves the Corpus tab, and supports Back', async 
   ).toBeVisible()
   expect(textService.query.mock.calls[1][0]).toEqual({
     transliteration: 'a+b',
-    limit: 25,
+    limit: 26,
     offset: 25,
   })
   expect(screen.getByTestId('route')).toHaveTextContent(
@@ -137,7 +137,7 @@ it('replaces an out-of-range direct URL with the last real page', async () => {
 it('resets only the Corpus page when its page size changes', async () => {
   textService.query.mockImplementation(
     async (query): Promise<CorpusQueryResult> => ({
-      items: query.limit === 50 ? items(26) : items(1, 26),
+      items: query.limit === 51 ? items(26) : items(1, 26),
       totalChapters: 26,
       matchCountTotal: 30,
       hasNextPage: false,
@@ -161,7 +161,7 @@ it('resets only the Corpus page when its page size changes', async () => {
   ).toBeVisible()
   expect(textService.query.mock.calls.at(-1)?.[0]).toEqual({
     transliteration: 'a+b',
-    limit: 50,
+    limit: 51,
     offset: 0,
   })
   expect(screen.getByTestId('route')).toHaveTextContent(
@@ -183,7 +183,7 @@ it('shows exact zero chapters without result cards or detail requests', async ()
   ).toBeVisible()
   expect(textService.query.mock.calls[0][0]).toEqual({
     transliteration: 'a+b',
-    limit: 50,
+    limit: 51,
     offset: 0,
   })
   expect(textService.findChapterDisplay).not.toHaveBeenCalled()
@@ -205,5 +205,45 @@ it('keeps Previous available on an empty page with unknown totals', async () => 
     'href',
     expect.stringContaining('corpusPaginationIndex=1&corpusLimit=25#corpus'),
   )
-  expect(screen.queryByText('First')).not.toBeInTheDocument()
+  expect(screen.getAllByText('First')[0]).toBeVisible()
+})
+
+it('jumps to a typed page when the total is unknown', async () => {
+  textService.query.mockResolvedValue({
+    items: items(26),
+    matchCountTotal: null,
+    hasNextPage: true,
+  })
+  renderSearch(
+    '/library/search/?transliteration=a%2Bb&corpusPaginationIndex=0&corpusLimit=25#corpus',
+  )
+
+  const [pageJump] = await screen.findAllByLabelText('Go to page')
+  expect(pageJump).not.toHaveAttribute('max')
+  await userEvent.type(pageJump, '40')
+  await userEvent.click(screen.getAllByRole('button', { name: 'Go' })[0])
+
+  expect(screen.getByTestId('route')).toHaveTextContent(
+    'corpusPaginationIndex=39&corpusLimit=25#corpus',
+  )
+})
+
+it('pages through the full list when the backend ignores the limit', async () => {
+  textService.query.mockResolvedValue({
+    items: items(60),
+    matchCountTotal: 60,
+  })
+  renderSearch(
+    '/library/search/?transliteration=a%2Bb&corpusPaginationIndex=1&corpusLimit=25#corpus',
+  )
+
+  expect(
+    await screen.findByText(
+      'Found 60 matching line variants in 60 chapters. Showing chapters 26-50 of 60',
+    ),
+  ).toBeVisible()
+  expect(screen.getByText(/Chapter .*Chapter 26 loads/)).toBeVisible()
+  expect(
+    screen.queryByText(/Chapter .*Chapter 1 loads/),
+  ).not.toBeInTheDocument()
 })

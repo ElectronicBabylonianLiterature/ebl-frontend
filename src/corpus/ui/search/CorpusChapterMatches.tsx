@@ -124,8 +124,19 @@ export default function CorpusChapterMatches({
         ? 'Show loaded chapter matches'
         : `Show ${nextBatchSize} more match${nextBatchSize === 1 ? '' : 'es'}`
 
+  const matchStatus = loading
+    ? 'Loading more matches'
+    : expanded
+      ? `Showing ${Math.min(loadedPairs, pairs.length)} of ${pairs.length} matches`
+      : ''
+
   return (
     <div aria-busy={loading}>
+      {pairs.length > initiallyVisible && (
+        <span role="status" className="visually-hidden">
+          {matchStatus}
+        </span>
+      )}
       <span
         id={descriptionId}
         className="visually-hidden"

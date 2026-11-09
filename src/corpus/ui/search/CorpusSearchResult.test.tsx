@@ -175,6 +175,7 @@ it('tells how many more lines matched than are shown', async () => {
     expect.anything(),
     [0, 1, 2],
     [0, 0, 0],
+    expect.any(AbortSignal),
   )
 })
 
@@ -192,6 +193,7 @@ it('caps the initial detail request for a long multiline query', async () => {
     expect.anything(),
     lines.slice(0, 10),
     Array(10).fill(0),
+    expect.any(AbortSignal),
   )
 })
 

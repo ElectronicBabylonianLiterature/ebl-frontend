@@ -87,7 +87,7 @@ it.each([
     }
     await waitFor(() =>
       expect(textService.query).toHaveBeenLastCalledWith(
-        { transliteration: 'a+b &e₂', limit: 50, offset: 0 },
+        { transliteration: 'a+b &e₂', limit: 51, offset: 0 },
         expect.any(AbortSignal),
       ),
     )

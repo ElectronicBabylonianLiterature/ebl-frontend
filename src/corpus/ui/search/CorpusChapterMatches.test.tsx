@@ -111,6 +111,7 @@ it('loads additional pairs only after a click and reuses them after collapse', a
     base.id,
     [0, 1],
     [1, 0],
+    expect.any(AbortSignal),
   )
   expect(
     await screen.findByRole('button', { name: 'Collapse chapter matches' }),

@@ -40,12 +40,43 @@ describe('PaginationItems known document totals', () => {
     expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 
-  it('uses adjacent navigation only when the document total is unknown', () => {
+  it('omits numbered pages and Last when the document total is unknown', () => {
     renderPaginationItems(2, true, '/library/search/?number=K.1')
 
     expect(screen.getByText('Page 3')).toBeInTheDocument()
-    expect(screen.queryByText('First')).not.toBeInTheDocument()
     expect(screen.queryByText('Last')).not.toBeInTheDocument()
+  })
+
+  it('offers First after the first page when the total is unknown', () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1')
+
+    expect(screen.getByText('First')).toBeInTheDocument()
+  })
+
+  it('omits First on the first page when the total is unknown', () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    expect(screen.queryByText('First')).not.toBeInTheDocument()
+  })
+
+  it('does not style the current page as disabled', () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1', 50, 4)
+
+    const currentPage = screen.getAllByRole('listitem')[4]
+    expect(currentPage).toHaveTextContent('3')
+    expect(currentPage).toHaveClass('active')
+    expect(currentPage).not.toHaveClass('disabled')
+  })
+
+  it('keeps an unbounded page jump when the document total is unknown', () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1')
+
+    expect(screen.getByLabelText('Go to page')).not.toHaveAttribute('max')
+  })
+
+  it('hides the page jump when an unknown total has only one page', () => {
+    renderPaginationItems(0, false, '/library/search/?number=K.1')
+
     expect(screen.queryByLabelText('Go to page')).not.toBeInTheDocument()
   })
 })

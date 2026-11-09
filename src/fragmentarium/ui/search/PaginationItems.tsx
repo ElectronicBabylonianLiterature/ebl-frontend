@@ -41,6 +41,8 @@ export default function PaginationItems({
   const knownLastPage = lastPageIndex ?? null
   const nextPageAvailable =
     knownLastPage === null ? hasNextPage : activePage < knownLastPage
+  const showPageJump =
+    knownLastPage === null ? activePage > 0 || hasNextPage : knownLastPage > 0
   const goToPage = (event: React.FormEvent): void => {
     event.preventDefault()
     const pageNumber = Number(pageJump)
@@ -82,7 +84,7 @@ export default function PaginationItems({
           className="fragment-result__pagination-pages"
           size="sm"
         >
-          {knownLastPage !== null && (
+          {(knownLastPage !== null || activePage > 0) && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
               hash={hash}
@@ -144,7 +146,7 @@ export default function PaginationItems({
         </Pagination>
       </div>
       <div className="fragment-result__pagination-secondary">
-        {knownLastPage !== null && knownLastPage > 0 && (
+        {showPageJump && (
           <Form
             className="fragment-result__pagination-control-group"
             onSubmit={goToPage}
@@ -156,7 +158,7 @@ export default function PaginationItems({
               className="fragment-result__pagination-page-input"
               id={pageJumpId}
               min={1}
-              max={knownLastPage + 1}
+              max={knownLastPage === null ? undefined : knownLastPage + 1}
               onChange={(event) => setPageJump(event.currentTarget.value)}
               placeholder="Page"
               required

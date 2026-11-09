@@ -83,14 +83,16 @@ const ChapterResult = withData<
       </>
     )
   },
-  ({ textService, chapterId, pairs, variantsToShow }) =>
+  ({ textService, chapterId, pairs, variantsToShow }, signal) =>
     textService.findChapterDisplay(
       chapterId,
       pairs.slice(0, variantsToShow).map((pair) => pair.line),
       pairs.slice(0, variantsToShow).map((pair) => pair.variant),
+      signal,
     ),
   {
     watch: ({ active }) => [active],
+    retry: true,
   },
 )
 

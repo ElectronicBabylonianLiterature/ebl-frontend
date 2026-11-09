@@ -64,6 +64,7 @@ it.each([false, true])(
       baseChapterDisplay.id,
       [0, 0, 1],
       [2, 3, 0],
+      expect.any(AbortSignal),
     )
     if (complete) {
       expect(
@@ -142,5 +143,6 @@ it('reopens valid cached matches after a later incomplete batch and collapse', a
     baseChapterDisplay.id,
     pairs.slice(13, 23).map(([line]) => line),
     Array(10).fill(0),
+    expect.any(AbortSignal),
   )
 })

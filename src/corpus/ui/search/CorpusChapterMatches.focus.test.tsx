@@ -39,6 +39,21 @@ function renderMatches(additionalPairs: number): void {
   )
 }
 
+it('announces loading and the visible match count', async () => {
+  const pending = deferred<ChapterDisplay>()
+  textService.findChapterDisplay.mockReturnValue(pending.promise)
+  renderMatches(1)
+  expect(screen.getByRole('status')).toBeEmptyDOMElement()
+
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Show 1 more match' }),
+  )
+  expect(screen.getByRole('status')).toHaveTextContent('Loading more matches')
+
+  await act(async () => pending.resolve(chapterWithPairs([[1, 0]])))
+  expect(screen.getByRole('status')).toHaveTextContent('Showing 2 of 2 matches')
+})
+
 it('keeps keyboard focus on collapse after the final batch and on show after collapse', async () => {
   textService.findChapterDisplay.mockResolvedValue(chapterWithPairs([[1, 0]]))
   renderMatches(1)

@@ -1,6 +1,7 @@
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import {
   getLastPageIndex,
+  hasNextPageAfter,
   RESULT_PAGE_SIZES,
   SearchPagination,
 } from 'fragmentarium/ui/search/pagination'
@@ -19,11 +20,21 @@ function hasNextCorpusPage(
   lastPageIndex: number | null,
 ): boolean {
   if (lastPageIndex !== null) return pageIndex < lastPageIndex
-  return (
-    data.hasNextPage === true ||
-    data.items.length > pageSize ||
-    (data.hasNextPage == null && data.items.length === pageSize)
-  )
+  return hasNextPageAfter(data.items, pageSize, data.hasNextPage)
+}
+
+function withClientSidePagingWhenLimitIgnored(
+  data: CorpusQueryResult,
+  { pageIndex, pageSize }: SearchPagination,
+): CorpusQueryResult {
+  if (data.items.length <= pageSize + 1) return data
+  const offset = pageIndex * pageSize
+  return {
+    ...data,
+    items: data.items.slice(offset, offset + pageSize),
+    totalChapters: data.items.length,
+    hasNextPage: offset + pageSize < data.items.length,
+  }
 }
 
 function formattedMatchCount(data: CorpusQueryResult): string | null {
@@ -91,9 +102,10 @@ function corpusSummary(
 }
 
 export function getCorpusSearchPresentation(
-  data: CorpusQueryResult,
+  response: CorpusQueryResult,
   pagination: SearchPagination,
 ): CorpusSearchPresentation {
+  const data = withClientSidePagingWhenLimitIgnored(response, pagination)
   const visibleChapters = data.items.slice(0, pagination.pageSize)
   const lastPageIndex = getLastPageIndex(
     data.totalChapters,

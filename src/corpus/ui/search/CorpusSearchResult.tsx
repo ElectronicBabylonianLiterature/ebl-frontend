@@ -16,10 +16,9 @@ import {
   corpusPaginationURLParam,
   parseSearchPagination,
   SearchPagination,
-  updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
-import { useLocation } from 'react-router-dom'
-import { useHistory } from 'router/compat'
+import useClampPageIndex from 'fragmentarium/ui/search/useClampPageIndex'
+import { useLocation, useNavigationType } from 'react-router-dom'
 import { stringify } from 'common/utils/queryString'
 import { getCorpusSearchPresentation } from 'corpus/ui/search/CorpusSearchPresentation'
 import 'corpus/ui/search/CorpusSearchResult.sass'
@@ -92,13 +91,33 @@ type CorpusSearchResultProps = {
   textService: TextService
   corpusQuery: CorpusQuery
   pagination: SearchPagination
+  pageChanged: React.MutableRefObject<boolean>
+}
+
+function usePageChanged(
+  pageKey: string,
+  querySignature: string,
+): React.MutableRefObject<boolean> {
+  const navigationType = useNavigationType()
+  const previous = React.useRef({ pageKey, querySignature })
+  const pageChanged = React.useRef(false)
+  React.useEffect(() => {
+    const { pageKey: lastPageKey, querySignature: lastQuery } = previous.current
+    previous.current = { pageKey, querySignature }
+    if (lastQuery !== querySignature) {
+      pageChanged.current = false
+    } else if (lastPageKey !== pageKey && navigationType !== 'REPLACE') {
+      pageChanged.current = true
+    }
+  }, [navigationType, pageKey, querySignature])
+  return pageChanged
 }
 
 export function createPagedCorpusQuery(
   corpusQuery: CorpusQuery,
   { pageIndex, pageSize }: SearchPagination,
 ): CorpusQuery {
-  return { ...corpusQuery, limit: pageSize, offset: pageIndex * pageSize }
+  return { ...corpusQuery, limit: pageSize + 1, offset: pageIndex * pageSize }
 }
 
 const PagedCorpusSearchResult = withData<
@@ -106,9 +125,14 @@ const PagedCorpusSearchResult = withData<
   unknown,
   CorpusQueryResult
 >(
-  ({ data, textService, corpusQuery, pagination }): JSX.Element => {
-    const location = useLocation()
-    const history = useHistory()
+  ({
+    data,
+    textService,
+    corpusQuery,
+    pagination,
+    pageChanged,
+  }): JSX.Element => {
+    const summaryRef = React.useRef<HTMLDivElement>(null)
     const { pageIndex, pageSize } = pagination
     const {
       visibleChapters,
@@ -117,35 +141,30 @@ const PagedCorpusSearchResult = withData<
       summary,
       showPaginationControls,
     } = getCorpusSearchPresentation(data, pagination)
-    React.useEffect(() => {
-      if (lastPageIndex !== null && pageIndex > lastPageIndex) {
-        history.replace({
-          pathname: location.pathname,
-          search: updatePaginationSearchParam(
-            location.search,
-            corpusPaginationURLParam,
-            lastPageIndex,
-          ),
-          hash: location.hash,
-        })
-      }
-    }, [
-      history,
-      lastPageIndex,
-      location.hash,
-      location.pathname,
-      location.search,
+    const isOutOfRange = useClampPageIndex(
       pageIndex,
-    ])
+      lastPageIndex,
+      corpusPaginationURLParam,
+    )
+    React.useEffect(() => {
+      if (pageChanged.current && !isOutOfRange) {
+        pageChanged.current = false
+        summaryRef.current?.focus()
+      }
+    }, [isOutOfRange, pageChanged])
 
-    if (lastPageIndex !== null && pageIndex > lastPageIndex) {
+    if (isOutOfRange) {
       return <></>
     }
 
     return (
       <>
         <Row>
-          <Col className="justify-content-center fragment-result__match-info">
+          <Col
+            ref={summaryRef}
+            className="justify-content-center fragment-result__match-info"
+            tabIndex={-1}
+          >
             {summary}
           </Col>
         </Row>
@@ -178,13 +197,14 @@ const PagedCorpusSearchResult = withData<
     watch: ({ corpusQuery, pagination }) => [
       stringify(createPagedCorpusQuery(corpusQuery, pagination)),
     ],
+    retry: true,
   },
 )
 
 export function CorpusSearchResult({
   textService,
   corpusQuery,
-}: Omit<CorpusSearchResultProps, 'pagination'>): JSX.Element {
+}: Omit<CorpusSearchResultProps, 'pagination' | 'pageChanged'>): JSX.Element {
   const location = useLocation()
   const pagination = parseSearchPagination(
     location.search,
@@ -192,12 +212,17 @@ export function CorpusSearchResult({
     corpusPageSizeURLParam,
   )
   const requestKey = stringify(createPagedCorpusQuery(corpusQuery, pagination))
+  const pageChanged = usePageChanged(
+    `${pagination.pageIndex}:${pagination.pageSize}`,
+    stringify(corpusQuery),
+  )
   return (
     <PagedCorpusSearchResult
       key={requestKey}
       textService={textService}
       corpusQuery={corpusQuery}
       pagination={pagination}
+      pageChanged={pageChanged}
     />
   )
 }

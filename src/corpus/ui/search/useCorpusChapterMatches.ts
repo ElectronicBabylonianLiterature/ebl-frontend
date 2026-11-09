@@ -31,6 +31,7 @@ interface ChapterMatchState {
 
 interface MatchBatchContext {
   requestVersion: MutableRefObject<number>
+  activeBatch: MutableRefObject<AbortController | null>
   chapterId: ChapterId
   textService: TextService
   setChapter: Dispatch<SetStateAction<ChapterDisplay>>
@@ -58,10 +59,20 @@ function containsRequestedPairs(
   return requested.every((pair) => returnedPairs.has(corpusMatchPairKey(pair)))
 }
 
+function cancelActiveBatch(
+  requestVersion: MutableRefObject<number>,
+  activeBatch: MutableRefObject<AbortController | null>,
+): void {
+  requestVersion.current += 1
+  activeBatch.current?.abort()
+  activeBatch.current = null
+}
+
 async function loadChapterMatchBatch(
   batch: readonly CorpusMatchPair[],
   {
     requestVersion,
+    activeBatch,
     chapterId,
     textService,
     setChapter,
@@ -73,6 +84,8 @@ async function loadChapterMatchBatch(
   }: MatchBatchContext,
 ): Promise<void> {
   const currentVersion = ++requestVersion.current
+  const controller = new AbortController()
+  activeBatch.current = controller
   setLoading(true)
   setError(false)
   try {
@@ -80,6 +93,7 @@ async function loadChapterMatchBatch(
       chapterId,
       batch.map((pair) => pair.line),
       batch.map((pair) => pair.variant),
+      controller.signal,
     )
     if (currentVersion !== requestVersion.current) return
     if (!containsRequestedPairs(additional, batch)) {
@@ -96,6 +110,10 @@ async function loadChapterMatchBatch(
       setLoading(false)
       setError(true)
     }
+  } finally {
+    if (activeBatch.current === controller) {
+      activeBatch.current = null
+    }
   }
 }
 
@@ -107,6 +125,7 @@ export default function useCorpusChapterMatches(
   textService: TextService,
 ): ChapterMatchState {
   const requestVersion = useRef(0)
+  const activeBatch = useRef<AbortController | null>(null)
   const [chapter, setChapter] = useState(initialChapter)
   const [loadedPairs, setLoadedPairs] = useState(initiallyVisible)
   const [expanded, setExpanded] = useState(false)
@@ -114,12 +133,7 @@ export default function useCorpusChapterMatches(
   const [error, setError] = useState(false)
   const [unavailable, setUnavailable] = useState(false)
 
-  useEffect(
-    () => () => {
-      requestVersion.current += 1
-    },
-    [],
-  )
+  useEffect(() => () => cancelActiveBatch(requestVersion, activeBatch), [])
 
   const remaining = Math.max(pairs.length - loadedPairs, 0)
   const nextBatch = pairs.slice(
@@ -128,7 +142,7 @@ export default function useCorpusChapterMatches(
   )
 
   function collapse(): void {
-    requestVersion.current += 1
+    cancelActiveBatch(requestVersion, activeBatch)
     setExpanded(false)
     setLoading(false)
     setError(false)
@@ -143,6 +157,7 @@ export default function useCorpusChapterMatches(
     if (nextBatch.length > 0) {
       void loadChapterMatchBatch(nextBatch, {
         requestVersion,
+        activeBatch,
         chapterId,
         textService,
         setChapter,
