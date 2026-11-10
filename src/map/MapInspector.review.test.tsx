@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import MapInspector from 'map/MapInspector'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import {
   excavationPolygon,
   findspotMapDataDto,

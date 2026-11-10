@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import MapInspector from 'map/MapInspector'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 import {
   excavationPolygon,
