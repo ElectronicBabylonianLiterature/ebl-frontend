@@ -54,10 +54,9 @@ class ApiFragmentRepository
     const path = `/fragments/${encodeURIComponent(number)}${
       _.isEmpty(params) ? '' : `?${stringify(params)}`
     }`
-    const request = signal
-      ? this.apiClient.fetchJson<FragmentDto>(path, false, signal)
-      : this.apiClient.fetchJson<FragmentDto>(path, false)
-    return request.then(createFragment)
+    return this.apiClient
+      .fetchJson<FragmentDto>(path, false, signal)
+      .then(createFragment)
   }
 
   fetchGenres(signal?: AbortSignal): Promise<string[][]> {
