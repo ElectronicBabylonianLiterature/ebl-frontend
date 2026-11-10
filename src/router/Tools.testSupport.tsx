@@ -47,7 +47,7 @@ jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () =>
 jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () =>
   mockToolsContent('cuneiformConverter'),
 )
-jest.mock('map/MapTab', () => mockToolsContent('map'))
+jest.mock('map/ui/MapTab', () => mockToolsContent('map'))
 
 type ToolsProps = Parameters<typeof Tools>[0]
 export type ToolsActiveTab = ToolsProps['activeTab']
