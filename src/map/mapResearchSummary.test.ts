@@ -4,6 +4,7 @@ import {
   polygonDisplayName,
   summaryLocationPrecisionOf,
 } from 'map/mapResearchSummary'
+import type { LocationPrecision } from 'fragmentarium/domain/findspotMapData'
 import {
   excavationPolygon,
   findspotMapDataDto,
@@ -34,6 +35,14 @@ describe('mappingEvidenceOf', () => {
 })
 
 describe('summaryLocationPrecisionOf', () => {
+  it('reports mixed precision when linked rows disagree', () => {
+    expect(
+      summaryLocationPrecisionOf([
+        { locationPrecision: 'excavation-area' },
+        { locationPrecision: 'unknown' as LocationPrecision },
+      ]),
+    ).toBe('mixed')
+  })
   it('is unknown with no findspots', () => {
     expect(summaryLocationPrecisionOf([])).toBe('unknown')
   })

@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import type { FragmentMapDataState } from 'map/useFragmentMapData'
 import useMapVisualization from 'map/useMapVisualization'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import {
   excavationPolygon,
   findspotMapDataDto,

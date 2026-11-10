@@ -14,7 +14,7 @@ import {
   type PolygonResearchSummary,
 } from 'map/mapResearchSummary'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 
 interface Props {

@@ -21,8 +21,6 @@ import {
   OUTLINE_UNMAPPED,
 } from 'map/mapPaintColors'
 
-export * from 'map/mapPaintColors'
-
 export type ChoroplethValueKey =
   | 'accessibleFragmentCount'
   | 'densityPerSquareKm'

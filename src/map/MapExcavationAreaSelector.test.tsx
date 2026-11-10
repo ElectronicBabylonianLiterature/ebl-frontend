@@ -26,6 +26,22 @@ const polygons = [
 ]
 
 describe('MapExcavationAreaSelector', () => {
+  it('uses the site identifier when a polygon has no configured site name', () => {
+    render(
+      <MapExcavationAreaSelector
+        polygons={[excavationPolygon({ siteId: 'unknown-site', name: null })]}
+        selectedPolygonId={null}
+        onSelect={jest.fn()}
+        onView={jest.fn()}
+      />,
+    )
+    expect(
+      screen.getByRole('option', {
+        name: 'unknown-site — assur-area-a-checksum',
+      }),
+    ).toBeInTheDocument()
+  })
+
   it('provides a labeled native select with polygon names and ID fallbacks', () => {
     render(
       <MapExcavationAreaSelector

@@ -4,13 +4,17 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import {
   IncompatibleFindspotMapDataError,
   aggregateFindspotMapData,
-} from 'map/findspotMapDataSanitizer'
+} from 'fragmentarium/domain/findspotMapDataSanitizer'
 import type {
   FindspotMapData,
   PolygonFindspotSummary,
-} from 'map/findspotMapData'
+} from 'fragmentarium/domain/findspotMapData'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import { type MapSiteDefinition, type MapSiteId, mapSites } from 'map/mapSites'
+import {
+  type MapSiteDefinition,
+  type MapSiteId,
+  mapSites,
+} from 'fragmentarium/domain/mapSites'
 
 export type FragmentMapDataStatus =
   | 'not-configured'

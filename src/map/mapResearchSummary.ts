@@ -3,7 +3,7 @@ import type {
   LocationPrecision,
   MatchMethod,
   PolygonFindspotSummary,
-} from 'map/findspotMapData'
+} from 'fragmentarium/domain/findspotMapData'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
 export type MappingEvidence =
   | 'verified-source'

@@ -1,6 +1,6 @@
 import type { Feature, Polygon } from 'geojson'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import type { FindspotMapData } from 'map/findspotMapData'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 
 export function findspotMapDataDto(
   overrides: Partial<FindspotMapData> = {},
