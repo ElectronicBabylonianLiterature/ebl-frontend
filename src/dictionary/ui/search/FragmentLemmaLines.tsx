@@ -15,6 +15,7 @@ import {
 } from 'query/queryItemRenderReady'
 import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import { countUniqueMatchingLines } from 'query/matchingLineTotals'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
@@ -40,7 +41,9 @@ const FragmentLines = withData<
     <RenderFragmentLines
       fragment={fragment}
       linesToShow={FRAGMENT_LINES_TO_SHOW}
-      totalMatchingLines={totalMatchingLines}
+      totalMatchingLines={
+        totalMatchingLines ?? countUniqueMatchingLines(lineIndexes)
+      }
       matchingLineIndexes={lineIndexes}
       lemmaIds={[lemmaId]}
     />
@@ -73,6 +76,11 @@ function QueryItemFragmentLines({
         fragment={queryItem.fragment}
         linesToShow={FRAGMENT_LINES_TO_SHOW}
         totalMatchingLines={queryItem.totalMatchingLines}
+        totalLines={
+          queryItem.totalMatchingLines == null
+            ? queryItem.matchCount
+            : undefined
+        }
         matchingLineIndexes={queryItem.matchingLines}
         lemmaIds={[lemmaId]}
       />
