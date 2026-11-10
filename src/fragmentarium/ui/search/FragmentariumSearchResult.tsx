@@ -1,6 +1,4 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
-import { useHistory } from 'router/compat'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -26,8 +24,8 @@ import {
   paginationURLParam,
   RESULT_PAGE_SIZES,
   SearchPagination,
-  updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
+import useClampPageIndex from 'fragmentarium/ui/search/useClampPageIndex'
 
 function ResultPages({
   fragments,
@@ -113,32 +111,15 @@ const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
     fragmentQuery,
     pagination: { pageIndex, pageSize },
   }): JSX.Element => {
-    const location = useLocation()
-    const history = useHistory()
     const visibleItems = data.items.slice(0, pageSize)
     const lastPageIndex = getLastPageIndex(data.totalDocuments, pageSize)
-    React.useEffect(() => {
-      if (lastPageIndex !== null && pageIndex > lastPageIndex) {
-        history.replace({
-          pathname: location.pathname,
-          search: updatePaginationSearchParam(
-            location.search,
-            paginationURLParam,
-            lastPageIndex,
-          ),
-          hash: location.hash,
-        })
-      }
-    }, [
-      history,
-      lastPageIndex,
-      location.hash,
-      location.pathname,
-      location.search,
+    const isOutOfRange = useClampPageIndex(
       pageIndex,
-    ])
+      lastPageIndex,
+      paginationURLParam,
+    )
 
-    if (lastPageIndex !== null && pageIndex > lastPageIndex) {
+    if (isOutOfRange) {
       return <></>
     }
 

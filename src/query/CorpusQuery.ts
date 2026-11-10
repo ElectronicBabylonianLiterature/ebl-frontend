@@ -4,4 +4,6 @@ export type CorpusQuery = Partial<{
   lemmas: string
   lemmaOperator: QueryType
   transliteration: string
+  limit: number
+  offset: number
 }>

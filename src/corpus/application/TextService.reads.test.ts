@@ -70,7 +70,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapterDisplay,
-    [`${chapterUrl}/display`, false],
+    [`${chapterUrl}/display`, false, expect.any(AbortSignal)],
     Promise.resolve(chapterDisplay),
   ),
   new TestData(

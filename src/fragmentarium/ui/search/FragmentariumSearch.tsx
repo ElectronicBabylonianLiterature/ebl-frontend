@@ -19,6 +19,7 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
+import useSearchTab from './useSearchTab'
 
 type Props = Pick<
   SearchFormProps,
@@ -55,17 +56,19 @@ function FragmentariumSearch({
   textService,
   activeTab,
 }: Props): JSX.Element {
+  const { selectedTab, selectTab } = useSearchTab(activeTab)
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
     'lemmas',
     'lemmaOperator',
     'transliteration',
   )
+  const hasCorpusCriteria = hasNonDefaultValues(corpusQuery)
 
   const showResults =
     (isValidNumber(fragmentQuery.number) &&
       hasNonDefaultValues(fragmentQuery)) ||
-    hasNonDefaultValues(corpusQuery)
+    hasCorpusCriteria
 
   return (
     <AppContent
@@ -99,14 +102,8 @@ function FragmentariumSearch({
                 </Row>
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={activeTab || 'library'} justify>
-                  <Tab
-                    eventKey="library"
-                    title="Library"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#library')
-                    }
-                  >
+                <Tabs activeKey={selectedTab} onSelect={selectTab} justify>
+                  <Tab eventKey="library" title="Library">
                     <SearchResult
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
@@ -114,17 +111,18 @@ function FragmentariumSearch({
                       pagination={pagination}
                     />
                   </Tab>
-                  <Tab
-                    eventKey="corpus"
-                    title="Corpus"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#corpus')
-                    }
-                  >
-                    <CorpusSearchResult
-                      textService={textService}
-                      corpusQuery={corpusQuery}
-                    />
+                  <Tab eventKey="corpus" title="Corpus">
+                    {hasCorpusCriteria ? (
+                      <CorpusSearchResult
+                        textService={textService}
+                        corpusQuery={corpusQuery}
+                      />
+                    ) : (
+                      <p>
+                        Enter a transliteration or lemma search to search the
+                        Corpus.
+                      </p>
+                    )}
                   </Tab>
                 </Tabs>
               ) : (

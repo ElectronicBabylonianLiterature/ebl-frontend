@@ -13,7 +13,7 @@ import {
   fromDto,
 } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
-import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
+import getOrFetchAbortableCachedValue from 'common/utils/getOrFetchAbortableCachedValue'
 
 import { createTextUrl, createChapterUrl } from 'corpus/application/chapterUrls'
 import TextServiceBase from 'corpus/application/TextServiceBase'
@@ -68,22 +68,25 @@ export class TextReadService extends TextServiceBase {
     id: ChapterId,
     lines: readonly number[] = [],
     variants: readonly number[] = [],
+    signal?: AbortSignal,
   ): Promise<ChapterDisplay> {
     this.clearCachesWhenScopeChanges()
 
     const cacheKey = this.createChapterDisplayCacheKey(id, lines, variants)
 
-    return getOrFetchCachedValue({
+    return getOrFetchAbortableCachedValue({
       cache: this.cachedChapterDisplays,
       requests: this.cachedChapterDisplayRequests,
       key: cacheKey,
       maximumCacheSize: maximumCachedChapterDisplays,
       cacheEntryLifetimeInMilliseconds:
         chapterDisplayCacheEntryLifetimeInMilliseconds,
-      fetchValue: () =>
-        this.chapterDisplayFetchLimiter.run(() =>
-          this.fetchChapterDisplay(id, lines, variants),
+      fetchValue: (requestSignal) =>
+        this.chapterDisplayFetchLimiter.run(
+          () => this.fetchChapterDisplay(id, lines, variants, requestSignal),
+          requestSignal,
         ),
+      signal,
     })
   }
 
@@ -91,6 +94,7 @@ export class TextReadService extends TextServiceBase {
     id: ChapterId,
     lines: readonly number[],
     variants: readonly number[],
+    signal?: AbortSignal,
   ): Promise<ChapterDisplay> {
     const lineParams = _.isEmpty(lines)
       ? ''
@@ -100,6 +104,7 @@ export class TextReadService extends TextServiceBase {
       this.apiClient.fetchJson<ChapterDisplayDto>(
         `${createChapterUrl(id)}/display${lineParams}`,
         false,
+        signal,
       ),
     ]).then(([, chapter]) =>
       Promise.all(

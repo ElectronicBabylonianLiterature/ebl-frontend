@@ -8,62 +8,7 @@ import {
   updatePageSizeSearchParam,
   updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
-
-function PaginationControl({
-  paginationURLParam,
-  index,
-  disabled,
-  active = false,
-  children,
-}: {
-  paginationURLParam: string
-  index: number
-  disabled: boolean
-  active?: boolean
-  children: React.ReactNode
-}) {
-  const location = useLocation()
-  const history = useHistory()
-  const search = updatePaginationSearchParam(
-    location.search,
-    paginationURLParam,
-    index,
-  )
-  return (
-    <Pagination.Item
-      active={active}
-      aria-current={active ? 'page' : undefined}
-      disabled={disabled}
-      href={
-        disabled ? undefined : `${location.pathname}?${search}${location.hash}`
-      }
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault()
-          return
-        }
-        const hasModifierKey = [
-          event.metaKey,
-          event.ctrlKey,
-          event.shiftKey,
-          event.altKey,
-        ].some(Boolean)
-        if (event.button !== 0 || hasModifierKey) {
-          return
-        }
-
-        event.preventDefault()
-        history.push({
-          pathname: location.pathname,
-          search,
-          hash: location.hash,
-        })
-      }}
-    >
-      {children}
-    </Pagination.Item>
-  )
-}
+import PaginationControl from 'fragmentarium/ui/search/PaginationControl'
 
 export type PaginationPosition = 'top' | 'bottom'
 
@@ -73,17 +18,22 @@ export default function PaginationItems({
   hasNextPage,
   lastPageIndex,
   paginationURLParam,
+  pageSizeURLParam,
+  hash,
   position,
 }: {
   activePage: number
   pageSize: number
   paginationURLParam: string
+  pageSizeURLParam?: string
+  hash?: string
   hasNextPage: boolean
   lastPageIndex?: number | null
   position: PaginationPosition
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+  const destinationHash = hash ?? location.hash
   const controlIdPrefix = React.useId()
   const pageJumpId = `${controlIdPrefix}page-jump`
   const pageSizeId = `${controlIdPrefix}page-size`
@@ -91,6 +41,8 @@ export default function PaginationItems({
   const knownLastPage = lastPageIndex ?? null
   const nextPageAvailable =
     knownLastPage === null ? hasNextPage : activePage < knownLastPage
+  const showPageJump =
+    knownLastPage === null ? activePage > 0 || hasNextPage : knownLastPage > 0
   const goToPage = (event: React.FormEvent): void => {
     event.preventDefault()
     const pageNumber = Number(pageJump)
@@ -116,7 +68,7 @@ export default function PaginationItems({
         paginationURLParam,
         index,
       ),
-      hash: location.hash,
+      hash: destinationHash,
     })
     setPageJump('')
   }
@@ -132,9 +84,10 @@ export default function PaginationItems({
           className="fragment-result__pagination-pages"
           size="sm"
         >
-          {knownLastPage !== null && (
+          {(knownLastPage !== null || activePage > 0) && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={0}
               disabled={activePage === 0}
             >
@@ -143,6 +96,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage - 1}
             disabled={activePage === 0}
           >
@@ -161,6 +115,7 @@ export default function PaginationItems({
                   <PaginationControl
                     key={page}
                     paginationURLParam={paginationURLParam}
+                    hash={hash}
                     index={page}
                     active={page === activePage}
                     disabled={page === activePage}
@@ -172,6 +127,7 @@ export default function PaginationItems({
           )}
           <PaginationControl
             paginationURLParam={paginationURLParam}
+            hash={hash}
             index={activePage + 1}
             disabled={!nextPageAvailable}
           >
@@ -180,6 +136,7 @@ export default function PaginationItems({
           {knownLastPage !== null && (
             <PaginationControl
               paginationURLParam={paginationURLParam}
+              hash={hash}
               index={knownLastPage}
               disabled={activePage >= knownLastPage}
             >
@@ -189,7 +146,7 @@ export default function PaginationItems({
         </Pagination>
       </div>
       <div className="fragment-result__pagination-secondary">
-        {knownLastPage !== null && knownLastPage > 0 && (
+        {showPageJump && (
           <Form
             className="fragment-result__pagination-control-group"
             onSubmit={goToPage}
@@ -201,7 +158,7 @@ export default function PaginationItems({
               className="fragment-result__pagination-page-input"
               id={pageJumpId}
               min={1}
-              max={knownLastPage + 1}
+              max={knownLastPage === null ? undefined : knownLastPage + 1}
               onChange={(event) => setPageJump(event.currentTarget.value)}
               placeholder="Page"
               required
@@ -229,8 +186,10 @@ export default function PaginationItems({
                 search: updatePageSizeSearchParam(
                   location.search,
                   Number(event.currentTarget.value),
+                  paginationURLParam,
+                  pageSizeURLParam,
                 ),
-                hash: location.hash,
+                hash: destinationHash,
               })
             }}
           >
