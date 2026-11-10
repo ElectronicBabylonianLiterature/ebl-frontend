@@ -1,5 +1,5 @@
 import manifest from 'map/mapArtifactProvenance.json'
-import { mapDataSiteParam } from 'map/mapSites'
+import { mapDataSiteParam } from 'fragmentarium/domain/mapSites'
 
 interface SiteProvenance {
   readonly artifactSourceRevision: string | null

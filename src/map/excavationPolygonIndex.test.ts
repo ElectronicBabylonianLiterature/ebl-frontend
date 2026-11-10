@@ -23,6 +23,28 @@ function collection(features: unknown[]): unknown {
 }
 
 describe('buildExcavationPolygonIndex', () => {
+  it('indexes multipolygons while rejecting non-polygon geometries', () => {
+    const feature = polygonFeature('assur-multi', 'assur')
+    const index = buildExcavationPolygonIndex(
+      collection([
+        {
+          ...feature,
+          geometry: {
+            type: 'MultiPolygon',
+            coordinates: [feature.geometry.coordinates],
+          },
+        },
+        {
+          ...polygonFeature('assur-point', 'assur'),
+          geometry: { type: 'Point', coordinates: [0, 0] },
+        },
+        { ...polygonFeature('assur-null', 'assur'), geometry: null },
+      ]),
+    )
+    expect(index.get('assur')).toHaveLength(1)
+    expect(index.get('assur')?.[0].geometry.type).toBe('MultiPolygon')
+  })
+
   it.each([undefined, 'Polygon'])('rejects a feature with type %s', (type) => {
     expect(
       buildExcavationPolygonIndex(

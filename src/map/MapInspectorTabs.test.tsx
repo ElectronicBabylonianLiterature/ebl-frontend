@@ -49,4 +49,6 @@ it('keeps inactive controls valid and handles backwards wrapping, Home and End',
   expect(evidence).toHaveFocus()
   await userEvent.keyboard('{ArrowRight}')
   expect(overview).toHaveFocus()
+  await userEvent.keyboard('x')
+  expect(overview).toHaveFocus()
 })

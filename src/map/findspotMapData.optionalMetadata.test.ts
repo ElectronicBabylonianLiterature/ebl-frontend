@@ -1,9 +1,9 @@
-import { sanitizeFindspotMapData } from 'map/findspotMapData'
+import { sanitizeFindspotMapData } from 'fragmentarium/domain/findspotMapData'
 import {
   IncompatibleFindspotMapDataError,
   requireCompatibleFindspotMapDataResponse,
   sanitizeFindspotMapDataResponseWithDiagnostics,
-} from 'map/findspotMapDataSanitizer'
+} from 'fragmentarium/domain/findspotMapDataSanitizer'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 const LOCATION_FIELDS = ['sector', 'area', 'building', 'room'] as const

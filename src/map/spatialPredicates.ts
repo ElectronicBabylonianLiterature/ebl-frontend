@@ -1,17 +1,9 @@
 import type { Geometry, Position } from 'geojson'
 import { segmentsIntersect } from 'map/segmentIntersection'
 import type { BoundingBox } from 'map/mapGeometry'
-import { isCoordinateInRange } from 'map/spatialCoordinateValidation'
-
-export { segmentsIntersect } from 'map/segmentIntersection'
+import { isFinitePosition } from 'map/geodesy'
 
 export type Ring = readonly Position[]
-
-function isFinitePosition(position: Position): boolean {
-  return (
-    Number.isFinite(position[0]) && isCoordinateInRange(position[1], -90, 90)
-  )
-}
 
 function samePosition(left: Position, right: Position): boolean {
   return left[0] === right[0] && left[1] === right[1]

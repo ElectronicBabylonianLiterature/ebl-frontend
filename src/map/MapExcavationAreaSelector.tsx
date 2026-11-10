@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import { findMapSite } from 'map/mapSites'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
 
 interface Props {
   readonly polygons: readonly ExcavationPolygon[]
@@ -20,7 +20,7 @@ export default function MapExcavationAreaSelector({
     () =>
       polygons.map(
         (polygon) =>
-          (findMapSite(polygon.siteId)?.siteName ?? polygon.siteId) +
+          mapSiteName(polygon.siteId) +
           ' — ' +
           (polygon.name ?? polygon.polygonId),
       ),

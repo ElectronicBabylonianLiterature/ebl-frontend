@@ -1,5 +1,5 @@
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
-import type { FindspotMapData } from 'map/findspotMapData'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 
 function findspot(overrides: Partial<FindspotMapData> = {}): FindspotMapData {
   return {

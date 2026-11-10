@@ -58,6 +58,18 @@ const IMAGE_BLOCKED = {
 describe('MapExportPanel', () => {
   beforeEach(jest.clearAllMocks)
 
+  it('explains when a selected area has no exportable rows', () => {
+    render(<MapExportPanel rows={[]} scope={CONTEXT.scope} buildContext={() => CONTEXT} imageExport={IMAGE_BLOCKED} />)
+    expect(screen.getByRole('status')).toHaveTextContent('The selected excavation area is not ready to export.')
+    expect(screen.getByRole('button', { name: 'Download CSV' })).toBeDisabled()
+  })
+
+  it.each([1, 2])('describes %s displayed areas in the current view', (count) => {
+    render(<MapExportPanel rows={Array.from({ length: count }, (_, index) => ({ ...ROW, polygonId: `area-${index}` }))} scope={{ type: 'viewport', bounds: [[43, 35, 44, 36]] }} buildContext={() => CONTEXT} imageExport={IMAGE_BLOCKED} />)
+    expect(screen.getByRole('status')).toHaveTextContent(`${count} displayed excavation ${count === 1 ? 'area' : 'areas'} in the current map view will be exported.`)
+    expect(screen.getByRole('button', { name: 'Download GeoJSON' })).toBeEnabled()
+  })
+
   it('describes an empty viewport and disables data downloads', () => {
     render(
       <MapExportPanel

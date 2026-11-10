@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import type { FindspotMapData } from 'map/findspotMapData'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 import { spatialSearchDescription } from 'map/spatialSearch'
 import type { SpatialSearchController } from 'map/useMapSpatialSearch'
 import MapSpatialSearchResults from 'map/MapSpatialSearchResults'

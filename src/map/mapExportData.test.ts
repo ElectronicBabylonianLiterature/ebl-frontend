@@ -1,12 +1,11 @@
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import {
-  CSV_COLUMNS,
   type MapExportContext,
-  buildExportCsv,
   buildExportGeoJson,
   exportDataStatuses,
   toExportRows,
 } from 'map/mapExportData'
+import { CSV_COLUMNS, buildExportCsv } from 'map/mapExportCsv'
 import type {
   FragmentMapDataState,
   FragmentMapDataStatus,

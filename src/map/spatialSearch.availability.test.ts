@@ -3,7 +3,7 @@ import {
   findspotMapDataDto as findspotMapData,
 } from 'test-support/map-fixtures'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import { type SpatialSearchData, runSpatialSearch } from 'map/spatialSearch'
 
 const geometry = {

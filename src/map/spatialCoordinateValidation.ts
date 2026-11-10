@@ -1,14 +1,4 @@
-export function isCoordinateInRange(
-  coordinate: number,
-  minimum: number,
-  maximum: number,
-): boolean {
-  return (
-    Number.isFinite(coordinate) &&
-    coordinate >= minimum &&
-    coordinate <= maximum
-  )
-}
+import { isFiniteNumberInRange } from 'map/geodesy'
 
 export function isCoordinateIntervalInRange(
   start: number,
@@ -19,7 +9,7 @@ export function isCoordinateIntervalInRange(
   return (
     start < end &&
     [start, end].every((coordinate) =>
-      isCoordinateInRange(coordinate, minimum, maximum),
+      isFiniteNumberInRange(coordinate, minimum, maximum),
     )
   )
 }

@@ -5,7 +5,7 @@ import {
   fromFindspotDto,
   toFindspotDto,
 } from 'fragmentarium/domain/archaeologyDtos'
-import { IncompatibleFindspotMapDataError } from 'map/findspotMapDataSanitizer'
+import { IncompatibleFindspotMapDataError } from 'fragmentarium/domain/findspotMapDataSanitizer'
 
 const apiClient = {
   fetchJson: jest.fn(),

@@ -4,7 +4,7 @@ import {
   findspotMapDataDto as findspotMapData,
 } from 'test-support/map-fixtures'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import {
   EMPTY_SPATIAL_SEARCH_RESULT,
   type SpatialSearchData,

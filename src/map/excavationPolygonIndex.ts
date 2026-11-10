@@ -5,7 +5,7 @@ import {
   MAP_SITE_IDS,
   MAP_SITE_POLYGON_COUNTS,
   isMapSiteId,
-} from 'map/mapSites'
+} from 'fragmentarium/domain/mapSites'
 
 export const EXCAVATION_POLYGON_GEOJSON_URL = '/map-data/findspots/all.geojson'
 

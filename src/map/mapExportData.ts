@@ -7,9 +7,9 @@ import { EXCAVATION_AREA_NOTE } from 'map/mapResearchLabels'
 import type { BoundingBox } from 'map/mapGeometry'
 import { EXCAVATION_POLYGON_GEOJSON_URL } from 'map/excavationPolygonIndex'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type { MapVisualizationMode } from 'map/mapChoroplethScale'
-import { isMapSiteId } from 'map/mapSites'
+import { isMapSiteId } from 'fragmentarium/domain/mapSites'
 import orientExportGeometry from 'map/mapExportOrientation'
 import type {
   FragmentMapDataState,
@@ -166,4 +166,3 @@ export function buildExportGeoJson(
   }
 }
 
-export { CSV_COLUMNS, buildExportCsv } from 'map/mapExportCsv'

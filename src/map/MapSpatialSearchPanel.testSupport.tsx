@@ -2,7 +2,7 @@ import React from 'react'
 import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
-import type { FindspotMapData } from 'map/findspotMapData'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 import type { SpatialSearchController } from 'map/useMapSpatialSearch'
 
 export function controller(

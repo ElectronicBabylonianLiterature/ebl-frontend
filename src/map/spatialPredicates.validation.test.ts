@@ -3,8 +3,8 @@ import {
   boundingBoxRing,
   geometryIntersectsRing,
   isPositionInRing,
-  segmentsIntersect,
 } from 'map/spatialPredicates'
+import { segmentsIntersect } from 'map/segmentIntersection'
 
 const UNIT_SQUARE = boundingBoxRing([0, 0, 1, 1])
 const POLYGON: Geometry = {
