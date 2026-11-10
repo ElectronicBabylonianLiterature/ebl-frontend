@@ -114,6 +114,22 @@ test('JSON management mutations preserve method, body, cancellation and 204 resp
   )
 })
 
+test('JSON management mutations forward extra request headers without overriding the JSON content type', async () => {
+  const { apiClient } = createApiClientTestContext()
+  fetchMock.mockResponseOnce('', { status: 204 })
+  await apiClient.requestJson(
+    '/media/id/publish?fragment=K.1',
+    'POST',
+    {},
+    undefined,
+    undefined,
+    { 'If-Match': '"3"', 'Content-Type': 'text/plain' },
+  )
+  const headers = fetchMock.mock.calls[0][1]?.headers as Headers
+  expect(headers.get('If-Match')).toBe('"3"')
+  expect(headers.get('Content-Type')).toBe('application/json; charset=utf-8')
+})
+
 test('already cancelled requests never create or send a transport', async () => {
   const { apiClient } = createApiClientTestContext()
   const controller = new AbortController()

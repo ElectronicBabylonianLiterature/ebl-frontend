@@ -48,14 +48,25 @@ export default function MediaManagementControls({
   const [metadata, setMetadata] = useState<MediaMetadata>(() =>
     metadataOf(media),
   )
-  const operation = useMediaOperation(() => {
-    setDialog(null)
-    onChanged()
-  }, onChanged)
+  const operation = useMediaOperation(
+    () => {
+      setDialog(null)
+      onChanged()
+    },
+    onChanged,
+    () => {
+      // The draft or decision was based on an outdated item: drop it and show
+      // the stale-revision message beside the refreshed item instead.
+      setDialog(null)
+      onChanged()
+    },
+  )
   const manager = Boolean(services.canManage)
   const authorized = manager || ownsSubmission(media, services)
   if (!services.management || !authorized) return null
   const management = services.management
+  // The revision of the item as displayed; never refetched before a mutation.
+  const revision = media.revision
   const open = (next: ManagementDialog): void => {
     if (next === 'edit') setMetadata(metadataOf(media))
     if (next === 'reject') setReason('')
@@ -68,11 +79,11 @@ export default function MediaManagementControls({
   const submit = (): void => {
     if (dialog === 'remove')
       operation.run((signal) =>
-        management.remove(fragmentNumber, media.id, signal),
+        management.remove(fragmentNumber, media.id, signal, revision),
       )
     else if (dialog === 'reject')
       operation.run((signal) =>
-        management.reject(fragmentNumber, media.id, reason, signal),
+        management.reject(fragmentNumber, media.id, reason, signal, revision),
       )
     else
       operation.run((signal) =>
@@ -81,6 +92,7 @@ export default function MediaManagementControls({
           media.id,
           changedMetadata(metadata, media, manager),
           signal,
+          revision,
         ),
       )
   }
@@ -96,12 +108,18 @@ export default function MediaManagementControls({
         open={open}
         publish={() =>
           operation.run((signal) =>
-            management.publish(fragmentNumber, media.id, undefined, signal),
+            management.publish(
+              fragmentNumber,
+              media.id,
+              undefined,
+              signal,
+              revision,
+            ),
           )
         }
         primary={() =>
           operation.run((signal) =>
-            management.setPrimary(fragmentNumber, media.id, signal),
+            management.setPrimary(fragmentNumber, media.id, signal, revision),
           )
         }
       />

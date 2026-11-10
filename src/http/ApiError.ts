@@ -79,3 +79,15 @@ export function isDefinitiveRejection(error: unknown): boolean {
     error.status !== 409
   )
 }
+
+/**
+ * True when the server refused a conditional request because the client's
+ * `If-Match` revision is stale (412) or was required but missing (428). The
+ * item changed — or may have changed — since the client loaded it, so the
+ * caller must refresh before the user can act on it again.
+ */
+export function isStaleRevision(error: unknown): boolean {
+  return (
+    error instanceof ApiError && (error.status === 412 || error.status === 428)
+  )
+}

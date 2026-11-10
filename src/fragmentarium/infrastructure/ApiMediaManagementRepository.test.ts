@@ -60,6 +60,7 @@ test.each(['publish', 'reject'] as const)(
       { reason: 'Reviewed' },
       expect.any(AbortSignal),
       expect.any(Function),
+      {},
     )
   },
 )
@@ -80,6 +81,7 @@ test('metadata-only patch and primary actions select canonical target from fragm
     { caption: 'Reverse' },
     expect.any(AbortSignal),
     expect.any(Function),
+    {},
   )
   expect(api.requestJson).toHaveBeenNthCalledWith(
     2,
@@ -88,6 +90,72 @@ test('metadata-only patch and primary actions select canonical target from fragm
     {},
     expect.any(AbortSignal),
     expect.any(Function),
+    {},
+  )
+})
+
+describe('optimistic concurrency', () => {
+  const media = { ...mediaFixture(), revision: 4 }
+  const headersOf = (call = 0) => api.requestJson.mock.calls[call][5]
+
+  beforeEach(() => api.requestJson.mockResolvedValue({ media: [media] }))
+
+  test.each(['publish', 'reject'] as const)(
+    '%s sends the displayed revision as a quoted If-Match',
+    async (action) => {
+      await repository[action]('K.1', media.id, undefined, undefined, 4)
+      expect(headersOf()).toEqual({ 'If-Match': '"4"' })
+    },
+  )
+
+  test('edit, primary and removal send If-Match for a known revision, including 0', async () => {
+    await repository.update('K.1', media.id, { caption: 'x' }, undefined, 0)
+    await repository.setPrimary('K.1', media.id, undefined, 12)
+    await repository.remove('K.1', media.id, undefined, 5)
+    expect(api.requestJson.mock.calls.map((call) => call[5])).toEqual([
+      { 'If-Match': '"0"' },
+      { 'If-Match': '"12"' },
+      { 'If-Match': '"5"' },
+    ])
+  })
+
+  test('every mutation omits If-Match when the revision is unknown', async () => {
+    await repository.publish('K.1', media.id)
+    await repository.reject('K.1', media.id, 'Reason')
+    await repository.update('K.1', media.id, { caption: 'x' })
+    await repository.setPrimary('K.1', media.id)
+    await repository.remove('K.1', media.id)
+    expect(api.requestJson.mock.calls.map((call) => call[5])).toEqual([
+      {},
+      {},
+      {},
+      {},
+      {},
+    ])
+  })
+
+  test('the saved item carries the new revision', async () => {
+    api.requestJson.mockResolvedValue({ media: [{ ...media, revision: 5 }] })
+    await expect(
+      repository.publish('K.1', media.id, undefined, undefined, 4),
+    ).resolves.toMatchObject({ revision: 5 })
+  })
+
+  test.each([412, 428])(
+    'a dispatched mutation refused with stale-revision HTTP %p invalidates once',
+    async (status) => {
+      const error = new ApiError('Precondition', {}, status)
+      api.requestJson.mockImplementation(
+        (_path, _method, _body, _signal, onDispatched) => {
+          onDispatched()
+          return Promise.reject(error)
+        },
+      )
+      await expect(
+        repository.publish('K.1', media.id, undefined, undefined, 4),
+      ).rejects.toBe(error)
+      expect(changed.mock.calls).toEqual([['K.1']])
+    },
   )
 })
 

@@ -30,10 +30,15 @@ async function deserializeJson(response: Response): Promise<unknown> {
   return responseText.trim() ? JSON.parse(responseText) : null
 }
 
-function createOptions(body: unknown, method: string): Options {
+function createOptions(
+  body: unknown,
+  method: string,
+  headers: Record<string, string> = {},
+): Options {
   return {
     body: JSON.stringify(body),
     headers: {
+      ...headers,
       'Content-Type': 'application/json; charset=utf-8',
     },
     method: method,
@@ -183,11 +188,12 @@ export default class ApiClient {
     body: unknown,
     signal?: AbortSignal,
     onDispatched?: () => void,
+    headers?: Record<string, string>,
   ): Promise<T> {
     return this.fetch(
       path,
       true,
-      createOptions(body, method),
+      createOptions(body, method, headers),
       signal,
       onDispatched,
     ).then(deserializeJson) as Promise<T>

@@ -14,11 +14,16 @@ import { normalizeMediaResource } from 'fragmentarium/infrastructure/mediaResour
 import { isRecord } from 'fragmentarium/infrastructure/mediaMapperValidation'
 import { fragmentMediaListUrl } from 'fragmentarium/infrastructure/mediaUrls'
 import type ApiClient from 'http/ApiClient'
-import { isDefinitiveRejection } from 'http/ApiError'
+import { isDefinitiveRejection, isStaleRevision } from 'http/ApiError'
 import { ApiError } from 'http/ApiError'
 
 function mediaUrl(fragment: string, id: string, action = ''): string {
   return `/media/${encodeURIComponent(id)}${action ? `/${action}` : ''}?fragment=${encodeURIComponent(fragment)}`
+}
+
+/** `If-Match` for a known revision; no header when the revision is unknown. */
+function ifMatch(revision: number | undefined): Record<string, string> {
+  return revision === undefined ? {} : { 'If-Match': `"${revision}"` }
 }
 
 function canonical(response: unknown, id?: string): MediaResource {
@@ -97,11 +102,13 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
       // rejected it (HTTP 4xx): cancellation, network loss, gateway errors and
       // unreadable success bodies all leave the outcome uncertain. Disposal
       // permanently fences this request even if the adapter is activated again.
+      // A stale revision (412/428) is definitive for this request, but proves
+      // someone else changed the item, so cached views are out of date too.
       if (
         !reported &&
         dispatched &&
         this.isCurrent(generation) &&
-        !isDefinitiveRejection(error)
+        (!isDefinitiveRejection(error) || isStaleRevision(error))
       )
         this.onChanged(fragment)
       throw error
@@ -145,6 +152,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     id: string,
     metadata: Partial<MediaUploadMetadata>,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource> {
     return this.run(fragment, signal, async (requestSignal, onDispatched) =>
       canonical(
@@ -154,6 +162,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
           metadata,
           requestSignal,
           onDispatched,
+          ifMatch(revision),
         ),
         id,
       ),
@@ -164,8 +173,9 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     fragment: string,
     id: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'primary', undefined, signal)
+    return this.action(fragment, id, 'primary', undefined, signal, revision)
   }
 
   publish(
@@ -173,8 +183,9 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     id: string,
     reason?: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'publish', reason, signal)
+    return this.action(fragment, id, 'publish', reason, signal, revision)
   }
 
   reject(
@@ -182,8 +193,9 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     id: string,
     reason?: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'reject', reason, signal)
+    return this.action(fragment, id, 'reject', reason, signal, revision)
   }
 
   private action(
@@ -192,6 +204,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     action: string,
     reason?: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource> {
     return this.run(fragment, signal, async (requestSignal, onDispatched) =>
       canonical(
@@ -201,13 +214,19 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
           reason ? { reason } : {},
           requestSignal,
           onDispatched,
+          ifMatch(revision),
         ),
         id,
       ),
     )
   }
 
-  remove(fragment: string, id: string, signal?: AbortSignal): Promise<void> {
+  remove(
+    fragment: string,
+    id: string,
+    signal?: AbortSignal,
+    revision?: number,
+  ): Promise<void> {
     return this.run(fragment, signal, async (requestSignal, onDispatched) => {
       await this.api.requestJson(
         mediaUrl(fragment, id),
@@ -215,6 +234,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
         undefined,
         requestSignal,
         onDispatched,
+        ifMatch(revision),
       )
     })
   }

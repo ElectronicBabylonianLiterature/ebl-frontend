@@ -42,6 +42,13 @@ function projects(resource: Record<string, unknown>): Partial<MediaResource> {
     : {}
 }
 
+function revision(resource: Record<string, unknown>): Partial<MediaResource> {
+  const value = resource.revision
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+    ? { revision: value }
+    : {}
+}
+
 function validPublicationStatus(
   value: unknown,
 ): value is MediaResource['publicationStatus'] {
@@ -54,7 +61,8 @@ function validPublicationStatus(
 export function normalizeLifecycle(
   resource: Record<string, unknown>,
 ): Partial<MediaResource> | undefined {
-  if (resource.publicationStatus === undefined) return legacyRights(resource)
+  if (resource.publicationStatus === undefined)
+    return { ...legacyRights(resource), ...revision(resource) }
   if (!validPublicationStatus(resource.publicationStatus)) return undefined
   return {
     publicationStatus: resource.publicationStatus,
@@ -63,5 +71,6 @@ export function normalizeLifecycle(
       ? { permissionAttested: resource.permissionAttested }
       : {}),
     ...projects(resource),
+    ...revision(resource),
   }
 }

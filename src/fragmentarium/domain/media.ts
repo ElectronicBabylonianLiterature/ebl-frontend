@@ -82,6 +82,12 @@ export interface MediaResource {
   readonly permissionAttested?: boolean
   readonly description?: string
   readonly projects?: readonly string[]
+  /**
+   * Optimistic-concurrency revision from management responses. Mutations send
+   * it as `If-Match` so a change made by someone else is never overwritten or
+   * published unseen. Absent on public responses.
+   */
+  readonly revision?: number
 }
 
 export interface FragmentMedia {

@@ -5,6 +5,7 @@ import MediaManagementControls from './MediaManagementControls'
 import { galleryServices, mediaFixture } from './gallery.testSupport'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { ApiError } from 'http/ApiError'
+import { STALE_MEDIA_MESSAGE } from './mediaManagementOperation'
 
 function setup({
   media = mediaFixture({ publicationStatus: 'PUBLISHED' }),
@@ -53,6 +54,7 @@ test('StrictMode replay leaves a live cancellation signal for manager mutations'
     'K.1',
     expect.any(String),
     expect.any(AbortSignal),
+    undefined,
   )
   expect(management.setPrimary.mock.calls[0][2].aborted).toBe(false)
 })
@@ -74,6 +76,7 @@ test('legacy caption editing sends only the changed domain metadata', async () =
     expect.any(String),
     { caption: 'Corrected caption' },
     expect.any(AbortSignal),
+    undefined,
   )
   expect(
     screen.queryByRole('button', { name: 'Reject image' }),
@@ -197,6 +200,7 @@ test('manager publication and rejection use explicit confirmed actions', async (
       media.id,
       'Review note',
       expect.any(AbortSignal),
+      undefined,
     ),
   )
 })
@@ -363,4 +367,100 @@ test('a fresh reject dialog never prefills a reason from a dismissed one', async
   )
   await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
   expect(screen.getByLabelText('Review reason (optional)')).toHaveValue('')
+})
+
+describe('optimistic concurrency', () => {
+  const pending = (revision?: number) =>
+    mediaFixture({
+      publicationStatus: 'PENDING_REVIEW',
+      permissionAttested: true,
+      rightsStatement: 'Permission granted',
+      caption: 'Reviewed caption',
+      ...(revision === undefined ? {} : { revision }),
+    })
+
+  test('every mutation passes the revision of the item as displayed', async () => {
+    const media = pending(7)
+    const { management, onChanged } = setup({ media })
+    await userEvent.click(screen.getByRole('button', { name: 'Publish image' }))
+    await waitFor(() => expect(onChanged).toHaveBeenCalledTimes(1))
+    expect(management.publish).toHaveBeenCalledWith(
+      'K.1',
+      media.id,
+      undefined,
+      expect.any(AbortSignal),
+      7,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Confirm rejection' }),
+    )
+    await waitFor(() => expect(management.reject).toHaveBeenCalledTimes(1))
+    expect(management.reject.mock.calls[0][4]).toBe(7)
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Edit image metadata' }),
+    )
+    const caption = screen.getByLabelText('Caption or short description')
+    await userEvent.clear(caption)
+    await userEvent.type(caption, 'Edited')
+    await userEvent.click(screen.getByRole('button', { name: 'Save metadata' }))
+    await waitFor(() => expect(management.update).toHaveBeenCalledTimes(1))
+    expect(management.update.mock.calls[0][4]).toBe(7)
+    await userEvent.click(screen.getByRole('button', { name: 'Remove image' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Confirm removal' }),
+    )
+    await waitFor(() => expect(management.remove).toHaveBeenCalledTimes(1))
+    expect(management.remove.mock.calls[0][3]).toBe(7)
+  })
+
+  test('set primary passes the displayed revision', async () => {
+    const { management } = setup({
+      media: mediaFixture({ publicationStatus: 'PUBLISHED', revision: 2 }),
+    })
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Set as primary' }),
+    )
+    await waitFor(() => expect(management.setPrimary).toHaveBeenCalledTimes(1))
+    expect(management.setPrimary.mock.calls[0][3]).toBe(2)
+  })
+
+  test.each([
+    [412, 'a stale revision', 3],
+    [428, 'a missing revision', undefined],
+  ])(
+    'a publish refused with HTTP %p (%s) explains the conflict and refreshes the gallery',
+    async (status, _name, revision) => {
+      const { management, onChanged } = setup({ media: pending(revision) })
+      management.publish.mockRejectedValueOnce(
+        new ApiError('Precondition Failed', {}, status),
+      )
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Publish image' }),
+      )
+      expect(await screen.findByRole('alert')).toHaveTextContent(
+        STALE_MEDIA_MESSAGE,
+      )
+      expect(onChanged).toHaveBeenCalledTimes(1)
+      expect(management.publish.mock.calls[0][4]).toBe(revision)
+    },
+  )
+
+  test('a stale rejection closes the outdated dialog, explains the conflict and refreshes', async () => {
+    const { management, onChanged } = setup({ media: pending(3) })
+    management.reject.mockRejectedValueOnce(
+      new ApiError('Precondition Failed', {}, 412),
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Confirm rejection' }),
+    )
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'This image was changed by someone else since you opened it.',
+    )
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
+    expect(onChanged).toHaveBeenCalledTimes(1)
+  })
 })

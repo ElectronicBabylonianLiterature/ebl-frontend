@@ -1,5 +1,5 @@
 import { ApiError } from 'http/ApiClient'
-import { isDefinitiveRejection } from 'http/ApiError'
+import { isDefinitiveRejection, isStaleRevision } from 'http/ApiError'
 import {
   CaptureStackTraceOverride,
   overrideCaptureStackTrace,
@@ -137,4 +137,15 @@ test.each([
   [new DOMException('Cancelled', 'AbortError'), false],
 ])('isDefinitiveRejection(%p) is %p', (error, expected) => {
   expect(isDefinitiveRejection(error)).toBe(expected)
+})
+
+test.each([
+  [new ApiError('Precondition Failed', {}, 412), true],
+  [new ApiError('Precondition Required', {}, 428), true],
+  [new ApiError('Conflict', {}, 409), false],
+  [new ApiError('Bad Request', {}, 400), false],
+  [new ApiError('No status', {}), false],
+  [Object.assign(new Error('Plain'), { status: 412 }), false],
+])('isStaleRevision(%p) is %p', (error, expected) => {
+  expect(isStaleRevision(error)).toBe(expected)
 })

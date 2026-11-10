@@ -61,6 +61,31 @@ Management listing uses `GET /media?fragment=...&view=management`; a disabled
 backend write API falls back to ordinary published retrieval. Permission failures
 remain errors. Backend authorization is authoritative for every mutation and binary.
 
+### Optimistic concurrency (`revision` / `If-Match`)
+
+Management-view items and mutation responses carry `revision`, a non-negative
+integer; public-view items omit it. The mapper keeps only non-negative safe
+integers and drops anything else without rejecting the item. Mutations send the
+revision of the item as the user saw it, as `If-Match: "<revision>"`. The client
+never refetches to get a fresher revision, because that would let a manager
+publish text they never reviewed.
+
+| Request                    | `If-Match`                       | Stale revision | Missing header |
+| -------------------------- | -------------------------------- | -------------- | -------------- |
+| `POST /media/{id}/publish` | Required, always sent when known | 412            | 428            |
+| `POST /media/{id}/reject`  | Required, always sent when known | 412            | 428            |
+| `PATCH /media/{id}`        | Optional, sent when known        | 412            | Accepted       |
+| `POST /media/{id}/primary` | Optional, sent when known        | 412            | Accepted       |
+| `DELETE /media/{id}`       | Optional, sent when known        | 412            | Accepted       |
+
+If an item has no revision (older backend), the request goes without the header.
+A 428 response is then handled like a 412. On 412 or 428 the open dialog closes
+and an alert says "This image was changed by someone else since you opened it.
+The gallery has been refreshed — please review it again." The gallery and the
+affected fragment caches refresh so the user acts on the current item. Other 4xx
+responses are still final and do not trigger a refresh. A successful mutation
+returns the new `revision`, and the response's `ETag` header is not used.
+
 Auth0 API role assignments must be configured externally:
 
 - `upload:fragment_media`: approved contributors.

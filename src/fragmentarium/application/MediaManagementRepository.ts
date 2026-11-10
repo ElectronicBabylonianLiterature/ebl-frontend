@@ -26,6 +26,12 @@ export interface MediaUploadOptions {
   onProcessing?: () => void
 }
 
+/**
+ * Mutations of an existing item take the `revision` of the item the user was
+ * looking at and send it as `If-Match`. The server answers 412 when someone
+ * else changed the item since; publish and reject require it (428 without).
+ * Never refetch to obtain a revision: that would defeat the guard.
+ */
 export default interface MediaManagementRepository {
   upload(
     fragment: string,
@@ -39,23 +45,32 @@ export default interface MediaManagementRepository {
     id: string,
     metadata: Partial<MediaUploadMetadata>,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource>
   setPrimary(
     fragment: string,
     id: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource>
   publish(
     fragment: string,
     id: string,
     reason?: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource>
   reject(
     fragment: string,
     id: string,
     reason?: string,
     signal?: AbortSignal,
+    revision?: number,
   ): Promise<MediaResource>
-  remove(fragment: string, id: string, signal?: AbortSignal): Promise<void>
+  remove(
+    fragment: string,
+    id: string,
+    signal?: AbortSignal,
+    revision?: number,
+  ): Promise<void>
 }
