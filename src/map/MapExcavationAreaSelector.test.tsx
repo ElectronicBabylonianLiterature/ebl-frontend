@@ -32,6 +32,7 @@ describe('MapExcavationAreaSelector', () => {
         polygons={[excavationPolygon({ siteId: 'unknown-site', name: null })]}
         selectedPolygonId={null}
         onSelect={jest.fn()}
+        onView={jest.fn()}
       />,
     )
     expect(
