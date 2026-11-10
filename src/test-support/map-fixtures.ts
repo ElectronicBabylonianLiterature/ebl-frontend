@@ -1,5 +1,5 @@
 import type { Feature, Polygon } from 'geojson'
-import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
 
 export function polygonFeature(
   polygonId: string,
