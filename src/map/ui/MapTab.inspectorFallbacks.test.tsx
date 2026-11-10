@@ -10,7 +10,9 @@ import { makeFragmentService, renderMapTab } from 'map/ui/MapTab.testSupport'
 
 jest.mock('map/maplibre/useFindspotMap', () => ({
   __esModule: true,
-  default: () => ({ current: null }),
+  default: function useMockFindspotMap() {
+    return jest.requireActual<typeof import('react')>('react').useRef(null)
+  },
 }))
 jest.mock('map/maplibre/useExcavationPolygonIndex')
 jest.mock('map/domain/useFragmentMapData')

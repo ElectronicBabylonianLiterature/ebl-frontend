@@ -8,7 +8,9 @@ import { excavationPolygon } from 'test-support/map-fixtures'
 
 jest.mock('map/maplibre/useFindspotMap', () => ({
   __esModule: true,
-  default: () => ({ current: null }),
+  default: function useMockFindspotMap() {
+    return jest.requireActual<typeof import('react')>('react').useRef(null)
+  },
 }))
 jest.mock('map/maplibre/useExcavationPolygonIndex')
 

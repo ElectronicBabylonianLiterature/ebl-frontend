@@ -9,6 +9,17 @@ const EVIDENCE_LABELS: Readonly<Record<MappingEvidence, string>> = {
   unmapped: 'No mapped findspot',
 }
 
+const EVIDENCE_SHORT_LABELS: Readonly<Record<MappingEvidence, string>> = {
+  'verified-source': 'Verified source',
+  curated: 'Curated',
+  mixed: 'Mixed evidence',
+  unmapped: 'Unmapped',
+}
+
+export function mappingEvidenceShortLabel(evidence: MappingEvidence): string {
+  return EVIDENCE_SHORT_LABELS[evidence]
+}
+
 const PRECISION_LABELS: Readonly<Record<SummaryLocationPrecision, string>> = {
   'excavation-area': 'Excavation area',
   mixed: 'Mixed precision',
