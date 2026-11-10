@@ -1,9 +1,13 @@
 import { act, screen, waitFor } from '@testing-library/react'
+import fs from 'fs'
+import path from 'path'
+import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 import {
+  CURRENT_LOCATION_TEST_ID,
   makeFailingFragmentService,
   makeFragmentService,
   makeProvenance,
@@ -11,6 +15,7 @@ import {
   mockAddControl,
   mockAddLayer,
   mockAddSource,
+  mockSetLayoutProperty,
   renderMapTab,
   resetMapMocks,
 } from 'map/ui/MapTab.testSupport'
@@ -30,7 +35,10 @@ function mixedGeometryProvenances(): ReturnType<typeof makeProvenance>[] {
 }
 
 describe('MapTab', () => {
-  beforeEach(resetMapMocks)
+  beforeEach(() => {
+    resetMapMocks()
+    fetchMock.resetMocks()
+  })
 
   it('renders loading spinner while data is being fetched', () => {
     const fragmentService = {
@@ -92,6 +100,15 @@ describe('MapTab', () => {
   })
 
   it('passes source and layer configs to map on load', async () => {
+    fetchMock.mockResponseOnce(
+      fs.readFileSync(
+        path.resolve(
+          __dirname,
+          '../../../public/map-data/findspots/all.geojson',
+        ),
+        'utf8',
+      ),
+    )
     const provenances = [
       makeProvenance(),
       makeProvenance({
@@ -113,15 +130,19 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(5))
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
-    expect(layerIds).toEqual([
-      'ebl-clusters',
-      'ebl-cluster-count',
-      'ebl-unclustered-points',
-    ])
+    expect(layerIds).toEqual(
+      expect.arrayContaining([
+        'ebl-clusters',
+        'ebl-cluster-count',
+        'ebl-unclustered-points',
+        'excavation-area-fill',
+        'excavation-area-outline',
+      ]),
+    )
   })
 
   it('creates a map with navigation control', async () => {
@@ -130,6 +151,46 @@ describe('MapTab', () => {
     await waitFor(() => {
       expect(mockAddControl).toHaveBeenCalled()
     })
+  })
+
+  it('toggles excavation areas in the URL and rendered layers', async () => {
+    fetchMock.mockResponseOnce(
+      fs.readFileSync(
+        path.resolve(
+          __dirname,
+          '../../../public/map-data/findspots/all.geojson',
+        ),
+        'utf8',
+      ),
+    )
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    const checkbox = await screen.findByLabelText('Excavation areas')
+    await waitFor(() => expect(checkbox).toBeEnabled())
+    await userEvent.click(checkbox)
+    expect(checkbox).toBeChecked()
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+      'areas=1',
+    )
+    for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
+      expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+        layer,
+        'visibility',
+        'visible',
+      )
+    }
+    mockSetLayoutProperty.mockClear()
+    await userEvent.click(checkbox)
+    expect(checkbox).not.toBeChecked()
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
+      'areas=1',
+    )
+    for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
+      expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+        layer,
+        'visibility',
+        'none',
+      )
+    }
   })
 
   it('does not crash with empty provenance data', async () => {
