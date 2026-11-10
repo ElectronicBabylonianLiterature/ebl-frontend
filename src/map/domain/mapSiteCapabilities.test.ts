@@ -4,10 +4,10 @@ import {
 } from 'map/domain/mapSiteCapabilities'
 import type { ExcavationPolygonIndex } from 'map/domain/excavationPolygonIndex'
 import { excavationPolygon } from 'test-support/map-fixtures'
-import { findMapSite } from 'map/domain/mapSites'
+import { findMapSite } from 'fragmentarium/domain/mapSites'
 
 it('finds configured map sites and rejects unknown identifiers', () => {
-  expect(findMapSite('nippur')).toEqual({
+  expect(findMapSite('nippur')).toMatchObject({
     siteId: 'nippur',
     siteName: 'Nippur',
   })

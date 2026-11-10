@@ -30,6 +30,13 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   'utf8',
 )
 
+async function renderMapWithProvenance(
+  initialEntry = '/tools/map',
+): Promise<void> {
+  renderMapTab(makeFragmentService([makeProvenance()]), initialEntry)
+  await act(() => Promise.resolve())
+}
+
 describe('MapTab map errors', () => {
   beforeEach(() => {
     resetMapMocks()
@@ -37,7 +44,7 @@ describe('MapTab map errors', () => {
   })
 
   it('shows a user-visible warning when the style document fails to load', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     const input = await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -60,7 +67,7 @@ describe('MapTab map errors', () => {
 
   it('shows a warning when the style request cannot reach the network', async () => {
     deferMapLoad()
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -77,7 +84,7 @@ describe('MapTab map errors', () => {
 
   it('stays quiet when the map is used before the style has loaded', async () => {
     deferMapLoad()
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -90,7 +97,7 @@ describe('MapTab map errors', () => {
 
   it('clears the warning once the style finishes loading', async () => {
     deferMapLoad()
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -108,7 +115,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores a tile failure', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -123,7 +130,7 @@ describe('MapTab map errors', () => {
   })
 
   it('reports a sprite failure to Sentry without showing the banner', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -140,7 +147,7 @@ describe('MapTab map errors', () => {
   })
 
   it('reports a generic style error without showing the banner', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
@@ -156,7 +163,7 @@ describe('MapTab map errors', () => {
   it('shows an unavailable state when the polygon index fails', async () => {
     fetchMock.mockRejectOnce(new Error('asset unavailable'))
 
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
@@ -173,7 +180,7 @@ describe('MapTab map errors', () => {
       JSON.stringify({ type: 'FeatureCollection', features: [] }),
     )
 
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
 
     await openLayerControls()
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
@@ -182,7 +189,7 @@ describe('MapTab map errors', () => {
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
-    renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
+    await renderMapWithProvenance(REQUESTED_AREAS_URL)
     await openLayerControls()
 
     await waitFor(() =>
@@ -202,7 +209,7 @@ describe('MapTab map errors', () => {
   it('falls back to the findspot list when the map cannot be constructed', async () => {
     failMapConstruction(new Error('Failed to initialize WebGL'))
 
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
 
     expect(await screen.findByText(BACKGROUND_WARNING)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
@@ -214,7 +221,7 @@ describe('MapTab map errors', () => {
   it('wraps a non-Error thrown while constructing the map', async () => {
     failMapConstruction('WebGL context lost')
 
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
 
     expect(await screen.findByText(BACKGROUND_WARNING)).toBeInTheDocument()
     expect(mockCaptureException).toHaveBeenCalledWith(
@@ -223,7 +230,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores map errors without a nested error object', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
+    await renderMapWithProvenance()
     await screen.findByLabelText('Filter findspots by name')
 
     act(() => {

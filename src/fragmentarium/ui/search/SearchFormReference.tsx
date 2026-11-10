@@ -4,7 +4,7 @@ import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { HelpCol, ReferenceSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 interface ReferenceSearchFormProps {
   referenceEntry: { id: string; label: string }

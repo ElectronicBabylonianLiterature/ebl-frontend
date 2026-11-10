@@ -130,7 +130,7 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(5))
+    await waitFor(() => expect(mockAddLayer).toHaveBeenCalledTimes(6))
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
@@ -208,7 +208,7 @@ describe('MapTab', () => {
     await userEvent.click(
       await screen.findByRole('button', { name: 'Map layers' }),
     )
-    expect(screen.getByText('Loading excavation areas…')).toBeVisible()
+    expect(screen.getByText(/Loading excavation areas/)).toBeVisible()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
     await act(async () =>
       complete(
@@ -225,7 +225,7 @@ describe('MapTab', () => {
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
     )
     expect(
-      screen.queryByText('Loading excavation areas…'),
+      screen.queryByText(/Loading excavation areas/),
     ).not.toBeInTheDocument()
   })
 
