@@ -6,6 +6,7 @@ import {
   makeProvenance,
   mockAddSource,
   mockCaptureException,
+  mockFitBounds,
   mockOn,
   resetMapMocks,
   setWorkerUrl,
@@ -68,6 +69,48 @@ describe('useFindspotMap', () => {
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
+  it('does not override a reset camera when the style loads later', () => {
+    deferMapLoad()
+    const { rerender } = renderHarness(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={0} />,
+    )
+
+    rerender(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={1} />,
+    )
+    act(() => {
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
+    })
+
+    expect(mockAddSource).toHaveBeenCalled()
+    expect(mockFitBounds).not.toHaveBeenCalled()
+  })
+
+  it('fits a newer filter applied after reset but before style load', () => {
+    deferMapLoad()
+    const { rerender } = renderHarness(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={0} />,
+    )
+
+    rerender(
+      <HookHarness
+        provenances={[makeProvenance({ id: 'all' })]}
+        cameraResetVersion={1}
+      />,
+    )
+    rerender(
+      <HookHarness
+        provenances={[makeProvenance({ id: 'later-filter' })]}
+        cameraResetVersion={1}
+      />,
+    )
+    act(() => {
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
+    })
+
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
   })
 
   it('does not require an error callback', () => {

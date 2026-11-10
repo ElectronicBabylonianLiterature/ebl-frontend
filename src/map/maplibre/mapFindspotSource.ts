@@ -13,11 +13,12 @@ import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 export function initializeFindspotSource(
   map: MapLibreMap,
   provenances: readonly ProvenanceRecord[],
+  shouldFitData: boolean,
 ): void {
   const geoJson = provenanceToGeoJson(provenances)
   map.addSource(SOURCE_ID, createFindspotsSource(geoJson))
   map.addLayer(clusterLayer)
   map.addLayer(clusterCountLayer)
   map.addLayer(unclusteredLayer)
-  fitMapToData(map, geoJson.features)
+  if (shouldFitData) fitMapToData(map, geoJson.features)
 }

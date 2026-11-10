@@ -24,11 +24,9 @@ import {
   unclusteredLayer,
 } from 'map/maplibre/mapLayers'
 import { initializeFindspotSource } from 'map/maplibre/mapFindspotSource'
+import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/maplibre/mapCamera'
 import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
 import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
-
-const INITIAL_CENTER: [number, number] = [44.4, 33.0]
-const INITIAL_ZOOM = 5
 
 interface FindspotMapHandlers {
   isActive: () => boolean
@@ -113,12 +111,21 @@ export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
   onMapBackgroundErrorChange?: (hasError: boolean) => void,
+  cameraResetVersion = 0,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const history = useHistory()
   const errorReporter = useContext(ErrorReporterContext)
   const latestProvenancesRef = useRef(provenances)
   latestProvenancesRef.current = provenances
+  const latestCameraResetVersionRef = useRef(cameraResetVersion)
+  const previousCameraResetVersionRef = useRef(cameraResetVersion)
+  const cameraResetProvenancesRef = useRef(provenances)
+  latestCameraResetVersionRef.current = cameraResetVersion
+  if (previousCameraResetVersionRef.current !== cameraResetVersion) {
+    previousCameraResetVersionRef.current = cameraResetVersion
+    cameraResetProvenancesRef.current = provenances
+  }
   const latestServicesRef = useRef({ history, errorReporter })
   latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
@@ -126,6 +133,7 @@ export default function useFindspotMap(
   useEffect(() => {
     if (!containerRef.current || !isReady) return
 
+    const cameraResetVersionAtCreation = latestCameraResetVersionRef.current
     let map: MapLibreMap
     try {
       maplibregl.setWorkerUrl(maplibreWorkerUrl)
@@ -157,7 +165,15 @@ export default function useFindspotMap(
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
-        initializeFindspotSource(map, loadedProvenances)
+        const resetStillOwnsLatestData =
+          latestCameraResetVersionRef.current !==
+            cameraResetVersionAtCreation &&
+          loadedProvenances === cameraResetProvenancesRef.current
+        initializeFindspotSource(
+          map,
+          loadedProvenances,
+          !resetStillOwnsLatestData,
+        )
       }
     }
     const unsubscribe = subscribeFindspotMapEvents(map, MAP_STYLE_LOAD_EVENT, {
