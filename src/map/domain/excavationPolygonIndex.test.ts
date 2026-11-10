@@ -5,6 +5,8 @@ import {
   EXCAVATION_POLYGON_GEOJSON_URL,
   buildExcavationPolygonIndex,
   fetchExcavationPolygonIndex,
+  findExcavationPolygon,
+  sortedExcavationPolygons,
 } from 'map/domain/excavationPolygonIndex'
 import { polygonFeature } from 'test-support/map-fixtures'
 
@@ -83,6 +85,24 @@ describe('buildExcavationPolygonIndex', () => {
     expect(index.get('assur')?.[0].name).toBe('First')
   })
 
+  it('accepts multipolygons and sorts unnamed polygons by id', () => {
+    const first = polygonFeature('assur-a', 'assur')
+    const second = polygonFeature('uruk-b', 'uruk')
+    const features = [second, first].map((feature) => ({
+      ...feature,
+      properties: { ...feature.properties, name: null },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [feature.geometry.coordinates],
+      },
+    }))
+    const index = buildExcavationPolygonIndex(collection(features))
+
+    expect(
+      sortedExcavationPolygons(index).map(({ polygonId }) => polygonId),
+    ).toEqual(['assur-a', 'uruk-b'])
+  })
+
   it('rejects features from an unknown site', () => {
     expect(
       buildExcavationPolygonIndex(
@@ -128,6 +148,22 @@ describe('buildExcavationPolygonIndex', () => {
     )
 
     expect(index.get('assur')?.[0].bounds).toBeNull()
+  })
+
+  it('finds polygons by id and sorts them by display label', () => {
+    const index = buildExcavationPolygonIndex(
+      collection([
+        polygonFeature('second', 'assur', 'Zulu'),
+        polygonFeature('first', 'uruk', 'Alpha'),
+      ]),
+    )
+
+    expect(findExcavationPolygon(index, 'second')?.name).toBe('Zulu')
+    expect(findExcavationPolygon(index, 'missing')).toBeNull()
+    expect(findExcavationPolygon(index, null)).toBeNull()
+    expect(
+      sortedExcavationPolygons(index).map(({ polygonId }) => polygonId),
+    ).toEqual(['first', 'second'])
   })
 })
 

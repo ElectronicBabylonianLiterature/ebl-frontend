@@ -4,10 +4,21 @@ export function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
-export function isValidLatitude(value: unknown): value is number {
+export function isFiniteNumberInRange(
+  value: unknown,
+  minimum: number,
+  maximum: number,
+): value is number {
   return (
-    typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
+    typeof value === 'number' &&
+    Number.isFinite(value) &&
+    value >= minimum &&
+    value <= maximum
   )
+}
+
+export function isValidLatitude(value: unknown): value is number {
+  return isFiniteNumberInRange(value, -90, 90)
 }
 
 export function isFinitePosition(value: unknown): value is Position {

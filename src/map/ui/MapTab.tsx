@@ -15,6 +15,7 @@ import MapInspector from 'map/ui/MapInspector'
 import MapLegend from 'map/ui/MapLegend'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import MapMeasurePanel from 'map/ui/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/ui/MapSelectionPill'
 import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
@@ -107,6 +108,18 @@ function LoadedMapTab({
       label: 'Measure',
       isSupported: !state.isBackgroundUnavailable,
       render: () => <MapMeasurePanel measurement={state.measurement} />,
+    },
+    {
+      id: 'spatial-search',
+      label: 'Search area',
+      isSupported:
+        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
+      render: () => (
+        <MapSpatialSearchPanel
+          spatialSearch={state.spatialSearch}
+          findspots={state.fragmentMapData.findspots}
+        />
+      ),
     },
     {
       id: 'layers',
