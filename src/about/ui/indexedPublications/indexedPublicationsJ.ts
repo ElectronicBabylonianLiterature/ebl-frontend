@@ -55,7 +55,7 @@ export const indexedPublicationsJ: readonly IndexedPublicationsSection[] = [
       '@bib{NABU2007-54};',
       '@bib{jursa2014neoassyrian};',
       '@bib{jursa2014neolate};',
-      '@bib{jursa2019prisoner};',
+      '@bib{jursa2019prisoner}',
     ],
   },
 ]

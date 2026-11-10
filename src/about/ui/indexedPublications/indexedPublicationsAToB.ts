@@ -41,7 +41,7 @@ export const indexedPublicationsAToB: readonly IndexedPublicationsSection[] = [
       '@bib{Attia2021JMC38AMD8-3-4};',
       '@bib{Attia2022JMC39};',
       '@bib{RN84};',
-      '@bib{attinger2019nasse};',
+      '@bib{attinger2019nasse}',
     ],
   },
   {
@@ -136,7 +136,7 @@ export const indexedPublicationsAToB: readonly IndexedPublicationsSection[] = [
       '@bib{UET_2};',
       '@bib{RN32};',
       '@bib{Butz1980Frauenerbrecht};',
-      '@bib{Butz1980Niessbrauch};',
+      '@bib{Butz1980Niessbrauch}',
     ],
   },
 ]

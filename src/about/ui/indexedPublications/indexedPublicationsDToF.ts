@@ -61,7 +61,7 @@ export const indexedPublicationsDToF: readonly IndexedPublicationsSection[] = [
       '@bib{driver1933cappadocian};',
       '@bib{durand1981textes};',
       '@bib{durand2019joint};',
-      '@bib{Durand2023FSMaul};',
+      '@bib{Durand2023FSMaul}',
     ],
   },
   {
@@ -84,7 +84,7 @@ export const indexedPublicationsDToF: readonly IndexedPublicationsSection[] = [
       '@bib{epping1891neue3};',
       '@bib{evetts1892inscriptions};',
       '@bib{Eypper2016JMC27};',
-      '@bib{Eypper2019JMC33};',
+      '@bib{Eypper2019JMC33}',
     ],
   },
   {
@@ -206,7 +206,7 @@ export const indexedPublicationsDToF: readonly IndexedPublicationsSection[] = [
       '@bib{friberg2005mathematical};',
       '@bib{RN3094xf};',
       '@bib{RN311f};',
-      '@bib{Fuchs2017Kassiten};',
+      '@bib{Fuchs2017Kassiten}',
     ],
   },
 ]

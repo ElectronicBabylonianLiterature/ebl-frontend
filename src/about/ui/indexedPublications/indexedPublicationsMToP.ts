@@ -114,7 +114,7 @@ export const indexedPublicationsMToP: readonly IndexedPublicationsSection[] = [
       '@bib{Müller-Kessler2002Charm};',
       '@bib{mueller-kessler2005zauberschalentexte};',
       '@bib{RN2800};',
-      '@bib{BE_A_3_1};',
+      '@bib{BE_A_3_1}',
     ],
   },
   {
@@ -129,7 +129,7 @@ export const indexedPublicationsMToP: readonly IndexedPublicationsSection[] = [
       '@bib{niedroff2008mittelbabylonischen};',
       '@bib{Nougayrol 1967};',
       '@bib{Nougayrol1979};',
-      '@bib{Novotny2002Note};',
+      '@bib{Novotny2002Note}',
     ],
   },
   {
@@ -151,7 +151,7 @@ export const indexedPublicationsMToP: readonly IndexedPublicationsSection[] = [
       '@bib{ossendrijver2025babylonian};',
       '@bib{owen1981text};',
       '@bib{owen2019death};',
-      '@bib{Nisaba_34};',
+      '@bib{Nisaba_34}',
     ],
   },
   {
@@ -236,7 +236,7 @@ export const indexedPublicationsMToP: readonly IndexedPublicationsSection[] = [
       '@bib{MARV_10};',
       '@bib{RN2821};',
       '@bib{TMH_NF8};',
-      '@bib{Proust2023Hermann};',
+      '@bib{Proust2023Hermann}',
     ],
   },
 ]

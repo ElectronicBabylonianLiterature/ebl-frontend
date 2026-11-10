@@ -115,7 +115,7 @@ export const indexedPublicationsGToI: readonly IndexedPublicationsSection[] = [
       '@bib{gurney1982gate};',
       '@bib{Gurney1983MBLETU};',
       '@bib{RN697};',
-      '@bib{Güterbock1979Some};',
+      '@bib{Güterbock1979Some}',
     ],
   },
   {
@@ -192,7 +192,7 @@ export const indexedPublicationsGToI: readonly IndexedPublicationsSection[] = [
       '@bib{hunger2017so-called};',
       '@bib{hunger2022astronomical};',
       '@bib{OECT_8};',
-      '@bib{Hurowitz2006JMC8};',
+      '@bib{Hurowitz2006JMC8}',
     ],
   },
 ]

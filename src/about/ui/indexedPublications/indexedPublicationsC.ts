@@ -108,7 +108,7 @@ export const indexedPublicationsC: readonly IndexedPublicationsSection[] = [
       '@bib{RN2740a};',
       '@bib{crawford1954texts};',
       '@bib{Crisostomo2023Curricular};',
-      '@bib{czechowicz2002zwei};',
+      '@bib{czechowicz2002zwei}',
     ],
   },
 ]

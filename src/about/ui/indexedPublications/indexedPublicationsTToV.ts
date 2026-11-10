@@ -22,7 +22,7 @@ export const indexedPublicationsTToV: readonly IndexedPublicationsSection[] = [
       '@bib{YOS_7};',
       '@bib{Tsukimoto1990New};',
       '@bib{Tulaikov2023Towards};',
-      '@bib{tuplin2019logging};',
+      '@bib{tuplin2019logging}',
     ],
   },
   {
@@ -37,7 +37,7 @@ export const indexedPublicationsTToV: readonly IndexedPublicationsSection[] = [
       '@bib{VS_8};',
       '@bib{VS_9};',
       '@bib{Ungnad1909Neuer};',
-      '@bib{PBS_7};',
+      '@bib{PBS_7}',
     ],
   },
   {
@@ -64,7 +64,7 @@ export const indexedPublicationsTToV: readonly IndexedPublicationsSection[] = [
       '@bib{Visicato2005EarlyDynastic};',
       '@bib{visscher2019royal};',
       '@bib{volk2005hymns};',
-      '@bib{Volk2023FSMaul};',
+      '@bib{Volk2023FSMaul}',
     ],
   },
 ]

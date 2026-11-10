@@ -15,7 +15,6 @@ export const indexedPublicationsKToL: readonly IndexedPublicationsSection[] = [
       '@bib{LS21};',
       '@bib{LS40};',
       '@bib{LS243};',
-      '@bib{LS243};',
       '@bib{LS146};',
       '@bib{kessler2000hellenistische};',
       '@bib{kilmer2005akkadian};',
@@ -85,7 +84,7 @@ export const indexedPublicationsKToL: readonly IndexedPublicationsSection[] = [
       '@bib{kraus2026akkadian};',
       '@bib{krueckmannNeubabylonischeRechtsUnd1933a};',
       '@bib{RN311c};',
-      '@bib{RN290xa};',
+      '@bib{RN290xa}',
     ],
   },
   {
@@ -96,7 +95,6 @@ export const indexedPublicationsKToL: readonly IndexedPublicationsSection[] = [
       '@bib{lacambre2019samsiaddu};',
       '@bib{RN2801};',
       '@bib{RN432};',
-      '@bib{CT0046};',
       '@bib{CT0046};',
       '@bib{RN435};',
       '@bib{RN429};',
@@ -192,7 +190,7 @@ export const indexedPublicationsKToL: readonly IndexedPublicationsSection[] = [
       '@bib{RN2700bb};',
       '@bib{RN376};',
       '@bib{RN376a};',
-      '@bib{SAA_23};',
+      '@bib{SAA_23}',
     ],
   },
 ]

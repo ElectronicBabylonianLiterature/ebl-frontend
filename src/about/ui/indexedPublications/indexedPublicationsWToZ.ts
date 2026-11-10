@@ -56,7 +56,7 @@ export const indexedPublicationsWToZ: readonly IndexedPublicationsSection[] = [
       '@bib{wunschEgibiArchivFelderUnd2000};',
       '@bib{Wunsch2002Du};',
       '@bib{wunsch2003urkunden};',
-      '@bib{RN2083ax};',
+      '@bib{RN2083ax}',
     ],
   },
   {
@@ -90,7 +90,7 @@ export const indexedPublicationsWToZ: readonly IndexedPublicationsSection[] = [
       '@bib{Zomer2018JMC31};',
       '@bib{RN3006ax};',
       '@bib{Zomer2023Hymn};',
-      '@bib{RN2265};',
+      '@bib{RN2265}',
     ],
   },
 ]
