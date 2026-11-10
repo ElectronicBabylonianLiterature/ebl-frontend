@@ -1,7 +1,5 @@
-import {
-  isCoordinateInRange,
-  isCoordinateIntervalInRange,
-} from 'map/spatialCoordinateValidation'
+import { isCoordinateIntervalInRange } from 'map/spatialCoordinateValidation'
+import { isFiniteNumberInRange } from 'map/geodesy'
 
 it.each<[number, boolean]>([
   [-90, true],
@@ -15,7 +13,7 @@ it.each<[number, boolean]>([
 ])(
   'validates latitude %s at inclusive geographic limits',
   (value, expected) => {
-    expect(isCoordinateInRange(value, -90, 90)).toBe(expected)
+    expect(isFiniteNumberInRange(value, -90, 90)).toBe(expected)
   },
 )
 

@@ -1,4 +1,4 @@
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type {
   ExcavationPolygon,
   ExcavationPolygonIndex,
