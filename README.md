@@ -360,6 +360,16 @@ accepts that name as a build argument. The GitHub image build obtains it from th
 repository variable `MEDIA_GALLERY_ENABLED`, defaulting to `false`. Changing a
 build-time flag requires a new frontend build and deployment.
 
+Uploading and managing media additionally require the build-time variable
+`REACT_APP_MEDIA_UPLOAD_ENABLED=true` (repository variable `MEDIA_UPLOAD_ENABLED`
+in the GitHub image build, default `false`). Only with that flag enabled does the
+frontend request the Auth0 scopes `upload:fragment_media` and
+`manage:fragment_media`. Because the Auth0 token cache is keyed by the requested
+scopes, the first deployment with the upload flag enabled makes returning users
+appear logged out once; they need to log in again to obtain a token for the
+added scopes. Disabling the flag again does not log users out, because a cached
+token that covers more scopes still satisfies the smaller request.
+
 For rollback, deploy a frontend image built with the flag disabled. Existing
 photo, thumbnail, folio and CDLI functionality remains available. No legacy
 binary deletion or data rollback is triggered by the frontend.
@@ -383,8 +393,11 @@ never trigger legacy fallback. Malformed or unsupported successful responses sho
 an explicit diagnostic and offer a lazy Legacy photo choice when available.
 An explicit Legacy photo choice also preserves photographs during partial
 migration, including fragments whose new media currently contain only copies.
-The additive `legacyHasPhoto` field distinguishes existing legacy photographs
-from the combined `hasPhoto` value, including when the frontend flag is disabled.
+`hasPhoto` reports the legacy photograph and is only replaced when the backend
+has suppressed a removed legacy photo; in that case `legacyHasPhoto` is `false`
+and `hasPhoto` reflects published photo media. Legacy photo consumers (the
+legacy photo route, sign tagging/annotation and legacy thumbnails) use
+`legacyHasPhoto ?? hasPhoto`.
 
 ### Behavior and data requirements
 
