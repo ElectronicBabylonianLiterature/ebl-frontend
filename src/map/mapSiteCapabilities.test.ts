@@ -4,6 +4,15 @@ import {
 } from 'map/mapSiteCapabilities'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import { excavationPolygon } from 'test-support/map-fixtures'
+import { findMapSite } from 'map/mapSites'
+
+it('finds configured map sites and rejects unknown identifiers', () => {
+  expect(findMapSite('nippur')).toEqual({
+    siteId: 'nippur',
+    siteName: 'Nippur',
+  })
+  expect(findMapSite('unknown')).toBeUndefined()
+})
 
 function indexOf(siteIds: readonly string[]): ExcavationPolygonIndex {
   return new Map(
