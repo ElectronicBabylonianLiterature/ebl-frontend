@@ -61,7 +61,7 @@ export const indexedPublicationsWToZ: readonly IndexedPublicationsSection[] = [
   },
   {
     letter: 'Y',
-    references: ['@bib{yamada2019simalites};'],
+    references: ['@bib{yamada2019simalites}'],
   },
   {
     letter: 'Z',

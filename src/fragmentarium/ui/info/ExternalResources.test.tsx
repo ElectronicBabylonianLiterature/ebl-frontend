@@ -30,7 +30,7 @@ describe('external resources', () => {
 
   test.each(externalResourceLinks)(
     '%s number is shown',
-    async (label, link, number) => {
+    (label, link, number) => {
       setup()
       expect(screen.getByLabelText(`${label} text ${number}`)).toHaveAttribute(
         'href',
@@ -38,7 +38,7 @@ describe('external resources', () => {
       )
     },
   )
-  test('Snapshot', async () => {
+  test('Snapshot', () => {
     setup()
     expect(container).toMatchSnapshot()
   })
