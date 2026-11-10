@@ -86,6 +86,21 @@ it('marks an inexact line count and further results', async () => {
   ).toBeVisible()
 })
 
+it.each([
+  ['Sum', 'Sumerian'],
+  ['Lex', 'Lexical'],
+])('renders a %s chapter result with its genre label', async (genre, label) => {
+  const initial = chapterDisplayFactory.build()
+  const chapter = chapterDisplayFactory.build({
+    id: { ...initial.id, textId: { ...initial.id.textId, genre } },
+    textName: 'Visible chapter',
+  })
+  renderResult({ items: [itemOf(chapter)], matchCountTotal: 1 })
+
+  expect(await screen.findByText(label)).toBeVisible()
+  expect(screen.getByText('Visible chapter')).toBeVisible()
+})
+
 it('names the text of a chapter', async () => {
   const chapter = chapterDisplayFactory.build({ textName: 'Poem of Erra' })
   renderResult({ items: [itemOf(chapter)], matchCountTotal: 1 })

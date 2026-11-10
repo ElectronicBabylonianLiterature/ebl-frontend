@@ -130,14 +130,20 @@ export function isLineQuery(fragmentQuery: FragmentSearchCriteria): boolean {
   return Boolean(fragmentQuery.lemmas || fragmentQuery.transliteration)
 }
 
+export function createPageRequest({ pageIndex, pageSize }: SearchPagination): {
+  limit: number
+  offset: number
+} {
+  return { limit: pageSize + 1, offset: pageIndex * pageSize }
+}
+
 export function createPagedFragmentQuery(
   fragmentQuery: FragmentSearchCriteria,
-  { pageIndex, pageSize }: SearchPagination,
+  pagination: SearchPagination,
 ): FragmentQuery {
   return {
     ...fragmentQuery,
-    limit: pageSize + 1,
-    offset: pageIndex * pageSize,
+    ...createPageRequest(pagination),
     count: 'exact',
   }
 }

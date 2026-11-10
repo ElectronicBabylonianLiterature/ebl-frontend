@@ -19,8 +19,7 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
-import { useLocation } from 'react-router-dom'
-import { useHistory } from 'router/compat'
+import useSearchTab from './useSearchTab'
 
 type Props = Pick<
   SearchFormProps,
@@ -57,12 +56,7 @@ function FragmentariumSearch({
   textService,
   activeTab,
 }: Props): JSX.Element {
-  const location = useLocation()
-  const history = useHistory()
-  const selectedTab =
-    (location.hash || `#${activeTab}`).toLowerCase() === '#corpus'
-      ? 'corpus'
-      : 'library'
+  const { selectedTab, selectTab } = useSearchTab(activeTab)
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
     'lemmas',
@@ -108,19 +102,7 @@ function FragmentariumSearch({
                 </Row>
               </header>
               {showResults ? (
-                <Tabs
-                  activeKey={selectedTab}
-                  onSelect={(key) => {
-                    if (key && key !== selectedTab) {
-                      history.push({
-                        pathname: location.pathname,
-                        search: location.search,
-                        hash: `#${key}`,
-                      })
-                    }
-                  }}
-                  justify
-                >
+                <Tabs activeKey={selectedTab} onSelect={selectTab} justify>
                   <Tab eventKey="library" title="Library">
                     <SearchResult
                       fragmentService={fragmentService}

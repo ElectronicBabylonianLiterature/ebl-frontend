@@ -14,6 +14,7 @@ import PaginationItems, {
 import {
   corpusPageSizeURLParam,
   corpusPaginationURLParam,
+  createPageRequest,
   parseSearchPagination,
   SearchPagination,
 } from 'fragmentarium/ui/search/pagination'
@@ -115,9 +116,9 @@ function usePageChanged(
 
 export function createPagedCorpusQuery(
   corpusQuery: CorpusQuery,
-  { pageIndex, pageSize }: SearchPagination,
+  pagination: SearchPagination,
 ): CorpusQuery {
-  return { ...corpusQuery, limit: pageSize + 1, offset: pageIndex * pageSize }
+  return { ...corpusQuery, ...createPageRequest(pagination) }
 }
 
 const PagedCorpusSearchResult = withData<

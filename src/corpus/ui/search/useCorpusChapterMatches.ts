@@ -16,7 +16,7 @@ import {
   mergeChapterDisplays,
 } from 'corpus/ui/search/CorpusMatchPairs'
 
-interface ChapterMatchState {
+export interface ChapterMatchState {
   chapter: ChapterDisplay
   loadedPairs: number
   expanded: boolean
