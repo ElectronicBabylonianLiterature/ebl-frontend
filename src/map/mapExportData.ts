@@ -165,4 +165,3 @@ export function buildExportGeoJson(
     },
   }
 }
-

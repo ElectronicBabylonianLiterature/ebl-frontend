@@ -22,25 +22,27 @@ export default function buildMapToolPanels(
       : undefined
 
   const inspectorPanels: readonly MapPanelDefinition[] = selectedPolygon
-    ? [{
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: true,
-      render: () => (
-          <MapInspector
-            key={selectedPolygon.polygonId}
-            polygon={selectedPolygon}
-            summary={selectedSiteData?.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={mapSiteName(selectedPolygon.siteId)}
-            status={selectedSiteData?.status ?? 'not-configured'}
-            visualizationMode={state.visualization.effectiveMode}
-            siteFilter={experience.filter}
-            onClear={clearSelection}
-          />
-        ),
-    }]
+    ? [
+        {
+          id: 'inspector',
+          label: 'Selected area',
+          isSupported: true,
+          render: () => (
+            <MapInspector
+              key={selectedPolygon.polygonId}
+              polygon={selectedPolygon}
+              summary={selectedSiteData?.polygonSummaries.get(
+                selectedPolygon.polygonId,
+              )}
+              siteName={mapSiteName(selectedPolygon.siteId)}
+              status={selectedSiteData?.status ?? 'not-configured'}
+              visualizationMode={state.visualization.effectiveMode}
+              siteFilter={experience.filter}
+              onClear={clearSelection}
+            />
+          ),
+        },
+      ]
     : []
   return [
     ...inspectorPanels,
