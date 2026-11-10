@@ -61,6 +61,28 @@ describe('the approved AWS terrain source', () => {
 })
 
 describe('validateTerrainSource', () => {
+  it('rejects a blank map-control credit and unapproved replacement links', () => {
+    expect(
+      validateTerrainSource(withSource({ mapAttribution: '   ' })),
+    ).toEqual([
+      { field: 'mapAttribution', message: 'Map attribution is required.' },
+    ])
+    expect(
+      isTerrainSourceApproved(
+        withSource({
+          mapAttribution: '<a href="https://other.example">Other credit</a>',
+        }),
+      ),
+    ).toBe(false)
+    expect(AWS_TERRAIN_TILES.mapAttribution).toContain(
+      `href="${AWS_TERRAIN_TILES.licenceUrl}"`,
+    )
+    expect(AWS_TERRAIN_TILES.mapAttribution).toContain(
+      'Mapzen/Joerd and contributors',
+    )
+    expect(AWS_TERRAIN_TILES.mapAttribution.length).toBeLessThan(250)
+  })
+
   it('rejects a blank attribution', () => {
     expect(validateTerrainSource(withSource({ attribution: '   ' }))).toEqual([
       { field: 'attribution', message: 'Attribution is required.' },

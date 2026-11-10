@@ -79,7 +79,7 @@ describe('terrain definitions', () => {
       type: 'raster-dem',
       encoding: 'terrarium',
       tileSize: 256,
-      attribution: AWS_TERRAIN_TILES.attribution,
+      attribution: AWS_TERRAIN_TILES.mapAttribution,
     })
   })
 

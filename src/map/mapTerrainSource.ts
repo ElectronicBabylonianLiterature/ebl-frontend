@@ -9,6 +9,7 @@ export interface TerrainSourceDefinition {
   readonly minZoom: number
   readonly maxZoom: number
   readonly attribution: string
+  readonly mapAttribution: string
   readonly licenceUrl: string
   readonly registryUrl: string
   readonly verifiedOn: string
@@ -38,6 +39,8 @@ export const TERRAIN_PRECISION_NOTE =
 
 const TERRAIN_TILE_URL =
   'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
+const TERRAIN_LICENCE_URL =
+  'https://github.com/tilezen/joerd/blob/master/docs/attribution.md'
 
 const AWS_TERRAIN_TILES: TerrainSourceDefinition = {
   id: 'aws-terrain-tiles-terrarium',
@@ -48,8 +51,8 @@ const AWS_TERRAIN_TILES: TerrainSourceDefinition = {
   minZoom: 0,
   maxZoom: 15,
   attribution: TERRAIN_ATTRIBUTION,
-  licenceUrl:
-    'https://github.com/tilezen/joerd/blob/master/docs/attribution.md',
+  mapAttribution: `Terrain: <a href="${TERRAIN_LICENCE_URL}" target="_blank" rel="noopener noreferrer">Mapzen/Joerd and contributors</a>`,
+  licenceUrl: TERRAIN_LICENCE_URL,
   registryUrl: 'https://registry.opendata.aws/terrain-tiles/',
   verifiedOn: '2026-11-06',
 }
@@ -124,6 +127,14 @@ export function validateTerrainSource(
     ...(source.attribution.trim() === ''
       ? [{ field: 'attribution' as const, message: 'Attribution is required.' }]
       : []),
+    ...(source.mapAttribution.trim() === ''
+      ? [
+          {
+            field: 'mapAttribution' as const,
+            message: 'Map attribution is required.',
+          },
+        ]
+      : []),
     ...(isHttps(source.licenceUrl) && isHttps(source.registryUrl)
       ? []
       : [
@@ -161,6 +172,7 @@ const CURATED_SOURCE_FIELDS: readonly Exclude<
 >[] = [
   'id',
   'label',
+  'mapAttribution',
   'encoding',
   'tileSize',
   'minZoom',

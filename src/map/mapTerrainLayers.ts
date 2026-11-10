@@ -60,7 +60,7 @@ export function createTerrainSource(
     tileSize: source.tileSize,
     minzoom: source.minZoom,
     maxzoom: source.maxZoom,
-    attribution: source.attribution,
+    attribution: source.mapAttribution,
   }
 }
 

@@ -19,6 +19,13 @@ function terrain(overrides: Partial<MapTerrainResult> = {}): MapTerrainResult {
 }
 
 describe('MapTerrainPanel', () => {
+  it('retains every provider credit in the terrain panel', () => {
+    render(<MapTerrainPanel terrain={terrain()} onChange={jest.fn()} />)
+    expect(screen.getByText(AWS_TERRAIN_TILES.attribution)).toBeVisible()
+    expect(
+      screen.getByRole('link', { name: 'Terrain licence and attribution' }),
+    ).toHaveAttribute('href', AWS_TERRAIN_TILES.licenceUrl)
+  })
   it('checks the switch only when terrain is actually active', () => {
     const { rerender } = render(
       <MapTerrainPanel terrain={terrain()} onChange={jest.fn()} />,
