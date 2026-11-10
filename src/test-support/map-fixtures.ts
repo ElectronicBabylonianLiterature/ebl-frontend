@@ -1,5 +1,5 @@
 import type { Feature, Polygon } from 'geojson'
-import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
 import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 
 export function findspotMapDataDto(
