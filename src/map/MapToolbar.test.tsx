@@ -15,6 +15,38 @@ function panel(
 }
 
 describe('MapToolbar', () => {
+  it('focuses the first supported tool when the closed tool was removed', () => {
+    const onToggle = jest.fn()
+    const { rerender } = render(
+      <MapToolbar panels={[panel()]} active="layers" onToggle={onToggle} />,
+    )
+    const original = screen.getByRole('button', { name: 'Map layers' })
+    original.focus()
+    rerender(
+      <MapToolbar
+        panels={[
+          panel({
+            id: 'inspector' as MapPanelDefinition['id'],
+            label: 'Inspector',
+          }),
+        ]}
+        active={null}
+        onToggle={onToggle}
+      />,
+    )
+    expect(original).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Inspector' })).toHaveFocus()
+  })
+
+  it('keeps focus on the page when the last supported tool is removed', () => {
+    const { rerender } = render(
+      <MapToolbar panels={[panel()]} active="layers" onToggle={jest.fn()} />,
+    )
+    screen.getByRole('button', { name: 'Map layers' }).focus()
+    rerender(<MapToolbar panels={[]} active={null} onToggle={jest.fn()} />)
+    expect(document.body).toHaveFocus()
+  })
+
   it('renders nothing when no panel is supported', () => {
     const { container } = render(
       <MapToolbar

@@ -158,6 +158,9 @@ describe('MapTab', () => {
       ),
     )
     renderMapTab(makeFragmentService([makeProvenance()]))
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Map layers' }),
+    )
     const checkbox = await screen.findByLabelText('Excavation areas')
     await waitFor(() => expect(checkbox).toBeEnabled())
     await userEvent.click(checkbox)
@@ -185,6 +188,39 @@ describe('MapTab', () => {
         'none',
       )
     }
+  })
+
+  it('shows loading inside the layers drawer until polygon assets arrive', async () => {
+    let complete!: (body: string) => void
+    fetchMock.mockResponseOnce(
+      () =>
+        new Promise<string>((resolve) => {
+          complete = resolve
+        }),
+    )
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Map layers' }),
+    )
+    expect(screen.getByText('Loading excavation areas…')).toBeVisible()
+    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+    await act(async () =>
+      complete(
+        fs.readFileSync(
+          path.resolve(
+            __dirname,
+            '../../public/map-data/findspots/all.geojson',
+          ),
+          'utf8',
+        ),
+      ),
+    )
+    await waitFor(() =>
+      expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
+    )
+    expect(
+      screen.queryByText('Loading excavation areas…'),
+    ).not.toBeInTheDocument()
   })
 
   it('does not crash with empty provenance data', async () => {
