@@ -102,7 +102,10 @@ describe('MapTab', () => {
   it('passes source and layer configs to map on load', async () => {
     fetchMock.mockResponseOnce(
       fs.readFileSync(
-        path.resolve(__dirname, '../../../public/map-data/findspots/all.geojson'),
+        path.resolve(
+          __dirname,
+          '../../../public/map-data/findspots/all.geojson',
+        ),
         'utf8',
       ),
     )
@@ -153,7 +156,10 @@ describe('MapTab', () => {
   it('toggles excavation areas in the URL and rendered layers', async () => {
     fetchMock.mockResponseOnce(
       fs.readFileSync(
-        path.resolve(__dirname, '../../../public/map-data/findspots/all.geojson'),
+        path.resolve(
+          __dirname,
+          '../../../public/map-data/findspots/all.geojson',
+        ),
         'utf8',
       ),
     )
