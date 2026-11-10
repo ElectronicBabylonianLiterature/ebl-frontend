@@ -71,14 +71,21 @@ export class ApiError extends Error {
  * conflict can mean the change exists on the server.
  */
 export function isDefinitiveRejection(error: unknown): boolean {
-  return (
-    error instanceof ApiError &&
-    error.status !== undefined &&
-    error.status >= 400 &&
-    error.status < 500 &&
-    error.status !== 409
-  )
+  const status = apiErrorStatus(error)
+  return isClientErrorStatus(status) && status !== 409
 }
+
+function apiErrorStatus(error: unknown): number | undefined {
+  return error instanceof ApiError ? error.status : undefined
+}
+
+function isClientErrorStatus(status: number | undefined): status is number {
+  return status !== undefined && status >= 400 && status < 500
+}
+
+const STALE_REVISION_STATUSES: ReadonlySet<number | undefined> = new Set([
+  412, 428,
+])
 
 /**
  * True when the server refused a conditional request because the client's
@@ -87,7 +94,5 @@ export function isDefinitiveRejection(error: unknown): boolean {
  * caller must refresh before the user can act on it again.
  */
 export function isStaleRevision(error: unknown): boolean {
-  return (
-    error instanceof ApiError && (error.status === 412 || error.status === 428)
-  )
+  return STALE_REVISION_STATUSES.has(apiErrorStatus(error))
 }

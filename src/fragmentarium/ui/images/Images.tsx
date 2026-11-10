@@ -87,14 +87,10 @@ function Images({
     Boolean(
       mediaServices && (mediaServices.canUpload || mediaServices.canManage),
     )
-  const controller = new TabController(
-    fragment,
-    tab,
-    activeFolio,
-    navigate,
+  const controller = new TabController(fragment, tab, activeFolio, navigate, {
     hasMedia,
-    hasImagery,
-  )
+    defaultsToMedia: hasImagery,
+  })
   const folios = fragment.folios
   const activeKey = controller.activeKey
   const [visitedTabs, setVisitedTabs] = React.useState<VisitedImageTabs>(() =>

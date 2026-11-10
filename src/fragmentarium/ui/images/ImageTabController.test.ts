@@ -99,8 +99,7 @@ describe('TabController with an Images tab offered without imagery', () => {
       null,
       null,
       jest.fn(),
-      true,
-      false,
+      { hasMedia: true, defaultsToMedia: false },
     )
 
     expect(controller.defaultKey).toEqual('0')
@@ -113,8 +112,7 @@ describe('TabController with an Images tab offered without imagery', () => {
       PHOTO,
       null,
       jest.fn(),
-      true,
-      false,
+      { hasMedia: true, defaultsToMedia: false },
     )
 
     expect(controller.activeKey).toEqual(PHOTO)
@@ -126,8 +124,7 @@ describe('TabController with an Images tab offered without imagery', () => {
       null,
       null,
       jest.fn(),
-      true,
-      false,
+      { hasMedia: true, defaultsToMedia: false },
     )
 
     expect(controller.defaultKey).toEqual(PHOTO)
@@ -139,8 +136,7 @@ describe('TabController with an Images tab offered without imagery', () => {
       null,
       null,
       jest.fn(),
-      true,
-      true,
+      { hasMedia: true, defaultsToMedia: true },
     )
 
     expect(controller.defaultKey).toEqual(PHOTO)

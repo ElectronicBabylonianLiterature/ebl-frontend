@@ -17,6 +17,12 @@ type Options = Omit<RequestInit, 'headers'> & {
 
 type ErrorCapturer = Pick<ErrorReporter, 'captureException'>
 
+export interface JsonRequestOptions {
+  signal?: AbortSignal
+  onDispatched?: () => void
+  headers?: Record<string, string>
+}
+
 export function apiUrl(path: string): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
@@ -186,9 +192,7 @@ export default class ApiClient {
     path: string,
     method: 'POST' | 'PATCH' | 'DELETE',
     body: unknown,
-    signal?: AbortSignal,
-    onDispatched?: () => void,
-    headers?: Record<string, string>,
+    { signal, onDispatched, headers }: JsonRequestOptions = {},
   ): Promise<T> {
     return this.fetch(
       path,

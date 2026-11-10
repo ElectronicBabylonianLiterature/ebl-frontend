@@ -58,9 +58,11 @@ test.each(['publish', 'reject'] as const)(
       `/media/${media.id}/${action}?fragment=K.1%2F2`,
       'POST',
       { reason: 'Reviewed' },
-      expect.any(AbortSignal),
-      expect.any(Function),
-      {},
+      {
+        signal: expect.any(AbortSignal),
+        onDispatched: expect.any(Function),
+        headers: {},
+      },
     )
   },
 )
@@ -79,24 +81,28 @@ test('metadata-only patch and primary actions select canonical target from fragm
     `/media/${media.id}?fragment=K.1`,
     'PATCH',
     { caption: 'Reverse' },
-    expect.any(AbortSignal),
-    expect.any(Function),
-    {},
+    {
+      signal: expect.any(AbortSignal),
+      onDispatched: expect.any(Function),
+      headers: {},
+    },
   )
   expect(api.requestJson).toHaveBeenNthCalledWith(
     2,
     `/media/${media.id}/primary?fragment=K.1`,
     'POST',
     {},
-    expect.any(AbortSignal),
-    expect.any(Function),
-    {},
+    {
+      signal: expect.any(AbortSignal),
+      onDispatched: expect.any(Function),
+      headers: {},
+    },
   )
 })
 
 describe('optimistic concurrency', () => {
   const media = { ...mediaFixture(), revision: 4 }
-  const headersOf = (call = 0) => api.requestJson.mock.calls[call][5]
+  const headersOf = (call = 0) => api.requestJson.mock.calls[call][3].headers
 
   beforeEach(() => api.requestJson.mockResolvedValue({ media: [media] }))
 
@@ -112,7 +118,7 @@ describe('optimistic concurrency', () => {
     await repository.update('K.1', media.id, { caption: 'x' }, undefined, 0)
     await repository.setPrimary('K.1', media.id, undefined, 12)
     await repository.remove('K.1', media.id, undefined, 5)
-    expect(api.requestJson.mock.calls.map((call) => call[5])).toEqual([
+    expect(api.requestJson.mock.calls.map((call) => call[3].headers)).toEqual([
       { 'If-Match': '"0"' },
       { 'If-Match': '"12"' },
       { 'If-Match': '"5"' },
@@ -125,7 +131,7 @@ describe('optimistic concurrency', () => {
     await repository.update('K.1', media.id, { caption: 'x' })
     await repository.setPrimary('K.1', media.id)
     await repository.remove('K.1', media.id)
-    expect(api.requestJson.mock.calls.map((call) => call[5])).toEqual([
+    expect(api.requestJson.mock.calls.map((call) => call[3].headers)).toEqual([
       {},
       {},
       {},
@@ -146,7 +152,7 @@ describe('optimistic concurrency', () => {
     async (status) => {
       const error = new ApiError('Precondition', {}, status)
       api.requestJson.mockImplementation(
-        (_path, _method, _body, _signal, onDispatched) => {
+        (_path, _method, _body, { onDispatched }) => {
           onDispatched()
           return Promise.reject(error)
         },
@@ -176,7 +182,7 @@ test('session disposal cancels requests and rejects late successful responses wi
     }),
   )
   const pending = repository.publish('K.1', mediaFixture().id)
-  const signal = api.requestJson.mock.calls[0][3]
+  const signal = api.requestJson.mock.calls[0][3].signal
   repository.dispose()
   expect(signal.aborted).toBe(true)
   resolve({ media: [mediaFixture()] })
@@ -238,7 +244,7 @@ describe('ambiguous cancellation of a dispatched request', () => {
   test('a response arriving after the abort reports once, never as success', async () => {
     let resolve: (value: unknown) => void = () => undefined
     api.requestJson.mockImplementation(
-      (_path, _method, _body, _signal, onDispatched) => {
+      (_path, _method, _body, { onDispatched }) => {
         onDispatched()
         return new Promise((done) => {
           resolve = done
@@ -284,7 +290,7 @@ describe('ambiguous cancellation of a dispatched request', () => {
 
   const dispatchedFailure = (outcome: () => Promise<unknown>) =>
     api.requestJson.mockImplementation(
-      (_path, _method, _body, _signal, onDispatched) => {
+      (_path, _method, _body, { onDispatched }) => {
         onDispatched()
         return outcome()
       },
@@ -378,7 +384,7 @@ describe('ambiguous cancellation of a dispatched request', () => {
   test('dispose then activate fences a late successful response too', async () => {
     let resolve: (value: unknown) => void = () => undefined
     api.requestJson.mockImplementation(
-      (_path, _method, _body, _signal, onDispatched) => {
+      (_path, _method, _body, { onDispatched }) => {
         onDispatched()
         return new Promise((done) => {
           resolve = done

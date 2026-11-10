@@ -101,12 +101,9 @@ test('JSON management mutations preserve method, body, cancellation and 204 resp
   const controller = new AbortController()
   fetchMock.mockResponseOnce('', { status: 204 })
   await expect(
-    apiClient.requestJson(
-      '/media/id?fragment=K.1',
-      'DELETE',
-      undefined,
-      controller.signal,
-    ),
+    apiClient.requestJson('/media/id?fragment=K.1', 'DELETE', undefined, {
+      signal: controller.signal,
+    }),
   ).resolves.toBeNull()
   expect(fetch).toHaveBeenCalledWith(
     expect.stringContaining('/media/id?fragment=K.1'),
@@ -121,9 +118,7 @@ test('JSON management mutations forward extra request headers without overriding
     '/media/id/publish?fragment=K.1',
     'POST',
     {},
-    undefined,
-    undefined,
-    { 'If-Match': '"3"', 'Content-Type': 'text/plain' },
+    { headers: { 'If-Match': '"3"', 'Content-Type': 'text/plain' } },
   )
   const headers = fetchMock.mock.calls[0][1]?.headers as Headers
   expect(headers.get('If-Match')).toBe('"3"')

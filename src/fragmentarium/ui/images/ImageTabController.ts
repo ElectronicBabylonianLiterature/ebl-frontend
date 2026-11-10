@@ -55,30 +55,42 @@ export function hasUsableCdliTab(fragment: Fragment): boolean {
   return (fragment.cdliImages?.length ?? 0) > 0
 }
 
+export interface MediaTabOptions {
+  /** Whether the Images/Photo tab is offered at all. Defaults to `fragment.hasPhoto`. */
+  readonly hasMedia?: boolean
+  /**
+   * Whether the Images/Photo tab opens by default. Only actual imagery should
+   * make it the default; a tab offered solely so that an uploader or manager
+   * can add the first image must not hide folios or CDLI images. Defaults to
+   * `hasMedia`.
+   */
+  readonly defaultsToMedia?: boolean
+}
+
 export class TabController {
   readonly fragment: Fragment
   readonly tab: string | null
   readonly activeFolio: Folio | null
   readonly navigate: (url: string) => void
+  private readonly hasMedia: boolean
+  private readonly defaultsToMedia: boolean
 
   constructor(
     fragment: Fragment,
     tab: string | null,
     activeFolio: Folio | null,
     navigate: (url: string) => void,
-    /** Whether the Images/Photo tab is offered at all. */
-    private readonly hasMedia: boolean = fragment.hasPhoto,
-    /**
-     * Whether the Images/Photo tab opens by default. Only actual imagery should
-     * make it the default; a tab offered solely so that an uploader or manager
-     * can add the first image must not hide folios or CDLI images.
-     */
-    private readonly defaultsToMedia: boolean = hasMedia,
+    {
+      hasMedia = fragment.hasPhoto,
+      defaultsToMedia = hasMedia,
+    }: MediaTabOptions = {},
   ) {
     this.fragment = fragment
     this.tab = tab
     this.activeFolio = activeFolio
     this.navigate = navigate
+    this.hasMedia = hasMedia
+    this.defaultsToMedia = defaultsToMedia
   }
 
   get defaultKey(): string | undefined {

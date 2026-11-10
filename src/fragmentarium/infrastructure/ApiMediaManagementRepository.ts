@@ -14,6 +14,7 @@ import { normalizeMediaResource } from 'fragmentarium/infrastructure/mediaResour
 import { isRecord } from 'fragmentarium/infrastructure/mediaMapperValidation'
 import { fragmentMediaListUrl } from 'fragmentarium/infrastructure/mediaUrls'
 import type ApiClient from 'http/ApiClient'
+import type { JsonRequestOptions } from 'http/ApiClient'
 import { isDefinitiveRejection, isStaleRevision } from 'http/ApiError'
 import { ApiError } from 'http/ApiError'
 
@@ -24,6 +25,21 @@ function mediaUrl(fragment: string, id: string, action = ''): string {
 /** `If-Match` for a known revision; no header when the revision is unknown. */
 function ifMatch(revision: number | undefined): Record<string, string> {
   return revision === undefined ? {} : { 'If-Match': `"${revision}"` }
+}
+
+/** Request options for a dispatched mutation guarded by `If-Match`. */
+function mutationOptions(
+  signal: AbortSignal,
+  onDispatched: () => void,
+  revision: number | undefined,
+): JsonRequestOptions {
+  return { signal, onDispatched, headers: ifMatch(revision) }
+}
+
+interface ActionOptions {
+  reason?: string
+  signal?: AbortSignal
+  revision?: number
 }
 
 function canonical(response: unknown, id?: string): MediaResource {
@@ -160,9 +176,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
           mediaUrl(fragment, id),
           'PATCH',
           metadata,
-          requestSignal,
-          onDispatched,
-          ifMatch(revision),
+          mutationOptions(requestSignal, onDispatched, revision),
         ),
         id,
       ),
@@ -175,7 +189,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     signal?: AbortSignal,
     revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'primary', undefined, signal, revision)
+    return this.action(fragment, id, 'primary', { signal, revision })
   }
 
   publish(
@@ -185,7 +199,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     signal?: AbortSignal,
     revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'publish', reason, signal, revision)
+    return this.action(fragment, id, 'publish', { reason, signal, revision })
   }
 
   reject(
@@ -195,16 +209,14 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     signal?: AbortSignal,
     revision?: number,
   ): Promise<MediaResource> {
-    return this.action(fragment, id, 'reject', reason, signal, revision)
+    return this.action(fragment, id, 'reject', { reason, signal, revision })
   }
 
   private action(
     fragment: string,
     id: string,
     action: string,
-    reason?: string,
-    signal?: AbortSignal,
-    revision?: number,
+    { reason, signal, revision }: ActionOptions,
   ): Promise<MediaResource> {
     return this.run(fragment, signal, async (requestSignal, onDispatched) =>
       canonical(
@@ -212,9 +224,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
           mediaUrl(fragment, id, action),
           'POST',
           reason ? { reason } : {},
-          requestSignal,
-          onDispatched,
-          ifMatch(revision),
+          mutationOptions(requestSignal, onDispatched, revision),
         ),
         id,
       ),
@@ -232,9 +242,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
         mediaUrl(fragment, id),
         'DELETE',
         undefined,
-        requestSignal,
-        onDispatched,
-        ifMatch(revision),
+        mutationOptions(requestSignal, onDispatched, revision),
       )
     })
   }
