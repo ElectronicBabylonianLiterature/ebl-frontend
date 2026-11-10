@@ -44,6 +44,7 @@ export default function MediaManagementControls({
   onChanged: () => void
 }): JSX.Element | null {
   const [dialog, setDialog] = useState<ManagementDialog | null>(null)
+  const [dialogMedia, setDialogMedia] = useState(media)
   const [reason, setReason] = useState('')
   const [metadata, setMetadata] = useState<MediaMetadata>(() =>
     metadataOf(media),
@@ -68,6 +69,9 @@ export default function MediaManagementControls({
   // The revision of the item as displayed; never refetched before a mutation.
   const revision = media.revision
   const open = (next: ManagementDialog): void => {
+    // A gallery refresh may arrive while the dialog is open. Keep its draft
+    // and decision tied to the item the user actually reviewed.
+    setDialogMedia(media)
     if (next === 'edit') setMetadata(metadataOf(media))
     if (next === 'reject') setReason('')
     operation.clearError()
@@ -79,20 +83,31 @@ export default function MediaManagementControls({
   const submit = (): void => {
     if (dialog === 'remove')
       operation.run((signal) =>
-        management.remove(fragmentNumber, media.id, signal, revision),
+        management.remove(
+          fragmentNumber,
+          dialogMedia.id,
+          signal,
+          dialogMedia.revision,
+        ),
       )
     else if (dialog === 'reject')
       operation.run((signal) =>
-        management.reject(fragmentNumber, media.id, reason, signal, revision),
+        management.reject(
+          fragmentNumber,
+          dialogMedia.id,
+          reason,
+          signal,
+          dialogMedia.revision,
+        ),
       )
     else
       operation.run((signal) =>
         management.update(
           fragmentNumber,
-          media.id,
-          changedMetadata(metadata, media, manager),
+          dialogMedia.id,
+          changedMetadata(metadata, dialogMedia, manager),
           signal,
-          revision,
+          dialogMedia.revision,
         ),
       )
   }
@@ -125,7 +140,7 @@ export default function MediaManagementControls({
       />
       <MediaManagementDialog
         dialog={dialog}
-        media={media}
+        media={dialogMedia}
         metadata={metadata}
         setMetadata={setMetadata}
         manager={manager}

@@ -43,7 +43,7 @@ function setup({
   const view = render(
     strict ? <React.StrictMode>{component}</React.StrictMode> : component,
   )
-  return { ...view, management, onChanged }
+  return { ...view, management, onChanged, services }
 }
 
 test('StrictMode replay leaves a live cancellation signal for manager mutations', async () => {
@@ -378,6 +378,124 @@ describe('optimistic concurrency', () => {
       caption: 'Reviewed caption',
       ...(revision === undefined ? {} : { revision }),
     })
+
+  test('an edit keeps the item and revision from when its dialog was opened', async () => {
+    const media = pending(1)
+    const { management, onChanged, services, rerender } = setup({ media })
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Edit image metadata' }),
+    )
+    await userEvent.type(
+      screen.getByLabelText('Additional context'),
+      'My correction',
+    )
+    rerender(
+      <MediaManagementControls
+        media={{
+          ...media,
+          revision: 2,
+          caption: 'Concurrently updated caption',
+          rightsStatement: 'Concurrently corrected rights',
+        }}
+        fragmentNumber="K.1"
+        services={services}
+        onChanged={onChanged}
+      />,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Save metadata' }))
+    await waitFor(() => expect(management.update).toHaveBeenCalledTimes(1))
+    expect(management.update).toHaveBeenCalledWith(
+      'K.1',
+      media.id,
+      { description: 'My correction' },
+      expect.any(AbortSignal),
+      1,
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Edit image metadata' }),
+    )
+    expect(screen.getByLabelText('Caption or short description')).toHaveValue(
+      'Concurrently updated caption',
+    )
+    expect(
+      screen.getByLabelText('Rights / reproduction statement'),
+    ).toHaveValue('Concurrently corrected rights')
+  })
+
+  test('a rejection keeps the revision from when its dialog was opened', async () => {
+    const media = pending(1)
+    const { management, onChanged, services, rerender } = setup({ media })
+    await userEvent.click(screen.getByRole('button', { name: 'Reject image' }))
+    rerender(
+      <MediaManagementControls
+        media={{ ...media, revision: 2, caption: 'Concurrently updated image' }}
+        fragmentNumber="K.1"
+        services={services}
+        onChanged={onChanged}
+      />,
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Confirm rejection' }),
+    )
+    await waitFor(() => expect(management.reject).toHaveBeenCalledTimes(1))
+    expect(management.reject).toHaveBeenCalledWith(
+      'K.1',
+      media.id,
+      '',
+      expect.any(AbortSignal),
+      1,
+    )
+  })
+
+  test('a removal keeps its confirmation text and revision from when its dialog was opened', async () => {
+    const media = pending(1)
+    const { management, onChanged, services, rerender } = setup({ media })
+    await userEvent.click(screen.getByRole('button', { name: 'Remove image' }))
+    rerender(
+      <MediaManagementControls
+        media={{ ...media, revision: 2, caption: 'Concurrently updated image' }}
+        fragmentNumber="K.1"
+        services={services}
+        onChanged={onChanged}
+      />,
+    )
+    expect(screen.getByRole('dialog')).toHaveTextContent('Reviewed caption')
+    expect(screen.getByRole('dialog')).not.toHaveTextContent(
+      'Concurrently updated image',
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Confirm removal' }),
+    )
+    await waitFor(() => expect(management.remove).toHaveBeenCalledTimes(1))
+    expect(management.remove).toHaveBeenCalledWith(
+      'K.1',
+      media.id,
+      expect.any(AbortSignal),
+      1,
+    )
+  })
+
+  test.each([
+    ['PENDING_REVIEW', 'Publish image', 'publish', 4],
+    ['PUBLISHED', 'Set as primary', 'setPrimary', 3],
+  ] as const)(
+    '%s immediate actions use the refreshed displayed revision',
+    async (publicationStatus, label, method, revisionIndex) => {
+      const media = { ...pending(1), publicationStatus }
+      const { management, onChanged, services, rerender } = setup({ media })
+      rerender(
+        <MediaManagementControls
+          media={{ ...media, revision: 2 }}
+          fragmentNumber="K.1"
+          services={services}
+          onChanged={onChanged}
+        />,
+      )
+      await userEvent.click(screen.getByRole('button', { name: label }))
+      await waitFor(() => expect(management[method]).toHaveBeenCalledTimes(1))
+      expect(management[method].mock.calls[0][revisionIndex]).toBe(2)
+    },
+  )
 
   test('every mutation passes the revision of the item as displayed', async () => {
     const media = pending(7)

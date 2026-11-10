@@ -10,6 +10,13 @@ export const emptyMediaMetadata: MediaMetadata = {
   permissionAttested: false,
 }
 
+function delimitedItems(value: string): string[] {
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
 function DelimitedField({
   id,
   label,
@@ -26,7 +33,11 @@ function DelimitedField({
   errorId?: string
 }): JSX.Element {
   const [draft, setDraft] = useState(value)
-  useEffect(() => setDraft(value), [value])
+  useEffect(() => {
+    setDraft((current) =>
+      delimitedItems(current).join(', ') === value ? current : value,
+    )
+  }, [value])
   return (
     <Form.Group controlId={id} className="mb-2">
       <Form.Label>{label}</Form.Label>
@@ -35,14 +46,14 @@ function DelimitedField({
         disabled={disabled}
         aria-invalid={errorId ? true : undefined}
         aria-describedby={errorId}
-        onChange={(event) => setDraft(event.target.value)}
-        onBlur={() => {
-          const items = draft
-            .split(',')
-            .map((item) => item.trim())
-            .filter(Boolean)
-          setDraft(items.join(', '))
+        onChange={(event) => {
+          const next = event.target.value
+          setDraft(next)
+          const items = delimitedItems(next)
           if (items.join(', ') !== value) onChange(items)
+        }}
+        onBlur={() => {
+          setDraft(delimitedItems(draft).join(', '))
         }}
       />
     </Form.Group>

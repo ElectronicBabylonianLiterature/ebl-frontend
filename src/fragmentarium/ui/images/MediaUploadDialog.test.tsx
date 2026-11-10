@@ -83,6 +83,43 @@ test('selects multiple images, validates metadata, submits and announces review 
     caption: 'Obverse',
   })
 })
+test.each([
+  [
+    'Bibliography identifiers (comma separated)',
+    'RN1, RN2',
+    'references',
+    [{ id: 'RN1' }, { id: 'RN2' }],
+  ],
+  [
+    'Research projects (CAIC, ALU_GENEVA, AMPS, RECC; comma separated)',
+    'CAIC, AMPS',
+    'projects',
+    ['CAIC', 'AMPS'],
+  ],
+])(
+  'uploads the current %s when submitted with Enter',
+  async (label, identifiers, field, expected) => {
+    const { upload } = setup()
+    await userEvent.upload(
+      screen.getByLabelText('Choose images or drop them here'),
+      file(),
+    )
+    await fill()
+    const entry = within(
+      screen.getByRole('region', { name: 'Upload obverse.png' }),
+    )
+    await userEvent.type(
+      entry.getByLabelText(label as string),
+      `${identifiers}{Enter}`,
+    )
+    await screen.findByText('Submitted for review')
+    expect(upload).toHaveBeenCalledTimes(1)
+    expect(upload.mock.calls[0][2]).toMatchObject({
+      [field as string]: expected,
+    })
+  },
+)
+
 test('supports drop selection, removal and rejects unsupported files', async () => {
   setup()
   fireEvent.drop(screen.getByRole('group', { name: 'Image file selection' }), {
