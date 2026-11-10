@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -162,5 +162,20 @@ describe('All details', () => {
         `/library/search/?site=${encodeURIComponent(site)}`,
       )
     }
+  })
+
+  it('groups excavation and findspot details in the provenance list item', async () => {
+    await setupAllDetails()
+    const provenanceItem = screen
+      .getAllByRole('listitem')
+      .find((item) => within(item).queryByText(/Provenance:/))
+    expect(provenanceItem).toBeDefined()
+    if (!provenanceItem) {
+      throw new Error('Expected provenance list item')
+    }
+    const provenanceList = within(provenanceItem).getByRole('list')
+
+    expect(within(provenanceList).getByText(/Excavation no\.:/)).toBeVisible()
+    expect(within(provenanceList).getByText(/Findspot:/)).toBeVisible()
   })
 })
