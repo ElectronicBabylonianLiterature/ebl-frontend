@@ -17,10 +17,9 @@ import 'sumerian-dictionary/ui/SumerianDictionary.sass'
 function SumerianDictionaryIntroduction(): JSX.Element {
   return (
     <p className="SumerianDictionary__introduction">
-      The Sumerian Dictionary unites the Sumerian lexicon of three reference
-      works: Pascal Attinger&apos;s <i>Glossaire sumérien–français</i>, the
-      electronic Pennsylvania Sumerian Dictionary (ePSD2), and Rykle
-      Borger&apos;s <i>Bilinguen-Glossar</i> for Akkadian equivalents. Each of
+      The Sumerian Dictionary unites the Sumerian lexicon of two reference
+      works: Pascal Attinger&apos;s <i>Glossaire sumérien–français</i> and the
+      electronic Pennsylvania Sumerian Dictionary (ePSD2). Each of
       Attinger&apos;s articles is aligned with its ePSD2 counterpart, so a lemma
       brings together French and English meanings, its attested spellings with
       their frequencies, the signs it is written with, its compounds, and the

@@ -30,7 +30,6 @@ const statisticLabels: readonly (readonly [
   ['aligned', 'aligned with ePSD2'],
   ['epsd2Only', 'ePSD2 only'],
   ['properNouns', 'proper nouns'],
-  ['withAkkadian', 'with Akkadian equivalents'],
 ]
 
 interface ServiceProps {

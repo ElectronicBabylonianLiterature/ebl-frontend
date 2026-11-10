@@ -49,7 +49,13 @@ it('shows the total and appends the next page on Show more', async () => {
   ).toBeInTheDocument()
   expect(lemmaRows()).toHaveLength(27)
   expect(sumerianDictionaryService.search).toHaveBeenLastCalledWith(
-    { query: 'lugal', kind: 'all', source: 'any', limit: 25, offset: 25 },
+    {
+      query: 'lugal',
+      kind: 'words',
+      source: 'attinger',
+      limit: 25,
+      offset: 25,
+    },
     expect.any(AbortSignal),
   )
 })
@@ -101,7 +107,13 @@ it('skips rows already shown and asks for the page after the one received', asyn
   ).not.toBeInTheDocument()
   expect(lemmaRows()).toHaveLength(27)
   expect(sumerianDictionaryService.search).toHaveBeenLastCalledWith(
-    { query: 'lugal', kind: 'all', source: 'any', limit: 25, offset: 28 },
+    {
+      query: 'lugal',
+      kind: 'words',
+      source: 'attinger',
+      limit: 25,
+      offset: 28,
+    },
     expect.any(AbortSignal),
   )
 })
@@ -141,7 +153,7 @@ it('drops the appended rows when the query changes during Show more', async () =
   await act(async () => resolvePendingPage({ total: 30, entries: secondPage }))
   expect(lemmaRows()).toHaveLength(3)
   expect(sumerianDictionaryService.search).toHaveBeenLastCalledWith(
-    { query: 'king', kind: 'all', source: 'any', limit: 25, offset: 0 },
+    { query: 'king', kind: 'words', source: 'attinger', limit: 25, offset: 0 },
     expect.any(AbortSignal),
   )
 })

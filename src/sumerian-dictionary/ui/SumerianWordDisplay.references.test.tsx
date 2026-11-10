@@ -1,5 +1,4 @@
 import { screen, within } from '@testing-library/react'
-import { observeConsole } from 'setupTests'
 import { installMockIntersectionObserver } from 'test-support/intersectionObserverMock'
 import {
   region,
@@ -58,40 +57,20 @@ it('shows Attinger meanings before ePSD2 meanings, each labelled', async () => {
   ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
 })
 
-it('links Akkadian equivalents to the Akkadian dictionary', async () => {
+it('leaves out the Akkadian equivalents from Borger', async () => {
   const word = sumerianWordFactory.build({
     akkadianEquivalents: [
       { wordId: 'šarru I', source: 'borger', indexNumbers: 'L118' },
-      { wordId: 'bēlu I', source: 'borger', indexNumbers: '' },
     ],
   })
   await renderWordAndWait(word)
-  const section = region(/Akkadian Equivalents$/)
   expect(
-    within(section).getByRole('link', { name: 'šarru I L118' }),
-  ).toHaveAttribute('href', '/tools/dictionary/%C5%A1arru%20I')
+    screen.queryByRole('region', { name: /Akkadian Equivalents$/ }),
+  ).not.toBeInTheDocument()
+  expect(screen.queryByText(/Borger/)).not.toBeInTheDocument()
   expect(
-    within(section).getByRole('link', { name: 'bēlu I' }),
-  ).toBeInTheDocument()
-  expect(section).toHaveTextContent("From Borger's Bilinguen-Glossar.")
-})
-
-it('lists one Akkadian word from several index numbers', async () => {
-  const consoleError = observeConsole('error')
-  const word = sumerianWordFactory.build({
-    akkadianEquivalents: [
-      { wordId: 'šarru I', source: 'borger', indexNumbers: 'L118' },
-      { wordId: 'šarru I', source: 'borger', indexNumbers: 'L119' },
-    ],
-  })
-  await renderWordAndWait(word)
-  const section = region(/Akkadian Equivalents$/)
-  expect(
-    within(section)
-      .getAllByRole('link')
-      .map((link) => link.textContent),
-  ).toEqual(['šarru IL118', 'šarru IL119'])
-  expect(consoleError).not.toHaveBeenCalled()
+    screen.queryByRole('link', { name: /šarru I/ }),
+  ).not.toBeInTheDocument()
 })
 
 it('keeps lexical and proper-noun compounds apart', async () => {

@@ -32,7 +32,6 @@ export function getSourceBadges(
           ? `${formatCount(summary.epsd2FormCount)} forms`
           : '',
       ),
-    summary.akkadianCount > 0 && badge('Borger', summary.akkadianCount),
     summary.citationCount > 0 && badge('Citations', summary.citationCount),
     summary.compoundCount > 0 && badge('Compounds', summary.compoundCount),
     summary.crossReferenceCount > 0 &&

@@ -20,14 +20,22 @@ describe('parseSumerianSearch', () => {
   it('falls back to the defaults for missing or unknown values', () => {
     expect(
       parseSumerianSearch('?query=a&query=b&kind=verbs&source=borger'),
-    ).toEqual({ query: '', kind: 'all', source: 'any' })
+    ).toEqual({ query: '', kind: 'words', source: 'attinger' })
+  })
+
+  it('keeps All and Any source when the URL names them', () => {
+    expect(parseSumerianSearch('?query=lugal&kind=all&source=any')).toEqual({
+      query: 'lugal',
+      kind: 'all',
+      source: 'any',
+    })
   })
 })
 
 describe('getSumerianSearchUrl', () => {
   it('leaves out defaults', () => {
     expect(
-      getSumerianSearchUrl({ query: '', kind: 'all', source: 'any' }),
+      getSumerianSearchUrl({ query: '', kind: 'words', source: 'attinger' }),
     ).toEqual('/tools/sumerian-dictionary')
   })
 
@@ -35,11 +43,11 @@ describe('getSumerianSearchUrl', () => {
     expect(
       getSumerianSearchUrl({
         query: 'dug₄',
-        kind: 'words',
-        source: 'attinger',
+        kind: 'all',
+        source: 'any',
       }),
     ).toEqual(
-      '/tools/sumerian-dictionary?kind=words&query=dug%E2%82%84&source=attinger',
+      '/tools/sumerian-dictionary?kind=all&query=dug%E2%82%84&source=any',
     )
   })
 })

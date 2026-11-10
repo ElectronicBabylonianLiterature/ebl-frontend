@@ -33,16 +33,29 @@ it('writes the converted query, kind and source to the URL on submit', async () 
   )
   fireEvent.click(
     within(screen.getByRole('group', { name: 'Source' })).getByLabelText(
-      'Attinger',
+      'ePSD2',
     ),
   )
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
   await waitFor(() =>
     expect(location()).toHaveTextContent(
-      '/tools/sumerian-dictionary?kind=names&query=%C5%A1u%20dug%E2%82%84&source=attinger',
+      '/tools/sumerian-dictionary?kind=names&query=%C5%A1u%20dug%E2%82%84&source=epsd2',
     ),
   )
   expect(await screen.findByText('No results found.')).toBeInTheDocument()
+})
+
+it('selects Words and Attinger by default', async () => {
+  renderSearchPage()
+  await screen.findByRole('list', { name: 'Statistics' })
+  expect(
+    within(screen.getByRole('group', { name: 'Kind' })).getByLabelText('Words'),
+  ).toBeChecked()
+  expect(
+    within(screen.getByRole('group', { name: 'Source' })).getByLabelText(
+      'Attinger',
+    ),
+  ).toBeChecked()
 })
 
 it('keeps ĝ as typed', async () => {

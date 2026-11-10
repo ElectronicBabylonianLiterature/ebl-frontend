@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import ExternalLink from 'common/ui/ExternalLink'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
 import { WordLink } from 'sumerian-dictionary/domain/SumerianWordParts'
@@ -7,41 +6,10 @@ import { crossReferenceRelationLabels } from 'sumerian-dictionary/domain/sumeria
 import { getEtcslUrl } from 'sumerian-dictionary/domain/sumerianWordHelpers'
 import { SumerianSubsectionDefinition } from 'sumerian-dictionary/ui/sumerianWordSections'
 import {
-  SectionNote,
   SumerianSubsection,
   SumerianWordLink,
   SumerianWordLinks,
 } from 'sumerian-dictionary/ui/SumerianWordParts'
-
-export function SumerianWordAkkadian({
-  word,
-}: {
-  word: SumerianWord
-}): JSX.Element {
-  return (
-    <>
-      <ul className="SumerianDictionary__links">
-        {word.akkadianEquivalents.map((equivalent) => (
-          <li
-            key={`${equivalent.wordId}|${equivalent.source}|${equivalent.indexNumbers}`}
-          >
-            <Link
-              to={`/tools/dictionary/${encodeURIComponent(equivalent.wordId)}`}
-            >
-              <i>{equivalent.wordId}</i>
-              {equivalent.indexNumbers && (
-                <small>{equivalent.indexNumbers}</small>
-              )}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <SectionNote>
-        From Borger&apos;s <i>Bilinguen-Glossar</i>.
-      </SectionNote>
-    </>
-  )
-}
 
 export function SumerianWordCompounds({
   word,

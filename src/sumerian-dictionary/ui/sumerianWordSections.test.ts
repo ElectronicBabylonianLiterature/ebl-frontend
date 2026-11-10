@@ -58,11 +58,10 @@ it('numbers present sections in order and lists sub-parts only when there are se
       subsections: ['forms-key', 'forms-epsd2'],
     },
     { heading: 'III. Signs', parts: [], subsections: [] },
-    { heading: 'IV. Akkadian Equivalents', parts: [], subsections: [] },
-    { heading: 'V. Compounds', parts: ['compounds-names'], subsections: [] },
-    { heading: 'VI. Citations', parts: [], subsections: [] },
-    { heading: 'VII. See Also', parts: [], subsections: [] },
-    { heading: 'VIII. Sources', parts: [], subsections: [] },
+    { heading: 'IV. Compounds', parts: ['compounds-names'], subsections: [] },
+    { heading: 'V. Citations', parts: [], subsections: [] },
+    { heading: 'VI. See Also', parts: [], subsections: [] },
+    { heading: 'VII. Sources', parts: [], subsections: [] },
   ])
 })
 

@@ -10,7 +10,6 @@ import SumerianWordForms from 'sumerian-dictionary/ui/SumerianWordForms'
 import SumerianWordSigns from 'sumerian-dictionary/ui/SumerianWordSigns'
 import SumerianWordSources from 'sumerian-dictionary/ui/SumerianWordSources'
 import {
-  SumerianWordAkkadian,
   SumerianWordCitations,
   SumerianWordCompounds,
   SumerianWordSeeAlso,
@@ -26,7 +25,6 @@ const sectionContent: Record<
   meanings: SumerianWordMeanings,
   forms: SumerianWordForms,
   signs: SumerianWordSigns,
-  akkadian: SumerianWordAkkadian,
   compounds: SumerianWordCompounds,
   citations: SumerianWordCitations,
   'see-also': SumerianWordSeeAlso,

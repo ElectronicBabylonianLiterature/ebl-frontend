@@ -47,7 +47,7 @@ it('shows a full row', () => {
     'ĝešlugal II𒈗NounEmesal' +
       'Attinger sends lu-gal here' +
       'roi; maître · “king” · king; lord; owner; master' +
-      'AttingerePSD2(1,200 forms)Borger(2)Citations(3)Compounds(4)See also(5)',
+      'AttingerePSD2(1,200 forms)Citations(3)Compounds(4)See also(5)',
   )
   expect(within(row).getByText('roi; maître').tagName).toEqual('I')
 })

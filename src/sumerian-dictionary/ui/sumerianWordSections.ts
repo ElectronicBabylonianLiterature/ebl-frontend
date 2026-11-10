@@ -9,7 +9,6 @@ export type SumerianSectionId =
   | 'meanings'
   | 'forms'
   | 'signs'
-  | 'akkadian'
   | 'compounds'
   | 'citations'
   | 'see-also'
@@ -120,12 +119,6 @@ const sectionDefinitions: readonly SumerianSectionDefinition[] = [
     id: 'signs',
     label: 'Signs',
     isPresent: (word) => word.signs.length > 0,
-    subsections: [],
-  },
-  {
-    id: 'akkadian',
-    label: 'Akkadian Equivalents',
-    isPresent: (word) => word.akkadianEquivalents.length > 0,
     subsections: [],
   },
   {

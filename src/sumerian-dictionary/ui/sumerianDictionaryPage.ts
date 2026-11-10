@@ -15,6 +15,8 @@ export interface SumerianSearchState {
 
 const kinds: readonly SumerianWordKind[] = ['all', 'words', 'names']
 const sources: readonly SumerianSourceFilter[] = ['any', 'attinger', 'epsd2']
+const defaultKind: SumerianWordKind = 'words'
+const defaultSource: SumerianSourceFilter = 'attinger'
 
 function pick<T extends string>(
   value: ParsedQuery[string] | undefined,
@@ -31,8 +33,8 @@ export function parseSumerianSearch(search: string): SumerianSearchState {
   const parsed = parse(search)
   return {
     query: typeof parsed.query === 'string' ? parsed.query : '',
-    kind: pick(parsed.kind, kinds) ?? 'all',
-    source: pick(parsed.source, sources) ?? 'any',
+    kind: pick(parsed.kind, kinds) ?? defaultKind,
+    source: pick(parsed.source, sources) ?? defaultSource,
   }
 }
 
@@ -40,8 +42,8 @@ export function getSumerianSearchUrl(state: SumerianSearchState): string {
   const search = stringify(
     {
       query: state.query,
-      kind: state.kind === 'all' ? '' : state.kind,
-      source: state.source === 'any' ? '' : state.source,
+      kind: state.kind === defaultKind ? '' : state.kind,
+      source: state.source === defaultSource ? '' : state.source,
     },
     { skipEmptyString: true },
   )

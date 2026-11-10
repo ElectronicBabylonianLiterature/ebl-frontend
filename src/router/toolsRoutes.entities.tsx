@@ -34,7 +34,7 @@ export const tabDescriptions: Record<TabId, string> = {
   dictionary:
     'Browse the Akkadian dictionary with CDA guide words and references at the eBL.',
   'sumerian-dictionary':
-    'Search the Sumerian Dictionary of Attinger, ePSD2 and Borger lemmas at the eBL.',
+    'Search the Sumerian Dictionary of Attinger and ePSD2 lemmas at the eBL.',
   references:
     'Search the comprehensive bibliography of cuneiform publications at the eBL.',
   'afo-register':

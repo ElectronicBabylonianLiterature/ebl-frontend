@@ -47,8 +47,9 @@ it('shows the notice, the introduction and the statistics in order', async () =>
     'The Sumerian Dictionary is still under active development',
   )
   expect(
-    screen.getByText(/unites the Sumerian lexicon of three reference works/),
+    screen.getByText(/unites the Sumerian lexicon of two reference works/),
   ).toBeInTheDocument()
+  expect(screen.queryByText(/Borger/)).not.toBeInTheDocument()
   const statistics = await screen.findByRole('list', { name: 'Statistics' })
   expect(
     within(statistics)
@@ -60,7 +61,6 @@ it('shows the notice, the introduction and the statistics in order', async () =>
     '4,751 aligned with ePSD2',
     '13,547 ePSD2 only',
     '6,178 proper nouns',
-    '2,676 with Akkadian equivalents',
   ])
   expect(sumerianDictionaryService.statistics).toHaveBeenCalledWith(
     expect.any(AbortSignal),
@@ -87,15 +87,17 @@ it('searches with the state in the URL', async () => {
     total: 1,
     entries: [sumerianWordSummaryFactory.build({ citationForm: 'dug₄' })],
   })
-  renderSearchPage('/tools/sumerian-dictionary?query=dug₄&kind=words')
+  renderSearchPage('/tools/sumerian-dictionary?query=dug₄&kind=names')
   expect(await screen.findByText('1 lemma')).toBeInTheDocument()
   expect(sumerianDictionaryService.search).toHaveBeenCalledWith(
-    { query: 'dug₄', kind: 'words', source: 'any', limit: 25, offset: 0 },
+    { query: 'dug₄', kind: 'names', source: 'attinger', limit: 25, offset: 0 },
     expect.any(AbortSignal),
   )
   expect(screen.getByLabelText('Search Sumerian lemmas')).toHaveValue('dug₄')
   expect(
-    within(screen.getByRole('group', { name: 'Kind' })).getByLabelText('Words'),
+    within(screen.getByRole('group', { name: 'Kind' })).getByLabelText(
+      'Proper nouns',
+    ),
   ).toBeChecked()
   expect(sumerianDictionaryService.findSummaries).not.toHaveBeenCalled()
 })
