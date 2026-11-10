@@ -7,6 +7,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { buildFragmentSearchLink } from 'map/mapLinks'
 
 import {
+  CURRENT_LOCATION_TEST_ID,
   makeFailingFragmentService,
   makeFragmentService,
   makeProvenance,
@@ -14,6 +15,7 @@ import {
   mockAddControl,
   mockAddLayer,
   mockAddSource,
+  mockSetLayoutProperty,
   renderMapTab,
   resetMapMocks,
 } from 'map/MapTab.testSupport'
@@ -146,6 +148,43 @@ describe('MapTab', () => {
     await waitFor(() => {
       expect(mockAddControl).toHaveBeenCalled()
     })
+  })
+
+  it('toggles excavation areas in the URL and rendered layers', async () => {
+    fetchMock.mockResponseOnce(
+      fs.readFileSync(
+        path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+        'utf8',
+      ),
+    )
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    const checkbox = await screen.findByLabelText('Excavation areas')
+    await waitFor(() => expect(checkbox).toBeEnabled())
+    await userEvent.click(checkbox)
+    expect(checkbox).toBeChecked()
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+      'areas=1',
+    )
+    for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
+      expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+        layer,
+        'visibility',
+        'visible',
+      )
+    }
+    mockSetLayoutProperty.mockClear()
+    await userEvent.click(checkbox)
+    expect(checkbox).not.toBeChecked()
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
+      'areas=1',
+    )
+    for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
+      expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+        layer,
+        'visibility',
+        'none',
+      )
+    }
   })
 
   it('does not crash with empty provenance data', async () => {
