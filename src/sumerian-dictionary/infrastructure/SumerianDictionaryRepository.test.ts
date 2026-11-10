@@ -45,6 +45,8 @@ describe('find', () => {
       ],
       renderings: [
         {
+          source: 'attinger',
+          kind: 'key',
           unrendered: [],
           printed: '',
           signLists: [],
@@ -71,8 +73,42 @@ describe('find', () => {
 
   it('keeps every optional field the API sends', async () => {
     apiClient.fetchJson.mockResolvedValueOnce(fullWordDto)
-    const { _id, ...rest } = fullWordDto
-    expect(await repository.find(_id)).toEqual({ ...rest, id: _id })
+    const {
+      _id,
+      attingerKeyRenderings,
+      attingerVariantRenderings,
+      epsd2FormRenderings,
+      ...rest
+    } = fullWordDto
+    expect(await repository.find(_id)).toEqual({
+      ...rest,
+      id: _id,
+      renderings: [
+        {
+          ...attingerKeyRenderings[0],
+          source: 'attinger',
+          kind: 'key',
+          printed: '',
+        },
+        {
+          ...attingerVariantRenderings[0],
+          source: 'attinger',
+          kind: 'variant',
+          unrendered: [],
+          signLists: [],
+          knownWrongCharacters: [],
+        },
+        {
+          ...epsd2FormRenderings[0],
+          source: 'epsd2',
+          kind: 'form',
+          unrendered: [],
+          printed: '',
+          signLists: [],
+          knownWrongCharacters: [],
+        },
+      ],
+    })
   })
 })
 

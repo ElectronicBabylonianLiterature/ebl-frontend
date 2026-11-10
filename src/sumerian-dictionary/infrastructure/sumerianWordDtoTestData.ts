@@ -34,15 +34,11 @@ export const minimalWordDto: SumerianWordDto = {
       sources: [{ source: 'attinger', spelling: 'sar' }],
     },
   ],
-  renderings: [
-    {
-      spelling: 'sar',
-      source: 'attinger',
-      kind: 'key',
-      cuneiform: ['𒊬'],
-      complete: true,
-    },
+  attingerKeyRenderings: [
+    { spelling: 'sar', cuneiform: ['𒊬'], complete: true },
   ],
+  attingerVariantRenderings: [],
+  epsd2FormRenderings: [],
   head: null,
   compounds: [],
   nameCompounds: [],
@@ -93,15 +89,21 @@ export const fullWordDto: SumerianWordDto = {
       formOf: ['NU₁₁'],
     },
   ],
-  renderings: [
+  attingerKeyRenderings: [
     {
-      ...minimalWordDto.renderings[0],
+      ...minimalWordDto.attingerKeyRenderings[0],
       unrendered: [{ token: 'n', reason: 'noCharacter' }],
-      printed: '˹sar˺',
       signLists: ['ebl'],
       knownWrongCharacters: ['𒊬'],
     },
   ],
+  attingerVariantRenderings: [
+    {
+      ...minimalWordDto.attingerKeyRenderings[0],
+      printed: '˹sar˺',
+    },
+  ],
+  epsd2FormRenderings: [{ spelling: 'sar₂', cuneiform: [''], complete: false }],
   crossReferences: [
     {
       ...minimalWordDto.crossReferences[0],

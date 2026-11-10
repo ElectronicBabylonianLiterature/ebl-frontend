@@ -6,7 +6,9 @@ import {
   CrossReference,
   Match,
   Rendering,
+  RenderingKind,
   SignEntry,
+  SumerianSource,
   WordLink,
 } from 'sumerian-dictionary/domain/SumerianWordParts'
 import { SumerianWordSummary } from 'sumerian-dictionary/domain/SumerianWordSummary'
@@ -26,9 +28,13 @@ type SignEntryDto = WithOptional<
 >
 
 type RenderingDto = WithOptional<
-  Rendering,
-  'unrendered' | 'printed' | 'signLists' | 'knownWrongCharacters'
+  Omit<Rendering, 'source' | 'kind' | 'printed'>,
+  'unrendered' | 'signLists' | 'knownWrongCharacters'
 >
+
+type AttingerVariantRenderingDto = RenderingDto & {
+  readonly printed?: string
+}
 
 type CrossReferenceDto = Omit<
   WithOptional<CrossReference, 'ambiguous'>,
@@ -61,7 +67,9 @@ export type SumerianWordDto = Omit<
 > & {
   readonly _id: string
   readonly signs: readonly SignEntryDto[]
-  readonly renderings: readonly RenderingDto[]
+  readonly attingerKeyRenderings: readonly RenderingDto[]
+  readonly attingerVariantRenderings: readonly AttingerVariantRenderingDto[]
+  readonly epsd2FormRenderings: readonly RenderingDto[]
   readonly head: WordLinkDto | null
   readonly compounds: readonly WordLinkDto[]
   readonly nameCompounds: readonly WordLinkDto[]
@@ -106,14 +114,20 @@ function toSignEntry(dto: SignEntryDto): SignEntry {
   }
 }
 
-function toRendering(dto: RenderingDto): Rendering {
-  return {
+function toRenderings(
+  dtos: readonly AttingerVariantRenderingDto[],
+  source: SumerianSource,
+  kind: RenderingKind,
+): readonly Rendering[] {
+  return dtos.map((dto) => ({
     ...dto,
+    source,
+    kind,
     unrendered: dto.unrendered ?? [],
     printed: dto.printed ?? '',
     signLists: dto.signLists ?? [],
     knownWrongCharacters: dto.knownWrongCharacters ?? [],
-  }
+  }))
 }
 
 function toCrossReference(dto: CrossReferenceDto): CrossReference {
@@ -135,14 +149,24 @@ function toMatch(dto: MatchDto): Match {
   }
 }
 
-export function toSumerianWord({ _id, ...dto }: SumerianWordDto): SumerianWord {
+export function toSumerianWord({
+  _id,
+  attingerKeyRenderings,
+  attingerVariantRenderings,
+  epsd2FormRenderings,
+  ...dto
+}: SumerianWordDto): SumerianWord {
   return {
     ...dto,
     id: _id,
     atf: dto.atf ?? '',
     truncated: dto.truncated ?? false,
     signs: dto.signs.map(toSignEntry),
-    renderings: dto.renderings.map(toRendering),
+    renderings: [
+      ...toRenderings(attingerKeyRenderings, 'attinger', 'key'),
+      ...toRenderings(attingerVariantRenderings, 'attinger', 'variant'),
+      ...toRenderings(epsd2FormRenderings, 'epsd2', 'form'),
+    ],
     head: dto.head ? toWordLink(dto.head) : null,
     compounds: dto.compounds.map(toWordLink),
     nameCompounds: dto.nameCompounds.map(toWordLink),
