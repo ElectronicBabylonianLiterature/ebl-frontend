@@ -13,6 +13,8 @@ import {
   OUTLINE_UNAVAILABLE,
   OUTLINE_UNMAPPED,
   SEQUENTIAL_COLORS,
+} from 'map/mapPaintColors'
+import {
   type ChoroplethScale,
   excavationFillColor,
   excavationFillOpacity,

@@ -1,20 +1,11 @@
 import type { Position } from 'geojson'
 import { EARTH_RADIUS_METRES } from 'map/geodesicArea'
-
-function toRadians(degrees: number): number {
-  return (degrees * Math.PI) / 180
-}
-
-function isPosition(value: unknown): value is Position {
-  if (!Array.isArray(value) || value.length < 2) return false
-  if (!Number.isFinite(value[0]) || !Number.isFinite(value[1])) return false
-  return Math.abs(value[1]) <= 90
-}
+import { toRadians, isFinitePosition } from 'map/geodesy'
 export function geodesicDistanceMetres(
   from: Position,
   to: Position,
 ): number | null {
-  if (!isPosition(from) || !isPosition(to)) return null
+  if (!isFinitePosition(from) || !isFinitePosition(to)) return null
 
   const fromLatitude = toRadians(from[1])
   const toLatitude = toRadians(to[1])

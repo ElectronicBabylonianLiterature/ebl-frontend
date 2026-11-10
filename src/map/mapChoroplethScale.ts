@@ -1,7 +1,7 @@
+import { SEQUENTIAL_COLORS } from 'map/mapPaintColors'
 import {
   type ChoroplethScale,
   type ChoroplethValueKey,
-  SEQUENTIAL_COLORS,
 } from 'map/mapPaintExpressions'
 
 export const MAP_VISUALIZATION_MODES = [
@@ -37,7 +37,6 @@ const MODE_UNITS: Readonly<Record<MapVisualizationMode, string>> = {
   density: 'Accessible tablets per square kilometre',
 }
 
-/** The two categorical modes classify by state, never by a numeric ramp. */
 const CATEGORICAL_MODES: ReadonlySet<MapVisualizationMode> = new Set([
   'mapped',
   'evidence',

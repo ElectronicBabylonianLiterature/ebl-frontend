@@ -1,12 +1,12 @@
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import {
   type MapVisualizationMode,
   visualizationValueKey,
 } from 'map/mapChoroplethScale'
 import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
 import { type MappingEvidence, mappingEvidenceOf } from 'map/mapResearchSummary'
-import { isMapSiteId } from 'map/mapSites'
+import { isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type {
   FragmentMapDataState,
   FragmentMapDataStatus,

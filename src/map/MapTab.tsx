@@ -17,7 +17,7 @@ import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/MapSelectionPill'
-import { findMapSite, isMapSiteId } from 'map/mapSites'
+import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -66,30 +66,29 @@ function LoadedMapTab({
       ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
       : undefined
 
+  const inspectorPanels: readonly MapPanelDefinition[] = selectedPolygon
+    ? [
+        {
+          id: 'inspector',
+          label: 'Selected area',
+          isSupported: true,
+          render: () => (
+            <MapInspector
+              key={selectedPolygon.polygonId}
+              polygon={selectedPolygon}
+              summary={selectedSiteData?.polygonSummaries.get(
+                selectedPolygon.polygonId,
+              )}
+              siteName={mapSiteName(selectedPolygon.siteId)}
+              status={selectedSiteData?.status ?? 'not-configured'}
+              onClear={clearSelection}
+            />
+          ),
+        },
+      ]
+    : []
   const panels: readonly MapPanelDefinition[] = [
-    {
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: selectedPolygon !== null,
-      render: () =>
-        selectedPolygon ? (
-          <MapInspector
-            key={selectedPolygon.polygonId}
-            polygon={selectedPolygon}
-            summary={selectedSiteData?.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={
-              findMapSite(selectedPolygon.siteId)?.siteName ??
-              selectedPolygon.siteId
-            }
-            status={selectedSiteData?.status ?? 'not-configured'}
-            onClear={clearSelection}
-          />
-        ) : (
-          <p>No excavation area is selected.</p>
-        ),
-    },
+    ...inspectorPanels,
     {
       id: 'visualization',
       label: 'Visualization',

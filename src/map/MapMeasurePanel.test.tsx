@@ -69,9 +69,16 @@ describe('MapMeasurePanel', () => {
       removeLastPoint: jest.fn(),
       clear: jest.fn(),
     })
-    render(<MapMeasurePanel measurement={measurement} />)
+    const { rerender } = render(<MapMeasurePanel measurement={measurement} />)
 
     await userEvent.click(screen.getByRole('button', { name: 'Area' }))
+    rerender(<MapMeasurePanel measurement={{ ...measurement, mode: 'area' }} />)
+    expect(screen.getByRole('button', { name: 'Area' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Distance' }))
+    expect(measurement.setMode).toHaveBeenLastCalledWith('distance')
     await userEvent.click(screen.getByLabelText('Imperial units'))
     await userEvent.click(
       screen.getByRole('button', { name: 'Add point at map center' }),

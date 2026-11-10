@@ -1,4 +1,4 @@
-import type { FindspotMapData } from 'map/findspotMapData'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 
 type FindspotLocation = Pick<
   FindspotMapData,

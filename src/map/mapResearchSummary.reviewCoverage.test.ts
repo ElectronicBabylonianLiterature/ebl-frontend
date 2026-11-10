@@ -1,5 +1,5 @@
 import { derivePolygonResearchSummary } from 'map/mapResearchSummary'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 it('retains stable identity and unknown area when canonical polygon metadata is absent', () => {
