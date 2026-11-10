@@ -3,6 +3,7 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { MemoryRouter } from 'react-router-dom'
 import UncertainFragmentLinks from 'corpus/ui/UncertainFragmentLinks'
+import { ApiError } from 'http/ApiClient'
 
 const isInFragmentarium = jest.fn<Promise<boolean>, [string, AbortSignal?]>()
 const fragmentService = { isInFragmentarium }
@@ -62,6 +63,25 @@ test('shows operational failures and allows retry', async () => {
 
   expect(await screen.findByRole('link', { name: 'K.1' })).toBeInTheDocument()
   expect(screen.queryByText('Unavailable')).not.toBeInTheDocument()
+})
+
+test('preserves every number when lookups succeed, miss or fail independently', async () => {
+  isInFragmentarium.mockImplementation(async (number) => {
+    if (number === 'K.500') throw new ApiError('Unavailable', {}, 500)
+    return number === 'K.1'
+  })
+  renderLinks([
+    { museumNumber: 'K.1' },
+    { museumNumber: 'K.404' },
+    { museumNumber: 'K.500' },
+  ])
+  expect(await screen.findByRole('link', { name: 'K.1' })).toBeVisible()
+  expect(screen.getByText('K.404')).toBeVisible()
+  expect(screen.getByText('K.500')).toBeVisible()
+  expect(await screen.findByText('Unavailable')).toBeVisible()
+  expect(screen.queryByRole('link', { name: 'K.404' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: 'K.500' })).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Retry' })).toBeVisible()
 })
 
 test('does not apply a previous fragment list result after props change', async () => {
