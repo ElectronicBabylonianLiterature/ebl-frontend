@@ -9,7 +9,7 @@ import {
   readJson,
   runGenerator,
   writeJson,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 
 const BACKEND_GEOMETRY_CHECKSUM = 'aa21affafa5e'
 const POLYGON_ID = `kalhu-area-1-${BACKEND_GEOMETRY_CHECKSUM}`

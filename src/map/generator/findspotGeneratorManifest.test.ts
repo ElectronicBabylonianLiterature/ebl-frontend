@@ -12,7 +12,7 @@ import {
   sites,
   writeJson,
   generator,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 
 interface Manifest {
   schemaVersion: number

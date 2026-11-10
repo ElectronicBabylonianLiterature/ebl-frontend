@@ -7,12 +7,12 @@ import {
   outputHashes,
   readJson,
   runGenerator,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 import {
   transferContract,
   writeTransferContract,
   type TransferContractFixture,
-} from 'map/findspotTransferContract.testSupport'
+} from 'map/generator/findspotTransferContract.testSupport'
 
 interface OutputManifest {
   sites: Record<

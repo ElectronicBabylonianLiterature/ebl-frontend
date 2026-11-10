@@ -4,7 +4,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-export const root = path.resolve(__dirname, '../..')
+export const root = path.resolve(__dirname, '../../..')
 export const fixtureDir = path.join(
   root,
   'src',

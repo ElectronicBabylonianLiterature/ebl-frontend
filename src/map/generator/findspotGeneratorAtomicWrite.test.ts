@@ -3,7 +3,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { generator, root } from 'map/findspotGeneratorTestSupport'
+import { generator, root } from 'map/generator/findspotGeneratorTestSupport'
 
 test('rolls back every replaced output when a later replace fails', () => {
   const directory = fs.mkdtempSync(

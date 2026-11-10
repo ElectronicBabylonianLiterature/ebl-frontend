@@ -13,7 +13,7 @@ import {
   runGenerator,
   sites,
   writeJson,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 
 function mutateInventory(
   directory: string,

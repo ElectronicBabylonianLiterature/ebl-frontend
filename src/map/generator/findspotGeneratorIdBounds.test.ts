@@ -4,7 +4,7 @@ import {
   makeWorkDir,
   outputHashes,
   runGenerator,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 
 function setFindspotId(directory: string, value: string): void {
   const file = artifactPath(directory, 'kalhu', 'findspot_polygon_mappings')

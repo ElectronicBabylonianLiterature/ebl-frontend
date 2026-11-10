@@ -2,7 +2,7 @@ import { execFileSync } from 'child_process'
 import path from 'path'
 
 it('aligns canonical polygon identities with backend NFKD diacritic normalization', () => {
-  const directory = path.resolve(__dirname, '../../scripts/maps')
+  const directory = path.resolve(__dirname, '../../../scripts/maps')
   const program = [
     'from findspot_geometry_identity import polygon_id',
     'assert polygon_id("kalhu", "Ekal ma\u0161arti (Fort Shalmaneser)", "abc123") == "kalhu-ekal-masarti-fort-shalmaneser-abc123"',

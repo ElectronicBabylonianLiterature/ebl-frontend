@@ -8,7 +8,7 @@ import {
   writeJson,
   type InventoryRecord,
   type MappingRecord,
-} from 'map/findspotGeneratorTestSupport'
+} from 'map/generator/findspotGeneratorTestSupport'
 
 export interface TransferContractFixture {
   schemaVersion: number | boolean
