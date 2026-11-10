@@ -19,6 +19,38 @@ function terrain(overrides: Partial<MapTerrainResult> = {}): MapTerrainResult {
 }
 
 describe('MapTerrainPanel', () => {
+  it('explains a missing approved source without showing attribution for one', () => {
+    render(
+      <MapTerrainPanel
+        terrain={terrain({
+          source: null,
+          isSupported: false,
+          status: 'unavailable',
+          unavailableReason: 'no-approved-source',
+        })}
+        onChange={jest.fn()}
+      />,
+    )
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'no approved terrain source is configured',
+    )
+    expect(
+      screen.queryByRole('link', { name: 'Terrain licence and attribution' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('uses a fallback message when terrain fails without an error detail', () => {
+    render(
+      <MapTerrainPanel
+        terrain={terrain({ status: 'error', errorMessage: null })}
+        onChange={jest.fn()}
+      />,
+    )
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Elevation terrain is unavailable.',
+    )
+  })
+
   it('retains every provider credit in the terrain panel', () => {
     render(<MapTerrainPanel terrain={terrain()} onChange={jest.fn()} />)
     expect(screen.getByText(AWS_TERRAIN_TILES.attribution)).toBeVisible()
