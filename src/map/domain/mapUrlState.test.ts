@@ -17,6 +17,7 @@ describe('parseMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
   })
 
@@ -27,7 +28,13 @@ describe('parseMapUrlState', () => {
       showExcavationAreas: true,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
+  })
+
+  it('parses terrain only from the explicit enabled flag', () => {
+    expect(parseMapUrlState('mv=1&terrain=1').terrain).toBe(true)
+    expect(parseMapUrlState('mv=1&terrain=0').terrain).toBe(false)
   })
 
   it('parses a supported visualization and defaults an invalid one', () => {
@@ -69,6 +76,7 @@ describe('parseMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
   })
 
@@ -104,6 +112,7 @@ describe('serializeMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
     expect(search).toContain('mv=1')
     expect(search).toContain('findspot=Babylon')
@@ -116,6 +125,7 @@ describe('serializeMapUrlState', () => {
       showExcavationAreas: true,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
     expect(search).toContain('mv=1')
     expect(search).toContain('areas=1')
@@ -131,6 +141,7 @@ describe('serializeMapUrlState', () => {
         polygonId: 'assur-area-a',
       },
       visualization: 'count' as const,
+      terrain: true,
     }
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
   })
@@ -143,6 +154,7 @@ describe('serializeMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
     const written = parseMapUrlState(search)
     expect(written.filter).toHaveLength(MAX_FILTER_LENGTH)
@@ -156,6 +168,7 @@ describe('serializeMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
 
     expect(parseMapUrlState(search).filter).toBe(boundaryFilter)
@@ -172,6 +185,7 @@ describe('serializeMapUrlState', () => {
       showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
+      terrain: false,
     })
 
     expect(parseMapUrlState(search).filter).toBe(expected)

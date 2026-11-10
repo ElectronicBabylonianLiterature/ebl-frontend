@@ -17,6 +17,7 @@ const FILTER_PARAM = 'findspot'
 const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
 const VISUALIZATION_PARAM = 'viz'
+const TERRAIN_PARAM = 'terrain'
 const SURROGATE_CODE_UNIT = /^[\uD800-\uDFFF]$/
 
 const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
@@ -27,6 +28,7 @@ export interface MapUrlState {
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
   readonly visualization: MapVisualizationMode
+  readonly terrain: boolean
 }
 
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
@@ -35,6 +37,7 @@ export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   showExcavationAreas: false,
   selection: null,
   visualization: DEFAULT_VISUALIZATION,
+  terrain: false,
 }
 
 export function normalizeMapFilter(filter: string): string {
@@ -54,6 +57,7 @@ export function normalizeMapUrlState(state: MapUrlState): MapUrlState {
     visualization: isMapVisualizationMode(state.visualization)
       ? state.visualization
       : DEFAULT_VISUALIZATION,
+    terrain: state.terrain === true,
   }
 }
 
@@ -75,7 +79,33 @@ export function parseMapUrlState(search: string): MapUrlState {
     showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
     selection: parseMapSelection(asString(query[SELECTION_PARAM])),
     visualization: asString(query[VISUALIZATION_PARAM]) as MapVisualizationMode,
+    terrain: asString(query[TERRAIN_PARAM]) === '1',
   })
+}
+
+function serializedMapParameters(state: MapUrlState): Record<string, string> {
+  const normalized = normalizeMapUrlState(state)
+  const candidates: readonly (readonly [string, string | undefined])[] = [
+    [FILTER_PARAM, normalized.filter || undefined],
+    [AREAS_PARAM, normalized.showExcavationAreas ? '1' : undefined],
+    [SELECTION_PARAM, serializeMapSelection(normalized.selection) || undefined],
+    [
+      VISUALIZATION_PARAM,
+      normalized.visualization === DEFAULT_VISUALIZATION
+        ? undefined
+        : normalized.visualization,
+    ],
+    [TERRAIN_PARAM, normalized.terrain ? '1' : undefined],
+  ]
+  const entries = candidates.filter(
+    (entry): entry is readonly [string, string] => entry[1] !== undefined,
+  )
+  return entries.length === 0
+    ? {}
+    : Object.fromEntries([
+        [VERSION_PARAM, String(MAP_URL_STATE_VERSION)],
+        ...entries,
+      ])
 }
 
 export function serializeMapUrlState(state: MapUrlState): string {
@@ -87,28 +117,16 @@ export function mergeMapUrlStateIntoSearch(
   state: MapUrlState,
 ): string {
   const parameters = new URLSearchParams(search)
-  const normalized = normalizeMapUrlState(state)
-  const serializedSelection = serializeMapSelection(normalized.selection)
-
-  parameters.delete(VERSION_PARAM)
-  parameters.delete(FILTER_PARAM)
-  parameters.delete(AREAS_PARAM)
-  parameters.delete(SELECTION_PARAM)
-  parameters.delete(VISUALIZATION_PARAM)
-  if (
-    normalized.filter ||
-    normalized.showExcavationAreas ||
-    serializedSelection ||
-    normalized.visualization !== DEFAULT_VISUALIZATION
-  ) {
-    parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
-  }
-  if (normalized.filter) parameters.set(FILTER_PARAM, normalized.filter)
-  if (normalized.showExcavationAreas) parameters.set(AREAS_PARAM, '1')
-  if (serializedSelection) parameters.set(SELECTION_PARAM, serializedSelection)
-  if (normalized.visualization !== DEFAULT_VISUALIZATION) {
-    parameters.set(VISUALIZATION_PARAM, normalized.visualization)
-  }
-
+  ;[
+    VERSION_PARAM,
+    FILTER_PARAM,
+    AREAS_PARAM,
+    SELECTION_PARAM,
+    VISUALIZATION_PARAM,
+    TERRAIN_PARAM,
+  ].forEach((parameter) => parameters.delete(parameter))
+  Object.entries(serializedMapParameters(state)).forEach(([parameter, value]) =>
+    parameters.set(parameter, value),
+  )
   return parameters.toString()
 }

@@ -106,13 +106,12 @@ function queryRenderedFeaturesFromStyle(
   return mockQueryRenderedFeatures(point, options)
 }
 
+export function markLayersAdded(...layerIds: readonly string[]): void {
+  layerIds.forEach((layerId) => addedLayerIds.add(layerId))
+}
 export function clearMockStyleResources(): void {
   addedLayerIds.clear()
   mockGetSource.mockReturnValue(undefined)
-}
-
-export function markLayersAdded(...layerIds: readonly string[]): void {
-  layerIds.forEach((layerId) => addedLayerIds.add(layerId))
 }
 function rememberHandler(
   event: string,

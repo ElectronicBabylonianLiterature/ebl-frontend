@@ -4,7 +4,8 @@ import MapInspector from 'map/ui/MapInspector'
 import MapLayerPanel from 'map/ui/MapLayerPanel'
 import MapMeasurePanel from 'map/ui/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
-import type { MapTabState } from 'map/ui/useMapTabState'
+import MapTerrainPanel from 'map/ui/MapTerrainPanel'
+import type { MapTabState } from 'map/domain/mapTabState'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import { exportDataStatuses } from 'map/domain/mapExportData'
 import { assessImageExport } from 'map/domain/mapImageExportRights'
@@ -95,6 +96,17 @@ export default function buildMapToolPanels(
             dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
           })}
           imageExport={assessImageExport()}
+        />
+      ),
+    },
+    {
+      id: 'terrain',
+      label: 'Terrain',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => (
+        <MapTerrainPanel
+          terrain={state.terrain}
+          onChange={experience.setTerrain}
         />
       ),
     },
