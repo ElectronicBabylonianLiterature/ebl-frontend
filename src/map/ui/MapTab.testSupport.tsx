@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, type RenderResult } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 import { ProvenanceSource } from 'map/ui/useProvenances'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import ErrorReporterContext, { type ErrorReporter } from 'ErrorReporterContext'
@@ -40,12 +40,27 @@ export function makeRejectingFragmentService(reason: string): ProvenanceSource {
 }
 
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
+const MAP_ROUTE = '/tools/map'
 
-export function renderMapTab(fragmentService: ProvenanceSource): RenderResult {
+function MapRoute({
+  fragmentService,
+}: {
+  fragmentService: ProvenanceSource
+}): JSX.Element | null {
+  const location = useLocation()
+  return location.pathname === MAP_ROUTE ? (
+    <MapTab fragmentService={fragmentService} />
+  ) : null
+}
+
+export function renderMapTab(
+  fragmentService: ProvenanceSource,
+  initialEntry: string = MAP_ROUTE,
+): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
-      <MemoryRouter>
-        <MapTab fragmentService={fragmentService} />
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <MapRoute fragmentService={fragmentService} />
         <LocationDisplay testId={CURRENT_LOCATION_TEST_ID} />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,

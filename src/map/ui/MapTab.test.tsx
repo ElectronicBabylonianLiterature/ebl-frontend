@@ -70,7 +70,7 @@ describe('MapTab', () => {
       name: 'Interactive findspot map',
     })
     expect(mapRegion).toHaveAttribute('aria-describedby')
-    expect(screen.getByText(/Matching fragment search links/)).toHaveAttribute(
+    expect(screen.getByText(/Matching tablet search links/)).toHaveAttribute(
       'id',
       mapRegion.getAttribute('aria-describedby'),
     )

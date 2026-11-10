@@ -95,7 +95,7 @@ describe('MapTab interactions', () => {
     expect(popup.getByText(`${parent} · ${abbreviation}`)).toBeInTheDocument()
     expect(popup.getByText('32.54°N, 44.42°E')).toBeInTheDocument()
     expect(popup.getByText('Single point')).toBeInTheDocument()
-    expect(popup.getByRole('link', { name: 'View fragments' })).toHaveAttribute(
+    expect(popup.getByRole('link', { name: 'View tablets' })).toHaveAttribute(
       'href',
       buildFragmentSearchLink(name),
     )
@@ -156,7 +156,7 @@ describe('MapTab interactions', () => {
     const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
     document.body.append(content)
     act(() => {
-      within(content).getByRole('link', { name: 'View fragments' }).click()
+      within(content).getByRole('link', { name: 'View tablets' }).click()
     })
 
     expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(

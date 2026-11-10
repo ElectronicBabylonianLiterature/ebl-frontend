@@ -6,6 +6,9 @@ import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
 import useMapSourceData from 'map/maplibre/useMapSourceData'
 import useProvenances, { ProvenanceSource } from 'map/ui/useProvenances'
+import useMapUrlState from 'map/ui/useMapUrlState'
+import MapStage from 'map/ui/MapStage'
+import MapShareLink from 'map/ui/MapShareLink'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 import { filterProvenances } from 'map/domain/findspotFilter'
@@ -22,7 +25,12 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
-  const [filter, setFilter] = useState('')
+  const { state, update } = useMapUrlState()
+  const filter = state.filter
+  const setFilter = useCallback(
+    (nextFilter: string) => update({ filter: nextFilter }),
+    [update],
+  )
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
@@ -46,24 +54,17 @@ function LoadedMapTab({
           filter={filter}
           onFilterChange={setFilter}
         />
+        <MapShareLink />
       </div>
       <p id="findspot-map-description" className="map-tab__description">
-        Filter findspots by name. Matching fragment search links are available
+        Filter findspots by name. Matching tablet search links are available
         below the map.
       </p>
-      {mapBackgroundError && (
-        <Alert variant="warning" className="map-tab__map-error">
-          The interactive map could not be loaded. Findspot links remain
-          available below.
-        </Alert>
-      )}
       <FindspotEmptyState provenances={filteredProvenances} filter={filter} />
-      <div
-        ref={mapContainer}
-        className="map-tab__container"
-        role="region"
-        aria-label="Interactive findspot map"
-        aria-describedby="findspot-map-description"
+      <MapStage
+        containerRef={mapContainer}
+        isBackgroundUnavailable={mapBackgroundError}
+        describedById="findspot-map-description"
       />
       <FindspotSearchList provenances={filteredProvenances} />
     </div>

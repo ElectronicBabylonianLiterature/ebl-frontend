@@ -23,6 +23,7 @@ export const mockFitBounds = jest.fn()
 export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
 export const mockEaseTo = jest.fn()
+export const mockGetZoom = jest.fn(() => 5)
 export const mockGetClusterExpansionZoom = jest.fn()
 export const mockSetLngLat = jest.fn()
 export const mockSetDOMContent = jest.fn()
@@ -57,6 +58,7 @@ export const mockMapInstance = {
   fitBounds: mockFitBounds,
   queryRenderedFeatures: queryRenderedFeaturesFromStyle,
   easeTo: mockEaseTo,
+  getZoom: mockGetZoom,
 }
 
 function eventKey(event: string, layerId?: string): string {
@@ -174,6 +176,7 @@ export function resetMapMocks(): void {
   mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
   mockGetSource.mockReturnValue(undefined)
+  mockGetZoom.mockReturnValue(5)
   mockQueryRenderedFeatures.mockReturnValue([])
   mockAddLayer.mockImplementation(rememberAddedLayer)
   mockGetLayer.mockImplementation(findAddedLayer)

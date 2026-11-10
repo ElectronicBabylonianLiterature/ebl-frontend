@@ -16,6 +16,7 @@ import {
   HookHarness,
   renderHarness,
 } from 'map/maplibre/useFindspotMap.testSupport'
+
 import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')

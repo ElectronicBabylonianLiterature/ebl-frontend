@@ -1,5 +1,19 @@
 @use 'src/design-tokens' as *
 
+.map-stage
+  &__background-alert
+    margin-bottom: 0.75rem
+
+.map-share-link
+  margin-top: 0.5rem
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+  &__status
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+
 .map-tab
   &__container
     width: 100%
@@ -21,9 +35,6 @@
 
   &__description
     color: $ebl-color-text-secondary
-    margin-bottom: 0.75rem
-
-  &__map-error
     margin-bottom: 0.75rem
 
   &__findspot-links

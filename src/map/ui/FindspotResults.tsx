@@ -26,7 +26,7 @@ export function FindspotSearchList({
   return (
     <nav
       className="map-tab__findspot-links"
-      aria-label="Findspot fragment searches"
+      aria-label="Findspot tablet searches"
     >
       <h3 className="map-tab__findspot-links-heading">Findspot searches</h3>
       <ul>
