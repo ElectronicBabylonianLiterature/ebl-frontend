@@ -23,9 +23,9 @@ export default function AboutBibliography(
         and M. Scheiblecker."
       />
       <MarkdownParagraph
-        text="The reference collection of the eBL platform consists of almost 21,500 entries.
-        The Library contains a total of 368,002 references to these, the Corpus
-        5,432 (as of February 2026). A complete list of the ca. 1100 books and articles
+        text="The reference collection of the eBL platform consists of almost 22,800 entries.
+        The Library contains a total of 455,760 references to these, the Corpus
+        6,074 (as of November 2026). A complete list of the ca. 1,400 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
       <h3 id="afo-register">II. AfO-Register</h3>

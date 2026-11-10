@@ -1,18 +1,24 @@
 import { IndexedPublicationsSection } from 'about/ui/indexedPublications/IndexedPublicationsSection'
-import { indexedPublicationsAToC } from 'about/ui/indexedPublications/indexedPublicationsAToC'
+import { indexedPublicationsAToB } from 'about/ui/indexedPublications/indexedPublicationsAToB'
+import { indexedPublicationsC } from 'about/ui/indexedPublications/indexedPublicationsC'
 import { indexedPublicationsDToF } from 'about/ui/indexedPublications/indexedPublicationsDToF'
-import { indexedPublicationsGToJ } from 'about/ui/indexedPublications/indexedPublicationsGToJ'
+import { indexedPublicationsGToI } from 'about/ui/indexedPublications/indexedPublicationsGToI'
+import { indexedPublicationsJ } from 'about/ui/indexedPublications/indexedPublicationsJ'
 import { indexedPublicationsKToL } from 'about/ui/indexedPublications/indexedPublicationsKToL'
 import { indexedPublicationsMToP } from 'about/ui/indexedPublications/indexedPublicationsMToP'
-import { indexedPublicationsRToV } from 'about/ui/indexedPublications/indexedPublicationsRToV'
+import { indexedPublicationsRToS } from 'about/ui/indexedPublications/indexedPublicationsRToS'
+import { indexedPublicationsTToV } from 'about/ui/indexedPublications/indexedPublicationsTToV'
 import { indexedPublicationsWToZ } from 'about/ui/indexedPublications/indexedPublicationsWToZ'
 
 export const indexedPublications: readonly IndexedPublicationsSection[] = [
-  ...indexedPublicationsAToC,
+  ...indexedPublicationsAToB,
+  ...indexedPublicationsC,
   ...indexedPublicationsDToF,
-  ...indexedPublicationsGToJ,
+  ...indexedPublicationsGToI,
+  ...indexedPublicationsJ,
   ...indexedPublicationsKToL,
   ...indexedPublicationsMToP,
-  ...indexedPublicationsRToV,
+  ...indexedPublicationsRToS,
+  ...indexedPublicationsTToV,
   ...indexedPublicationsWToZ,
 ]
