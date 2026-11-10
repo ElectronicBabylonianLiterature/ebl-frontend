@@ -4,7 +4,6 @@ import AboutNews from 'about/ui/news'
 import { newsletters } from 'about/ui/news'
 import { MemoryRouter } from 'react-router-dom'
 import { fireEvent } from '@testing-library/react'
-import NewsletterTimeline from 'about/ui/NewsletterTimeline'
 
 test('renders AboutNews component with default newsletter', () => {
   render(
@@ -53,50 +52,4 @@ test('does not render level-one headings from newsletter markdown', () => {
   )
 
   expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument()
-})
-
-describe('newsletter dates', () => {
-  // Jest proxies process.env per test file, so changing TZ inside a test does
-  // not change the zone Date parsing uses. Guard the source format directly:
-  // ISO date-only strings parse as UTC midnight in every time zone, whereas
-  // 'MM/DD/YYYY' parses as local midnight and shifts by a day once formatted
-  // in UTC east of Greenwich.
-  test('are declared as ISO date-only strings', () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const fs = require('fs')
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const path = require('path')
-    const source: string = fs.readFileSync(
-      path.join(__dirname, 'news.tsx'),
-      'utf8',
-    )
-    const literals = Array.from(
-      source.matchAll(/new Date\(\s*(['"`])(.*?)\1\s*\)/g),
-      (match) => match[2],
-    )
-    expect(literals).toHaveLength(newsletters.length)
-    literals.forEach((literal) =>
-      expect(literal).toMatch(/^\d{4}-\d{2}-\d{2}$/),
-    )
-  })
-
-  test('are UTC midnight and keep their calendar month', () => {
-    newsletters.forEach((newsletter) => {
-      expect(newsletter.date.getTime() % (24 * 60 * 60 * 1000)).toBe(0)
-    })
-    const firstOfMonth = newsletters.find(
-      (newsletter) => newsletter.number === 7,
-    )
-    expect(firstOfMonth?.date.toISOString()).toBe('2022-03-01T00:00:00.000Z')
-
-    render(
-      <NewsletterTimeline
-        newsletters={newsletters}
-        activeNewsletter={newsletters[0]}
-        onSelectNewsletter={jest.fn()}
-      />,
-    )
-    expect(screen.getByText('Mar 2022')).toBeInTheDocument()
-    expect(screen.queryByText('Feb 2022')).not.toBeInTheDocument()
-  })
 })

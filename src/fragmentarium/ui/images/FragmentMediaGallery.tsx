@@ -5,7 +5,7 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { isCancellation } from 'common/utils/abortError'
 import { ApiError } from 'http/ApiError'
-import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
 import type { MediaGalleryServices } from 'fragmentarium/application/MediaGalleryContext'
@@ -132,7 +132,7 @@ function GalleryContent({
             services={services}
             onChanged={onChanged}
             legacyPhoto={
-              data.legacyFallbackAllowed !== false && hasLegacyPhoto(fragment)
+              data.legacyFallbackAllowed !== false && fragment.hasLegacyPhoto
                 ? fallback
                 : undefined
             }
@@ -175,9 +175,7 @@ export default function FragmentMediaGallery(props: Props): JSX.Element {
         <h3>Photographs and copies</h3>
         {canUpload && (
           <Button onClick={() => setShowUpload(true)}>
-            {props.fragment.hasPhoto || props.fragment.mediaSummary?.count
-              ? 'Add images'
-              : 'Add first image'}
+            {props.fragment.hasAnyImage ? 'Add images' : 'Add first image'}
           </Button>
         )}
       </div>

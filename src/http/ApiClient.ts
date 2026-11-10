@@ -50,6 +50,10 @@ function createOptions(
     method: method,
   }
 }
+export function isNotFoundError(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 404
+}
+
 export default class ApiClient {
   private readonly auth: AccessTokenProvider
   private readonly errorReporter: ErrorCapturer

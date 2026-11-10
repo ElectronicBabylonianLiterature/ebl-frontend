@@ -4,7 +4,7 @@ import AppContent from 'common/ui/AppContent'
 import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
 import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 import withData from 'http/withData'
-import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Link } from 'react-router-dom'
 import { Button, ButtonGroup } from 'react-bootstrap'
@@ -102,10 +102,7 @@ function FragmentView({
             wordService={wordService}
             fragmentService={fragmentService}
           />
-          <TagSignsButton
-            number={number}
-            disabled={!hasLegacyPhoto(fragment)}
-          />
+          <TagSignsButton number={number} disabled={!fragment.hasLegacyPhoto} />
           <SubmitCorrectionsButton id={`fragment ${number}`} />
         </ButtonGroup>
       }

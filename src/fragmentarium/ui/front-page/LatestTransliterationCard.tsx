@@ -42,19 +42,18 @@ function CompactFragmentCardContent({
       className="latest-addition-card"
     >
       <div ref={thumbnailContainerRef}>
-        {(fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)) &&
-          isNearViewport && (
-            <ErrorBoundary>
-              <div className="latest-addition-card__thumbnail">
-                <FragmentCardThumbnail
-                  fragment={fragment}
-                  fragmentService={fragmentService}
-                  queryItem={queryItem}
-                  linked={false}
-                />
-              </div>
-            </ErrorBoundary>
-          )}
+        {fragment.hasAnyImage && isNearViewport && (
+          <ErrorBoundary>
+            <div className="latest-addition-card__thumbnail">
+              <FragmentCardThumbnail
+                fragment={fragment}
+                fragmentService={fragmentService}
+                queryItem={queryItem}
+                linked={false}
+              />
+            </div>
+          </ErrorBoundary>
+        )}
       </div>
       <div className="latest-addition-card__body">
         <div className="latest-addition-card__header">
