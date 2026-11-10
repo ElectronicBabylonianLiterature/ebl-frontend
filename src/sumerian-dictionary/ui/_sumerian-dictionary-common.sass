@@ -1,0 +1,62 @@
+@use 'src/design-tokens' as *
+@use 'src/fonts' as *
+@use 'src/common/ui/entry-page/entry-link-pill' as *
+
+.SumerianDictionary__cuneiform,
+.SumerianDictionary__heading-cuneiform,
+.SumerianDictionary__result-cuneiform,
+.SumerianDictionary__sign-glyph
+    @include ebl-font
+
+.SumerianDictionary__cuneiform
+    color: $ebl-color-text-neutral
+    white-space: nowrap
+
+.SumerianDictionary__cuneiform-missing
+    margin: 0 0.1em
+    font-size: 0.75em
+    font-style: italic
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__warning-icon
+    margin-left: 0.3rem
+    font-size: 0.75rem
+    color: $ebl-color-text-warning
+
+.SumerianDictionary__homonym
+    font-size: 0.6em
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__note
+    margin: 0.5rem 0 0
+    font-size: 0.82rem
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__relation
+    font-size: 0.75rem
+    font-style: italic
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__links
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 0.5rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+    a
+        @extend %entry-link-pill
+        gap: 0.35rem
+
+    small
+        font-size: 0.75rem
+        color: $ebl-color-text-secondary
+
+.SumerianDictionary__pill
+    @extend %entry-link-pill
+    gap: 0.35rem
+
+.SumerianDictionary__toggle
+    margin-top: 0.6rem

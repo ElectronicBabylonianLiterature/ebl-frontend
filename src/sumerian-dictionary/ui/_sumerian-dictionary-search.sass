@@ -1,0 +1,90 @@
+@use 'src/design-tokens' as *
+@use 'src/common/ui/entry-page/entry-results-list' as *
+
+.SumerianDictionary__introduction
+    margin-bottom: 1rem
+
+.SumerianDictionary__statistics
+    display: flex
+    padding: 0
+    list-style: none
+    flex-wrap: wrap
+    gap: 0.5rem
+    margin-bottom: 1.5rem
+
+.SumerianDictionary__statistic
+    padding: 0.2rem 0.6rem
+    font-size: 0.85rem
+    color: $ebl-color-text-neutral
+    background-color: $ebl-color-surface-subtle
+    border: 1px solid $ebl-color-border-light
+    border-radius: 0.35rem
+
+    b
+        color: $ebl-color-text-primary
+
+.SumerianDictionary__search-form
+    margin-bottom: 2rem
+
+.SumerianDictionary__search-row
+    display: flex
+    gap: 0.75rem
+
+.SumerianDictionary__search-filters
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 0.4rem 1rem
+    margin-top: 0.6rem
+    font-size: 0.85rem
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__search-options
+    margin: 0
+
+.SumerianDictionary__examples a
+    margin-right: 0.35rem
+
+.SumerianDictionary__results-header
+    margin-bottom: 0.75rem
+    font-size: 0.9rem
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__results
+    @extend %entry-results-list
+
+.SumerianDictionary__result
+    @extend %entry-results-item
+
+.SumerianDictionary__result-header
+    @extend %entry-results-header
+
+.SumerianDictionary__result-title
+    @extend %entry-results-title
+
+.SumerianDictionary__result-cuneiform
+    font-size: 1.15rem
+    color: $ebl-color-text-neutral
+
+.SumerianDictionary__pos
+    @extend %entry-results-pill
+
+.SumerianDictionary__pos--muted
+    color: $ebl-color-text-neutral
+    background-color: $ebl-color-surface-subtle
+
+.SumerianDictionary__result-terms
+    @extend %entry-results-terms
+
+.SumerianDictionary__result-sources
+    @extend %entry-results-sources
+
+.SumerianDictionary__result-source
+    @extend %entry-results-source
+
+.SumerianDictionary__result-source-count
+    @extend %entry-results-source-count
+
+.SumerianDictionary__more
+    margin-top: 1rem
+    text-align: center

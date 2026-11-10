@@ -9,6 +9,7 @@ export const tabIds = [
   'dossiers',
   'signs',
   'dictionary',
+  'sumerian-dictionary',
   'references',
   'afo-register',
   'realia',
@@ -37,6 +38,7 @@ export type ContentMatch = {
 export const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
+  { id: 'sumerian-dictionary', title: 'Sumerian Dictionary', icon: '𒅴' },
   { id: 'realia', title: 'Realia', icon: realiaIcon },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
@@ -51,6 +53,9 @@ export const tabConfig = [
 export function isTabVisible(tabId: string, session: Session): boolean {
   if (tabId === 'realia') {
     return session.isAllowedToReadRealia()
+  }
+  if (tabId === 'sumerian-dictionary') {
+    return session.isAllowedToReadSumerianWords()
   }
   return true
 }
