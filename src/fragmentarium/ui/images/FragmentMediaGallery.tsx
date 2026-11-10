@@ -27,11 +27,7 @@ export default withData<Props, object, GalleryResponse>(
           fragment={fragment}
           media={data.media}
           services={services}
-          legacyPhoto={
-            (fragment.legacyHasPhoto ?? fragment.hasPhoto)
-              ? fallback
-              : undefined
-          }
+          legacyPhoto={fragment.hasLegacyPhoto ? fallback : undefined}
         />
       </>
     ) : (

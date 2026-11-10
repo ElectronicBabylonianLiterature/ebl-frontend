@@ -152,16 +152,15 @@ function FragmentLinesContent({
         <ResponsiveCol className={'fragment-result__preview'}>
           <ErrorBoundary>
             <div ref={thumbnailContainerRef}>
-              {(fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)) &&
-                isNearViewport && (
-                  <>
-                    <FragmentCardThumbnail
-                      fragment={fragment}
-                      fragmentService={fragmentService}
-                      queryItem={queryItem}
-                    />
-                  </>
-                )}
+              {fragment.hasAnyImage && isNearViewport && (
+                <>
+                  <FragmentCardThumbnail
+                    fragment={fragment}
+                    fragmentService={fragmentService}
+                    queryItem={queryItem}
+                  />
+                </>
+              )}
             </div>
           </ErrorBoundary>
         </ResponsiveCol>

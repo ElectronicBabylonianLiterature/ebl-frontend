@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ApiError } from 'http/ApiClient'
+import { isNotFoundError } from 'http/ApiClient'
 import {
   MediaGalleryContext,
   MediaGalleryServices,
@@ -45,11 +45,7 @@ function LoadedThumbnail({
         }
       })
       .catch((error: Error) => {
-        if (
-          !controller.signal.aborted &&
-          error instanceof ApiError &&
-          error.status === 404
-        ) {
+        if (!controller.signal.aborted && isNotFoundError(error)) {
           setMissing(true)
         }
       })

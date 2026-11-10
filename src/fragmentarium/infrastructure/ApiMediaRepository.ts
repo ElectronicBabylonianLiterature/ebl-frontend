@@ -5,7 +5,7 @@ import type { MediaResource } from 'fragmentarium/domain/media'
 import { normalizeFragmentMediaResponse } from 'fragmentarium/infrastructure/mediaMapper'
 import { isRecord } from 'fragmentarium/infrastructure/mediaMapperValidation'
 import { fragmentMediaListUrl } from 'fragmentarium/infrastructure/mediaUrls'
-import { ApiError } from 'http/ApiClient'
+import { isNotFoundError } from 'http/ApiClient'
 import type { JsonApiClient } from 'http/JsonApiClient'
 
 export default class ApiMediaRepository implements MediaRepository {
@@ -37,7 +37,7 @@ export default class ApiMediaRepository implements MediaRepository {
       }
       return media
     } catch (error) {
-      if (error instanceof ApiError && error.status === 404) {
+      if (isNotFoundError(error)) {
         return []
       }
       throw error

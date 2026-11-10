@@ -53,41 +53,48 @@ function isFragmentMediaQuery(
   )
 }
 
-export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
-  const url = normalizeNonEmptyString(value)
-  if (url === undefined || !url.startsWith('/') || url.startsWith('//')) {
-    return undefined
-  }
+function isRootRelativePath(url: string): boolean {
+  return (
+    url.startsWith('/') &&
+    !url.startsWith('//') &&
+    !UNSAFE_URL_CHARACTERS.test(url) &&
+    !hasControlCharacter(url)
+  )
+}
 
-  if (UNSAFE_URL_CHARACTERS.test(url) || hasControlCharacter(url)) {
-    return undefined
-  }
-
+function hasSafeQuery(url: string): boolean {
   const [pathname, query, extraQuery] = url.split('?')
-  if (
-    query !== undefined &&
-    !isFragmentMediaQuery(pathname, query, extraQuery)
-  ) {
-    return undefined
-  }
-  const segments = pathname.split('/')
+  return (
+    query === undefined || isFragmentMediaQuery(pathname, query, extraQuery)
+  )
+}
+
+function hasSafeSegments(url: string): boolean {
+  const segments = url.split('?')[0].split('/')
   const decodedSegments = segments.flatMap((segment) => {
     const decodedSegment = decodeUrlSegment(segment)
     return decodedSegment === undefined
       ? [undefined]
       : decodedSegment.split('/')
   })
-  if (
-    decodedSegments.includes(undefined) ||
-    decodedSegments.includes(TRAVERSAL_SEGMENT) ||
-    decodedSegments.some(
+  return (
+    !decodedSegments.includes(undefined) &&
+    !decodedSegments.includes(TRAVERSAL_SEGMENT) &&
+    !decodedSegments.some(
       (segment) => segment !== undefined && hasControlCharacter(segment),
-    )
-  ) {
-    return undefined
-  }
+    ) &&
+    segments.slice(1).some((segment) => segment !== '')
+  )
+}
 
-  return segments.slice(1).some((segment) => segment !== '') ? url : undefined
+export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
+  const url = normalizeNonEmptyString(value)
+  return url !== undefined &&
+    isRootRelativePath(url) &&
+    hasSafeQuery(url) &&
+    hasSafeSegments(url)
+    ? url
+    : undefined
 }
 
 export function normalizeNonNegativeInteger(
