@@ -1,4 +1,4 @@
-import FragmentService from 'fragmentarium/application/FragmentService'
+﻿import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { screen } from '@testing-library/react'
 import { QueryItem } from 'query/QueryResult'

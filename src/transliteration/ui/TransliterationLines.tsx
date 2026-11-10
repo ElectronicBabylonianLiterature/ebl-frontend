@@ -3,23 +3,21 @@ import React, { FunctionComponent, PropsWithChildren, useMemo } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from 'transliteration/ui/note-links'
 import DisplayRulingDollarLine from 'transliteration/ui/rulings'
-import DisplayTextLine, { createTextLineId } from 'transliteration/ui/text-line'
+import DisplayTextLine from 'transliteration/ui/text-line'
 import { DisplayDollarAndAtLine } from 'transliteration/ui/dollar-and-at-lines'
 import { LineProps } from 'transliteration/ui/LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
-import {
-  isColumnAtLine,
-  isSealAtLine,
-  isObjectAtLine,
-  isSurfaceAtLine,
-  isTextLine,
-  isTranslationLine,
-} from 'transliteration/domain/type-guards'
+import { isTranslationLine } from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { DisplayParallelLine } from 'transliteration/ui/parallel-line'
 import TranslationColumn from 'transliteration/ui/TranslationColumn'
+import {
+  getCurrentLabels,
+  hasTextLineWithId,
+} from 'transliteration/domain/lineLabels'
+export { getCurrentLabels } from 'transliteration/domain/lineLabels'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 interface TextDisplayProps {
@@ -71,38 +69,6 @@ function FirstLineNotes({
       )}
     </>
   )
-}
-
-function clearSeal(labels: Labels): Labels {
-  return labels.sealNumber == null ? labels : { ...labels, sealNumber: null }
-}
-
-export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
-  if (isObjectAtLine(line)) {
-    return { ...clearSeal(labels), object: line.label }
-  } else if (isSurfaceAtLine(line)) {
-    return { ...clearSeal(labels), surface: line.label }
-  } else if (isColumnAtLine(line)) {
-    return { ...clearSeal(labels), column: line.label }
-  } else if (isSealAtLine(line)) {
-    return { ...labels, sealNumber: line.number }
-  } else {
-    return labels
-  }
-}
-
-function hasTextLineWithId(
-  lines: readonly AbstractLine[],
-  lineId: string,
-): boolean {
-  let labels = defaultLabels
-  for (const line of lines) {
-    if (isTextLine(line) && createTextLineId(labels, line) === lineId) {
-      return true
-    }
-    labels = getCurrentLabels(labels, line)
-  }
-  return false
 }
 
 export type TranslationStyle = 'inline' | 'standoff'

@@ -2,21 +2,20 @@ import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
-import lineNumberToString, {
-  lineNumberToAtf,
-} from 'transliteration/domain/lineNumberToString'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLine, TextLineLocation } from 'transliteration/domain/text-line'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import 'dictionary/ui/search/FragmentLemmaLines.sass'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 import {
+  createLineAnchorId,
   defaultLabels,
   labelAbbreviation,
   Labels,
   sealAbbreviation,
 } from 'transliteration/domain/labels'
-import { getCurrentLabels } from 'transliteration/ui/TransliterationLines'
+import { getCurrentLabels } from 'transliteration/domain/lineLabels'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 
 function locationFromLabels(labels: Labels): TextLineLocation | null {
@@ -78,9 +77,7 @@ function lineHash(
   ].filter(
     (label): label is string => typeof label === 'string' && !!label.trim(),
   )
-  return labels.length
-    ? `${labels.join(' ')} ${lineNumberToAtf(line.lineNumber)}`
-    : null
+  return labels.length ? createLineAnchorId(labels, line.lineNumber) : null
 }
 
 function FragmentLineRow({

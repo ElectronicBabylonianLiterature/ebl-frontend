@@ -3,6 +3,16 @@ import reject from 'lodash/fp/reject'
 import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'
 import join from 'lodash/fp/join'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
+import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
+
+export function createLineAnchorId(
+  labelParts: readonly string[],
+  lineNumber: LineNumber | LineNumberRange,
+): string {
+  const prefix = labelParts.length ? `${labelParts.join(' ')} ` : ''
+  return `${prefix}${lineNumberToAtf(lineNumber)}`
+}
 
 export type Status = 'PRIME' | 'UNCERTAIN' | 'CORRECTION' | 'COLLATION'
 

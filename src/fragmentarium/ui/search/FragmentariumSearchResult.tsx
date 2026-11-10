@@ -4,6 +4,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import getLibraryCountUnit from 'fragmentarium/ui/search/getLibraryCountUnit'
+import { matchingLineTotal } from 'query/matchingLineTotals'
 import { Col, Row } from 'react-bootstrap'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
 import { linesToShow } from 'fragmentarium/ui/search/FragmentariumSearch'
@@ -111,7 +112,10 @@ export const SearchResult = withData<
     fragmentQuery,
     pagination: { pageIndex, pageSize },
   }): JSX.Element => {
-    const visibleItems = data.items.slice(0, pageSize)
+    const visibleItems = data.items.slice(0, pageSize).map((item) => ({
+      ...item,
+      totalMatchingLines: matchingLineTotal(item, fragmentQuery),
+    }))
     const lineQuery = isLineQuery(fragmentQuery)
     const effectiveHasNextPage = hasNextPageAfter(
       data.items,

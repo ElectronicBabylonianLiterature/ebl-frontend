@@ -14,22 +14,11 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
-import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 import fragmentPreviewLookup from 'query/fragmentPreviewLookup'
+import { countUniqueMatchingLines } from 'query/matchingLineTotals'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
-
-// No indexes means the total is unknown, not that there are no matching lines.
-function countUniqueLineIndexes(
-  lineIndexes: readonly number[],
-): number | undefined {
-  const count = takeUniqueMatchingLineIndexes(
-    lineIndexes,
-    Number.MAX_SAFE_INTEGER,
-  ).length
-  return count > 0 ? count : undefined
-}
 
 const FragmentLines = withData<
   {
@@ -53,7 +42,7 @@ const FragmentLines = withData<
       fragment={fragment}
       linesToShow={FRAGMENT_LINES_TO_SHOW}
       totalMatchingLines={
-        totalMatchingLines ?? countUniqueLineIndexes(lineIndexes)
+        totalMatchingLines ?? countUniqueMatchingLines(lineIndexes)
       }
       matchingLineIndexes={lineIndexes}
       lemmaIds={[lemmaId]}

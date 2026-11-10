@@ -3,13 +3,13 @@ import { Anchor, LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from 'transliteration/ui/LineProps'
-import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
-import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
+import { createTextLineId } from 'transliteration/domain/lineLabels'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import NamedEntityPreviewToken from 'fragmentarium/ui/text-annotation/NamedEntityPreviewToken'
 import useScrollToActiveLine from 'transliteration/ui/useScrollToActiveLine'
+export { createTextLineId } from 'transliteration/domain/lineLabels'
 
 function LemmaPopoverWithNamedEntities({
   token,
@@ -20,14 +20,6 @@ function LemmaPopoverWithNamedEntities({
       <LemmaPopover token={token}>{children}</LemmaPopover>
     </NamedEntityPreviewToken>
   )
-}
-
-export function createTextLineId(
-  labels: Labels | undefined,
-  textLine: TextLine,
-): string {
-  const label = labels ? `${labelsAbbreviation(labels)} ` : ''
-  return `${label}${lineNumberToAtf(textLine.lineNumber)}`
 }
 
 export default function DisplayTextLine({
