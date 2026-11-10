@@ -10,12 +10,6 @@ type SharedRequest = {
 type GetOrStart<Value> = (start: () => Promise<Value>) => Promise<Value>
 type Fetch<Value> = (signal?: AbortSignal) => Promise<Value>
 
-/**
- * Lets callers of a deduplicated request cancel it without affecting each other.
- * Each caller's own promise rejects as soon as its signal aborts, but the
- * underlying request is aborted only once every consumer has given up on it.
- * A request started without a signal is never aborted.
- */
 export default class SharedAbortableRequests<Value> {
   private readonly requests = new Map<string, SharedRequest>()
 

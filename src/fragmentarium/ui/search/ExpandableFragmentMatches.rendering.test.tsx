@@ -1,10 +1,10 @@
-/* eslint-disable camelcase */
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { SurfaceAtLine, ColumnAtLine } from 'transliteration/domain/at-lines'
+import { atLineLabelKeys } from 'test-support/sealLocation'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
@@ -40,7 +40,7 @@ describe('expanding Library matching lines: rendering', () => {
             prefix: '@',
             content: [],
             displayValue: 'obverse',
-            surface_label: {
+            [atLineLabelKeys.surface]: {
               surface: 'OBVERSE',
               text: 'obverse',
               abbreviation: 'o',
@@ -54,7 +54,7 @@ describe('expanding Library matching lines: rendering', () => {
             prefix: '@',
             content: [],
             displayValue: 'reverse',
-            surface_label: {
+            [atLineLabelKeys.surface]: {
               surface: 'REVERSE',
               text: 'reverse',
               abbreviation: 'r',
@@ -66,7 +66,11 @@ describe('expanding Library matching lines: rendering', () => {
             prefix: '@',
             content: [],
             displayValue: 'column ii',
-            column_label: { column: 2, abbreviation: 'ii', status: [] },
+            [atLineLabelKeys.column]: {
+              column: 2,
+              abbreviation: 'ii',
+              status: [],
+            },
           }),
           new TextLine(previewLine(6, [readingWord])),
           new TextLine(previewLine(7, [readingWord])),

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useReducer } from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
@@ -9,7 +9,11 @@ import {
   textLineIndexes,
 } from 'fragmentarium/ui/search/fragmentMatchIndexes'
 
-export const EXPANSION_BATCH_SIZE = 10
+import {
+  expansionReducer,
+  initialExpansionState,
+} from './fragmentMatchExpansionState'
+export { EXPANSION_BATCH_SIZE } from './fragmentMatchExpansionState'
 
 function countVisibleTextLines(
   fragment: Fragment,
@@ -54,16 +58,6 @@ function remainingMatches({
     : null
 }
 
-function nextVisibleCount(
-  current: number,
-  expanded: boolean,
-  initialVisibleCount: number,
-  availableCount: number,
-): number {
-  const startingCount = expanded ? current : initialVisibleCount
-  return Math.min(startingCount + EXPANSION_BATCH_SIZE, availableCount)
-}
-
 export default function useFragmentMatchExpansion({
   fragment,
   initialLineIndexes,
@@ -83,12 +77,19 @@ export default function useFragmentMatchExpansion({
 }) {
   const requestVersion = useRef(0)
   const fullFragmentRequest = useRef(new AbortableOperation())
-  const [loadedFragment, setLoadedFragment] = useState<Fragment | null>(null)
-  const [expanded, setExpanded] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [unavailable, setUnavailable] = useState(false)
-  const [visibleCount, setVisibleCount] = useState(linesToShow)
+  const [state, dispatch] = useReducer(
+    expansionReducer,
+    linesToShow,
+    initialExpansionState,
+  )
+  const {
+    loadedFragment,
+    expanded,
+    loading,
+    error,
+    unavailable,
+    visibleCount,
+  } = state
   const queryIdentity = `${queryItem.museumNumber}:${queryItem.matchingLines.join(
     ',',
   )}:${queryItem.matchCount}:${queryItem.totalMatchingLines}:${
@@ -97,12 +98,7 @@ export default function useFragmentMatchExpansion({
 
   useEffect(() => {
     requestVersion.current += 1
-    setLoadedFragment(null)
-    setExpanded(false)
-    setLoading(false)
-    setError(false)
-    setUnavailable(false)
-    setVisibleCount(linesToShow)
+    dispatch({ type: 'reset', linesToShow })
     const request = fullFragmentRequest.current
     return () => {
       requestVersion.current += 1
@@ -136,17 +132,11 @@ export default function useFragmentMatchExpansion({
   function collapse(): void {
     requestVersion.current += 1
     fullFragmentRequest.current.abort()
-    setExpanded(false)
-    setLoading(false)
-    setError(false)
-    setVisibleCount(linesToShow)
+    dispatch({ type: 'collapse', linesToShow })
   }
 
   function revealLoadedFragment(): void {
-    setExpanded(true)
-    setVisibleCount((current) =>
-      nextVisibleCount(current, expanded, initialVisibleCount, availableCount),
-    )
+    dispatch({ type: 'reveal', initialVisibleCount, availableCount })
   }
 
   function handleLoadedFragment(fullFragment: Fragment, version: number): void {
@@ -157,29 +147,27 @@ export default function useFragmentMatchExpansion({
       fullFragment,
       queryItem.matchingLines,
     ).length
-    setLoading(false)
-    if (matchingCount <= initialVisibleCount) {
-      setUnavailable(true)
-      return
-    }
-    setLoadedFragment(fullFragment)
-    setExpanded(true)
-    setVisibleCount(
-      Math.min(initialVisibleCount + EXPANSION_BATCH_SIZE, matchingCount),
+    dispatch(
+      matchingCount <= initialVisibleCount
+        ? { type: 'unavailable' }
+        : {
+            type: 'loaded',
+            fragment: fullFragment,
+            initialVisibleCount,
+            availableCount: matchingCount,
+          },
     )
   }
 
   function handleLoadError(version: number): void {
     if (version === requestVersion.current) {
-      setLoading(false)
-      setError(true)
+      dispatch({ type: 'failure' })
     }
   }
 
   function requestFullFragment(): void {
     const version = ++requestVersion.current
-    setLoading(true)
-    setError(false)
+    dispatch({ type: 'request' })
     fragmentService
       .find(
         queryItem.museumNumber,

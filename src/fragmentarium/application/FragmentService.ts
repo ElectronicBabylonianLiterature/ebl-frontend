@@ -20,12 +20,10 @@ import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
   CorpusAttestations,
   FragmentStatistics,
-  onError,
   ThumbnailBlob,
   ThumbnailSize,
 } from 'fragmentarium/application/fragmentServicePorts'
 import {
-  fragmentKey,
   latestQueryCacheKey,
   queryKey,
   thumbnailKey,
@@ -37,7 +35,7 @@ import {
 } from 'fragmentarium/application/fragmentProvenance'
 import { FragmentServiceBase } from 'fragmentarium/application/fragmentServiceBase'
 import { prefetchFrom } from 'fragmentarium/application/fragmentPrefetch'
-import { rejectOnAbort } from 'common/utils/abortError'
+import findAbortableFragment from 'fragmentarium/application/findAbortableFragment'
 
 export * from 'fragmentarium/application/fragmentServicePorts'
 
@@ -59,26 +57,15 @@ export class FragmentService extends FragmentServiceBase {
     excludeLines?: boolean,
     signal?: AbortSignal,
   ): Promise<Fragment> {
-    const cacheKey = fragmentKey(number, lines, excludeLines)
-    return this.fragmentRequests.run(
-      cacheKey,
-      signal,
-      (start) => this.cache.fragment(cacheKey, start),
-      (requestSignal) =>
-        this.fragmentFetchLimiter.run(
-          () =>
-            rejectOnAbort(
-              this.findAndInjectFragment(
-                number,
-                lines,
-                excludeLines,
-                cacheKey,
-                requestSignal,
-              ),
-              requestSignal,
-            ),
-          requestSignal,
-        ),
+    return findAbortableFragment(
+      { number, lines, excludeLines, signal },
+      {
+        cache: this.cache,
+        requests: this.fragmentRequests,
+        limiter: this.fragmentFetchLimiter,
+        repository: this.fragmentRepository,
+        injectReferences: (fragment) => this.injectReferences(fragment),
+      },
     )
   }
 
@@ -241,25 +228,6 @@ export class FragmentService extends FragmentServiceBase {
     queryResultRequest: Promise<QueryResult>,
   ): Promise<QueryResult> {
     return prefetchFrom(this.cache, queryResultRequest)
-  }
-
-  private findAndInjectFragment(
-    number: string,
-    lines: readonly number[] | undefined,
-    excludeLines: boolean | undefined,
-    cacheKey: string,
-    signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const prefetchedFragment = this.cache.takePrefetchedFragment(cacheKey)
-
-    if (prefetchedFragment) {
-      return this.injectReferences(prefetchedFragment).catch(onError)
-    }
-
-    return this.fragmentRepository
-      .find(number, lines, excludeLines, signal)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
-      .catch(onError)
   }
 }
 

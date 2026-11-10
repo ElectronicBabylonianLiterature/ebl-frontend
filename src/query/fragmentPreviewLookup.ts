@@ -5,8 +5,6 @@ export type FragmentPreviewLookup = {
   readonly excludeLines: boolean
 }
 
-// The prefetch cache writer and the fragment readers must agree on these
-// values, because together they form the fragment cache key.
 export default function fragmentPreviewLookup(
   matchingLines: readonly number[],
   linesToShow: number,
