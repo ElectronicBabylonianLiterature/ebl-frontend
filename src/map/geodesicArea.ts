@@ -1,11 +1,8 @@
 import type { Geometry, Position } from 'geojson'
+import { toRadians, isFinitePosition } from 'map/geodesy'
 
 export const EARTH_RADIUS_METRES = 6371008.8
 const SQUARE_METRES_PER_SQUARE_KM = 1_000_000
-
-function toRadians(degrees: number): number {
-  return (degrees * Math.PI) / 180
-}
 
 function longitudeDeltaRadians(from: number, to: number): number {
   const delta = toRadians(to) - toRadians(from)
@@ -13,22 +10,6 @@ function longitudeDeltaRadians(from: number, to: number): number {
 
   const fullTurn = 2 * Math.PI
   return ((((delta + Math.PI) % fullTurn) + fullTurn) % fullTurn) - Math.PI
-}
-
-function isValidLatitude(value: unknown): value is number {
-  return (
-    typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
-  )
-}
-
-function isFinitePosition(value: unknown): value is Position {
-  if (!Array.isArray(value)) return false
-  const [longitude, latitude] = value
-  return (
-    typeof longitude === 'number' &&
-    Number.isFinite(longitude) &&
-    isValidLatitude(latitude)
-  )
 }
 
 function isRing(value: unknown): value is Position[] {

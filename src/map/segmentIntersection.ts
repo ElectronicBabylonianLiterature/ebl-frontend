@@ -1,12 +1,5 @@
 import type { Position } from 'geojson'
-
-function isFinitePosition(position: Position): boolean {
-  return (
-    Number.isFinite(position[0]) &&
-    Number.isFinite(position[1]) &&
-    Math.abs(position[1]) <= 90
-  )
-}
+import { isFinitePosition } from 'map/geodesy'
 
 function orientation(a: Position, b: Position, c: Position): number {
   return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])

@@ -1,4 +1,15 @@
-import { measurementCollection } from 'map/mapMeasurementLayers'
+import {
+  measurementCollection,
+  removeMeasurementLayers,
+} from 'map/mapMeasurementLayers'
+import { createMapMock, asLibreMap } from 'test-support/maplibre-map-helpers'
+
+it('cleans up safely when measurement layers and source have already disappeared', () => {
+  const map = createMapMock()
+  removeMeasurementLayers(asLibreMap(map))
+  expect(map.removeLayer).not.toHaveBeenCalled()
+  expect(map.removeSource).not.toHaveBeenCalled()
+})
 
 describe('measurementCollection', () => {
   it('emits only points until there are two vertices', () => {
