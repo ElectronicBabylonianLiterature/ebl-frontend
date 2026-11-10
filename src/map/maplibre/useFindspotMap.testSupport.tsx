@@ -21,12 +21,14 @@ export function HookHarness({
   withContainer = true,
   provenances,
   onMapBackgroundErrorChange,
-  cameraResetVersion = 0,
+  cameraResetVersion,
+  isInteractionEnabled,
 }: {
   withContainer?: boolean
   provenances: Parameters<typeof useFindspotMap>[1]
   onMapBackgroundErrorChange?: (hasError: boolean) => void
   cameraResetVersion?: number
+  isInteractionEnabled?: boolean
 }): JSX.Element | null {
   const ref = useRef<HTMLDivElement>(null)
   useFindspotMap(
@@ -34,6 +36,7 @@ export function HookHarness({
     provenances,
     onMapBackgroundErrorChange,
     cameraResetVersion,
+    isInteractionEnabled,
   )
   return withContainer ? <div ref={ref} /> : null
 }

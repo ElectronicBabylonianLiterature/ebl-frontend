@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 
@@ -109,6 +109,38 @@ describe('MapTab presentation mode', () => {
     )
 
     expect(screen.getByRole('button', { name: 'Legend' })).toBeVisible()
+  })
+
+  it('clears a temporary measurement while presenting', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Measure' }),
+    )
+    act(() => {
+      triggerMapEvent('click', {
+        point: { x: 1, y: 2 },
+        lngLat: { lng: 43, lat: 35 },
+      })
+    })
+    expect(
+      within(screen.getByRole('region', { name: 'Measure' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('Add 1 more point.')
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Exit presentation mode' }),
+    )
+
+    expect(
+      within(screen.getByRole('region', { name: 'Measure' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('Select points on the map to measure a distance.')
   })
 
   it('uses presentation-safe copy for a map background failure', async () => {

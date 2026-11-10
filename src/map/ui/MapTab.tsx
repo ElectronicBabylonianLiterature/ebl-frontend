@@ -14,6 +14,7 @@ import MapLayerPanel from 'map/ui/MapLayerPanel'
 import MapInspector from 'map/ui/MapInspector'
 import MapLegend from 'map/ui/MapLegend'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
+import MapMeasurePanel from 'map/ui/MapMeasurePanel'
 import MapSelectionPill from 'map/ui/MapSelectionPill'
 import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
@@ -100,6 +101,12 @@ function LoadedMapTab({
           onModeChange={experience.setVisualization}
         />
       ),
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
     {
       id: 'layers',
