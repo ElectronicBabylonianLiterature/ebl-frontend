@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, type RenderResult } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import { ProvenanceSource } from 'map/ui/useProvenances'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -49,6 +49,18 @@ const DEFAULT_FINDSPOT_SERVICE = {
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
 const MAP_ROUTE = '/tools/map'
 
+function CurrentLocation(): JSX.Element {
+  const navigate = useNavigate()
+  return (
+    <>
+      <LocationDisplay testId={CURRENT_LOCATION_TEST_ID} />
+      <button type="button" onClick={() => navigate('/tools/map?mv=1&areas=1')}>
+        Navigate without selection
+      </button>
+    </>
+  )
+}
+
 function MapRoute({
   fragmentService,
   findspotService,
@@ -86,7 +98,7 @@ export function renderMapTab(
           fragmentService={fragmentService}
           findspotService={selectedFindspotService}
         />
-        <LocationDisplay testId={CURRENT_LOCATION_TEST_ID} />
+        <CurrentLocation />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,
   )

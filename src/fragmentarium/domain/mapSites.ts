@@ -36,6 +36,10 @@ export function findMapSite(siteId: string): MapSiteDefinition | undefined {
   return isMapSiteId(siteId) ? MAP_SITES_BY_ID.get(siteId) : undefined
 }
 
+export function mapSiteName(siteId: string): string {
+  return findMapSite(siteId)?.siteName ?? siteId
+}
+
 export function mapDataSiteParam(siteId: string): string | null {
   return findMapSite(siteId)?.mapDataSiteParam ?? null
 }

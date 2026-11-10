@@ -1,8 +1,6 @@
 import React from 'react'
 import MapLayerControls from 'map/ui/MapLayerControls'
-import MapSelectedAreaCard from 'map/ui/MapSelectedAreaCard'
 import MapExcavationAreaSelector from 'map/ui/MapExcavationAreaSelector'
-import { isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapTabState } from 'map/ui/useMapTabState'
 
 export default function MapLayerPanel({
@@ -11,7 +9,6 @@ export default function MapLayerPanel({
   readonly state: Pick<
     MapTabState,
     | 'selectedPolygon'
-    | 'fragmentMapData'
     | 'showExcavationAreas'
     | 'canShowExcavationAreas'
     | 'excavationPolygons'
@@ -21,14 +18,9 @@ export default function MapLayerPanel({
       MapTabState['experience'],
       'setShowExcavationAreas' | 'setSelection'
     >
+    readonly panel: Pick<MapTabState['panel'], 'open'>
   }
 }): JSX.Element {
-  const { experience, selectedPolygon } = state
-  const selectedSiteData =
-    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
-      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
-      : undefined
-
   return (
     <>
       {state.isExcavationAreasLoading ? (
@@ -37,28 +29,18 @@ export default function MapLayerPanel({
       <MapLayerControls
         showExcavationAreas={state.showExcavationAreas}
         canShowExcavationAreas={state.canShowExcavationAreas}
-        onShowExcavationAreasChange={experience.setShowExcavationAreas}
+        onShowExcavationAreasChange={state.experience.setShowExcavationAreas}
       />
       <MapExcavationAreaSelector
         polygons={state.excavationPolygons}
-        selectedPolygonId={selectedPolygon?.polygonId ?? null}
+        selectedPolygonId={state.selectedPolygon?.polygonId ?? null}
         onSelect={(polygonId) =>
-          experience.setSelection(
-            polygonId ? { type: 'excavation-area', polygonId } : null,
+          state.experience.setSelection(
+            polygonId === null ? null : { type: 'excavation-area', polygonId },
           )
         }
+        onView={() => state.panel.open('inspector')}
       />
-      {selectedPolygon ? (
-        <MapSelectedAreaCard
-          polygonId={selectedPolygon.polygonId}
-          polygonName={selectedPolygon.name}
-          summary={selectedSiteData?.polygonSummaries.get(
-            selectedPolygon.polygonId,
-          )}
-          status={selectedSiteData?.status ?? 'not-configured'}
-          onClear={() => experience.setSelection(null)}
-        />
-      ) : null}
     </>
   )
 }

@@ -1,24 +1,26 @@
 import React, { useMemo } from 'react'
-import { Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
-import { findMapSite } from 'fragmentarium/domain/mapSites'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
 
 interface Props {
   readonly polygons: readonly ExcavationPolygon[]
   readonly selectedPolygonId: string | null
   readonly onSelect: (polygonId: string | null) => void
+  readonly onView: () => void
 }
 
 export default function MapExcavationAreaSelector({
   polygons,
   selectedPolygonId,
   onSelect,
+  onView,
 }: Props): JSX.Element {
   const baseLabels = useMemo(
     () =>
       polygons.map(
         (polygon) =>
-          (findMapSite(polygon.siteId)?.siteName ?? polygon.siteId) +
+          mapSiteName(polygon.siteId) +
           ' — ' +
           (polygon.name ?? polygon.polygonId),
       ),
@@ -52,6 +54,16 @@ export default function MapExcavationAreaSelector({
           </option>
         ))}
       </Form.Select>
+      <Button
+        type="button"
+        variant="outline-secondary"
+        size="sm"
+        className="mt-2"
+        disabled={selectedPolygonId === null}
+        onClick={onView}
+      >
+        View area
+      </Button>
     </Form.Group>
   )
 }
