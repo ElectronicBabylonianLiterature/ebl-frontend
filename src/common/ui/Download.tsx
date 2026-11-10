@@ -24,12 +24,7 @@ export default function Download({
       key="downloadDropdown"
       as={ButtonGroup}
       aria-label="Download"
-      title={
-        <>
-          <i className="fas fa-file-download" aria-hidden="true"></i>
-          <span className="visually-hidden">Download</span>
-        </>
-      }
+      title={<i className="fas fa-file-download" aria-hidden="true"></i>}
       id={_.uniqueId('file-download-')}
       variant="outline-primary"
     >

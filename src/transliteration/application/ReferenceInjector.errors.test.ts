@@ -89,7 +89,7 @@ describe('ReferenceInjector errors', () => {
     expect(reportError).not.toHaveBeenCalled()
   })
 
-  test('uses fallback telemetry by default for an HTTP outage', async () => {
+  test('forwards the original HTTP error to the default reporter', async () => {
     const bibliographyService = new MockBibliographyService()
     const error = new ApiError('Service unavailable', {}, 500)
     const capture = jest
@@ -103,9 +103,7 @@ describe('ReferenceInjector errors', () => {
       ]),
     ).resolves.toEqual([bibliographyPart])
 
-    expect(capture).toHaveBeenCalledWith(
-      expect.objectContaining({ cause: error }),
-    )
+    expect(capture).toHaveBeenCalledWith(error)
   })
 
   test.each(systemicErrors)(

@@ -68,18 +68,18 @@ function Details({
       </li>
       <li className="Details__item">
         <Provenance fragment={fragment} />
-        <ul className="Details__item--provenance">
-          <li>
-            <Excavation fragment={fragment} />
-          </li>
-          {fragment.archaeology?.date && (
-            <li>
-              <ExcavationDate fragment={fragment} />
-            </li>
-          )}
-          <li>{`Findspot: ${findspotDisplay || '-'}`}</li>
-        </ul>
       </li>
+      <ul className="Details__item--provenance">
+        <li>
+          <Excavation fragment={fragment} />
+        </li>
+        {fragment.archaeology?.date && (
+          <li>
+            <ExcavationDate fragment={fragment} />
+          </li>
+        )}
+        <li>{`Findspot: ${findspotDisplay || '-'}`}</li>
+      </ul>
       <li className="Details__item">
         <FragmentDossierRecordsDisplay
           dossiersService={dossiersService}

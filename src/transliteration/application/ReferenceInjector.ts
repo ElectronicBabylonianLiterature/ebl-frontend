@@ -14,7 +14,7 @@ import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import reportFallbackError from 'common/errors/reportFallbackError'
-import { ApiError } from 'http/ApiClient'
+import { isNotFoundError } from 'bibliography/application/BibliographyBatchLoader'
 
 const markupLineTypes = ['NoteLine', 'TranslationLine']
 
@@ -145,7 +145,7 @@ export default class ReferenceInjector {
       .find(data.id)
       .then((entry) => reference.setDocument(entry))
       .catch((error) => {
-        if (!(error instanceof ApiError && error.status === 404)) {
+        if (!isNotFoundError(error)) {
           this.reportError(error)
         }
         return reference.withIdentity(data.id, true)
