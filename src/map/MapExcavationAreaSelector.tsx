@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import { findMapSite } from 'map/mapSites'
+import { findMapSite } from 'fragmentarium/domain/mapSites'
 
 interface Props {
   readonly polygons: readonly ExcavationPolygon[]

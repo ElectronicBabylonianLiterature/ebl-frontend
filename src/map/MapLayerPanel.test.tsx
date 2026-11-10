@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MapLayerPanel from 'map/MapLayerPanel'
-import type { MapSiteId } from 'map/mapSites'
+import type { MapSiteId } from 'fragmentarium/domain/mapSites'
 import type { SiteFragmentMapDataState } from 'map/useFragmentMapData'
 import { excavationPolygon } from 'test-support/map-fixtures'
 

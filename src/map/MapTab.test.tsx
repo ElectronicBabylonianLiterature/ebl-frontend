@@ -202,7 +202,7 @@ describe('MapTab', () => {
     await userEvent.click(
       await screen.findByRole('button', { name: 'Map layers' }),
     )
-    expect(screen.getByText('Loading excavation areas…')).toBeVisible()
+    expect(screen.getByText(/Loading excavation areas/)).toBeVisible()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
     await act(async () =>
       complete(
@@ -219,7 +219,7 @@ describe('MapTab', () => {
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
     )
     expect(
-      screen.queryByText('Loading excavation areas…'),
+      screen.queryByText(/Loading excavation areas/),
     ).not.toBeInTheDocument()
   })
 

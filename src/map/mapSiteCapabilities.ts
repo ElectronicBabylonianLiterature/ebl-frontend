@@ -1,4 +1,4 @@
-import { type MapSiteId, mapSites } from 'map/mapSites'
+import { type MapSiteId, mapSites } from 'fragmentarium/domain/mapSites'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 
 export interface MapSiteCapabilities {

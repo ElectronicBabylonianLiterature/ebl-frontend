@@ -3,18 +3,19 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 function renderCard(
   status: FragmentMapDataStatus,
   summary?: PolygonFindspotSummary,
+  polygonName: string | null = 'Area A',
 ): void {
   render(
     <MemoryRouter>
       <MapSelectedAreaCard
         polygonId="assur-area-a-checksum"
-        polygonName="Area A"
+        polygonName={polygonName}
         summary={summary}
         status={status}
         onClear={jest.fn()}
@@ -24,6 +25,28 @@ function renderCard(
 }
 
 describe('MapSelectedAreaCard', () => {
+  it('uses the polygon identifier when its name is missing', () => {
+    renderCard('loaded-empty', undefined, null)
+    expect(screen.getByText('assur-area-a-checksum')).toBeVisible()
+  })
+
+  it('uses plural grammar for several linked findspots', () => {
+    const findspots = [
+      findspotMapDataDto({ findspotId: 1 }),
+      findspotMapDataDto({ findspotId: 2 }),
+    ]
+    renderCard('loaded-with-mappings', {
+      polygonId: 'assur-area-a-checksum',
+      findspotIds: [1, 2],
+      findspotCount: 2,
+      accessibleFragmentCount: 2,
+      findspots,
+    })
+    expect(
+      screen.getByText('2 accessible tablets across 2 findspots.'),
+    ).toBeVisible()
+  })
+
   it.each([
     [
       'not-configured',

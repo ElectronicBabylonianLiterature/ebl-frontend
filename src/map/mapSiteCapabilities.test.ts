@@ -4,7 +4,7 @@ import {
 } from 'map/mapSiteCapabilities'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import { excavationPolygon } from 'test-support/map-fixtures'
-import { findMapSite } from 'map/mapSites'
+import { findMapSite } from 'fragmentarium/domain/mapSites'
 
 it('finds configured map sites and rejects unknown identifiers', () => {
   expect(findMapSite('nippur')).toEqual({

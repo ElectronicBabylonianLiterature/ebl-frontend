@@ -1,4 +1,4 @@
-import { sanitizeFindspotMapData } from 'map/findspotMapData'
+import { sanitizeFindspotMapData } from 'fragmentarium/domain/findspotMapData'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 it.each([null, undefined, 42, 'not an object'])(

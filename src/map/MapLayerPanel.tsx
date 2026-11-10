@@ -2,7 +2,7 @@ import React from 'react'
 import MapLayerControls from 'map/MapLayerControls'
 import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
 import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
-import { isMapSiteId } from 'map/mapSites'
+import { isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapTabState } from 'map/useMapTabState'
 
 export default function MapLayerPanel({

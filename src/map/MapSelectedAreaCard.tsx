@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 import { findspotLabel } from 'map/findspotLabel'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 
 interface Props {
