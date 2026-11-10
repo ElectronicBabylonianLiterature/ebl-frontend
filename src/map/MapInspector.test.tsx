@@ -52,6 +52,8 @@ describe('MapInspector', () => {
           summary={undefined}
           siteName="Uruk"
           status="loaded-empty"
+          visualizationMode="mapped"
+          siteFilter=""
           onClear={jest.fn()}
         />
       </MemoryRouter>,
