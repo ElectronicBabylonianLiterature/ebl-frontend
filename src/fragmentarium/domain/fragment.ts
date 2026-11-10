@@ -161,6 +161,14 @@ export class Fragment {
     return new Fragment(props)
   }
 
+  get hasLegacyPhoto(): boolean {
+    return this.legacyHasPhoto ?? this.hasPhoto
+  }
+
+  get hasAnyImage(): boolean {
+    return this.hasPhoto || Boolean(this.mediaSummary?.count)
+  }
+
   get hasUncuratedReferences(): boolean {
     return !_.isNil(this.uncuratedReferences)
   }
