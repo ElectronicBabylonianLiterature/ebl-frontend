@@ -39,6 +39,17 @@ test('delegates postJson with object bodies', async () => {
   expect(fakeApi.client.postJson).toHaveBeenCalledWith(path, { a: 1 }, false)
 })
 
+test('runs the postJson success callback after the delegated request', async () => {
+  const { fakeApi, adapter } = adapt()
+  const onHttpSuccess = jest.fn()
+  fakeApi.client.postJson.mockResolvedValue('posted')
+
+  await expect(
+    adapter.postJson(path, { a: 1 }, false, onHttpSuccess),
+  ).resolves.toBe('posted')
+  expect(onHttpSuccess).toHaveBeenCalledTimes(1)
+})
+
 test('rejects postJson with a non-object body', async () => {
   const { fakeApi, adapter } = adapt()
   await expect(adapter.postJson(path, 'text')).rejects.toThrow(
