@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import type { UncertainFragment } from 'corpus/domain/text'
 import FragmentariumLink from 'corpus/ui/FragmentariumLink'
