@@ -14,6 +14,24 @@ permissions:
   contents: read
 
 jobs:
+  map-generator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: Install Python quality tools
+        run: python3 -m pip install -r scripts/maps/requirements-dev.txt
+      - name: Lint Python map scripts
+        run: python3 -m ruff check scripts/maps
+      - name: Check Python map formatting
+        run: python3 -m ruff format --check scripts/maps
+      - name: Verify map handoff fixture
+        run: >-
+          python3 scripts/maps/test_findspot_map_handoff.py
+          --artifact-dir src/test-support/map-generator-fixtures
+          --findspot-dir src/test-support/map-generator-fixtures
+          --expectations src/test-support/map-generator-fixtures/expectations.json
+          -v
+
   test:
     runs-on: ubuntu-latest
 
