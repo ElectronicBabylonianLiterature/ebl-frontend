@@ -3,7 +3,7 @@ import {
   buildVisualizationValues,
   visualizationValuesFor,
 } from 'map/mapVisualizationValues'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import {
   excavationPolygon,
   findspotMapDataDto,

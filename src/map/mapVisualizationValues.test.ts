@@ -1,7 +1,7 @@
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
-import type { MapSiteId } from 'map/mapSites'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
+import type { MapSiteId } from 'fragmentarium/domain/mapSites'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
 import {
   buildVisualizationValues,

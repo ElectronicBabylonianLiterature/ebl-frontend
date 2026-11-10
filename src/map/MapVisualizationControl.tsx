@@ -57,7 +57,7 @@ export default function MapVisualizationControl({
         >
           {availableModes.map((entry) => (
             <option key={entry} value={entry}>
-              {MODE_LABELS[entry]}
+              {visualizationModeLabel(entry)}
             </option>
           ))}
         </Form.Control>
