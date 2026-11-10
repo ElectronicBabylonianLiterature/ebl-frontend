@@ -80,6 +80,14 @@ describe('MapMeasurePanel', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Distance' }))
     expect(measurement.setMode).toHaveBeenLastCalledWith('distance')
     await userEvent.click(screen.getByLabelText('Imperial units'))
+    expect(measurement.setUnits).toHaveBeenLastCalledWith('imperial')
+    rerender(
+      <MapMeasurePanel
+        measurement={{ ...measurement, mode: 'area', units: 'imperial' }}
+      />,
+    )
+    await userEvent.click(screen.getByLabelText('Imperial units'))
+    expect(measurement.setUnits).toHaveBeenLastCalledWith('metric')
     await userEvent.click(
       screen.getByRole('button', { name: 'Add point at map center' }),
     )

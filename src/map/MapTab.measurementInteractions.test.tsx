@@ -4,6 +4,7 @@ import { act, screen, within } from '@testing-library/react'
 import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
+import { MAP_STYLE_URL } from 'map/mapBackgroundError'
 import {
   makeFragmentService,
   makeProvenance,
@@ -29,6 +30,30 @@ describe('MapTab measurement interaction ownership', () => {
     resetMapMocks()
     fetchMock.resetMocks()
     fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+  })
+
+  it('closes the measurement drawer when its map background becomes unavailable', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Measure' }),
+    )
+    expect(screen.getByRole('region', { name: 'Measure' })).toBeVisible()
+
+    act(() => {
+      triggerMapEvent('error', {
+        error: { url: MAP_STYLE_URL, message: 'Background unavailable' },
+      })
+    })
+
+    expect(
+      screen.getByText(/The interactive map could not be loaded/),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('region', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
   })
 
   it('measures a click without expanding clusters or selecting areas', async () => {
