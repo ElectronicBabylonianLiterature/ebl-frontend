@@ -1,0 +1,69 @@
+import React, { useMemo } from 'react'
+import { Button, Form } from 'react-bootstrap'
+import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
+
+interface Props {
+  readonly polygons: readonly ExcavationPolygon[]
+  readonly selectedPolygonId: string | null
+  readonly onSelect: (polygonId: string | null) => void
+  readonly onView: () => void
+}
+
+export default function MapExcavationAreaSelector({
+  polygons,
+  selectedPolygonId,
+  onSelect,
+  onView,
+}: Props): JSX.Element {
+  const baseLabels = useMemo(
+    () =>
+      polygons.map(
+        (polygon) =>
+          mapSiteName(polygon.siteId) +
+          ' — ' +
+          (polygon.name ?? polygon.polygonId),
+      ),
+    [polygons],
+  )
+  const duplicateLabels = useMemo(() => {
+    const seen = new Set<string>()
+    const duplicates = new Set<string>()
+    for (const label of baseLabels) {
+      if (seen.has(label)) duplicates.add(label)
+      seen.add(label)
+    }
+    return duplicates
+  }, [baseLabels])
+
+  return (
+    <Form.Group controlId="map-excavation-area-selector">
+      <Form.Label>Excavation area</Form.Label>
+      <Form.Select
+        aria-label="Select excavation area"
+        value={selectedPolygonId ?? ''}
+        onChange={(event) => onSelect(event.target.value || null)}
+      >
+        <option value="">No area selected</option>
+        {polygons.map((polygon, index) => (
+          <option key={polygon.polygonId} value={polygon.polygonId}>
+            {baseLabels[index]}
+            {duplicateLabels.has(baseLabels[index])
+              ? ' — ' + polygon.polygonId
+              : ''}
+          </option>
+        ))}
+      </Form.Select>
+      <Button
+        type="button"
+        variant="outline-secondary"
+        size="sm"
+        className="mt-2"
+        disabled={selectedPolygonId === null}
+        onClick={onView}
+      >
+        View area
+      </Button>
+    </Form.Group>
+  )
+}

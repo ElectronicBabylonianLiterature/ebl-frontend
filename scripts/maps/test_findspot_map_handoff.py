@@ -21,6 +21,7 @@ SPEC.loader.exec_module(ASSETS)
 class FindspotMapHandoffTest(unittest.TestCase):
     artifact_source: Path
     geometry_source: Path
+    expectations: Path | None = None
 
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory()
@@ -46,15 +47,18 @@ class FindspotMapHandoffTest(unittest.TestCase):
                 shutil.copyfile(manifest, self.artifacts / manifest.name)
 
     def generate(self) -> subprocess.CompletedProcess[str]:
+        command = [
+            sys.executable,
+            str(SCRIPT),
+            "--findspot-dir",
+            str(self.geometry),
+            "--artifact-dir",
+            str(self.artifacts),
+        ]
+        if self.expectations is not None:
+            command.extend(["--expectations", str(self.expectations)])
         return subprocess.run(
-            [
-                sys.executable,
-                str(SCRIPT),
-                "--findspot-dir",
-                str(self.geometry),
-                "--artifact-dir",
-                str(self.artifacts),
-            ],
+            command,
             capture_output=True,
             text=True,
             check=False,
@@ -199,11 +203,25 @@ class FindspotMapHandoffTest(unittest.TestCase):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Verify frontend generation against the canonical backend handoff."
+        description=(
+            "Verify frontend generation against the canonical backend handoff in "
+            "temporary directories. Checks geometry and polygon identity, supplied "
+            "manifest hashes, repeatability and atomic failure recovery without "
+            "changing the supplied metadata or site geometry."
+        ),
+        epilog=(
+            "Supply all four site geometry files and the extracted backend transfer. "
+            "Canonical counts are enforced unless --expectations names reviewed "
+            "alternate counts (used by the committed CI fixture)."
+        ),
     )
     parser.add_argument("--artifact-dir", type=Path, required=True)
     parser.add_argument("--findspot-dir", type=Path, required=True)
+    parser.add_argument("--expectations", type=Path)
     args, unittest_args = parser.parse_known_args()
     FindspotMapHandoffTest.artifact_source = args.artifact_dir.resolve()
     FindspotMapHandoffTest.geometry_source = args.findspot_dir.resolve()
+    FindspotMapHandoffTest.expectations = (
+        args.expectations.resolve() if args.expectations is not None else None
+    )
     unittest.main(argv=[sys.argv[0], *unittest_args])

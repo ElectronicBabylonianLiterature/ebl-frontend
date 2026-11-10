@@ -1,0 +1,179 @@
+import React, { useEffect, useRef } from 'react'
+import { act, render } from '@testing-library/react'
+import type { Map as MapLibreMap } from 'maplibre-gl'
+import useExcavationAreas from 'map/maplibre/useExcavationAreas'
+import { EXCAVATION_AREAS_SOURCE_ID } from 'map/maplibre/mapExcavationLayers'
+import {
+  clearMockStyleResources,
+  deferMapLoad,
+  mockAddLayer,
+  mockAddSource,
+  mockGetLayer,
+  mockGetSource,
+  mockMapInstance,
+  mockRemove,
+  mockSetLayoutProperty,
+  resetMapMocks,
+  triggerMapEvent,
+} from 'map/testSupport/mapLibreMock'
+
+jest.mock('maplibre-gl')
+
+const POLYGON_INDEX = new Map()
+
+function Harness({
+  isVisible = true,
+  onAvailabilityChange,
+}: {
+  readonly isVisible?: boolean
+  readonly onAvailabilityChange?: (isUnavailable: boolean) => void
+}): null {
+  const mapRef = useRef<MapLibreMap | null>(
+    mockMapInstance as unknown as MapLibreMap,
+  )
+  useExcavationAreas(mapRef, {
+    isVisible: isVisible,
+    onAvailabilityChange: onAvailabilityChange,
+    selectedPolygonId: null,
+    onSelectPolygon: jest.fn(),
+    polygonIndex: POLYGON_INDEX,
+  })
+  return null
+}
+
+function OwnerTeardownHarness(): null {
+  const mapRef = useRef<MapLibreMap | null>(
+    mockMapInstance as unknown as MapLibreMap,
+  )
+  useEffect(
+    () => () => {
+      mockRemove()
+      mapRef.current = null
+    },
+    [],
+  )
+  useExcavationAreas(mapRef, {
+    isVisible: true,
+    onAvailabilityChange: undefined,
+    selectedPolygonId: null,
+    onSelectPolygon: jest.fn(),
+    polygonIndex: POLYGON_INDEX,
+  })
+  return null
+}
+
+describe('useExcavationAreas', () => {
+  beforeEach(resetMapMocks)
+
+  it('installs both layers and applies visibility after style load', () => {
+    const onAvailabilityChange = jest.fn()
+
+    render(
+      <Harness isVisible={false} onAvailabilityChange={onAvailabilityChange} />,
+    )
+
+    expect(mockAddSource).toHaveBeenCalledWith(
+      EXCAVATION_AREAS_SOURCE_ID,
+      expect.any(Object),
+    )
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      expect.any(String),
+      'visibility',
+      'none',
+    )
+    expect(onAvailabilityChange).not.toHaveBeenCalled()
+  })
+
+  it('updates visibility without rebuilding the source or layers', () => {
+    const { rerender } = render(<Harness isVisible />)
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+
+    rerender(<Harness isVisible={false} />)
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
+      expect.any(String),
+      'visibility',
+      'none',
+    )
+  })
+
+  it('skips subordinate cleanup after the map owner disposes it', () => {
+    let isRemoved = false
+    mockRemove.mockImplementation(() => {
+      isRemoved = true
+    })
+    mockGetLayer.mockImplementation(() => {
+      if (isRemoved) throw new Error('map style has been removed')
+      return undefined
+    })
+    mockGetSource.mockImplementation(() => {
+      if (isRemoved) throw new Error('map style has been removed')
+      return undefined
+    })
+
+    const { unmount } = render(<OwnerTeardownHarness />)
+
+    expect(unmount).not.toThrow()
+    expect(mockRemove).toHaveBeenCalled()
+  })
+
+  it('removes its style load listener on cleanup', () => {
+    deferMapLoad()
+    const { unmount } = render(<Harness />)
+
+    expect(mockAddSource).not.toHaveBeenCalled()
+    unmount()
+    act(() => {
+      triggerMapEvent('style.load')
+    })
+
+    expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
+  it('restores layers and latest visibility after a style reload', () => {
+    const { rerender } = render(<Harness isVisible />)
+    rerender(<Harness isVisible={false} />)
+    clearMockStyleResources()
+    mockAddLayer.mockClear()
+    mockSetLayoutProperty.mockClear()
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
+      expect.any(String),
+      'visibility',
+      'none',
+    )
+  })
+
+  it('reports only excavation-source failures as unavailable', () => {
+    const onAvailabilityChange = jest.fn()
+    render(<Harness onAvailabilityChange={onAvailabilityChange} />)
+    onAvailabilityChange.mockClear()
+
+    act(() => {
+      triggerMapEvent('error', {
+        error: { message: 'asset unavailable' },
+        sourceId: EXCAVATION_AREAS_SOURCE_ID,
+      })
+    })
+    expect(onAvailabilityChange).toHaveBeenCalledWith(true)
+
+    onAvailabilityChange.mockClear()
+    act(() => {
+      triggerMapEvent('error', {
+        error: { message: 'other source' },
+        sourceId: 'ebl-findspots',
+      })
+    })
+    expect(onAvailabilityChange).not.toHaveBeenCalled()
+  })
+})
