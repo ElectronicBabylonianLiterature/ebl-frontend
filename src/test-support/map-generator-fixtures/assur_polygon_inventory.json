@@ -1,0 +1,18 @@
+[
+  {
+    "polygonId": "assur-aa1i-5a8de4db07d8",
+    "name": "aA1I",
+    "areaName": "aA1I",
+    "siteId": "ASSUR",
+    "siteName": "Aššur",
+    "geometryChecksum": "5a8de4db07d8"
+  },
+  {
+    "polygonId": "assur-aa2i-66ccd74581e0",
+    "name": "aA2I",
+    "areaName": "aA2I",
+    "siteId": "ASSUR",
+    "siteName": "Aššur",
+    "geometryChecksum": "66ccd74581e0"
+  }
+]

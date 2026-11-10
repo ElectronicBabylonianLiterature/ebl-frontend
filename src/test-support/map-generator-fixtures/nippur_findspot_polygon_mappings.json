@@ -1,0 +1,12 @@
+[
+  {
+    "findspotId": 3,
+    "polygonIds": [
+      "nippur-area-1-3c4548a55b59"
+    ],
+    "locationPrecision": "excavation-area",
+    "matchMethod": "verified-source",
+    "source": "nippur-fixture.ods",
+    "sourceRevision": "fixture-v1"
+  }
+]
