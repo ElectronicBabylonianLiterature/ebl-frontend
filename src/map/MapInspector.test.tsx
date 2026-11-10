@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import MapInspector from 'map/MapInspector'
-import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 import {
   excavationPolygon,
@@ -42,6 +42,21 @@ const unavailableStates: readonly [FragmentMapDataStatus, string][] = [
 ]
 
 describe('MapInspector', () => {
+  it('omits mapped area when the polygon has no measurable area', () => {
+    render(
+      <MemoryRouter>
+        <MapInspector
+          polygon={{ ...polygon, areaSquareKm: null }}
+          summary={undefined}
+          siteName="Uruk"
+          status="loaded-empty"
+          onClear={jest.fn()}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByText('Mapped area')).not.toBeInTheDocument()
+    expect(screen.getByText(POLYGON_ID)).toBeVisible()
+  })
   it.each(unavailableStates)(
     'does not present derived zeroes while data is %s',
     (status, message) => {

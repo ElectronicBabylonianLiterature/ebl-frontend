@@ -83,8 +83,7 @@ it('rejects non-array positions received from malformed GeoJSON', () => {
   expect(
     geodesicAreaSquareMetres({
       type: 'Polygon',
-      // @ts-expect-error Malformed runtime GeoJSON can contain null positions.
-      coordinates: [[null, [1, 0], [1, 1], [0, 0]]],
+      coordinates: [[null as unknown as Position, [1, 0], [1, 1], [0, 0]]],
     }),
   ).toBeNull()
 })

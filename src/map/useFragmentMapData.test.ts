@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import { IncompatibleFindspotMapDataError } from 'map/findspotMapDataSanitizer'
-import type { MapSiteId } from 'map/mapSites'
+import { IncompatibleFindspotMapDataError } from 'fragmentarium/domain/findspotMapDataSanitizer'
+import type { MapSiteId } from 'fragmentarium/domain/mapSites'
 import useFragmentMapData from 'map/useFragmentMapData'
 import {
   SITE_IDS,

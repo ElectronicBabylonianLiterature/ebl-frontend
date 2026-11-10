@@ -1,4 +1,8 @@
-import { MAP_SITE_IDS, mapDataSiteParam, mapSites } from 'map/mapSites'
+import {
+  MAP_SITE_IDS,
+  mapDataSiteParam,
+  mapSites,
+} from 'fragmentarium/domain/mapSites'
 
 describe('mapSites linkage configuration', () => {
   it('configures the verified backend endpoint for all four sites', () => {
