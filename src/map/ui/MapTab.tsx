@@ -12,6 +12,8 @@ import MapPresentationBar from 'map/ui/MapPresentationBar'
 import useMapPresentationFocus from 'map/ui/useMapPresentationFocus'
 import MapLayerPanel from 'map/ui/MapLayerPanel'
 import MapInspector from 'map/ui/MapInspector'
+import MapLegend from 'map/ui/MapLegend'
+import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import MapSelectionPill from 'map/ui/MapSelectionPill'
 import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
@@ -86,6 +88,20 @@ function LoadedMapTab({
   const panels: readonly MapPanelDefinition[] = [
     ...inspectorPanels,
     {
+      id: 'visualization',
+      label: 'Visualization',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapVisualizationControl
+          mode={state.visualization.effectiveMode}
+          legend={state.visualization.legend}
+          isDensityAvailable={state.visualization.isDensityAvailable}
+          hasUnavailableData={state.visualization.hasUnavailableData}
+          onModeChange={experience.setVisualization}
+        />
+      ),
+    },
+    {
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
@@ -137,6 +153,14 @@ function LoadedMapTab({
           isBackgroundUnavailable={state.isBackgroundUnavailable}
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
+          legend={
+            state.showExcavationAreas ? (
+              <MapLegend
+                mode={state.visualization.effectiveMode}
+                legend={state.visualization.legend}
+              />
+            ) : null
+          }
           overlay={
             <MapPanelDock
               panels={isPresenting ? [] : panels}

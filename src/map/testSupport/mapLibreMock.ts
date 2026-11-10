@@ -33,6 +33,7 @@ export const mockRemoveLayer = mockMapMethods.removeLayer.mockImplementation(
 export const mockRemoveSource = mockMapMethods.removeSource
 export const mockSetLayoutProperty = mockMapMethods.setLayoutProperty
 export const mockSetPaintProperty = mockMapMethods.setPaintProperty
+export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = mockMapMethods.isStyleLoaded
 export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
 export const mockOnce = mockMapMethods.once
@@ -57,6 +58,7 @@ let mockMapConstructionError: unknown = null
 
 export const mockMapInstance = {
   ...mockMapMethods,
+  setFeatureState: mockSetFeatureState,
   getStyle: mockGetStyle,
   addControl: mockAddControl,
   getCanvas: mockGetCanvas,
@@ -67,7 +69,6 @@ export const mockMapInstance = {
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
-
 function fireMapEvent(
   event: string,
   eventPayload?: MockMapEvent | MockErrorEvent,
