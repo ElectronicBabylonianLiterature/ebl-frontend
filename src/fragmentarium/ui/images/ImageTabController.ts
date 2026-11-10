@@ -66,7 +66,14 @@ export class TabController {
     tab: string | null,
     activeFolio: Folio | null,
     navigate: (url: string) => void,
+    /** Whether the Images/Photo tab is offered at all. */
     private readonly hasMedia: boolean = fragment.hasPhoto,
+    /**
+     * Whether the Images/Photo tab opens by default. Only actual imagery should
+     * make it the default; a tab offered solely so that an uploader or manager
+     * can add the first image must not hide folios or CDLI images.
+     */
+    private readonly defaultsToMedia: boolean = hasMedia,
   ) {
     this.fragment = fragment
     this.tab = tab
@@ -76,9 +83,10 @@ export class TabController {
 
   get defaultKey(): string | undefined {
     return _([
-      this.hasMedia && PHOTO,
+      this.hasMedia && this.defaultsToMedia && PHOTO,
       ...this.fragment.folios.map((folio, index) => folioTabKey(index)),
       hasUsableCdliTab(this.fragment) && CDLI,
+      this.hasMedia && PHOTO,
     ])
       .compact()
       .head()

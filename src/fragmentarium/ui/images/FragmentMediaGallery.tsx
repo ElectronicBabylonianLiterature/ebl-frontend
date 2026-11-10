@@ -5,7 +5,7 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { isCancellation } from 'common/utils/abortError'
 import { ApiError } from 'http/ApiError'
-import type { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
 import type { MediaGalleryServices } from 'fragmentarium/application/MediaGalleryContext'
@@ -132,8 +132,7 @@ function GalleryContent({
             services={services}
             onChanged={onChanged}
             legacyPhoto={
-              data.legacyFallbackAllowed !== false &&
-              (fragment.legacyHasPhoto ?? fragment.hasPhoto)
+              data.legacyFallbackAllowed !== false && hasLegacyPhoto(fragment)
                 ? fallback
                 : undefined
             }

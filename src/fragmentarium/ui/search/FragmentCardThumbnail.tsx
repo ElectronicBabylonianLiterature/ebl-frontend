@@ -2,7 +2,7 @@ import React from 'react'
 import withData from 'http/withData'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type { ThumbnailBlob } from 'fragmentarium/application/FragmentService'
-import type { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
 import type { QueryItem } from 'query/QueryResult'
 import { ThumbnailImage } from 'common/ui/BlobImage'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
@@ -33,8 +33,8 @@ const LegacyThumbnail = withData<Props, object, ThumbnailBlob>(
 
 export default function FragmentCardThumbnail(props: Props): JSX.Element {
   const { fragment, queryItem, linked = true } = props
-  const hasLegacyPhoto = fragment.legacyHasPhoto ?? fragment.hasPhoto
-  const fallback = !hasLegacyPhoto ? null : 'thumbnailPath' in queryItem ? (
+  const legacyPhotoExists = hasLegacyPhoto(fragment)
+  const fallback = !legacyPhotoExists ? null : 'thumbnailPath' in queryItem ? (
     <SummaryThumbnail
       fragmentNumber={fragment.number}
       thumbnailPath={queryItem.thumbnailPath ?? null}

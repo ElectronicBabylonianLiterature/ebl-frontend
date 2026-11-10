@@ -156,6 +156,34 @@ describe('findPhoto', () => {
       "Fragment X.1 doesn't have a Photo",
     )
   })
+
+  test('does not request a suppressed legacy photo', () => {
+    imageRepository.findPhoto.mockClear()
+    const fragmentWithSuppressedLegacyPhoto = fragmentFactory.build({
+      number: 'X.2',
+      hasPhoto: true,
+      legacyHasPhoto: false,
+    })
+
+    expect(() =>
+      fragmentService.findPhoto(fragmentWithSuppressedLegacyPhoto),
+    ).toThrowError("Fragment X.2 doesn't have a Photo")
+    expect(imageRepository.findPhoto).not.toHaveBeenCalled()
+  })
+
+  test('requests the legacy photo when legacyHasPhoto is true', () => {
+    imageRepository.findPhoto.mockClear()
+    imageRepository.findPhoto.mockReturnValue(Promise.resolve(resultStub))
+    const fragmentWithLegacyPhoto = fragmentFactory.build({
+      number: 'X.3',
+      hasPhoto: true,
+      legacyHasPhoto: true,
+    })
+
+    fragmentService.findPhoto(fragmentWithLegacyPhoto)
+
+    expect(imageRepository.findPhoto).toHaveBeenCalledWith('X.3', undefined)
+  })
 })
 
 describe('isInFragmentarium', () => {

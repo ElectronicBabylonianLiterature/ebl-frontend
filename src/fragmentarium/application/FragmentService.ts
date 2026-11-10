@@ -1,7 +1,7 @@
 import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -122,7 +122,7 @@ export class FragmentService extends FragmentServiceBase {
   }
 
   findPhoto(fragment: Fragment, signal?: AbortSignal): Promise<Blob> {
-    if (fragment.hasPhoto) {
+    if (hasLegacyPhoto(fragment)) {
       return this.imageRepository.findPhoto(fragment.number, signal)
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)

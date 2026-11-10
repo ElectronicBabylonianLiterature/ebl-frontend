@@ -71,6 +71,7 @@ export default function NewsSection(): JSX.Element {
                   <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 {latestNewsletter.date.toLocaleDateString('en-US', {
+                  timeZone: 'UTC',
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -116,6 +117,7 @@ export default function NewsSection(): JSX.Element {
                 <div className="introduction-news__recent-content">
                   <div className="introduction-news__recent-date">
                     {newsletter.date.toLocaleDateString('en-US', {
+                      timeZone: 'UTC',
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',

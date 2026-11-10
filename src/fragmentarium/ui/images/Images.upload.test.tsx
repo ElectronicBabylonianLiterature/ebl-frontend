@@ -43,13 +43,14 @@ function view(
   services: MediaGalleryServices,
   number = 'K.1',
   hasImage = false,
+  cdliImages: string[] = [],
 ): JSX.Element {
   const fragment = fragmentFactory.build({
     number,
     hasPhoto: false,
     legacyHasPhoto: false,
     folios: [],
-    cdliImages: [],
+    cdliImages,
     mediaSummary: hasImage
       ? { count: 1, types: ['PHOTO'] }
       : { count: 0, types: [] },
@@ -79,6 +80,26 @@ test('an authorized contributor can open uploads from an empty fragment Images t
   expect(screen.getByRole('dialog', { name: 'Add images' })).toBeVisible()
   expect(screen.getByText('K.1')).toBeVisible()
   expect(screen.getByLabelText('Choose images or drop them here')).toBeVisible()
+})
+
+test('an empty Images tab offered for uploads does not displace other imagery as the default', () => {
+  render(view(contributorServices(), 'K.1', false, ['P550449_l.jpg']))
+  expect(screen.getByRole('tab', { name: 'CDLI' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  )
+  expect(screen.getByRole('tab', { name: 'Images' })).toHaveAttribute(
+    'aria-selected',
+    'false',
+  )
+})
+
+test('a fragment with images still opens the Images tab first for contributors', () => {
+  render(view(contributorServices(), 'K.1', true, ['P550449_l.jpg']))
+  expect(screen.getByRole('tab', { name: 'Images' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  )
 })
 
 test('a reader without write permission has no upload controls on an empty fragment', () => {

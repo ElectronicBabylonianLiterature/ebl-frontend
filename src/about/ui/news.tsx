@@ -33,6 +33,9 @@ const markdownComponents: React.ComponentProps<
   h1: 'h2',
 }
 
+// Dates are ISO 'YYYY-MM-DD' strings, which parse as UTC midnight; every
+// consumer formats them with timeZone 'UTC' so the calendar day is the same in
+// every time zone.
 interface Newsletter {
   readonly content: string
   readonly date: Date
@@ -40,28 +43,28 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
-  { content: newsletter22, date: new Date('05/28/2026'), number: 22 },
-  { content: newsletter21, date: new Date('02/10/2026'), number: 21 },
-  { content: newsletter20, date: new Date('09/10/2025'), number: 20 },
-  { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
-  { content: newsletter18, date: new Date('01/08/2025'), number: 18 },
-  { content: newsletter17, date: new Date('08/07/2024'), number: 17 },
-  { content: newsletter16, date: new Date('05/14/2024'), number: 16 },
-  { content: newsletter15, date: new Date('02/04/2024'), number: 15 },
-  { content: newsletter14, date: new Date('11/06/2023'), number: 14 },
-  { content: newsletter13, date: new Date('06/21/2023'), number: 13 },
-  { content: newsletter12, date: new Date('02/23/2023'), number: 12 },
-  { content: newsletter11, date: new Date('10/28/2022'), number: 11 },
-  { content: newsletter10, date: new Date('10/10/2022'), number: 10 },
-  { content: newsletter9, date: new Date('07/25/2022'), number: 9 },
-  { content: newsletter8, date: new Date('06/09/2022'), number: 8 },
-  { content: newsletter7, date: new Date('03/01/2022'), number: 7 },
-  { content: newsletter6, date: new Date('10/14/2021'), number: 6 },
-  { content: newsletter5, date: new Date('07/09/2021'), number: 5 },
-  { content: newsletter4, date: new Date('06/08/2021'), number: 4 },
-  { content: newsletter3, date: new Date('04/07/2021'), number: 3 },
-  { content: newsletter2, date: new Date('02/05/2021'), number: 2 },
-  { content: newsletter1, date: new Date('09/28/2020'), number: 1 },
+  { content: newsletter22, date: new Date('2026-05-28'), number: 22 },
+  { content: newsletter21, date: new Date('2026-02-10'), number: 21 },
+  { content: newsletter20, date: new Date('2025-09-10'), number: 20 },
+  { content: newsletter19, date: new Date('2025-04-04'), number: 19 },
+  { content: newsletter18, date: new Date('2025-01-08'), number: 18 },
+  { content: newsletter17, date: new Date('2024-08-07'), number: 17 },
+  { content: newsletter16, date: new Date('2024-05-14'), number: 16 },
+  { content: newsletter15, date: new Date('2024-02-04'), number: 15 },
+  { content: newsletter14, date: new Date('2023-11-06'), number: 14 },
+  { content: newsletter13, date: new Date('2023-06-21'), number: 13 },
+  { content: newsletter12, date: new Date('2023-02-23'), number: 12 },
+  { content: newsletter11, date: new Date('2022-10-28'), number: 11 },
+  { content: newsletter10, date: new Date('2022-10-10'), number: 10 },
+  { content: newsletter9, date: new Date('2022-07-25'), number: 9 },
+  { content: newsletter8, date: new Date('2022-06-09'), number: 8 },
+  { content: newsletter7, date: new Date('2022-03-01'), number: 7 },
+  { content: newsletter6, date: new Date('2021-10-14'), number: 6 },
+  { content: newsletter5, date: new Date('2021-07-09'), number: 5 },
+  { content: newsletter4, date: new Date('2021-06-08'), number: 4 },
+  { content: newsletter3, date: new Date('2021-04-07'), number: 3 },
+  { content: newsletter2, date: new Date('2021-02-05'), number: 2 },
+  { content: newsletter1, date: new Date('2020-09-28'), number: 1 },
 ]
 
 const message = `**Get the most out of eBL!**  
@@ -150,6 +153,7 @@ export default function AboutNews({
                 </div>
                 <time className="newsletter-article__date">
                   {activeNewsletter.date.toLocaleDateString('en-US', {
+                    timeZone: 'UTC',
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import withData from 'http/withData'
 import Photo from 'fragmentarium/ui/images/Photo'
 import FolioDetails from 'fragmentarium/ui/images/FolioDetails'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, hasLegacyPhoto } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import CdliImages from 'fragmentarium/ui/images/CdliImages'
 import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
@@ -78,18 +78,22 @@ function Images({
 }: Props): JSX.Element {
   const navigate = useNavigate()
   const mediaServices = useContext(MediaGalleryContext)
-  const hasLegacyPhoto = fragment.legacyHasPhoto ?? fragment.hasPhoto
-  const hasMedia = mediaServices
-    ? fragment.hasPhoto ||
-      Boolean(fragment.mediaSummary?.count) ||
-      Boolean(mediaServices.canUpload || mediaServices.canManage)
-    : hasLegacyPhoto
+  const legacyPhotoExists = hasLegacyPhoto(fragment)
+  const hasImagery = mediaServices
+    ? fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)
+    : legacyPhotoExists
+  const hasMedia =
+    hasImagery ||
+    Boolean(
+      mediaServices && (mediaServices.canUpload || mediaServices.canManage),
+    )
   const controller = new TabController(
     fragment,
     tab,
     activeFolio,
     navigate,
     hasMedia,
+    hasImagery,
   )
   const folios = fragment.folios
   const activeKey = controller.activeKey
@@ -142,7 +146,7 @@ function Images({
                   fragment={fragment}
                   services={mediaServices}
                   fallback={
-                    hasLegacyPhoto ? (
+                    legacyPhotoExists ? (
                       <FragmentPhoto
                         fragment={fragment}
                         fragmentService={fragmentService}

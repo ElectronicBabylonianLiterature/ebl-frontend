@@ -35,6 +35,19 @@ import {
 } from 'fragmentarium/domain/fragmentTypes'
 
 export * from 'fragmentarium/domain/fragmentTypes'
+
+/**
+ * Whether the legacy photograph (served by `/fragments/{number}/photo`) exists.
+ * `hasPhoto` reports the legacy photo unless the backend has suppressed a
+ * removed legacy photo; then `legacyHasPhoto` is `false` and `hasPhoto`
+ * reflects published photo media instead.
+ */
+export function hasLegacyPhoto(
+  fragment: Pick<FragmentProps, 'hasPhoto' | 'legacyHasPhoto'>,
+): boolean {
+  return fragment.legacyHasPhoto ?? fragment.hasPhoto
+}
+
 interface FragmentProps {
   number: string
   accession: string
