@@ -16,6 +16,10 @@ const EVIDENCE_SHORT_LABELS: Readonly<Record<MappingEvidence, string>> = {
   unmapped: 'Unmapped',
 }
 
+export function mappingEvidenceShortLabel(evidence: MappingEvidence): string {
+  return EVIDENCE_SHORT_LABELS[evidence]
+}
+
 const PRECISION_LABELS: Readonly<Record<SummaryLocationPrecision, string>> = {
   'excavation-area': 'Excavation area',
   mixed: 'Mixed precision',
@@ -24,10 +28,6 @@ const PRECISION_LABELS: Readonly<Record<SummaryLocationPrecision, string>> = {
 
 export function mappingEvidenceLabel(evidence: MappingEvidence): string {
   return EVIDENCE_LABELS[evidence]
-}
-
-export function mappingEvidenceShortLabel(evidence: MappingEvidence): string {
-  return EVIDENCE_SHORT_LABELS[evidence]
 }
 
 export function locationPrecisionLabel(

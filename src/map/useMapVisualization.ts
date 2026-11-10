@@ -11,10 +11,8 @@ import {
   EVIDENCE_PAINT,
   type ExcavationPaint,
 } from 'map/mapExcavationPaint'
-import {
-  SEQUENTIAL_COLORS,
-  type ChoroplethScale,
-} from 'map/mapPaintExpressions'
+import { SEQUENTIAL_COLORS } from 'map/mapPaintColors'
+import { type ChoroplethScale } from 'map/mapPaintExpressions'
 import {
   type PolygonVisualizationValues,
   buildVisualizationValues,

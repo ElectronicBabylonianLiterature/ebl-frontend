@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { aggregateFindspotMapData } from 'fragmentarium/domain/findspotMapDataSanitizer'
 import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
 import {
   deferMapLoad,

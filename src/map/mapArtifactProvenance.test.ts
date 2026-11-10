@@ -5,11 +5,11 @@ import {
   exportPolygonProvenance,
 } from 'map/mapArtifactProvenance'
 import {
-  buildExportCsv,
   buildExportGeoJson,
   toExportRows,
   type MapExportContext,
 } from 'map/mapExportData'
+import { buildExportCsv } from 'map/mapExportCsv'
 import { excavationPolygon } from 'test-support/map-fixtures'
 
 it('bundles exactly the generated public manifest used by the canonical geometry', () => {

@@ -17,14 +17,25 @@ const NEXT_KEYS: Readonly<Record<string, number>> = {
   ArrowLeft: -1,
   ArrowUp: -1,
 }
+
+function targetTabIndex(
+  key: string,
+  index: number,
+  count: number,
+): number | undefined {
+  if (key === 'Home') return 0
+  if (key === 'End') return count - 1
+  const step = NEXT_KEYS[key]
+  return step === undefined ? undefined : (index + step + count) % count
+}
+
 export default function MapInspectorTabs({ tabs, label }: Props): JSX.Element {
   const [activeId, setActiveId] = useState(tabs[0].id)
   const buttonRefs = useRef(new Map<string, HTMLButtonElement>())
   const active = tabs.find((tab) => tab.id === activeId) ?? tabs[0]
 
-  const move = (step: number): void => {
-    const index = tabs.findIndex((tab) => tab.id === active.id)
-    const next = tabs[(index + step + tabs.length) % tabs.length]
+  const move = (index: number): void => {
+    const next = tabs[index]
     setActiveId(next.id)
     buttonRefs.current.get(next.id)?.focus()
   }
@@ -54,19 +65,14 @@ export default function MapInspectorTabs({ tabs, label }: Props): JSX.Element {
               }`}
               onClick={() => setActiveId(tab.id)}
               onKeyDown={(event) => {
-                const step =
-                  event.key === 'Home'
-                    ? -tabs.findIndex((candidate) => candidate.id === active.id)
-                    : event.key === 'End'
-                      ? tabs.length -
-                        1 -
-                        tabs.findIndex(
-                          (candidate) => candidate.id === active.id,
-                        )
-                      : NEXT_KEYS[event.key]
-                if (step === undefined) return
+                const target = targetTabIndex(
+                  event.key,
+                  tabs.findIndex((candidate) => candidate.id === active.id),
+                  tabs.length,
+                )
+                if (target === undefined) return
                 event.preventDefault()
-                move(step)
+                move(target)
               }}
             >
               {tab.label}

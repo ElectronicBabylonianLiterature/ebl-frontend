@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { findspotLabel } from 'map/findspotLabel'
-import type { FindspotMapData } from 'map/findspotMapData'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 
 const FINDSPOTS_PER_PAGE = 25

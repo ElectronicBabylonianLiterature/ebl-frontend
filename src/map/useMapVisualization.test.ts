@@ -3,7 +3,7 @@ import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import type {
   FindspotMapData,
   PolygonFindspotSummary,
-} from 'map/findspotMapData'
+} from 'fragmentarium/domain/findspotMapData'
 import { excavationPaintProperties } from 'map/mapExcavationPaint'
 import {
   COLOR_DENSITY_UNCLASSIFIED,

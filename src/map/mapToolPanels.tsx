@@ -9,7 +9,7 @@ import type { MapTabState } from 'map/mapTabState'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import { exportDataStatuses } from 'map/mapExportData'
 import { assessImageExport } from 'map/mapImageExportRights'
-import { findMapSite, isMapSiteId } from 'map/mapSites'
+import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 
 export default function buildMapToolPanels(
@@ -22,32 +22,31 @@ export default function buildMapToolPanels(
       ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
       : undefined
 
+  const inspectorPanels: readonly MapPanelDefinition[] = selectedPolygon
+    ? [
+        {
+          id: 'inspector',
+          label: 'Selected area',
+          isSupported: true,
+          render: () => (
+            <MapInspector
+              key={selectedPolygon.polygonId}
+              polygon={selectedPolygon}
+              summary={selectedSiteData?.polygonSummaries.get(
+                selectedPolygon.polygonId,
+              )}
+              siteName={mapSiteName(selectedPolygon.siteId)}
+              status={selectedSiteData?.status ?? 'not-configured'}
+              visualizationMode={state.visualization.effectiveMode}
+              siteFilter={experience.filter}
+              onClear={clearSelection}
+            />
+          ),
+        },
+      ]
+    : []
   return [
-    {
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: selectedPolygon !== null,
-      render: () =>
-        selectedPolygon ? (
-          <MapInspector
-            key={selectedPolygon.polygonId}
-            polygon={selectedPolygon}
-            summary={selectedSiteData?.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={
-              findMapSite(selectedPolygon.siteId)?.siteName ??
-              selectedPolygon.siteId
-            }
-            status={selectedSiteData?.status ?? 'not-configured'}
-            visualizationMode={state.visualization.effectiveMode}
-            siteFilter={experience.filter}
-            onClear={clearSelection}
-          />
-        ) : (
-          <p>No excavation area is selected.</p>
-        ),
-    },
+    ...inspectorPanels,
     {
       id: 'visualization',
       label: 'Visualization',

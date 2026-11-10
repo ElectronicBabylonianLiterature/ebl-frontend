@@ -2,9 +2,9 @@ import { saveAs } from 'file-saver'
 import {
   type MapExportContext,
   type MapExportRow,
-  buildExportCsv,
   buildExportGeoJson,
 } from 'map/mapExportData'
+import { buildExportCsv } from 'map/mapExportCsv'
 
 export const GEOJSON_MEDIA_TYPE = 'application/geo+json;charset=utf-8'
 export const CSV_MEDIA_TYPE = 'text/csv;charset=utf-8'

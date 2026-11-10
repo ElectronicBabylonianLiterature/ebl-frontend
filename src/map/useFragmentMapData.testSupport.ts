@@ -1,7 +1,7 @@
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
-import type { FindspotMapData } from 'map/findspotMapData'
-import type { MapSiteId } from 'map/mapSites'
+import type { FindspotMapData } from 'fragmentarium/domain/findspotMapData'
+import type { MapSiteId } from 'fragmentarium/domain/mapSites'
 import type {
   FragmentMapDataState,
   FragmentMapDataStatus,
