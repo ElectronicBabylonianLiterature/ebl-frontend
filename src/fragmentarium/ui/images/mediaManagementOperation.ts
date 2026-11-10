@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
+import { isDefinitiveRejection } from 'http/ApiError'
 
-export function useMediaOperation(onSuccess: () => void) {
+/**
+ * Runs one media mutation. `onUncertain` fires when the mutation failed in a
+ * way that does not prove the server rejected it (anything but HTTP 4xx), so
+ * the caller can refresh while the error is still surfaced to the user.
+ */
+export function useMediaOperation(
+  onSuccess: () => void,
+  onUncertain: () => void = () => undefined,
+) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const controller = useRef(new AbortController())
@@ -19,7 +28,10 @@ export function useMediaOperation(onSuccess: () => void) {
       await operation(controller.current.signal)
       if (!controller.current.signal.aborted) onSuccess()
     } catch (error) {
-      if (!controller.current.signal.aborted) setError(error as Error)
+      if (!controller.current.signal.aborted) {
+        setError(error as Error)
+        if (!isDefinitiveRejection(error)) onUncertain()
+      }
     } finally {
       if (!controller.current.signal.aborted) setSaving(false)
     }

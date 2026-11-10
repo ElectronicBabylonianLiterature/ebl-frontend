@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import MediaManagementControls from './MediaManagementControls'
 import { galleryServices, mediaFixture } from './gallery.testSupport'
 import type { MediaResource } from 'fragmentarium/domain/media'
+import { ApiError } from 'http/ApiError'
 
 function setup({
   media = mediaFixture({ publicationStatus: 'PUBLISHED' }),
@@ -127,10 +128,10 @@ test('own rejected submissions show status and review feedback without edit cont
   ).not.toBeInTheDocument()
 })
 
-test('a failed primary change reports the error without refreshing the gallery', async () => {
+test('a rejected primary change reports the error without refreshing the gallery', async () => {
   const { management, onChanged } = setup()
   management.setPrimary.mockRejectedValueOnce(
-    new Error('Primary change denied'),
+    new ApiError('Primary change denied', {}, 403),
   )
   await userEvent.click(screen.getByRole('button', { name: 'Set as primary' }))
   expect(await screen.findByRole('alert')).toHaveTextContent(
@@ -139,9 +140,31 @@ test('a failed primary change reports the error without refreshing the gallery',
   expect(onChanged).not.toHaveBeenCalled()
 })
 
+test.each([
+  ['a gateway timeout', new ApiError('Gateway Timeout', {}, 504)],
+  ['a network failure', new ApiError('Network failure', {}, 0)],
+  ['an unreadable response', new Error('Response could not be read')],
+])(
+  'a publish failing with %s surfaces the error and refreshes the gallery',
+  async (_name, error) => {
+    const media = mediaFixture({
+      publicationStatus: 'PENDING_REVIEW',
+      permissionAttested: true,
+      rightsStatement: 'Permission granted',
+    })
+    const { management, onChanged } = setup({ media })
+    management.publish.mockRejectedValueOnce(error)
+    await userEvent.click(screen.getByRole('button', { name: 'Publish image' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent(error.message)
+    expect(onChanged).toHaveBeenCalledTimes(1)
+  },
+)
+
 test('removal needs confirmation and refreshes only after server success', async () => {
   const { management, onChanged } = setup()
-  management.remove.mockRejectedValueOnce(new Error('Removal failed'))
+  management.remove.mockRejectedValueOnce(
+    new ApiError('Removal failed', {}, 403),
+  )
   await userEvent.click(screen.getByRole('button', { name: 'Remove image' }))
   expect(management.remove).not.toHaveBeenCalled()
   await userEvent.click(screen.getByRole('button', { name: 'Confirm removal' }))

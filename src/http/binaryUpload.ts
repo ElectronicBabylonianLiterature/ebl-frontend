@@ -11,25 +11,33 @@ function cancelled(): DOMException {
   return new DOMException('Upload cancelled', 'AbortError')
 }
 
+const unparsed = Symbol('unparsed')
+
 function responseBody(request: XMLHttpRequest): unknown {
   try {
     return request.responseText ? JSON.parse(request.responseText) : null
   } catch {
-    throw new ApiError(
-      'The upload response could not be read.',
-      {},
-      request.status,
-    )
+    return unparsed
   }
 }
 
+function succeeded(request: XMLHttpRequest): boolean {
+  return request.status >= 200 && request.status < 300
+}
+
 function responseError(request: XMLHttpRequest, body: unknown): ApiError {
-  const fields = body && typeof body === 'object' ? body : {}
+  // Proxies and gateways (e.g. an nginx 413 or 502 page) answer with HTML or
+  // an empty body; report their status like ApiError.fromResponse does.
+  if (body === unparsed || !body || typeof body !== 'object')
+    return new ApiError(
+      request.status === 413
+        ? 'The file is too large to upload.'
+        : ApiError.statusMessage(request.status, request.statusText),
+      {},
+      request.status,
+    )
   return new ApiError(
-    ApiError.bodyToMessage(
-      fields as Record<string, unknown>,
-      request.statusText,
-    ),
+    ApiError.bodyToMessage(body as Record<string, unknown>, request.statusText),
     body,
     request.status,
   )
@@ -56,13 +64,17 @@ function uploadResponse<T>(
   resolve: (value: T) => void,
   reject: (error: Error) => void,
 ): void {
-  try {
-    const body = responseBody(request)
-    if (request.status >= 200 && request.status < 300) resolve(body as T)
-    else reject(responseError(request, body))
-  } catch (error) {
-    reject(error as Error)
-  }
+  const body = responseBody(request)
+  if (!succeeded(request)) reject(responseError(request, body))
+  else if (body === unparsed)
+    reject(
+      new ApiError(
+        'The upload response could not be read.',
+        {},
+        request.status,
+      ),
+    )
+  else resolve(body as T)
 }
 
 export function uploadBinaryRequest<T>(

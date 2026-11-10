@@ -1,4 +1,6 @@
 import {
+  mergeSharedMetadata,
+  metadataTooLong,
   sameUploadMetadata,
   sharedUploadMetadata,
   withUploadMetadata,
@@ -64,4 +66,72 @@ test('changed metadata rotates the key and restoring the attempted payload resto
   const changed = withUploadMetadata(sent, { ...metadata, caption: 'Other' })
   expect(changed.key).not.toBe('original-key')
   expect(withUploadMetadata(changed, { ...metadata }).key).toBe('original-key')
+})
+
+const blankShared = {
+  type: 'PHOTO' as const,
+  caption: '',
+  sourceInstitution: '',
+  rightsStatement: '',
+  permissionAttested: false,
+}
+test('applying a shared rights statement keeps per-entry description, creator and other fields', () => {
+  const own = {
+    ...metadata,
+    type: 'COPY' as const,
+    description: 'Lower edge',
+    creator: 'A. Photographer',
+    references: [{ id: 'RN1' }],
+    projects: ['CAIC'],
+  }
+  const applied = sharedUploadMetadata(entry({ metadata: own }), {
+    ...blankShared,
+    rightsStatement: 'CC BY 4.0',
+    creator: '   ',
+    references: [],
+  })
+  expect(applied.metadata).toEqual({ ...own, rightsStatement: 'CC BY 4.0' })
+  expect(applied.key).not.toBe('original-key')
+})
+test('filled shared fields override the entry', () => {
+  const own = {
+    ...metadata,
+    permissionAttested: false,
+    description: 'Lower edge',
+    creator: 'A. Photographer',
+    projects: ['CAIC'],
+  }
+  expect(
+    mergeSharedMetadata(own, {
+      ...blankShared,
+      type: 'COPY',
+      description: 'Shared context',
+      creator: 'B. Creator',
+      projects: ['AMPS'],
+      references: [{ id: 'RN2' }],
+      permissionAttested: true,
+    }),
+  ).toEqual({
+    ...own,
+    type: 'COPY',
+    description: 'Shared context',
+    creator: 'B. Creator',
+    projects: ['AMPS'],
+    references: [{ id: 'RN2' }],
+    permissionAttested: true,
+  })
+})
+test('a blank shared form leaves the entry and its retry identity untouched', () => {
+  const failed = entry({
+    metadata: { ...metadata, description: 'Lower edge' },
+  })
+  expect(sharedUploadMetadata(failed, blankShared)).toBe(failed)
+})
+test('flags entries whose encoded metadata exceeds the upload header limit', () => {
+  expect(metadataTooLong(entry())).toBe(false)
+  expect(
+    metadataTooLong(
+      entry({ metadata: { ...metadata, description: 'š'.repeat(3000) } }),
+    ),
+  ).toBe(true)
 })

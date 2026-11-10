@@ -11,6 +11,7 @@ import userEvent from '@testing-library/user-event'
 import MediaUploadDialog from './MediaUploadDialog'
 import { galleryServices, mediaFixture } from './gallery.testSupport'
 import type MediaManagementRepository from 'fragmentarium/application/MediaManagementRepository'
+import { ApiError } from 'http/ApiError'
 
 let counter = 0
 beforeEach(() => {
@@ -502,4 +503,123 @@ test('unmounting an in-flight upload never refreshes', async () => {
   unmount()
   await act(async () => undefined)
   expect(onChanged).not.toHaveBeenCalled()
+})
+
+test.each([
+  ['a network failure', new ApiError('Upload connection failed', {}, 0)],
+  ['a gateway timeout', new ApiError('Gateway Timeout', {}, 504)],
+  [
+    'an unreadable response',
+    new Error('The upload response could not be read.'),
+  ],
+])(
+  'an upload failing with %s refreshes the gallery and keeps the retry',
+  async (_name, error) => {
+    const upload = jest.fn().mockRejectedValueOnce(error)
+    const { onChanged } = setup(upload)
+    await submitOne(upload)
+    expect(await screen.findByRole('alert')).toHaveTextContent(error.message)
+    expect(
+      screen.getByRole('button', { name: 'Retry obverse.png' }),
+    ).toBeVisible()
+    expect(onChanged).toHaveBeenCalledTimes(1)
+  },
+)
+
+test('an upload definitively rejected by the server does not refresh the gallery', async () => {
+  const upload = jest
+    .fn()
+    .mockRejectedValueOnce(new ApiError('File too large', {}, 413))
+  const { onChanged } = setup(upload)
+  await submitOne(upload)
+  expect(await screen.findByRole('alert')).toHaveTextContent('File too large')
+  expect(onChanged).not.toHaveBeenCalled()
+})
+
+test('blocks an entry whose metadata is too long to upload and explains why', async () => {
+  const { upload } = setup()
+  await userEvent.upload(
+    screen.getByLabelText('Choose images or drop them here'),
+    [file(), file('reverse.png')],
+  )
+  await fill()
+  await fill('reverse.png')
+  const entry = within(
+    screen.getByRole('region', { name: 'Upload obverse.png' }),
+  )
+  fireEvent.change(entry.getByLabelText('Additional context'), {
+    target: { value: 'š'.repeat(2000) },
+  })
+  fireEvent.change(entry.getByLabelText('Photographer or creator'), {
+    target: { value: 'ṣ'.repeat(2000) },
+  })
+  const tooLong = entry.getByRole('alert')
+  expect(tooLong).toHaveTextContent(
+    "obverse.png: This image's metadata is too long to upload. Shorten the description, caption or other text fields.",
+  )
+  expect(entry.getByLabelText('Additional context')).toHaveAttribute(
+    'aria-invalid',
+    'true',
+  )
+  expect(entry.getByLabelText('Additional context')).toHaveAttribute(
+    'aria-describedby',
+    tooLong.id,
+  )
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await screen.findByText('Submitted for review')
+  expect(upload).toHaveBeenCalledTimes(1)
+  expect(upload.mock.calls[0][1].name).toBe('reverse.png')
+  expect(entry.getByText('Ready to upload')).toBeInTheDocument()
+  expect(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  ).toBeDisabled()
+
+  fireEvent.change(entry.getByLabelText('Additional context'), {
+    target: { value: 'Lower edge' },
+  })
+  fireEvent.change(entry.getByLabelText('Photographer or creator'), {
+    target: { value: 'A. Photographer' },
+  })
+  expect(entry.queryByRole('alert')).not.toBeInTheDocument()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await waitFor(() => expect(upload).toHaveBeenCalledTimes(2))
+  expect(upload.mock.calls[1][2].description).toBe('Lower edge')
+})
+
+test('applying shared rights keeps each image’s own description and creator', async () => {
+  const { upload } = setup()
+  await userEvent.upload(
+    screen.getByLabelText('Choose images or drop them here'),
+    file(),
+  )
+  await fill()
+  const entry = within(
+    screen.getByRole('region', { name: 'Upload obverse.png' }),
+  )
+  fireEvent.change(entry.getByLabelText('Additional context'), {
+    target: { value: 'Lower edge' },
+  })
+  fireEvent.change(entry.getByLabelText('Photographer or creator'), {
+    target: { value: 'A. Photographer' },
+  })
+  fireEvent.change(
+    screen.getAllByLabelText('Rights / reproduction statement')[0],
+    { target: { value: 'CC BY 4.0' } },
+  )
+  await applyShared()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Submit images for review' }),
+  )
+  await waitFor(() => expect(upload).toHaveBeenCalledTimes(1))
+  expect(upload.mock.calls[0][2]).toMatchObject({
+    caption: 'Obverse',
+    description: 'Lower edge',
+    creator: 'A. Photographer',
+    rightsStatement: 'CC BY 4.0',
+    permissionAttested: true,
+  })
 })

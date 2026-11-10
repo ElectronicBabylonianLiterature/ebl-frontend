@@ -4,11 +4,18 @@ import type {
   MediaUploadOptions,
 } from 'fragmentarium/application/MediaManagementRepository'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
+import {
+  encodeMediaMetadataHeader,
+  MEDIA_METADATA_HEADER_LIMIT,
+  MEDIA_METADATA_TOO_LONG_MESSAGE,
+} from 'fragmentarium/application/mediaMetadataHeader'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { normalizeMediaResource } from 'fragmentarium/infrastructure/mediaResourceMapper'
 import { isRecord } from 'fragmentarium/infrastructure/mediaMapperValidation'
 import { fragmentMediaListUrl } from 'fragmentarium/infrastructure/mediaUrls'
 import type ApiClient from 'http/ApiClient'
+import { isDefinitiveRejection } from 'http/ApiError'
+import { ApiError } from 'http/ApiError'
 
 function mediaUrl(fragment: string, id: string, action = ''): string {
   return `/media/${encodeURIComponent(id)}${action ? `/${action}` : ''}?fragment=${encodeURIComponent(fragment)}`
@@ -86,13 +93,15 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
       this.onChanged(fragment)
       return result
     } catch (error) {
-      // Only a sent request can have committed despite cancellation. Disposal
+      // A sent request may have committed unless the server definitively
+      // rejected it (HTTP 4xx): cancellation, network loss, gateway errors and
+      // unreadable success bodies all leave the outcome uncertain. Disposal
       // permanently fences this request even if the adapter is activated again.
       if (
         !reported &&
         dispatched &&
         this.isCurrent(generation) &&
-        controller.signal.aborted
+        !isDefinitiveRejection(error)
       )
         this.onChanged(fragment)
       throw error
@@ -109,6 +118,12 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     idempotencyKey: string,
     options: MediaUploadOptions = {},
   ): Promise<MediaResource> {
+    const metadataHeader = encodeMediaMetadataHeader(metadata, file.name)
+    // The API would answer 413; never send a request that cannot succeed.
+    if (metadataHeader.length > MEDIA_METADATA_HEADER_LIMIT)
+      return Promise.reject(
+        new ApiError(MEDIA_METADATA_TOO_LONG_MESSAGE, {}, 413),
+      )
     return this.run(fragment, options.signal, async (signal, onDispatched) =>
       canonical(
         await this.api.uploadBinary(
@@ -117,9 +132,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
           {
             'Content-Type': file.type,
             'Idempotency-Key': idempotencyKey,
-            'X-Media-Metadata': encodeURIComponent(
-              JSON.stringify({ ...metadata, originalFilename: file.name }),
-            ),
+            'X-Media-Metadata': metadataHeader,
           },
           { ...options, signal, onDispatched },
         ),

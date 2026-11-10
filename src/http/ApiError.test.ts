@@ -1,4 +1,5 @@
 import { ApiError } from 'http/ApiClient'
+import { isDefinitiveRejection } from 'http/ApiError'
 import {
   CaptureStackTraceOverride,
   overrideCaptureStackTrace,
@@ -109,4 +110,31 @@ describe('On an engine without Error.captureStackTrace', () => {
     expect(error).toBeInstanceOf(ApiError)
     expect(error.message).toBe('Bad Request')
   })
+})
+
+test('fromResponse falls back to the HTTP status when a non-JSON error has no status text', async () => {
+  const response = {
+    status: 502,
+    statusText: '',
+    json: () => Promise.reject(new SyntaxError('Unexpected token <')),
+  } as unknown as Response
+  const error = await ApiError.fromResponse(response)
+  expect(error.message).toBe('HTTP 502')
+  expect(error.status).toBe(502)
+})
+
+test.each([
+  [new ApiError('Bad Request', {}, 400), true],
+  [new ApiError('Conflict', {}, 409), false],
+  [new ApiError('Forbidden', {}, 403), true],
+  [new ApiError('Too Large', {}, 413), true],
+  [new ApiError('Unprocessable', {}, 422), true],
+  [new ApiError('Network', {}, 0), false],
+  [new ApiError('No status', {}), false],
+  [new ApiError('Server error', {}, 500), false],
+  [new ApiError('Gateway Timeout', {}, 504), false],
+  [new Error('Unreadable'), false],
+  [new DOMException('Cancelled', 'AbortError'), false],
+])('isDefinitiveRejection(%p) is %p', (error, expected) => {
+  expect(isDefinitiveRejection(error)).toBe(expected)
 })

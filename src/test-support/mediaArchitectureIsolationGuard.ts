@@ -7,6 +7,7 @@ export const mediaArchitectureModules = [
   'fragmentarium/application/MediaRepository',
   'fragmentarium/application/MediaManagementRepository',
   'fragmentarium/application/MediaGalleryContext',
+  'fragmentarium/application/mediaMetadataHeader',
   'fragmentarium/infrastructure/MediaGalleryProvider',
   'fragmentarium/ui/images/MediaGallery',
   'fragmentarium/ui/images/MediaManagementControls',

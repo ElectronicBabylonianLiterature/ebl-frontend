@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Button, ProgressBar } from 'react-bootstrap'
 import MediaMetadataFields from './MediaMetadataFields'
-import { busy, completed, type UploadEntry } from './mediaUploadEntries'
+import {
+  busy,
+  completed,
+  metadataTooLong,
+  type UploadEntry,
+} from './mediaUploadEntries'
+import { MEDIA_METADATA_TOO_LONG_MESSAGE } from 'fragmentarium/application/mediaMetadataHeader'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 
 function Preview({ file }: { file: File }): JSX.Element {
@@ -59,6 +65,7 @@ export default function MediaUploadEntry({
 }): JSX.Element {
   const removable = !completed(entry) && !busy(entry)
   const queued = active && entry.state === 'Ready to upload'
+  const tooLong = !completed(entry) && metadataTooLong(entry)
   return (
     <section
       className="MediaUpload__entry"
@@ -86,7 +93,17 @@ export default function MediaUploadEntry({
           value={entry.metadata}
           disabled={active}
           onChange={onEdit}
+          errorId={tooLong ? `media-entry-${index}-too-long` : undefined}
         />
+      )}
+      {tooLong && (
+        <Alert
+          id={`media-entry-${index}-too-long`}
+          variant="danger"
+          role="alert"
+        >
+          {entry.file.name}: {MEDIA_METADATA_TOO_LONG_MESSAGE}
+        </Alert>
       )}
       {(busy(entry) || queued) && (
         <Button type="button" variant="outline-secondary" onClick={onCancel}>
@@ -98,7 +115,7 @@ export default function MediaUploadEntry({
           <Button
             type="button"
             variant="outline-primary"
-            disabled={active}
+            disabled={active || tooLong}
             onClick={onRetry}
           >
             Retry {entry.file.name}

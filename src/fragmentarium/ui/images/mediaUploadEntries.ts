@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
+import { mediaMetadataFitsHeader } from 'fragmentarium/application/mediaMetadataHeader'
 import mediaUploadId from './mediaUploadId'
 
 export type UploadState =
@@ -25,6 +26,9 @@ export const completed = (entry: UploadEntry): boolean =>
   ['Submitted for review', 'Published'].includes(entry.state)
 export const busy = (entry: UploadEntry): boolean =>
   ['Uploading', 'Processing'].includes(entry.state)
+/** The API rejects metadata whose encoded upload header exceeds its limit. */
+export const metadataTooLong = (entry: UploadEntry): boolean =>
+  !mediaMetadataFitsHeader(entry.metadata, entry.file.name)
 
 function sameFile(entry: UploadEntry, file: File): boolean {
   return (
@@ -92,14 +96,49 @@ export function withUploadMetadata(
       ?.key ?? mediaUploadId()
   return { ...entry, metadata, state, key }
 }
+const textFields = [
+  'caption',
+  'sourceInstitution',
+  'rightsStatement',
+  'creator',
+  'copyrightHolder',
+  'attribution',
+  'description',
+] as const
+const listFields = ['references', 'projects'] as const
+/** The image type the shared form starts with; only a different choice counts as filled in. */
+const defaultMediaType: MediaMetadata['type'] = 'PHOTO'
+/**
+ * Overlays only the shared fields the user actually filled in: non-blank
+ * text, non-empty lists, a checked permission attestation and a non-default
+ * image type. Blank or absent shared fields keep each entry's own value.
+ */
+export function mergeSharedMetadata(
+  own: MediaMetadata,
+  shared: MediaMetadata,
+): MediaMetadata {
+  const merged: MediaMetadata = { ...own }
+  textFields.forEach((field) => {
+    const value = shared[field]
+    if (value?.trim()) merged[field] = value
+  })
+  listFields.forEach((field) => {
+    const value = shared[field]
+    if (value?.length) Object.assign(merged, { [field]: value })
+  })
+  if (shared.permissionAttested) merged.permissionAttested = true
+  if (shared.type !== defaultMediaType) merged.type = shared.type
+  return merged
+}
+/**
+ * Applies the batch form to one entry. The key rotates only when the merge
+ * actually changed the entry (see withUploadMetadata).
+ */
 export function sharedUploadMetadata(
   entry: UploadEntry,
   metadata: MediaMetadata,
 ): UploadEntry {
   return completed(entry)
     ? entry
-    : withUploadMetadata(entry, {
-        ...metadata,
-        caption: metadata.caption || entry.metadata.caption,
-      })
+    : withUploadMetadata(entry, mergeSharedMetadata(entry.metadata, metadata))
 }

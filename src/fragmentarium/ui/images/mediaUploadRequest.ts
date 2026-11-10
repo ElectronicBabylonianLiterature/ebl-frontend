@@ -1,6 +1,12 @@
 import type { MutableRefObject } from 'react'
 import type MediaManagementRepository from 'fragmentarium/application/MediaManagementRepository'
-import { busy, completed, type UploadEntry } from './mediaUploadEntries'
+import { isDefinitiveRejection } from 'http/ApiError'
+import {
+  busy,
+  completed,
+  metadataTooLong,
+  type UploadEntry,
+} from './mediaUploadEntries'
 
 export interface UploadRuntime {
   controllers: Map<string, AbortController>
@@ -38,7 +44,13 @@ export async function uploadEntry(
   entry: UploadEntry,
   { fragment, management, runtime, update, onChanged }: UploadContext,
 ): Promise<void> {
-  if (!management || runtime.controllers.has(entry.id)) return
+  // Oversized metadata is shown as a validation error and never sent.
+  if (
+    !management ||
+    runtime.controllers.has(entry.id) ||
+    metadataTooLong(entry)
+  )
+    return
   const controller = new AbortController()
   runtime.controllers.set(entry.id, controller)
   const updateActive = (changes: Partial<UploadEntry>): void => {
@@ -79,9 +91,15 @@ export async function uploadEntry(
     }
   } catch (error) {
     update(entry.id, failedEntry(error as Error, controller))
-    // An aborted request may already have been committed server-side. Refresh
-    // the gallery of this still-mounted fragment; success is never assumed.
-    if (controller.signal.aborted && runtime.mounted.current) onChanged()
+    // Unless the server definitively rejected it (HTTP 4xx), the upload may
+    // already have been committed server-side (cancellation, network loss,
+    // gateway errors). Refresh the gallery of this still-mounted fragment;
+    // success is never assumed and an idempotent retry stays available.
+    if (
+      runtime.mounted.current &&
+      (controller.signal.aborted || !isDefinitiveRejection(error))
+    )
+      onChanged()
   } finally {
     runtime.controllers.delete(entry.id)
   }
@@ -107,7 +125,9 @@ export async function uploadBatch(
 ): Promise<void> {
   runtime.batchCancelled.current = false
   runtime.cancelledEntries.clear()
-  const queue = entries.filter((entry) => !completed(entry) && !busy(entry))
+  const queue = entries.filter(
+    (entry) => !completed(entry) && !busy(entry) && !metadataTooLong(entry),
+  )
   await Promise.all([
     drainQueue(queue, runtime, upload),
     drainQueue(queue, runtime, upload),

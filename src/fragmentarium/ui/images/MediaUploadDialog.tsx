@@ -5,7 +5,7 @@ import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRep
 import MediaMetadataFields, { emptyMediaMetadata } from './MediaMetadataFields'
 import MediaUploadEntry from './MediaUploadEntry'
 import { useMediaUploadQueue } from './MediaUploadQueue'
-import { completed } from './mediaUploadEntries'
+import { completed, metadataTooLong } from './mediaUploadEntries'
 import './MediaManagement.css'
 
 export default function MediaUploadDialog({
@@ -128,7 +128,10 @@ export default function MediaUploadDialog({
           <Button
             type="submit"
             disabled={
-              queue.active || !queue.entries.some((entry) => !completed(entry))
+              queue.active ||
+              !queue.entries.some(
+                (entry) => !completed(entry) && !metadataTooLong(entry),
+              )
             }
           >
             Submit images for review

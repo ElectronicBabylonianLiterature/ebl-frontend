@@ -1,6 +1,7 @@
 import ApiMediaManagementRepository from './ApiMediaManagementRepository'
 import { mediaFixture } from 'fragmentarium/ui/images/gallery.testSupport'
 import { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
+import { ApiError } from 'http/ApiError'
 
 const metadata: MediaMetadata = {
   type: 'PHOTO',
@@ -205,11 +206,88 @@ describe('ambiguous cancellation of a dispatched request', () => {
     expect(changed).not.toHaveBeenCalled()
   })
 
-  test('ordinary failures do not invalidate caches', async () => {
+  test('failures before dispatch do not invalidate caches', async () => {
     api.uploadBinary.mockRejectedValue(new Error('Denied'))
     await expect(
       repository.upload('K.1', file, metadata, 'key'),
     ).rejects.toThrow('Denied')
+    expect(changed).not.toHaveBeenCalled()
+  })
+
+  const dispatchedFailure = (outcome: () => Promise<unknown>) =>
+    api.requestJson.mockImplementation(
+      (_path, _method, _body, _signal, onDispatched) => {
+        onDispatched()
+        return outcome()
+      },
+    )
+
+  test.each([400, 403, 404, 413, 422])(
+    'a dispatched mutation definitively rejected with HTTP %p does not invalidate',
+    async (status) => {
+      const error = new ApiError('Rejected', {}, status)
+      dispatchedFailure(() => Promise.reject(error))
+      await expect(repository.publish('K.1', mediaFixture().id)).rejects.toBe(
+        error,
+      )
+      expect(changed).not.toHaveBeenCalled()
+    },
+  )
+
+  test.each([
+    ['a network failure (status 0)', new ApiError('Network', {}, 0)],
+    ['a gateway timeout', new ApiError('Gateway Timeout', {}, 504)],
+    ['a bad gateway', new ApiError('Bad Gateway', {}, 502)],
+    ['a server error', new ApiError('Server error', {}, 500)],
+    [
+      'an idempotency conflict (409)',
+      new ApiError('This upload is already being processed.', {}, 409),
+    ],
+    ['an error without a status', new TypeError('Failed to fetch')],
+  ])(
+    'a dispatched mutation failing with %s invalidates once and surfaces the error',
+    async (_name, error) => {
+      dispatchedFailure(() => Promise.reject(error))
+      await expect(repository.publish('K.1', mediaFixture().id)).rejects.toBe(
+        error,
+      )
+      expect(changed.mock.calls).toEqual([['K.1']])
+    },
+  )
+
+  test('an unreadable success body after dispatch invalidates once', async () => {
+    dispatchedFailure(() => Promise.resolve({ unexpected: true }))
+    await expect(repository.publish('K.1', mediaFixture().id)).rejects.toThrow(
+      'could not be read',
+    )
+    expect(changed.mock.calls).toEqual([['K.1']])
+  })
+
+  test('an uncertain upload failure after dispatch invalidates once', async () => {
+    const error = new ApiError('Upload connection failed', {}, 0)
+    api.uploadBinary.mockImplementation((_url, _file, _headers, options) => {
+      options.onDispatched()
+      return Promise.reject(error)
+    })
+    await expect(repository.upload('K.1', file, metadata, 'key')).rejects.toBe(
+      error,
+    )
+    expect(changed.mock.calls).toEqual([['K.1']])
+  })
+
+  test('an uncertain failure of a request from a disposed session never invalidates', async () => {
+    let fail: (error: Error) => void = () => undefined
+    dispatchedFailure(
+      () =>
+        new Promise((_resolve, reject) => {
+          fail = reject
+        }),
+    )
+    const pending = repository.publish('K.1', mediaFixture().id)
+    repository.dispose()
+    repository.activate()
+    fail(new ApiError('Bad Gateway', {}, 502))
+    await expect(pending).rejects.toMatchObject({ status: 502 })
     expect(changed).not.toHaveBeenCalled()
   })
 

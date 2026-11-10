@@ -323,7 +323,7 @@ test.each([
     { description: { reason: 'Quota reached' } },
     'Created: {"reason":"Quota reached"}',
   ],
-  ['Unavailable', '{}'],
+  ['Unavailable', 'Created'],
 ])('handles bounded server error response shape %p', async (body, message) => {
   const { apiClient } = createApiClientTestContext()
   const pending = apiClient.uploadBinary(
@@ -337,6 +337,30 @@ test.each([
   xhr.onload?.()
   await expect(pending).rejects.toMatchObject({ status: 503, message })
 })
+
+test.each([
+  [413, 'Request Entity Too Large', 'The file is too large to upload.'],
+  [502, 'Bad Gateway', 'Bad Gateway'],
+  [504, '', 'HTTP 504'],
+  [500, '', 'HTTP 500'],
+])(
+  'non-JSON proxy error pages report HTTP %p instead of an unreadable response',
+  async (status, statusText, message) => {
+    const { apiClient } = createApiClientTestContext()
+    const pending = apiClient.uploadBinary(
+      '/media',
+      new File(['file'], 'tablet.png'),
+      {},
+    )
+    await waitFor(() => expect(xhr.send).toHaveBeenCalled())
+    xhr.status = status
+    xhr.statusText = statusText
+    xhr.responseText =
+      status === 500 ? '' : '<html><body>nginx error</body></html>'
+    xhr.onload?.()
+    await expect(pending).rejects.toMatchObject({ status, message, data: {} })
+  },
+)
 
 test.each([false, true])(
   'transport exceptions respect existing capture state %p',

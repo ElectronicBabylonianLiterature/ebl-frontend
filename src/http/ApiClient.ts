@@ -25,11 +25,9 @@ async function deserializeJson(response: Response): Promise<unknown> {
   if (response.status === 204) {
     return null
   }
-  if (response.status === 201) {
-    const responseText = await response.text()
-    return responseText.trim() ? JSON.parse(responseText) : null
-  }
-  return response.json()
+  // Any success status may legitimately carry an empty body.
+  const responseText = await response.text()
+  return responseText.trim() ? JSON.parse(responseText) : null
 }
 
 function createOptions(body: unknown, method: string): Options {

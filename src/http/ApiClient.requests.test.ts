@@ -81,6 +81,16 @@ describe('JSON Parsing Edge Cases', () => {
     await expect(apiClient.postJson(path, {})).resolves.toEqual(createdPayload)
   })
 
+  test('200 OK with an empty body returns null for writes', async () => {
+    const { apiClient } = context
+    fetchMock.mockResponseOnce('', { status: 200 })
+    await expect(apiClient.postJson(path, {})).resolves.toBeNull()
+    fetchMock.mockResponseOnce('  ', { status: 200 })
+    await expect(
+      apiClient.requestJson(path, 'DELETE', undefined),
+    ).resolves.toBeNull()
+  })
+
   test('204 No Content returns null', async () => {
     const { apiClient } = context
     fetchMock.mockResponseOnce('', { status: 204 })

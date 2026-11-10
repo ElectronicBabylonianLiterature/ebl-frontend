@@ -16,12 +16,14 @@ function DelimitedField({
   value,
   disabled,
   onChange,
+  errorId,
 }: {
   id: string
   label: string
   value: string
   disabled: boolean
   onChange: (items: string[]) => void
+  errorId?: string
 }): JSX.Element {
   const [draft, setDraft] = useState(value)
   useEffect(() => setDraft(value), [value])
@@ -31,6 +33,8 @@ function DelimitedField({
       <Form.Control
         value={draft}
         disabled={disabled}
+        aria-invalid={errorId ? true : undefined}
+        aria-describedby={errorId}
         onChange={(event) => setDraft(event.target.value)}
         onBlur={() => {
           const items = draft
@@ -53,6 +57,7 @@ export default function MediaMetadataFields({
   rightsEditable = true,
   requiredFields = true,
   legacy = false,
+  errorId,
 }: {
   value: MediaMetadata
   onChange: (metadata: MediaMetadata) => void
@@ -61,6 +66,7 @@ export default function MediaMetadataFields({
   rightsEditable?: boolean
   requiredFields?: boolean
   legacy?: boolean
+  errorId?: string
 }): JSX.Element {
   const field = (key: keyof MediaMetadata, label: string, required = false) => (
     <Form.Group controlId={`${id}-${key}`} className="mb-2">
@@ -69,6 +75,8 @@ export default function MediaMetadataFields({
         value={String(value[key] ?? '')}
         required={required && requiredFields}
         maxLength={2000}
+        aria-invalid={errorId ? true : undefined}
+        aria-describedby={errorId}
         disabled={
           disabled ||
           (!rightsEditable &&
@@ -110,6 +118,7 @@ export default function MediaMetadataFields({
           value.references?.map((reference) => reference.id).join(', ') ?? ''
         }
         disabled={disabled}
+        errorId={errorId}
         onChange={(items) =>
           onChange({ ...value, references: items.map((id) => ({ id })) })
         }
@@ -120,6 +129,7 @@ export default function MediaMetadataFields({
           label="Research projects (CAIC, ALU_GENEVA, AMPS, RECC; comma separated)"
           value={value.projects?.join(', ') ?? ''}
           disabled={disabled}
+          errorId={errorId}
           onChange={(projects) => onChange({ ...value, projects })}
         />
       )}

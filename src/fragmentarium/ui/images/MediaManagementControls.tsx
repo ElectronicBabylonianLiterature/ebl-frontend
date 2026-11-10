@@ -51,7 +51,7 @@ export default function MediaManagementControls({
   const operation = useMediaOperation(() => {
     setDialog(null)
     onChanged()
-  })
+  }, onChanged)
   const manager = Boolean(services.canManage)
   const authorized = manager || ownsSubmission(media, services)
   if (!services.management || !authorized) return null
