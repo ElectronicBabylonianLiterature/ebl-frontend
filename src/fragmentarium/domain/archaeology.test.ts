@@ -35,6 +35,11 @@ const excavationNumber: MuseumNumber = {
   number: '38',
   suffix: '',
 }
+const ceDate = new Date(1920, 5, 5).toLocaleDateString('default', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
 const site: SiteKey = 'Assyria'
 
 const cslData = cslDataFactory.build()
@@ -213,7 +218,7 @@ test.each([
         notes: '',
       },
     },
-    'a house (Residential), II (06/05/1920).',
+    `a house (Residential), II (${ceDate}).`,
     'en-US',
   ],
   [
@@ -225,7 +230,7 @@ test.each([
         notes: '',
       },
     },
-    'a house (Residential), II (05.06.1920).',
+    `a house (Residential), II (${ceDate}).`,
     'de-DE',
   ],
 ])(
