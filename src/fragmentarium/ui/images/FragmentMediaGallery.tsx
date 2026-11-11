@@ -19,6 +19,11 @@ interface GalleryResponse {
   error?: Error
 }
 
+function isServerError(error: ApiError): boolean {
+  const status = error.status ?? 0
+  return status >= 500 && status < 600
+}
+
 const GalleryContents = withData<
   Props & { onRetry: () => void },
   object,
@@ -49,10 +54,7 @@ const GalleryContents = withData<
     } catch (error) {
       if (
         error instanceof UnsupportedMediaResponseError ||
-        (error instanceof ApiError &&
-          error.status !== undefined &&
-          error.status >= 500 &&
-          error.status < 600)
+        (error instanceof ApiError && isServerError(error))
       ) {
         return { media: [], error }
       }
