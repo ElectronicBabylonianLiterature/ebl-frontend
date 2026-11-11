@@ -56,8 +56,8 @@ test('does not request legacy bytes for a new-only photo while disabled', () => 
   render(
     <FragmentCardThumbnail
       fragment={fragmentFactory.build({
-        hasPhoto: true,
-        legacyHasPhoto: false,
+        hasPhoto: false,
+        mediaSummary: { count: 1, types: ['PHOTO'] },
       })}
       fragmentService={service}
       queryItem={queryItem}
@@ -74,7 +74,6 @@ test('uses scoped gallery thumbnails for new-only search results', async () => {
   const fragment = fragmentFactory.build({
     number: 'K.1',
     hasPhoto: false,
-    legacyHasPhoto: false,
     mediaSummary: {
       count: 1,
       types: ['COPY'],
@@ -111,7 +110,6 @@ test('restores a legacy card image when its new preview is missing', async () =>
   const fragment = fragmentFactory.build({
     number: 'K.1',
     hasPhoto: true,
-    legacyHasPhoto: true,
     mediaSummary: {
       count: 1,
       types: ['PHOTO'],

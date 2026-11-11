@@ -59,7 +59,6 @@ export type QuerySummaryItemDto = {
   matchingLinePreview?: FragmentQueryPreviewDto | null
   matchCount: number
   hasPhoto: boolean
-  legacyHasPhoto?: boolean
   mediaSummary?: unknown
   thumbnailPath?: string | null
 }
@@ -234,7 +233,6 @@ export function createQuerySummaryFragment(
     traditionalReferences: [],
     atf: '',
     hasPhoto: dto.hasPhoto,
-    legacyHasPhoto: dto.legacyHasPhoto,
     mediaSummary: normalizeMediaSummary(dto.mediaSummary) ?? undefined,
     genres: Genres.fromJson(dto.genres ?? []),
     introduction: { text: '', parts: [] },

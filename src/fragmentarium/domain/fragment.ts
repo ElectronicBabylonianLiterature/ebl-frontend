@@ -56,7 +56,6 @@ interface FragmentProps {
   traditionalReferences: readonly string[]
   atf: string
   hasPhoto: boolean
-  legacyHasPhoto?: boolean
   mediaSummary?: MediaSummary
   genres: Genres
   introduction: Introduction
@@ -97,7 +96,6 @@ export class Fragment {
   readonly traditionalReferences: readonly string[]
   readonly atf: string
   readonly hasPhoto: boolean
-  readonly legacyHasPhoto?: boolean
   readonly mediaSummary?: MediaSummary
   readonly genres: Genres
   readonly introduction: Introduction
@@ -135,9 +133,6 @@ export class Fragment {
     this.traditionalReferences = props.traditionalReferences
     this.atf = props.atf
     this.hasPhoto = props.hasPhoto
-    if (typeof props.legacyHasPhoto === 'boolean') {
-      this.legacyHasPhoto = props.legacyHasPhoto
-    }
     if (props.mediaSummary) {
       this.mediaSummary = props.mediaSummary
     }
@@ -159,10 +154,6 @@ export class Fragment {
 
   static create(props: FragmentProps): Fragment {
     return new Fragment(props)
-  }
-
-  get hasLegacyPhoto(): boolean {
-    return this.legacyHasPhoto ?? this.hasPhoto
   }
 
   get hasAnyImage(): boolean {

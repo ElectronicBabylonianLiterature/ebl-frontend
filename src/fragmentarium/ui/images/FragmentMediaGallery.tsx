@@ -37,7 +37,7 @@ const GalleryContents = withData<
           fragment={fragment}
           media={data.media}
           services={services}
-          legacyPhoto={fragment.hasLegacyPhoto ? fallback : undefined}
+          legacyPhoto={fragment.hasPhoto ? fallback : undefined}
         />
       </>
     ) : (

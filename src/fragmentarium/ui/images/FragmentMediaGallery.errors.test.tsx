@@ -21,8 +21,7 @@ function renderFailure(
   services.repository.findByFragment.mockRejectedValue(error)
   const fragment = fragmentFactory.build({
     number: 'K.1',
-    hasPhoto: true,
-    legacyHasPhoto: hasLegacyPhoto,
+    hasPhoto: hasLegacyPhoto,
   })
   const element = (sessionServices = services): JSX.Element => (
     <FragmentMediaGallery
