@@ -5,6 +5,7 @@ import Reference from 'bibliography/domain/Reference'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import { MarkupPart } from 'transliteration/domain/markup'
 import * as Sentry from '@sentry/react'
+import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 
 jest.mock('bibliography/application/BibliographyService')
 
@@ -43,10 +44,9 @@ describe('ReferenceInjector errors', () => {
       const error = createError()
       const bibliographyService = new MockBibliographyService()
       const reportError = jest.fn()
-      const referenceInjector = new ReferenceInjector(
-        bibliographyService,
-        reportError,
-      )
+      const referenceInjector = new ReferenceInjector(bibliographyService, {
+        captureException: reportError,
+      })
       bibliographyService.find.mockRejectedValue(error)
 
       const result = await referenceInjector.injectReferenceToOldLineNumber({
@@ -61,17 +61,17 @@ describe('ReferenceInjector errors', () => {
         referenceId: reference.id,
         hasUnresolvedDocument: true,
       })
-      expect(reportError).toHaveBeenCalledWith(error)
+      expect(reportError).toHaveBeenCalledTimes(1)
+      expect(reportError.mock.calls[0][0]).toBe(error)
     },
   )
 
   test('preserves a missing old line citation without reporting an outage', async () => {
     const bibliographyService = new MockBibliographyService()
     const reportError = jest.fn()
-    const referenceInjector = new ReferenceInjector(
-      bibliographyService,
-      reportError,
-    )
+    const referenceInjector = new ReferenceInjector(bibliographyService, {
+      captureException: reportError,
+    })
     bibliographyService.find.mockRejectedValue(
       new ApiError('Not Found', {}, 404),
     )
@@ -89,22 +89,35 @@ describe('ReferenceInjector errors', () => {
     expect(reportError).not.toHaveBeenCalled()
   })
 
-  test('forwards the original HTTP error to the default reporter', async () => {
-    const bibliographyService = new MockBibliographyService()
-    const error = new ApiError('Service unavailable', {}, 500)
-    const capture = jest
-      .spyOn(Sentry, 'captureException')
-      .mockReturnValue('event-id')
-    bibliographyService.findManyById.mockRejectedValue(error)
+  test.each([401, 403, 404, 500, 503])(
+    'forwards the original HTTP %s error to the default reporter for Sentry to filter',
+    async (status) => {
+      const init = jest
+        .spyOn(Sentry, 'init')
+        .mockImplementation(() => undefined)
+      const capture = jest
+        .spyOn(Sentry, 'captureException')
+        .mockReturnValue('event-id')
+      SentryErrorReporter.init('http://example.com/sentry', 'test')
+      const beforeSend = init.mock.calls[0][0]?.beforeSend
+      if (!beforeSend) throw new Error('beforeSend was not configured')
+      const bibliographyService = new MockBibliographyService()
+      const error = new ApiError('Request failed', {}, status)
+      bibliographyService.findManyById.mockRejectedValue(error)
 
-    await expect(
-      new ReferenceInjector(bibliographyService).injectReferencesToMarkup([
-        bibliographyPart,
-      ]),
-    ).resolves.toEqual([bibliographyPart])
+      await expect(
+        new ReferenceInjector(bibliographyService).injectReferencesToMarkup([
+          bibliographyPart,
+        ]),
+      ).resolves.toEqual([bibliographyPart])
 
-    expect(capture).toHaveBeenCalledWith(error)
-  })
+      expect(capture).toHaveBeenCalledTimes(1)
+      expect(capture.mock.calls[0][0]).toBe(error)
+      expect(
+        beforeSend({ type: undefined }, { originalException: error }),
+      ).toBeNull()
+    },
+  )
 
   test.each(systemicErrors)(
     'preserves markup and reports a %s error',
@@ -112,10 +125,9 @@ describe('ReferenceInjector errors', () => {
       const error = createError()
       const bibliographyService = new MockBibliographyService()
       const reportError = jest.fn()
-      const referenceInjector = new ReferenceInjector(
-        bibliographyService,
-        reportError,
-      )
+      const referenceInjector = new ReferenceInjector(bibliographyService, {
+        captureException: reportError,
+      })
       bibliographyService.findManyById.mockRejectedValue(error)
 
       await expect(

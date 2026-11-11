@@ -33,10 +33,9 @@ test('keeps healthy citations readable during a partial bibliography outage', as
   const reportError = jest.fn()
   repository.findMany.mockResolvedValue([healthyEntry])
   repository.find.mockRejectedValue(failure)
-  const injector = new ReferenceInjector(
-    new BibliographyService(repository),
-    reportError,
-  )
+  const injector = new ReferenceInjector(new BibliographyService(repository), {
+    captureException: reportError,
+  })
 
   const parts = await injector.injectReferencesToMarkup([
     citation(healthyEntry.id),
@@ -65,10 +64,9 @@ test('retains cached citations when the complete bibliography batch is unavailab
   await service.find(healthyEntry.id)
   repository.findMany.mockRejectedValue(failure)
 
-  const parts = await new ReferenceInjector(
-    service,
-    reportError,
-  ).injectReferencesToMarkup([citation(healthyEntry.id), citation('outage')])
+  const parts = await new ReferenceInjector(service, {
+    captureException: reportError,
+  }).injectReferencesToMarkup([citation(healthyEntry.id), citation('outage')])
   render(<Markup parts={parts} />)
 
   expect(parts[0]).toMatchObject({ reference: expect.any(Reference) })
@@ -91,10 +89,9 @@ test('reports one shared batch outage once while retaining healthy content', asy
   )
   const strictRequest = service.findManyById(['failed-a', 'failed-b'])
   const rejection = expect(strictRequest).rejects.toBe(failure)
-  const request = new ReferenceInjector(
-    service,
-    reportError,
-  ).injectReferencesToMarkup([citation('failed-a'), citation('failed-b')])
+  const request = new ReferenceInjector(service, {
+    captureException: reportError,
+  }).injectReferencesToMarkup([citation('failed-a'), citation('failed-b')])
   batch.resolve([])
 
   await rejection

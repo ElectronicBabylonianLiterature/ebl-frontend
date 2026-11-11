@@ -61,9 +61,10 @@ describe('findManuscripts provenance preload', () => {
       chapter.manuscripts,
     )
 
-    expect(SentryErrorReporter.prototype.captureException).toHaveBeenCalledWith(
-      provenanceError,
-    )
+    const captureException = SentryErrorReporter.prototype
+      .captureException as jest.Mock
+    expect(captureException).toHaveBeenCalledTimes(1)
+    expect(captureException.mock.calls[0][0]).toBe(provenanceError)
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,

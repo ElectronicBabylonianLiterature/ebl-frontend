@@ -1,5 +1,5 @@
 import { produce, castDraft } from 'immer'
-import reportFallbackError from 'common/errors/reportFallbackError'
+import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterDisplay, LineVariantDisplay } from 'corpus/domain/chapter'
@@ -36,10 +36,12 @@ export class TextServiceCore {
     return Promise.resolve(this.fragmentService.fetchProvenances())
       .then(() => undefined)
       .catch((error) => {
-        reportFallbackError(error)
+        this.errorReporter.captureException(error)
       })
   }
   protected readonly referenceInjector: ReferenceInjector
+
+  private readonly errorReporter = new SentryErrorReporter()
 
   protected cacheScope: string | null = null
 
@@ -66,7 +68,10 @@ export class TextServiceCore {
     bibliographyService: BibliographyService,
     protected readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
-    this.referenceInjector = new ReferenceInjector(bibliographyService)
+    this.referenceInjector = new ReferenceInjector(
+      bibliographyService,
+      this.errorReporter,
+    )
   }
 
   findLineVariant(
