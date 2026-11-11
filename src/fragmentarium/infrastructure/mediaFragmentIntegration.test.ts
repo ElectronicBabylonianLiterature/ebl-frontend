@@ -22,12 +22,11 @@ test('maps a new-only media summary without making COPY a photo', () => {
   const fragment = createFragment({
     ...fragmentDto,
     hasPhoto: false,
-    legacyHasPhoto: false,
     mediaSummary: summary,
   })
   expect(fragment.mediaSummary).toEqual(summary)
   expect(fragment.hasPhoto).toBe(false)
-  expect(fragment.legacyHasPhoto).toBe(false)
+  expect(fragment.hasAnyImage).toBe(true)
 })
 
 test('maps media summaries for compact search results', () => {

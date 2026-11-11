@@ -33,7 +33,7 @@ const LegacyThumbnail = withData<Props, object, ThumbnailBlob>(
 
 export default function FragmentCardThumbnail(props: Props): JSX.Element {
   const { fragment, queryItem, linked = true } = props
-  const hasLegacyPhoto = fragment.hasLegacyPhoto
+  const hasLegacyPhoto = fragment.hasPhoto
   const fallback = !hasLegacyPhoto ? null : 'thumbnailPath' in queryItem ? (
     <SummaryThumbnail
       fragmentNumber={fragment.number}

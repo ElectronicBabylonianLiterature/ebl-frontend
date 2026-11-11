@@ -78,7 +78,7 @@ function Images({
 }: Props): JSX.Element {
   const navigate = useNavigate()
   const mediaServices = useContext(MediaGalleryContext)
-  const hasLegacyPhoto = fragment.hasLegacyPhoto
+  const hasLegacyPhoto = fragment.hasPhoto
   const hasMedia = mediaServices ? fragment.hasAnyImage : hasLegacyPhoto
   const controller = new TabController(
     fragment,

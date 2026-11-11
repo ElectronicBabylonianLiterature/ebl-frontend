@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import useObjectUrl from 'common/hooks/useObjectUrl'
 import type MediaBinaryLoader from 'fragmentarium/application/MediaBinaryLoader'
 import {
-  isRasterMediaMimeType,
   MediaResource,
   ThumbnailSize,
   ThumbnailSizes,
@@ -32,7 +31,7 @@ export default function MediaThumbnail({
           controller.signal,
         )
         .then((blob) => {
-          if (!controller.signal.aborted && isRasterMediaMimeType(blob.type)) {
+          if (!controller.signal.aborted) {
             setImage(blob)
           }
         })
