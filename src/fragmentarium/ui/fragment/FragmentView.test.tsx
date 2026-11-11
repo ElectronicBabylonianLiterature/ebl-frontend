@@ -109,15 +109,15 @@ describe('Fragment without an image is loaded', () => {
   })
 })
 
-describe('Fragment with a suppressed legacy photo is loaded', () => {
+describe('Fragment with new-only photo media is loaded', () => {
   it('Tag signs button is disabled although published photo media exist', async () => {
     const harness = createFragmentViewHarness()
     const fragment = fragmentFactory.build(
       {
         number: fragmentNumber,
         atf: '1. ku',
-        hasPhoto: true,
-        legacyHasPhoto: false,
+        hasPhoto: false,
+        mediaSummary: { count: 1, types: ['PHOTO'] },
       },
       { associations: { folios: [], references: [] } },
     )

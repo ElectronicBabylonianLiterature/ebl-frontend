@@ -1,6 +1,7 @@
 import React from 'react'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import MediaThumbnail from 'fragmentarium/ui/images/MediaThumbnail'
+import ApiMediaBinaryLoader from 'fragmentarium/infrastructure/ApiMediaBinaryLoader'
 import {
   imageBlob,
   mediaFixture,
@@ -45,23 +46,23 @@ test.each([
     />,
   )
   await act(async () => undefined)
+  expect(loader.fetch).toHaveBeenCalledTimes(1)
   expect(container).toBeEmptyDOMElement()
 })
 
 test('never creates an image URL for a non-raster response', async () => {
-  const loader = {
-    fetch: jest
-      .fn()
-      .mockResolvedValue(new Blob(['<svg/>'], { type: 'image/svg+xml' })),
-  }
+  const fetchBlob = jest
+    .fn()
+    .mockResolvedValue(new Blob(['<svg/>'], { type: 'image/svg+xml' }))
   render(
     <MediaThumbnail
       fragmentNumber="K.1"
       media={mediaFixture()}
-      binaryLoader={loader}
+      binaryLoader={new ApiMediaBinaryLoader({ fetchBlob })}
     />,
   )
   await act(async () => undefined)
+  expect(fetchBlob).toHaveBeenCalledTimes(1)
   expect(URL.createObjectURL).not.toHaveBeenCalled()
 })
 

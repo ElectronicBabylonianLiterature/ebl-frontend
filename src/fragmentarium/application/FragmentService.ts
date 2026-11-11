@@ -122,7 +122,7 @@ export class FragmentService extends FragmentServiceBase {
   }
 
   findPhoto(fragment: Fragment, signal?: AbortSignal): Promise<Blob> {
-    if (fragment.hasLegacyPhoto) {
+    if (fragment.hasPhoto) {
       return this.imageRepository.findPhoto(fragment.number, signal)
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)

@@ -30,7 +30,6 @@ function App() {
   const fragment = {
     number: 'K.1',
     hasPhoto: false,
-    legacyHasPhoto: false,
     museum: { copyright: 'Local test institution' },
   } as Fragment
   return (

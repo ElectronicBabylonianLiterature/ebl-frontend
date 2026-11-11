@@ -96,3 +96,12 @@ const STALE_REVISION_STATUSES: ReadonlySet<number | undefined> = new Set([
 export function isStaleRevision(error: unknown): boolean {
   return STALE_REVISION_STATUSES.has(apiErrorStatus(error))
 }
+
+/**
+ * True when the server failed to handle a request (HTTP 5xx). Such failures
+ * are transient from the client's point of view and worth retrying.
+ */
+export function isServerError(error: unknown): boolean {
+  const status = apiErrorStatus(error)
+  return status !== undefined && status >= 500 && status < 600
+}

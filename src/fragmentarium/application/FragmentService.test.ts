@@ -157,27 +157,26 @@ describe('findPhoto', () => {
     )
   })
 
-  test('does not request a suppressed legacy photo', () => {
+  test('does not request the legacy photo for new-only photo media', () => {
     imageRepository.findPhoto.mockClear()
-    const fragmentWithSuppressedLegacyPhoto = fragmentFactory.build({
+    const fragmentWithNewOnlyPhoto = fragmentFactory.build({
       number: 'X.2',
-      hasPhoto: true,
-      legacyHasPhoto: false,
+      hasPhoto: false,
+      mediaSummary: { count: 1, types: ['PHOTO'] },
     })
 
     expect(() =>
-      fragmentService.findPhoto(fragmentWithSuppressedLegacyPhoto),
+      fragmentService.findPhoto(fragmentWithNewOnlyPhoto),
     ).toThrowError("Fragment X.2 doesn't have a Photo")
     expect(imageRepository.findPhoto).not.toHaveBeenCalled()
   })
 
-  test('requests the legacy photo when legacyHasPhoto is true', () => {
+  test('requests the legacy photo when hasPhoto is true', () => {
     imageRepository.findPhoto.mockClear()
     imageRepository.findPhoto.mockReturnValue(Promise.resolve(resultStub))
     const fragmentWithLegacyPhoto = fragmentFactory.build({
       number: 'X.3',
       hasPhoto: true,
-      legacyHasPhoto: true,
     })
 
     fragmentService.findPhoto(fragmentWithLegacyPhoto)

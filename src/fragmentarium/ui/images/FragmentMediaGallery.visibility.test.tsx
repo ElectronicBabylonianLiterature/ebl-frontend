@@ -12,7 +12,6 @@ global.ResizeObserver = ResizeObserver
 const fragment = fragmentFactory.build({
   number: 'K.1',
   hasPhoto: true,
-  legacyHasPhoto: true,
 })
 const fallback = <p>Historical photograph fallback</p>
 beforeEach(() => {

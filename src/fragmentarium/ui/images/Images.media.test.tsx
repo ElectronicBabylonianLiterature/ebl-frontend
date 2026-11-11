@@ -128,7 +128,6 @@ test('keeps legacy photographs selectable alongside a migrated copy', async () =
   const fragment = fragmentFactory.build({
     number: 'K.1',
     hasPhoto: true,
-    legacyHasPhoto: true,
   })
   render(
     galleryElement(fragment, galleryServices([mediaFixture({ type: 'COPY' })])),
@@ -147,8 +146,8 @@ test('keeps legacy photographs selectable alongside a migrated copy', async () =
 
 test('does not offer a legacy photo for a new-only photo', async () => {
   const fragment = fragmentFactory.build({
-    hasPhoto: true,
-    legacyHasPhoto: false,
+    hasPhoto: false,
+    mediaSummary: { count: 1, types: ['PHOTO'] },
   })
   render(galleryElement(fragment))
   await screen.findByAltText(`Fragment ${fragment.number}`)
@@ -159,8 +158,7 @@ test('does not offer a legacy photo for a new-only photo', async () => {
 
 test('does not request new-only photos through the legacy endpoint with gallery disabled', () => {
   const fragment = fragmentFactory.build({
-    hasPhoto: true,
-    legacyHasPhoto: false,
+    hasPhoto: false,
     folios: [],
     cdliImages: [],
     mediaSummary: { count: 1, types: ['PHOTO'] },

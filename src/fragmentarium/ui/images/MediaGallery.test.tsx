@@ -50,10 +50,18 @@ test('selects another image and releases previous object URLs', async () => {
   const services = galleryServices(media)
   render(<MediaGallery fragment={fragment} media={media} services={services} />)
   await screen.findByAltText('Fragment K.1')
+  expect(screen.getByRole('button', { name: 'Photo 1' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
   await userEvent.click(screen.getByRole('button', { name: 'Photo 2' }))
   expect(
     await screen.findByRole('button', { name: 'Photo 2' }),
   ).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('button', { name: 'Photo 1' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  )
   await waitFor(() =>
     expect(services.binaryLoader.fetch).toHaveBeenCalledWith(
       { fragmentNumber: 'K.1', mediaId: 'second', representation: 'display' },
@@ -93,16 +101,42 @@ test('paginates thumbnail requests without downloading all originals', async () 
     screen.queryByRole('button', { name: 'Photo 13' }),
   ).not.toBeInTheDocument()
   expect(services.binaryLoader.fetch).toHaveBeenCalledTimes(13)
+  expect(screen.getByText('Page 1 of 2')).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Previous images' })).toBeDisabled()
   await userEvent.click(screen.getByRole('button', { name: 'Next images' }))
   expect(await screen.findByRole('button', { name: 'Photo 13' })).toBeVisible()
   expect(screen.getByText('Page 2 of 2')).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Next images' })).toBeDisabled()
   await userEvent.click(screen.getByRole('button', { name: 'Previous images' }))
   expect(await screen.findByRole('button', { name: 'Photo 1' })).toBeVisible()
+  expect(screen.getByText('Page 1 of 2')).toBeVisible()
   expect(
     services.binaryLoader.fetch.mock.calls.some(
       ([request]) => request.representation === 'original',
     ),
   ).toBe(false)
+})
+
+test('opens on the page that holds the primary image', async () => {
+  const media = Array.from({ length: 14 }, (_, index) =>
+    mediaFixture({
+      id: `image-${index}`,
+      sortOrder: index,
+      isPrimary: index === 12,
+    }),
+  )
+  const services = galleryServices(media)
+  render(<MediaGallery fragment={fragment} media={media} services={services} />)
+  await screen.findByAltText('Fragment K.1')
+  expect(screen.getByText('Page 2 of 2')).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Photo 13' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+  expect(services.binaryLoader.fetch).toHaveBeenCalledWith(
+    { fragmentNumber: 'K.1', mediaId: 'image-12', representation: 'display' },
+    expect.any(AbortSignal),
+  )
 })
 
 test('downloads a vector copy without rendering or opening it inline', async () => {

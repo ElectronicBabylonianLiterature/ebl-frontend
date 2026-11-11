@@ -78,7 +78,7 @@ function Images({
 }: Props): JSX.Element {
   const navigate = useNavigate()
   const mediaServices = useContext(MediaGalleryContext)
-  const legacyPhotoExists = fragment.hasLegacyPhoto
+  const legacyPhotoExists = fragment.hasPhoto
   const hasImagery = mediaServices ? fragment.hasAnyImage : legacyPhotoExists
   const hasMedia =
     hasImagery ||

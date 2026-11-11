@@ -4,7 +4,7 @@ import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { isCancellation } from 'common/utils/abortError'
-import { ApiError } from 'http/ApiError'
+import { ApiError, isServerError } from 'http/ApiError'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
@@ -103,11 +103,14 @@ function useGallery(
     value !== null &&
     value.number === fragment.number &&
     value.services === services
-  return {
-    data: loaded && inScope(loaded) ? loaded.response : null,
-    error: failure && inScope(failure) ? failure.error : null,
-    retry: () => setRetryCount((count) => count + 1),
-  }
+  const data = loaded && inScope(loaded) ? loaded.response : null
+  const error = failure && inScope(failure) ? failure.error : null
+  const retry = () => setRetryCount((count) => count + 1)
+  // Without loaded images a server error degrades to an empty gallery that
+  // still offers the lazy legacy choice; with them it keeps the images shown.
+  return !data && error && isServerError(error)
+    ? { data: { media: [], error }, error: null, retry }
+    : { data, error, retry }
 }
 
 function GalleryContent({
@@ -116,7 +119,12 @@ function GalleryContent({
   services,
   fallback,
   onChanged,
-}: Props & { data: GalleryResponse; onChanged: () => void }): JSX.Element {
+  onRetry,
+}: Props & {
+  data: GalleryResponse
+  onChanged: () => void
+  onRetry: () => void
+}): JSX.Element {
   return (
     <>
       <p>
@@ -125,14 +133,14 @@ function GalleryContent({
       </p>
       {data.media.length > 0 || data.error ? (
         <>
-          <ErrorAlert error={data.error ?? null} />
+          <ErrorAlert error={data.error ?? null} onRetry={onRetry} />
           <MediaGallery
             fragment={fragment}
             media={data.media}
             services={services}
             onChanged={onChanged}
             legacyPhoto={
-              data.legacyFallbackAllowed !== false && fragment.hasLegacyPhoto
+              data.legacyFallbackAllowed !== false && fragment.hasPhoto
                 ? fallback
                 : undefined
             }
@@ -159,7 +167,7 @@ function GalleryData(
         </div>
       )}
       <ErrorAlert error={error} onRetry={retry} />
-      {data && <GalleryContent {...props} data={data} />}
+      {data && <GalleryContent {...props} data={data} onRetry={retry} />}
     </ErrorBoundary>
   )
 }

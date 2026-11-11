@@ -48,7 +48,6 @@ function view(
   const fragment = fragmentFactory.build({
     number,
     hasPhoto: false,
-    legacyHasPhoto: false,
     folios: [],
     cdliImages,
     mediaSummary: hasImage
