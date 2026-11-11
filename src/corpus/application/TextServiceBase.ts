@@ -62,13 +62,16 @@ export class TextServiceBase extends TextServiceCore {
     this.clearCachesWhenScopeChanges()
 
     if (!this.cachedTexts) {
-      this.cachedTexts = this.apiClient
+      const request = this.apiClient
         .fetchJson<unknown[]>('/texts', false)
         .then((dtos) => dtos.map(fromDto))
         .catch((error) => {
-          this.cachedTexts = null
+          if (this.cachedTexts === request) {
+            this.cachedTexts = null
+          }
           throw error
         })
+      this.cachedTexts = request
     }
     return this.cachedTexts
   }
