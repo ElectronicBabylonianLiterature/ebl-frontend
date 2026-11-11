@@ -1,5 +1,6 @@
 import {
   fragmentMediaBinaryUrl,
+  fragmentMediaListUrl,
   fragmentMediaDisplayUrl,
   fragmentMediaOriginalUrl,
   fragmentMediaThumbnailUrl,
@@ -13,19 +14,19 @@ const mediaId = '550e8400-e29b-41d4-a716-446655440000'
 describe('fragment-scoped media binary routes', () => {
   test('builds the original route', () => {
     expect(fragmentMediaOriginalUrl(fragmentNumber, mediaId)).toBe(
-      `/fragments/K.1/media/${mediaId}/file`,
+      `/media/${mediaId}/file?fragment=K.1`,
     )
   })
 
   test('builds the display route', () => {
     expect(fragmentMediaDisplayUrl(fragmentNumber, mediaId)).toBe(
-      `/fragments/K.1/media/${mediaId}/display`,
+      `/media/${mediaId}/display?fragment=K.1`,
     )
   })
 
   test.each(ThumbnailSizes)('builds the %s thumbnail route', (size) => {
     expect(fragmentMediaThumbnailUrl(fragmentNumber, mediaId, size)).toBe(
-      `/fragments/K.1/media/${mediaId}/thumbnail/${size}`,
+      `/media/${mediaId}/thumbnail/${size}?fragment=K.1`,
     )
   })
 })
@@ -39,15 +40,16 @@ describe('route segment encoding', () => {
     ['K%1', 'K%251'],
     ['K1', 'K1'],
     ['Ištar', 'I%C5%A1tar'],
+    ["A!'()*.1", 'A%21%27%28%29%2A.1'],
   ])('encodes fragment number %p as %p', (rawNumber, encoded) => {
     expect(fragmentMediaOriginalUrl(rawNumber, mediaId)).toBe(
-      `/fragments/${encoded}/media/${mediaId}/file`,
+      `/media/${mediaId}/file?fragment=${encoded}`,
     )
   })
 
   test('encodes the media id as a single path segment', () => {
     expect(fragmentMediaDisplayUrl(fragmentNumber, 'a/b?c#d')).toBe(
-      '/fragments/K.1/media/a%2Fb%3Fc%23d/display',
+      '/media/a%2Fb%3Fc%23d/display?fragment=K.1',
     )
   })
 
@@ -82,7 +84,7 @@ describe('binary request routing', () => {
         mediaId,
         representation: 'original',
       }),
-    ).toBe(`/fragments/K.1/media/${mediaId}/file`)
+    ).toBe(`/media/${mediaId}/file?fragment=K.1`)
   })
 
   test('routes a display request', () => {
@@ -92,7 +94,7 @@ describe('binary request routing', () => {
         mediaId,
         representation: 'display',
       }),
-    ).toBe(`/fragments/K.1/media/${mediaId}/display`)
+    ).toBe(`/media/${mediaId}/display?fragment=K.1`)
   })
 
   test.each(ThumbnailSizes)('routes a %s thumbnail request', (size) => {
@@ -102,6 +104,10 @@ describe('binary request routing', () => {
         mediaId,
         representation: size,
       }),
-    ).toBe(`/fragments/K.1/media/${mediaId}/thumbnail/${size}`)
+    ).toBe(`/media/${mediaId}/thumbnail/${size}?fragment=K.1`)
   })
+})
+
+test('builds the fragment-scoped media listing route', () => {
+  expect(fragmentMediaListUrl('K.1/2')).toBe('/media?fragment=K.1%2F2')
 })

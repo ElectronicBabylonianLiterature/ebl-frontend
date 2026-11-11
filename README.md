@@ -335,3 +335,15 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
 You can get the full distributions from [Download page](https://www.hethport.uni-wuerzburg.de/cuneifont/).
 
 `Annotation.js` in the annotation-tool is from [Arian Allenson Valdez](https://github.com/Secretmapper/react-image-annotation)
+
+## Media gallery
+
+The gallery is disabled by default. Enable it with the build-time variable
+`REACT_APP_MEDIA_GALLERY_ENABLED=true` after deploying the compatible backend
+media API. Docker accepts the same build argument; the image workflow reads the
+repository variable `MEDIA_GALLERY_ENABLED` (default `false`). Changing the flag
+requires a rebuild and deployment.
+
+For rollback, deploy an image built with the flag disabled. Existing photo,
+thumbnail, folio and CDLI functionality remains available; disabling the gallery
+does not delete media or run a database migration.

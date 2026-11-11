@@ -1,3 +1,4 @@
+import { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { MesopotamianDate } from 'chronology/domain/Date'
@@ -58,6 +59,7 @@ export type QuerySummaryItemDto = {
   matchingLinePreview?: FragmentQueryPreviewDto | null
   matchCount: number
   hasPhoto: boolean
+  mediaSummary?: unknown
   thumbnailPath?: string | null
 }
 
@@ -231,6 +233,7 @@ export function createQuerySummaryFragment(
     traditionalReferences: [],
     atf: '',
     hasPhoto: dto.hasPhoto,
+    mediaSummary: normalizeMediaSummary(dto.mediaSummary) ?? undefined,
     genres: Genres.fromJson(dto.genres ?? []),
     introduction: { text: '', parts: [] },
     script: createScript(dto.script),

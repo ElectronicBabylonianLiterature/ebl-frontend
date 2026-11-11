@@ -147,6 +147,7 @@ export default interface FragmentDto {
   traditionalReferences: readonly TraditionalReference[]
   atf: string
   hasPhoto: boolean
+  mediaSummary?: unknown
   genres: readonly GenreDto[]
   introduction: Introduction
   script: ScriptDto

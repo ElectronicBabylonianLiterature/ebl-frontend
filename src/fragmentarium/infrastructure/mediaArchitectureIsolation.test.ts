@@ -34,15 +34,29 @@ describe('media architecture isolation: real source tree', () => {
     source: readSource(filePath),
   }))
 
-  test('keeps new media modules out of current production runtime imports', () => {
+  test('limits media runtime imports to the reviewed integration points', () => {
     const productionSources = sources.filter(({ relativePath }) =>
       isProductionSourceFile(relativePath),
     )
     expect(productionSources.length).toBeGreaterThan(0)
 
-    for (const { relativePath, source } of productionSources) {
-      expect(findMediaArchitectureReferences(relativePath, source)).toEqual([])
-    }
+    const integrationPoints = [
+      'InjectedApp.tsx',
+      'fragmentarium/infrastructure/ApiMediaBinaryLoader.ts',
+      'fragmentarium/infrastructure/ApiMediaRepository.ts',
+      'fragmentarium/infrastructure/fragmentFactories.ts',
+      'fragmentarium/infrastructure/querySummaryFragment.ts',
+      'fragmentarium/ui/search/FragmentCardThumbnail.tsx',
+      'fragmentarium/ui/images/FragmentMediaGallery.tsx',
+      'fragmentarium/ui/images/Images.tsx',
+    ]
+    const actualIntegrationPoints = productionSources
+      .filter(
+        ({ relativePath, source }) =>
+          findMediaArchitectureReferences(relativePath, source).length > 0,
+      )
+      .map(({ relativePath }) => relativePath)
+    expect(actualIntegrationPoints.sort()).toEqual(integrationPoints.sort())
   })
 
   test('finds barrel-style re-export files, proving the scan is not vacuous', () => {

@@ -66,6 +66,7 @@ export class TabController {
     tab: string | null,
     activeFolio: Folio | null,
     navigate: (url: string) => void,
+    private readonly hasMedia: boolean = fragment.hasPhoto,
   ) {
     this.fragment = fragment
     this.tab = tab
@@ -75,7 +76,7 @@ export class TabController {
 
   get defaultKey(): string | undefined {
     return _([
-      this.fragment.hasPhoto && PHOTO,
+      this.hasMedia && PHOTO,
       ...this.fragment.folios.map((folio, index) => folioTabKey(index)),
       hasUsableCdliTab(this.fragment) && CDLI,
     ])
@@ -129,7 +130,7 @@ export class TabController {
       return this.hasFolio(folioIndex)
     }
     return (
-      (tab === PHOTO && this.fragment.hasPhoto) ||
+      (tab === PHOTO && this.hasMedia) ||
       (tab === CDLI && hasUsableCdliTab(this.fragment))
     )
   }
