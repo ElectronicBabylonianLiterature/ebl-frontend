@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import withData from 'http/withData'
+import { ApiError } from 'http/ApiClient'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import type { Fragment } from 'fragmentarium/domain/fragment'
 import type { MediaResource } from 'fragmentarium/domain/media'
@@ -15,14 +16,18 @@ interface Props {
 
 interface GalleryResponse {
   media: readonly MediaResource[]
-  error?: UnsupportedMediaResponseError
+  error?: Error
 }
 
-export default withData<Props, object, GalleryResponse>(
-  ({ data, fragment, services, fallback }) =>
+const GalleryContents = withData<
+  Props & { onRetry: () => void },
+  object,
+  GalleryResponse
+>(
+  ({ data, fragment, services, fallback, onRetry }) =>
     data.media.length > 0 || data.error ? (
       <>
-        <ErrorAlert error={data.error ?? null} />
+        <ErrorAlert error={data.error ?? null} onRetry={onRetry} />
         <MediaGallery
           fragment={fragment}
           media={data.media}
@@ -42,7 +47,13 @@ export default withData<Props, object, GalleryResponse>(
         ),
       }
     } catch (error) {
-      if (error instanceof UnsupportedMediaResponseError) {
+      if (
+        error instanceof UnsupportedMediaResponseError ||
+        (error instanceof ApiError &&
+          error.status !== undefined &&
+          error.status >= 500 &&
+          error.status < 600)
+      ) {
         return { media: [], error }
       }
       throw error
@@ -53,3 +64,14 @@ export default withData<Props, object, GalleryResponse>(
     retry: true,
   },
 )
+
+export default function FragmentMediaGallery(props: Props): JSX.Element {
+  const [attempt, setAttempt] = useState(0)
+  return (
+    <GalleryContents
+      key={attempt}
+      {...props}
+      onRetry={() => setAttempt((current) => current + 1)}
+    />
+  )
+}

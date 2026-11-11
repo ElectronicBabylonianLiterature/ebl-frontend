@@ -5,11 +5,7 @@ import {
   MediaGalleryServices,
 } from 'fragmentarium/application/MediaGalleryContext'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import {
-  ThumbnailSizes,
-  ThumbnailSize,
-  isRasterMediaMimeType,
-} from 'fragmentarium/domain/media'
+import { ThumbnailSizes, ThumbnailSize } from 'fragmentarium/domain/media'
 import { fragmentMediaThumbnailUrl } from 'fragmentarium/infrastructure/mediaUrls'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 
@@ -40,7 +36,7 @@ function LoadedThumbnail({
         controller.signal,
       )
       .then((blob) => {
-        if (!controller.signal.aborted && isRasterMediaMimeType(blob.type)) {
+        if (!controller.signal.aborted) {
           setImage(blob)
         }
       })
