@@ -311,11 +311,6 @@ exports[`Display chapter How to cite 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
-                  <span
-                    class="visually-hidden"
-                  >
-                    Download
-                  </span>
                 </button>
               </div>
               <div
@@ -1248,11 +1243,6 @@ exports[`Display chapter Show notes 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
-                  <span
-                    class="visually-hidden"
-                  >
-                    Download
-                  </span>
                 </button>
               </div>
               <div
@@ -2202,11 +2192,6 @@ exports[`Display chapter Show parallels 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
-                  <span
-                    class="visually-hidden"
-                  >
-                    Download
-                  </span>
                 </button>
               </div>
               <div
@@ -3161,11 +3146,6 @@ exports[`Display chapter Sidebar 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
-                  <span
-                    class="visually-hidden"
-                  >
-                    Download
-                  </span>
                 </button>
               </div>
               <div
@@ -4346,11 +4326,6 @@ exports[`Display chapter Snapshot 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
-                  <span
-                    class="visually-hidden"
-                  >
-                    Download
-                  </span>
                 </button>
               </div>
               <div
