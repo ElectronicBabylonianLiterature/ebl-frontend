@@ -72,7 +72,7 @@ export default class BibliographyEntryLoader {
       : this.loadEntriesByIds(uniqueIds, reportError)
   }
 
-  cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
+  private cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
     return setCachedValue({
       cache: this.entries,
       key: id,
@@ -87,7 +87,7 @@ export default class BibliographyEntryLoader {
     return this.cacheEntry(entry.id, entry)
   }
 
-  invalidateEntryCaches(id: string): void {
+  private invalidateEntryCaches(id: string): void {
     this.invalidateInFlightRequests()
     this.entries.forEach((cachedEntry, key) => {
       if (cachedEntry.value.id === id) {
@@ -101,7 +101,7 @@ export default class BibliographyEntryLoader {
     this.entries.clear()
   }
 
-  loadEntriesByIds(
+  private loadEntriesByIds(
     ids: readonly string[],
     reportError?: (error: Error) => void,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
