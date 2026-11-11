@@ -1,6 +1,7 @@
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import { ApiError } from 'http/ApiClient'
+import ApiMediaBinaryLoader from 'fragmentarium/infrastructure/ApiMediaBinaryLoader'
 import MediaSummaryThumbnail from 'fragmentarium/ui/images/MediaSummaryThumbnail'
 import { MediaGalleryContext } from 'fragmentarium/application/MediaGalleryContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -123,11 +124,13 @@ test('does not fall back after denied preview access', async () => {
 
 test('rejects non-raster thumbnail bytes', async () => {
   const services = galleryServices()
-  services.binaryLoader.fetch.mockResolvedValue(
-    new Blob(['<svg/>'], { type: 'image/svg+xml' }),
-  )
+  const binaryLoader = new ApiMediaBinaryLoader({
+    fetchBlob: jest
+      .fn()
+      .mockResolvedValue(new Blob(['<svg/>'], { type: 'image/svg+xml' })),
+  })
   render(
-    <MediaGalleryContext.Provider value={services}>
+    <MediaGalleryContext.Provider value={{ ...services, binaryLoader }}>
       <MediaSummaryThumbnail fragment={fragmentWithPreview()} fallback={null} />
     </MediaGalleryContext.Provider>,
   )
