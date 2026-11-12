@@ -81,7 +81,7 @@ test('an authorized contributor can open uploads from an empty fragment Images t
   expect(screen.getByLabelText('Choose images or drop them here')).toBeVisible()
 })
 
-test('an empty Images tab offered for uploads does not displace other imagery as the default', () => {
+test('an empty Images tab offered for uploads does not displace other imagery as the default', async () => {
   render(view(contributorServices(), 'K.1', false, ['P550449_l.jpg']))
   expect(screen.getByRole('tab', { name: 'CDLI' })).toHaveAttribute(
     'aria-selected',
@@ -91,14 +91,16 @@ test('an empty Images tab offered for uploads does not displace other imagery as
     'aria-selected',
     'false',
   )
+  expect(await screen.findByAltText('CDLI Line Art')).toBeVisible()
 })
 
-test('a fragment with images still opens the Images tab first for contributors', () => {
+test('a fragment with images still opens the Images tab first for contributors', async () => {
   render(view(contributorServices(), 'K.1', true, ['P550449_l.jpg']))
   expect(screen.getByRole('tab', { name: 'Images' })).toHaveAttribute(
     'aria-selected',
     'true',
   )
+  expect(await screen.findByText('0 catalogued images')).toBeVisible()
 })
 
 test('a reader without write permission has no upload controls on an empty fragment', () => {
