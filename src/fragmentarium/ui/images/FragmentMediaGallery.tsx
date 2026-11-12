@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
-import withData from 'http/withData'
-import { ApiError } from 'http/ApiClient'
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
-import type { Fragment } from 'fragmentarium/domain/fragment'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
+import { isCancellation } from 'common/utils/abortError'
+import { ApiError, isServerError } from 'http/ApiError'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
 import type { MediaGalleryServices } from 'fragmentarium/application/MediaGalleryContext'
 import MediaGallery from 'fragmentarium/ui/images/MediaGallery'
+import MediaUploadDialog from './MediaUploadDialog'
 
 interface Props {
   fragment: Fragment
@@ -16,64 +20,183 @@ interface Props {
 
 interface GalleryResponse {
   media: readonly MediaResource[]
-  error?: Error
+  error?: UnsupportedMediaResponseError
+  legacyFallbackAllowed?: boolean
 }
 
-function isServerError(error: ApiError): boolean {
-  const status = error.status ?? 0
-  return status >= 500 && status < 600
+interface Scoped {
+  number: string
+  services: MediaGalleryServices
+}
+interface LoadedGallery extends Scoped {
+  response: GalleryResponse
+}
+interface GalleryFailure extends Scoped {
+  error: Error
 }
 
-const GalleryContents = withData<
-  Props & { onRetry: () => void },
-  object,
-  GalleryResponse
->(
-  ({ data, fragment, services, fallback, onRetry }) =>
-    data.media.length > 0 || data.error ? (
-      <>
-        <ErrorAlert error={data.error ?? null} onRetry={onRetry} />
-        <MediaGallery
-          fragment={fragment}
-          media={data.media}
-          services={services}
-          legacyPhoto={fragment.hasPhoto ? fallback : undefined}
-        />
-      </>
-    ) : (
-      <>{fallback}</>
-    ),
-  async ({ fragment, services }, signal) => {
-    try {
-      return {
-        media: await services.repository.findByFragment(
-          fragment.number,
-          signal,
-        ),
-      }
-    } catch (error) {
-      if (
-        error instanceof UnsupportedMediaResponseError ||
-        (error instanceof ApiError && isServerError(error))
-      ) {
-        return { media: [], error }
-      }
-      throw error
+/** Access was refused: previously loaded private data must not stay visible. */
+function definitiveAccessFailure(error: unknown): boolean {
+  return (
+    error instanceof ApiError && (error.status === 401 || error.status === 403)
+  )
+}
+
+async function loadGallery(
+  { fragment, services }: Pick<Props, 'fragment' | 'services'>,
+  signal: AbortSignal,
+): Promise<GalleryResponse> {
+  try {
+    if (services.repository.findGallery) {
+      return await services.repository.findGallery(fragment.number, signal)
     }
-  },
-  {
-    watch: ({ fragment, services }) => [fragment.number, services],
-    retry: true,
-  },
-)
+    return {
+      media: await services.repository.findByFragment(fragment.number, signal),
+    }
+  } catch (error) {
+    if (error instanceof UnsupportedMediaResponseError) {
+      return {
+        media: [],
+        error,
+        legacyFallbackAllowed: error.legacyFallbackAllowed,
+      }
+    }
+    throw error
+  }
+}
+
+/**
+ * A refresh after a mutation (revision change) keeps the previous response on
+ * screen so the gallery's selection and focus survive. A response is only ever
+ * shown for the exact fragment and services session that requested it, and
+ * responses to superseded requests are discarded.
+ */
+function useGallery(
+  { fragment, services }: Pick<Props, 'fragment' | 'services'>,
+  revision: number,
+): { data: GalleryResponse | null; error: Error | null; retry: () => void } {
+  const [loaded, setLoaded] = useState<LoadedGallery | null>(null)
+  const [failure, setFailure] = useState<GalleryFailure | null>(null)
+  const [retryCount, setRetryCount] = useState(0)
+  useEffect(() => {
+    const controller = new AbortController()
+    setFailure(null)
+    loadGallery({ fragment, services }, controller.signal)
+      .then((response) => {
+        if (!controller.signal.aborted)
+          setLoaded({ number: fragment.number, services, response })
+      })
+      .catch((reason) => {
+        if (isCancellation(reason, controller.signal)) return
+        if (definitiveAccessFailure(reason)) setLoaded(null)
+        setFailure({
+          number: fragment.number,
+          services,
+          error: reason as Error,
+        })
+      })
+    return () => controller.abort()
+    // The fragment object changes identity on unrelated refreshes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fragment.number, services, revision, retryCount])
+  const inScope = (value: Scoped | null): boolean =>
+    value !== null &&
+    value.number === fragment.number &&
+    value.services === services
+  const data = loaded && inScope(loaded) ? loaded.response : null
+  const error = failure && inScope(failure) ? failure.error : null
+  const retry = () => setRetryCount((count) => count + 1)
+  // Without loaded images a server error degrades to an empty gallery that
+  // still offers the lazy legacy choice; with them it keeps the images shown.
+  return !data && error && isServerError(error)
+    ? { data: { media: [], error }, error: null, retry }
+    : { data, error, retry }
+}
+
+function GalleryContent({
+  data,
+  fragment,
+  services,
+  fallback,
+  onChanged,
+  onRetry,
+}: Props & {
+  data: GalleryResponse
+  onChanged: () => void
+  onRetry: () => void
+}): JSX.Element {
+  return (
+    <>
+      <p>
+        {data.media.length} catalogued{' '}
+        {data.media.length === 1 ? 'image' : 'images'}
+      </p>
+      {data.media.length > 0 || data.error ? (
+        <>
+          <ErrorAlert error={data.error ?? null} onRetry={onRetry} />
+          <MediaGallery
+            fragment={fragment}
+            media={data.media}
+            services={services}
+            onChanged={onChanged}
+            legacyPhoto={
+              data.legacyFallbackAllowed !== false && fragment.hasPhoto
+                ? fallback
+                : undefined
+            }
+          />
+        </>
+      ) : data.legacyFallbackAllowed === false ? (
+        <p>No images available.</p>
+      ) : (
+        fallback
+      )}
+    </>
+  )
+}
+
+function GalleryData(
+  props: Props & { revision: number; onChanged: () => void },
+): JSX.Element {
+  const { data, error, retry } = useGallery(props, props.revision)
+  return (
+    <ErrorBoundary>
+      {!data && !error && (
+        <div className="text-center my-5 withData-spinner">
+          <Spinner />
+        </div>
+      )}
+      <ErrorAlert error={error} onRetry={retry} />
+      {data && <GalleryContent {...props} data={data} onRetry={retry} />}
+    </ErrorBoundary>
+  )
+}
 
 export default function FragmentMediaGallery(props: Props): JSX.Element {
-  const [attempt, setAttempt] = useState(0)
+  const [showUpload, setShowUpload] = useState(false)
+  const [revision, setRevision] = useState(0)
+  const onChanged = () => setRevision((value) => value + 1)
+  const canUpload = props.services.canUpload && props.services.management
   return (
-    <GalleryContents
-      key={attempt}
-      {...props}
-      onRetry={() => setAttempt((current) => current + 1)}
-    />
+    <section aria-label="Photographs and copies">
+      <div className="MediaManagement__actions">
+        <h3>Photographs and copies</h3>
+        {canUpload && (
+          <Button onClick={() => setShowUpload(true)}>
+            {props.fragment.hasAnyImage ? 'Add images' : 'Add first image'}
+          </Button>
+        )}
+      </div>
+      <GalleryData {...props} revision={revision} onChanged={onChanged} />
+      {canUpload && (
+        <MediaUploadDialog
+          show={showUpload}
+          onHide={() => setShowUpload(false)}
+          fragmentNumber={props.fragment.number}
+          services={props.services}
+          onChanged={onChanged}
+        />
+      )}
+    </section>
   )
 }

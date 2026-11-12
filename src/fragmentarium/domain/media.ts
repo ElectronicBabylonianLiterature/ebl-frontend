@@ -67,6 +67,27 @@ export interface MediaResource {
   readonly attribution?: string
   readonly references: readonly MediaReference[]
   readonly representations: MediaRepresentations
+  readonly publicationStatus?: 'PENDING_REVIEW' | 'PUBLISHED' | 'REJECTED'
+  readonly rightsAnnotated?: boolean
+  readonly uploaderId?: string
+  readonly uploadedAt?: string
+  readonly reviewerId?: string
+  readonly reviewedAt?: string
+  readonly reviewReason?: string
+  readonly originalFilename?: string
+  readonly creator?: string
+  readonly sourceInstitution?: string
+  readonly copyrightHolder?: string
+  readonly rightsStatement?: string
+  readonly permissionAttested?: boolean
+  readonly description?: string
+  readonly projects?: readonly string[]
+  /**
+   * Optimistic-concurrency revision from management responses. Mutations send
+   * it as `If-Match` so a change made by someone else is never overwritten or
+   * published unseen. Absent on public responses.
+   */
+  readonly revision?: number
 }
 
 export interface FragmentMedia {

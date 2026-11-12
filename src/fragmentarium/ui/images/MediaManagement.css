@@ -1,0 +1,66 @@
+.MediaUpload__drop {
+  padding: 1rem;
+  border: 2px dashed #777;
+  border-radius: 0.25rem;
+}
+
+.MediaUpload__entry {
+  border-top: 1px solid #aaa;
+  padding: 0.75rem 0;
+}
+
+.MediaUpload__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.MediaUpload__preview {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.MediaManagement__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.MediaUpload__entry .form-label {
+  margin-bottom: 0.15rem;
+}
+
+.MediaMetadataFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 0.75rem;
+}
+
+.MediaMetadataFields > .form-check {
+  grid-column: 1 / -1;
+}
+
+.MediaManagementModal .modal-content > form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (width <= 575px) {
+  .MediaMetadataFields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .MediaUpload__heading {
+    flex-wrap: wrap;
+  }
+
+  .MediaManagement__actions .btn {
+    flex: 1 1 auto;
+    min-height: 44px;
+  }
+}

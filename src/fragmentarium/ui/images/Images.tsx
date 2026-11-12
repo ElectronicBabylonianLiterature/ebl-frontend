@@ -78,15 +78,17 @@ function Images({
 }: Props): JSX.Element {
   const navigate = useNavigate()
   const mediaServices = useContext(MediaGalleryContext)
-  const hasLegacyPhoto = fragment.hasPhoto
-  const hasMedia = mediaServices ? fragment.hasAnyImage : hasLegacyPhoto
-  const controller = new TabController(
-    fragment,
-    tab,
-    activeFolio,
-    navigate,
+  const legacyPhotoExists = fragment.hasPhoto
+  const hasImagery = mediaServices ? fragment.hasAnyImage : legacyPhotoExists
+  const hasMedia =
+    hasImagery ||
+    Boolean(
+      mediaServices && (mediaServices.canUpload || mediaServices.canManage),
+    )
+  const controller = new TabController(fragment, tab, activeFolio, navigate, {
     hasMedia,
-  )
+    defaultsToMedia: hasImagery,
+  })
   const folios = fragment.folios
   const activeKey = controller.activeKey
   const [visitedTabs, setVisitedTabs] = React.useState<VisitedImageTabs>(() =>
@@ -138,7 +140,7 @@ function Images({
                   fragment={fragment}
                   services={mediaServices}
                   fallback={
-                    hasLegacyPhoto ? (
+                    legacyPhotoExists ? (
                       <FragmentPhoto
                         fragment={fragment}
                         fragmentService={fragmentService}

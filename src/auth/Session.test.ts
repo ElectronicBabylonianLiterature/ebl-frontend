@@ -55,6 +55,39 @@ describe.each([
   })
 })
 
+describe('dedicated fragment media permissions', () => {
+  test('upload permission grants contribution without management', () => {
+    const contributor = new MemorySession(['upload:fragment_media'])
+    expect(contributor.isAllowedToUploadFragmentMedia()).toBe(true)
+    expect(contributor.isAllowedToManageFragmentMedia()).toBe(false)
+  })
+
+  test('management permission has its own explicit scope', () => {
+    const manager = new MemorySession(['manage:fragment_media'])
+    expect(manager.isAllowedToManageFragmentMedia()).toBe(true)
+    expect(manager.isAllowedToUploadFragmentMedia()).toBe(false)
+  })
+
+  test('combined dedicated scopes grant both media permissions', () => {
+    const session = new MemorySession([
+      'upload:fragment_media',
+      'manage:fragment_media',
+    ])
+    expect(session.isAllowedToUploadFragmentMedia()).toBe(true)
+    expect(session.isAllowedToManageFragmentMedia()).toBe(true)
+  })
+
+  test.each([
+    ['guest', guestSession],
+    ['no scopes', new MemorySession([])],
+    ['fragment read', new MemorySession(['read:fragments'])],
+    ['transliteration', new MemorySession(['transliterate:fragments'])],
+  ])('%s does not grant media writes', (_description, session) => {
+    expect(session.isAllowedToUploadFragmentMedia()).toBe(false)
+    expect(session.isAllowedToManageFragmentMedia()).toBe(false)
+  })
+})
+
 describe.each([
   ['read:WGL-folios', 'WGL'],
   ['read:LV-folios', 'LV'],

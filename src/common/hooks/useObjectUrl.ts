@@ -16,7 +16,7 @@ export default function useObjectUrl(
     liveUrl.current = objectUrl
     setState({ data, url: objectUrl })
     return (): void => {
-      liveUrl.current = undefined
+      if (liveUrl.current === objectUrl) liveUrl.current = undefined
       if (objectUrl) {
         try {
           URL.revokeObjectURL(objectUrl)

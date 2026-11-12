@@ -11,6 +11,7 @@ import {
 import MediaViewer from 'fragmentarium/ui/images/MediaViewer'
 import MediaThumbnail from 'fragmentarium/ui/images/MediaThumbnail'
 import 'fragmentarium/ui/images/MediaGallery.css'
+import MediaManagementControls from './MediaManagementControls'
 
 const pageSize = 12
 
@@ -19,11 +20,13 @@ export default function MediaGallery({
   media,
   services,
   legacyPhoto,
+  onChanged = () => undefined,
 }: {
   fragment: Fragment
   media: readonly MediaResource[]
   services: MediaGalleryServices
   legacyPhoto?: React.ReactNode
+  onChanged?: () => void
 }): JSX.Element {
   const orderedMedia = sortMedia(media)
   const initial = selectInitialMedia(orderedMedia)
@@ -102,12 +105,21 @@ export default function MediaGallery({
       )}
       {selectedId === 'legacy' && legacyPhoto}
       {selected && (
-        <MediaViewer
-          key={selected.id}
-          fragment={fragment}
-          media={selected}
-          binaryLoader={services.binaryLoader}
-        />
+        <>
+          <MediaViewer
+            key={selected.id}
+            fragment={fragment}
+            media={selected}
+            binaryLoader={services.binaryLoader}
+          />
+          <MediaManagementControls
+            key={`manage-${selected.id}`}
+            media={selected}
+            fragmentNumber={fragment.number}
+            services={services}
+            onChanged={onChanged}
+          />
+        </>
       )}
     </section>
   )

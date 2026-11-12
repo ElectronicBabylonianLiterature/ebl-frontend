@@ -1,8 +1,10 @@
-import _ from 'lodash'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
-import { isAbortError } from 'common/utils/abortError'
-import captureStackTrace from 'common/utils/captureStackTrace'
+import { createAbortError, isAbortError } from 'common/utils/abortError'
+import { ApiError } from './ApiError'
+import { BinaryUploadOptions, uploadBinaryRequest } from './binaryUpload'
+
+export { ApiError } from './ApiError'
 
 export type AccessTokenProvider = Pick<
   AuthenticationService,
@@ -15,6 +17,12 @@ type Options = Omit<RequestInit, 'headers'> & {
 
 type ErrorCapturer = Pick<ErrorReporter, 'captureException'>
 
+export interface JsonRequestOptions {
+  signal?: AbortSignal
+  onDispatched?: () => void
+  headers?: Record<string, string>
+}
+
 export function apiUrl(path: string): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
@@ -23,73 +31,25 @@ async function deserializeJson(response: Response): Promise<unknown> {
   if (response.status === 204) {
     return null
   }
-  if (response.status === 201) {
-    const responseText = await response.text()
-    return responseText.trim() ? JSON.parse(responseText) : null
-  }
-  return response.json()
+  // Any success status may legitimately carry an empty body.
+  const responseText = await response.text()
+  return responseText.trim() ? JSON.parse(responseText) : null
 }
 
-function createOptions(body: unknown, method: string): Options {
+function createOptions(
+  body: unknown,
+  method: string,
+  headers: Record<string, string> = {},
+): Options {
   return {
     body: JSON.stringify(body),
     headers: {
+      ...headers,
       'Content-Type': 'application/json; charset=utf-8',
     },
     method: method,
   }
 }
-export class ApiError extends Error {
-  readonly data: unknown
-  readonly status?: number
-
-  constructor(message: string, data: unknown, status?: number) {
-    super(message)
-    this.name = this.constructor.name
-    this.data = data
-    this.status = status
-    captureStackTrace(this, this.constructor)
-  }
-
-  static async fromResponse(response: Response): Promise<ApiError> {
-    return response
-      .json()
-      .then(
-        (body) =>
-          new ApiError(
-            ApiError.bodyToMessage(body, response.statusText),
-            body,
-            response.status,
-          ),
-      )
-      .catch(() => new ApiError(response.statusText, {}, response.status))
-  }
-
-  static bodyToMessage(
-    body: { [key: string]: unknown },
-    statusText: string,
-  ): string {
-    if (_.isString(body.description)) {
-      return body.description
-    } else if (body.description || body.title) {
-      return ApiError.titleAndDescriptionToMessage(body, statusText)
-    } else {
-      return JSON.stringify(body)
-    }
-  }
-
-  private static titleAndDescriptionToMessage(
-    body: { [key: string]: unknown },
-    statusText: string,
-  ): string {
-    const title = body.title || statusText
-    const description = body.description
-      ? ': ' + JSON.stringify(body.description)
-      : ''
-    return `${title}${description}`
-  }
-}
-
 export function isNotFoundError(error: unknown): boolean {
   return error instanceof ApiError && error.status === 404
 }
@@ -153,6 +113,7 @@ export default class ApiClient {
     authenticate: boolean,
     options: Options,
     signal?: AbortSignal,
+    onDispatched?: () => void,
   ): Promise<Response> {
     try {
       const headers = await this.createHeaders(
@@ -160,35 +121,39 @@ export default class ApiClient {
         options.headers ?? {},
         path,
       )
-      const response = await fetch(apiUrl(path), {
+      if (signal?.aborted) throw createAbortError(signal)
+      const pending = fetch(apiUrl(path), {
         ...options,
         headers,
         ...(signal ? { signal } : {}),
       })
+      onDispatched?.()
+      const response = await pending
       if (response.ok) {
         return response
       }
       throw await ApiError.fromResponse(response)
     } catch (error) {
-      if (isAbortError(error)) {
-        throw error
-      }
-      const capturedError = error as Error & { __captured?: boolean }
-      if (!capturedError.__captured) {
-        const errorInfo: Record<string, unknown> = {
-          endpoint: path,
-          method: options.method ?? 'GET',
-        }
-        if (error instanceof ApiError && error.status) {
-          errorInfo.status = error.status
-          if (error.status === 401 || error.status === 403) {
-            errorInfo.authError = true
-          }
-        }
-        this.errorReporter.captureException(capturedError, errorInfo)
-      }
+      if (!isAbortError(error))
+        this.captureRequestError(error as Error, path, options.method ?? 'GET')
       throw error
     }
+  }
+
+  private captureRequestError(
+    error: Error & { __captured?: boolean },
+    path: string,
+    method: string,
+  ): void {
+    if (error.__captured) return
+    const errorInfo: Record<string, unknown> = { endpoint: path, method }
+    if (error instanceof ApiError && error.status) {
+      errorInfo.status = error.status
+      if (error.status === 401 || error.status === 403) {
+        errorInfo.authError = true
+      }
+    }
+    this.errorReporter.captureException(error, errorInfo)
   }
 
   fetchJson<T = unknown>(
@@ -225,5 +190,49 @@ export default class ApiClient {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson,
     ) as Promise<T>
+  }
+
+  requestJson<T = unknown>(
+    path: string,
+    method: 'POST' | 'PATCH' | 'DELETE',
+    body: unknown,
+    { signal, onDispatched, headers }: JsonRequestOptions = {},
+  ): Promise<T> {
+    return this.fetch(
+      path,
+      true,
+      createOptions(body, method, headers),
+      signal,
+      onDispatched,
+    ).then(deserializeJson) as Promise<T>
+  }
+
+  async uploadBinary<T = unknown>(
+    path: string,
+    file: File,
+    headers: Record<string, string>,
+    options: BinaryUploadOptions = {},
+  ): Promise<T> {
+    const authenticatedHeaders = await this.createHeaders(true, headers, path)
+    return uploadBinaryRequest<T>(
+      apiUrl(path),
+      file,
+      authenticatedHeaders,
+      options,
+    ).catch((error) => {
+      if (!isAbortError(error)) this.captureUploadError(error, path)
+      throw error
+    })
+  }
+
+  private captureUploadError(error: Error, path: string): void {
+    const captured = error as Error & { __captured?: boolean }
+    if (captured.__captured) return
+    captured.__captured = true
+    this.errorReporter.captureException(captured, {
+      endpoint: path,
+      method: 'POST',
+      ...(error instanceof ApiError ? { status: error.status } : {}),
+    })
   }
 }

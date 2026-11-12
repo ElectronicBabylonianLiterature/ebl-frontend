@@ -10,6 +10,7 @@ import {
   MediaResourceDto,
 } from 'fragmentarium/infrastructure/mediaDtos'
 import { normalizeMediaRepresentations } from 'fragmentarium/infrastructure/mediaRepresentationMapper'
+import { normalizeLifecycle } from 'fragmentarium/infrastructure/mediaLifecycleMapper'
 import {
   isRecord,
   normalizeNonEmptyString,
@@ -58,12 +59,13 @@ export function normalizeMediaResource(
   } = resource as MediaResourceDto
 
   const normalizedId = normalizeNonEmptyString(id)
-  if (!normalizedId || !isMediaType(type)) {
-    return undefined
-  }
-
   const normalizedSortOrder = normalizeNonNegativeInteger(sortOrder)
-  if (normalizedSortOrder === undefined || typeof isPrimary !== 'boolean') {
+  if (
+    !normalizedId ||
+    !isMediaType(type) ||
+    normalizedSortOrder === undefined ||
+    typeof isPrimary !== 'boolean'
+  ) {
     return undefined
   }
 
@@ -77,6 +79,8 @@ export function normalizeMediaResource(
 
   const normalizedCaption = normalizeNonEmptyString(caption)
   const normalizedAttribution = normalizeNonEmptyString(attribution)
+  const lifecycle = normalizeLifecycle(resource)
+  if (!lifecycle) return undefined
 
   return {
     id: normalizedId,
@@ -87,6 +91,7 @@ export function normalizeMediaResource(
     ...(normalizedAttribution ? { attribution: normalizedAttribution } : {}),
     references: normalizeMediaReferences(references),
     representations: normalizedRepresentations,
+    ...lifecycle,
   }
 }
 

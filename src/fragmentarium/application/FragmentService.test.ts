@@ -156,6 +156,33 @@ describe('findPhoto', () => {
       "Fragment X.1 doesn't have a Photo",
     )
   })
+
+  test('does not request the legacy photo for new-only photo media', () => {
+    imageRepository.findPhoto.mockClear()
+    const fragmentWithNewOnlyPhoto = fragmentFactory.build({
+      number: 'X.2',
+      hasPhoto: false,
+      mediaSummary: { count: 1, types: ['PHOTO'] },
+    })
+
+    expect(() =>
+      fragmentService.findPhoto(fragmentWithNewOnlyPhoto),
+    ).toThrowError("Fragment X.2 doesn't have a Photo")
+    expect(imageRepository.findPhoto).not.toHaveBeenCalled()
+  })
+
+  test('requests the legacy photo when hasPhoto is true', () => {
+    imageRepository.findPhoto.mockClear()
+    imageRepository.findPhoto.mockReturnValue(Promise.resolve(resultStub))
+    const fragmentWithLegacyPhoto = fragmentFactory.build({
+      number: 'X.3',
+      hasPhoto: true,
+    })
+
+    fragmentService.findPhoto(fragmentWithLegacyPhoto)
+
+    expect(imageRepository.findPhoto).toHaveBeenCalledWith('X.3', undefined)
+  })
 })
 
 describe('isInFragmentarium', () => {

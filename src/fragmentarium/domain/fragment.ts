@@ -35,6 +35,7 @@ import {
 } from 'fragmentarium/domain/fragmentTypes'
 
 export * from 'fragmentarium/domain/fragmentTypes'
+
 interface FragmentProps {
   number: string
   accession: string

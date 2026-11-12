@@ -38,6 +38,7 @@ export interface MediaResourceDto {
   readonly attribution?: unknown
   readonly references?: unknown
   readonly representations?: unknown
+  readonly revision?: unknown
 }
 
 export interface FragmentMediaResponseDto {

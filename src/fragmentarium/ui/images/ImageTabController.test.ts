@@ -86,3 +86,59 @@ describe('TabController with a malformed folio key', () => {
     expect(navigate).toHaveBeenCalledWith(expect.stringContaining('tab=folio'))
   })
 })
+
+describe('TabController with an Images tab offered without imagery', () => {
+  const fragmentWithFolioWithoutPhoto = fragmentFactory.build(
+    { hasPhoto: false, cdliImages: [] },
+    { associations: { folios: [folioFactory.build({ name: 'WGL' })] } },
+  )
+
+  it('prefers a folio as the default tab', () => {
+    const controller = new TabController(
+      fragmentWithFolioWithoutPhoto,
+      null,
+      null,
+      jest.fn(),
+      { hasMedia: true, defaultsToMedia: false },
+    )
+
+    expect(controller.defaultKey).toEqual('0')
+    expect(controller.activeKey).toEqual('0')
+  })
+
+  it('keeps the Images tab selectable on request', () => {
+    const controller = new TabController(
+      fragmentWithFolioWithoutPhoto,
+      PHOTO,
+      null,
+      jest.fn(),
+      { hasMedia: true, defaultsToMedia: false },
+    )
+
+    expect(controller.activeKey).toEqual(PHOTO)
+  })
+
+  it('falls back to the Images tab when nothing else is available', () => {
+    const controller = new TabController(
+      fragmentFactory.build({ hasPhoto: false, cdliImages: [], folios: [] }),
+      null,
+      null,
+      jest.fn(),
+      { hasMedia: true, defaultsToMedia: false },
+    )
+
+    expect(controller.defaultKey).toEqual(PHOTO)
+  })
+
+  it('defaults to the Images tab when there is imagery', () => {
+    const controller = new TabController(
+      fragmentWithFolioWithoutPhoto,
+      null,
+      null,
+      jest.fn(),
+      { hasMedia: true, defaultsToMedia: true },
+    )
+
+    expect(controller.defaultKey).toEqual(PHOTO)
+  })
+})

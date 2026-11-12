@@ -55,6 +55,10 @@ export default function MediaViewer({
       <footer className="Photo__copyright">
         {media.caption && <p>{media.caption}</p>}
         {media.attribution && <p>{media.attribution}</p>}
+        {media.creator && <p>Creator: {media.creator}</p>}
+        {media.sourceInstitution && <p>Source: {media.sourceInstitution}</p>}
+        {media.copyrightHolder && <p>Copyright: {media.copyrightHolder}</p>}
+        {media.rightsStatement && <p>{media.rightsStatement}</p>}
         <small>
           <ReactMarkdown>{fragment.museum.copyright ?? ''}</ReactMarkdown>
         </small>

@@ -108,3 +108,24 @@ describe('Fragment without an image is loaded', () => {
     expect(screen.getByText('Tag signs')).toBeDisabled()
   })
 })
+
+describe('Fragment with new-only photo media is loaded', () => {
+  it('Tag signs button is disabled although published photo media exist', async () => {
+    const harness = createFragmentViewHarness()
+    const fragment = fragmentFactory.build(
+      {
+        number: fragmentNumber,
+        atf: '1. ku',
+        hasPhoto: false,
+        mediaSummary: { count: 1, types: ['PHOTO'] },
+      },
+      { associations: { folios: [], references: [] } },
+    )
+    harness.fragmentService.find.mockReturnValue(Promise.resolve(fragment))
+
+    harness.renderFragmentView(fragment.number, null, null, null)
+    await waitForSpinnerToBeRemoved(screen)
+
+    expect(screen.getByText('Tag signs')).toBeDisabled()
+  })
+})
