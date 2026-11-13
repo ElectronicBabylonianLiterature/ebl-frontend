@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import LocationDisplay from 'test-support/LocationDisplay'
 import { SearchResultFragmentService } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { QueryResult } from 'query/QueryResult'
@@ -77,14 +77,17 @@ describe('FragmentariumSearchResult stale responses', () => {
     })
     expect(await screen.findByText('K.new')).toBeInTheDocument()
 
-    resolveFirst({
-      items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
-      matchCountTotal: null,
-      hasNextPage: false,
+    await act(async () => {
+      resolveFirst({
+        items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
+        matchCountTotal: null,
+        hasNextPage: false,
+      })
+      await Promise.resolve()
+      await Promise.resolve()
     })
 
-    await waitFor(() => {
-      expect(screen.queryByText('K.old')).not.toBeInTheDocument()
-    })
+    expect(screen.getByText('K.new')).toBeInTheDocument()
+    expect(screen.queryByText('K.old')).not.toBeInTheDocument()
   })
 })
