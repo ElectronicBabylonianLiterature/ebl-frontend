@@ -33,7 +33,7 @@ function PaginationControl({
     <Pagination.Item
       active={active}
       aria-current={active ? 'page' : undefined}
-      disabled={disabled}
+      disabled={disabled && !active}
       href={
         disabled ? undefined : `${location.pathname}?${search}${location.hash}`
       }
