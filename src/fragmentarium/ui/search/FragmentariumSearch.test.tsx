@@ -137,7 +137,7 @@ test('keeps one bounded query and zero card hydration calls for 50 summaries', a
     number: 'Summary',
     limit: 51,
     offset: 0,
-    count: 'page',
+    count: 'exact',
   })
   expect(harness.fragmentService.find).not.toHaveBeenCalled()
   expect(harness.fragmentService.findThumbnail).not.toHaveBeenCalled()

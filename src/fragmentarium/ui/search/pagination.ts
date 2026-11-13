@@ -31,24 +31,18 @@ function updateRawSearchParams(
   search: string,
   updates: ReadonlyMap<string, string>,
 ): string {
-  const encodedUpdateKeys = new Set(
-    [...updates.keys()].map((key) => encodeURIComponent(key)),
-  )
   const params = search.replace(/^\?/, '').split('&').filter(Boolean)
   const usedKeys = new Set<string>()
 
   const nextParams = params.flatMap((searchParam) => {
-    const [key] = searchParam.split('=')
+    const [encodedKey] = searchParam.split('=')
+    const updateKey = new URLSearchParams(`key=${encodedKey}`).get('key')
 
-    if (!encodedUpdateKeys.has(key)) {
+    if (!updateKey || !updates.has(updateKey)) {
       return [searchParam]
     }
 
-    const updateKey = [...updates.keys()].find(
-      (candidate) => encodeURIComponent(candidate) === key,
-    )
-
-    if (!updateKey || usedKeys.has(updateKey)) {
+    if (usedKeys.has(updateKey)) {
       return []
     }
 
@@ -92,12 +86,18 @@ export function getValidatedPageSize(
     : RESULTS_PER_PAGE
 }
 
+function getMaxNavigablePageIndex(pageSize: number): number {
+  return Math.floor((Number.MAX_SAFE_INTEGER - pageSize - 1) / pageSize)
+}
+
 export function parseSearchPagination(search: string): SearchPagination {
+  const pageSize = getValidatedPageSize(
+    new URLSearchParams(search).get(pageSizeURLParam),
+  )
+  const pageIndex = getPageIndex(search)
   return {
-    pageIndex: getPageIndex(search),
-    pageSize: getValidatedPageSize(
-      new URLSearchParams(search).get(pageSizeURLParam),
-    ),
+    pageIndex: pageIndex <= getMaxNavigablePageIndex(pageSize) ? pageIndex : 0,
+    pageSize,
   }
 }
 
@@ -126,7 +126,7 @@ export function createPagedFragmentQuery(
     ...fragmentQuery,
     limit: pageSize + 1,
     offset: pageIndex * pageSize,
-    count: isLineQuery(fragmentQuery) ? 'exact' : 'page',
+    count: 'exact',
   }
 }
 
@@ -136,6 +136,45 @@ export function hasNextPageAfter(
   reportedHasNextPage: boolean | null | undefined,
 ): boolean {
   return reportedHasNextPage === true || items.length > pageSize
+}
+
+export function getLastPageIndex(
+  totalDocuments: number | null | undefined,
+  pageSize: number,
+): number | null {
+  if (
+    typeof totalDocuments !== 'number' ||
+    !Number.isSafeInteger(totalDocuments) ||
+    totalDocuments < 0
+  ) {
+    return null
+  }
+  const lastPageIndex = Math.max(0, Math.ceil(totalDocuments / pageSize) - 1)
+  return lastPageIndex <= getMaxNavigablePageIndex(pageSize)
+    ? lastPageIndex
+    : null
+}
+
+export function getNumberedPageIndexes(
+  activePage: number,
+  lastPage: number,
+): readonly (number | 'ellipsis')[] {
+  const pages = new Set([0, lastPage])
+  const start = Math.max(0, Math.min(activePage - 1, lastPage - 3))
+  const end = Math.min(lastPage, Math.max(activePage + 1, 3))
+
+  for (let page = start; page <= end; page += 1) {
+    pages.add(page)
+  }
+
+  const sorted = [...pages].sort((first, second) => first - second)
+  return sorted.flatMap((page, index): (number | 'ellipsis')[] => {
+    const missingPages = index > 0 ? page - sorted[index - 1] - 1 : 0
+    if (missingPages === 0) {
+      return [page]
+    }
+    return [missingPages === 1 ? page - 1 : 'ellipsis', page]
+  })
 }
 
 export function updatePageSizeSearchParam(

@@ -42,7 +42,8 @@ function buildQueryResult(query: FragmentQuery): QueryResult {
       },
     ],
     matchCountTotal: null,
-    hasNextPage: true,
+    totalDocuments: 237,
+    hasNextPage: null,
   }
 }
 
@@ -93,7 +94,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'CAIC',
       limit: 51,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
     expect(view.query).toHaveBeenCalledTimes(1)
   })
@@ -114,7 +115,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'CAIC',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -130,7 +131,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       genre: 'CANONICAL:Technical',
       limit: 51,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -153,7 +154,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'CAIC',
       limit: 26,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -173,7 +174,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'CAIC',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -189,7 +190,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'RECC',
       limit: 51,
       offset: 150,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -211,7 +212,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'AMPS',
       limit: 26,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -223,7 +224,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'aluGeneva',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
   })
 })

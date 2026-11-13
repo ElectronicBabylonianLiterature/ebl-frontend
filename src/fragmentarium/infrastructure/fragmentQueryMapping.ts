@@ -45,6 +45,7 @@ export type LatestQueryResultDto = {
 export type QueryResultDto = {
   items: readonly QueryResultItemDto[]
   matchCountTotal: number | null
+  totalDocuments?: number | null
   isMatchCountTotalExact?: boolean
   hasNextPage?: boolean | null
   bibliographyDocuments?: BibliographyDocumentsDto
@@ -130,6 +131,7 @@ function createQueryItem(
 export function createQueryResult(dto: QueryResultDto): QueryResult {
   return {
     matchCountTotal: dto.matchCountTotal,
+    totalDocuments: dto.totalDocuments,
     isMatchCountTotalExact: dto.isMatchCountTotalExact,
     hasNextPage: dto.hasNextPage,
     items: dto.items.map((itemDto) =>
