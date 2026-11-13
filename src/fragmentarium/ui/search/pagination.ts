@@ -168,11 +168,13 @@ export function getNumberedPageIndexes(
   }
 
   const sorted = [...pages].sort((first, second) => first - second)
-  return sorted.flatMap((page, index) =>
-    index > 0 && page - sorted[index - 1] > 1
-      ? ['ellipsis' as const, page]
-      : [page],
-  )
+  return sorted.flatMap((page, index): (number | 'ellipsis')[] => {
+    const missingPages = index > 0 ? page - sorted[index - 1] - 1 : 0
+    if (missingPages === 0) {
+      return [page]
+    }
+    return [missingPages === 1 ? page - 1 : 'ellipsis', page]
+  })
 }
 
 export function updatePageSizeSearchParam(
