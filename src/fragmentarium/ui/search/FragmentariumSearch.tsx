@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
@@ -19,6 +19,7 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
+import useSearchTab from 'fragmentarium/ui/search/useSearchTab'
 
 type Props = Pick<
   SearchFormProps,
@@ -55,11 +56,15 @@ function FragmentariumSearch({
   textService,
   activeTab,
 }: Props): JSX.Element {
-  const corpusQuery: CorpusQuery = _.pick(
-    fragmentQuery,
-    'lemmas',
-    'lemmaOperator',
-    'transliteration',
+  const { selectedTab, selectTab } = useSearchTab(activeTab)
+  const { lemmas, lemmaOperator, transliteration } = fragmentQuery
+  const corpusQuery: CorpusQuery = useMemo(
+    () =>
+      _.pickBy(
+        { lemmas, lemmaOperator, transliteration },
+        (value): boolean => value !== undefined,
+      ),
+    [lemmas, lemmaOperator, transliteration],
   )
 
   const showResults =
@@ -99,14 +104,8 @@ function FragmentariumSearch({
                 </Row>
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={activeTab || 'library'} justify>
-                  <Tab
-                    eventKey="library"
-                    title="Library"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#library')
-                    }
-                  >
+                <Tabs activeKey={selectedTab} onSelect={selectTab} justify>
+                  <Tab eventKey="library" title="Library">
                     <SearchResult
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
@@ -114,13 +113,7 @@ function FragmentariumSearch({
                       pagination={pagination}
                     />
                   </Tab>
-                  <Tab
-                    eventKey="corpus"
-                    title="Corpus"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#corpus')
-                    }
-                  >
+                  <Tab eventKey="corpus" title="Corpus">
                     <CorpusSearchResult
                       textService={textService}
                       corpusQuery={corpusQuery}
