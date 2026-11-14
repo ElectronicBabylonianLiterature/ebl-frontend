@@ -158,6 +158,7 @@ function FragmentLinesContent({
             linesToShow={linesToShow}
             totalMatchingLines={queryItem.totalMatchingLines}
             totalLines={includeLatestRecord ? queryItem.matchCount : undefined}
+            remainderNoun={includeLatestRecord ? 'line' : 'matching line'}
             matchingLineIndexes={queryItem.matchingLines}
             lemmaIds={queryLemmas}
           />

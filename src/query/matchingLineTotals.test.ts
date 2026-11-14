@@ -1,4 +1,4 @@
-import { matchingLineTotal } from './matchingLineTotals'
+import { matchingLineTotal } from 'query/matchingLineTotals'
 
 const item = {
   museumNumber: 'BM.23658',
@@ -21,6 +21,7 @@ test.each([
     7,
   ],
   [{ number: 'BM.23658' }, undefined],
+  [{ lemmaOperator: 'phrase' as const }, undefined],
 ])('keeps only reliable legacy line totals for %p', (query, expected) => {
   expect(matchingLineTotal(item, query)).toBe(expected)
 })

@@ -15,6 +15,7 @@ export default function RenderFragmentLines({
   totalMatchingLines,
   totalLines,
   matchingLineIndexes,
+  remainderNoun = 'matching line',
 }: {
   fragment: Fragment
   lemmaIds?: readonly string[]
@@ -22,6 +23,7 @@ export default function RenderFragmentLines({
   totalMatchingLines?: number | null
   totalLines?: number | null
   matchingLineIndexes?: readonly number[]
+  remainderNoun?: 'line' | 'matching line'
 }): JSX.Element {
   const matchingLines = fragment.text.lines.filter(
     (line) => line.type === 'TextLine',
@@ -41,7 +43,6 @@ export default function RenderFragmentLines({
         matchingLineIndexes ?? [],
         visibleLines.length + 1,
       ).length > visibleLines.length)
-  const lineNoun = totalLines === undefined ? 'matching line' : 'line'
 
   return (
     <table>
@@ -76,8 +77,8 @@ export default function RenderFragmentLines({
             <td></td>
             <td>
               {remainingLines === null
-                ? `More ${lineNoun}s may be available`
-                : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
+                ? `More ${remainderNoun}s may be available`
+                : `And ${remainingLines} more ${remainderNoun}${remainingLines === 1 ? '' : 's'}`}
             </td>
           </tr>
         )}
