@@ -98,7 +98,7 @@ describe('remaining line totals on the dictionary page', () => {
         cardSummary: createFragmentCardSummary(),
       })
 
-      expect(await screen.findByText('And 3 more lines')).toBeVisible()
+      expect(await screen.findByText('And 3 more matching lines')).toBeVisible()
     },
   )
 })

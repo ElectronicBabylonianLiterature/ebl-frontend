@@ -53,6 +53,7 @@ export default function ExpandableFragmentMatches({
           hideRemainingMessage={canExpand}
           totalMatchingLines={queryItem.totalMatchingLines}
           totalLines={enableExpansion ? undefined : queryItem.matchCount}
+          remainderNoun={enableExpansion ? 'matching line' : 'line'}
           matchingLineIndexes={queryItem.matchingLines}
           lemmaIds={queryLemmas}
         />

@@ -141,6 +141,7 @@ export default function RenderFragmentLines({
   matchingLineIndexes,
   selectedLineIndexes,
   hideRemainingMessage = false,
+  remainderNoun = 'matching line',
 }: {
   fragment: Fragment
   lemmaIds?: readonly string[]
@@ -150,6 +151,7 @@ export default function RenderFragmentLines({
   matchingLineIndexes?: readonly number[]
   selectedLineIndexes?: readonly number[]
   hideRemainingMessage?: boolean
+  remainderNoun?: 'line' | 'matching line'
 }): JSX.Element {
   let labels = defaultLabels
   const matchingLines: { line: TextLine; location: TextLineLocation | null }[] =
@@ -191,7 +193,6 @@ export default function RenderFragmentLines({
         matchingLineIndexes ?? [],
         visibleLines.length + 1,
       ).length > visibleLines.length)
-  const lineNoun = totalLines === undefined ? 'matching line' : 'line'
   const showRemainingMessage = shouldShowRemainingMessage(
     hideRemainingMessage,
     remainingLines,
@@ -215,8 +216,8 @@ export default function RenderFragmentLines({
             <td></td>
             <td>
               {remainingLines === null
-                ? `More ${lineNoun}s may be available`
-                : `And ${remainingLines} more ${lineNoun}${remainingLines === 1 ? '' : 's'}`}
+                ? `More ${remainderNoun}s may be available`
+                : `And ${remainingLines} more ${remainderNoun}${remainingLines === 1 ? '' : 's'}`}
             </td>
           </tr>
         )}
