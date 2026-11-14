@@ -90,6 +90,8 @@ describe('Searching fragments from summary-backed results', () => {
     expect(screen.getByAltText(ResearchProjects.CAIC.name)).toBeVisible()
     expect(screen.getByAltText(ResearchProjects.RECC.name)).toBeVisible()
     expect(screen.getByRole('button', { name: 'D001' })).toBeVisible()
-    expect(screen.getByText('And 5 more matching lines')).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'Show 5 more matching lines' }),
+    ).toBeVisible()
   })
 })

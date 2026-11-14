@@ -7,6 +7,7 @@ import { TextLine, TextLineLocation } from 'transliteration/domain/text-line'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import 'dictionary/ui/search/FragmentLemmaLines.sass'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 import {
   createLineAnchorId,
   defaultLabels,
@@ -79,6 +80,58 @@ function lineHash(
   return labels.length ? createLineAnchorId(labels, line.lineNumber) : null
 }
 
+function FragmentLineRow({
+  fragmentNumber,
+  line,
+  location,
+  lemmaIds,
+}: {
+  fragmentNumber: string
+  line: TextLine
+  location: TextLineLocation | null
+  lemmaIds?: readonly string[]
+}): JSX.Element {
+  const label = formatLineLocation(line, location)
+  const hash = lineHash(line, location)
+  const columns = [
+    {
+      span: 1,
+      content: createColumns(line.content).flatMap((column) => column.content),
+    },
+  ]
+
+  return (
+    <tr>
+      <td className="fragment-lines-with-lemma__line-number">
+        {hash ? (
+          <FragmentLink number={fragmentNumber} hash={hash}>
+            {label}
+          </FragmentLink>
+        ) : (
+          label
+        )}
+      </td>
+      <LineColumns
+        columns={columns}
+        maxColumns={1}
+        TokenActionWrapper={LemmaPopover}
+        conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
+      />
+    </tr>
+  )
+}
+
+function shouldShowRemainingMessage(
+  hideRemainingMessage: boolean,
+  remainingLines: number | null,
+  mayHaveMoreLines: boolean,
+): boolean {
+  if (hideRemainingMessage) {
+    return false
+  }
+  return remainingLines === null ? mayHaveMoreLines : remainingLines > 0
+}
+
 export default function RenderFragmentLines({
   fragment,
   lemmaIds,
@@ -86,6 +139,8 @@ export default function RenderFragmentLines({
   totalMatchingLines,
   totalLines,
   matchingLineIndexes,
+  selectedLineIndexes,
+  hideRemainingMessage = false,
   remainderNoun = 'matching line',
 }: {
   fragment: Fragment
@@ -94,74 +149,69 @@ export default function RenderFragmentLines({
   totalMatchingLines?: number | null
   totalLines?: number | null
   matchingLineIndexes?: readonly number[]
+  selectedLineIndexes?: readonly number[]
+  hideRemainingMessage?: boolean
   remainderNoun?: 'line' | 'matching line'
 }): JSX.Element {
   let labels = defaultLabels
   const matchingLines: { line: TextLine; location: TextLineLocation | null }[] =
     []
-  for (const line of fragment.text.lines) {
+  const indexedLines = new Map<
+    number,
+    { line: TextLine; location: TextLineLocation | null }
+  >()
+  for (const [sourceIndex, line] of fragment.text.allLines.entries()) {
     if (line.type === 'TextLine') {
       const textLine = line as TextLine
-      matchingLines.push({
+      const entry = {
         line: textLine,
         location: textLine.location ?? locationFromLabels(labels),
-      })
+      }
+      matchingLines.push(entry)
+      indexedLines.set(sourceIndex, entry)
     }
     labels = getCurrentLabels(labels, line)
   }
-  const visibleLines = matchingLines.slice(0, linesToShow)
+  const orderedLines = selectedLineIndexes
+    ? takeUniqueMatchingLineIndexes(
+        selectedLineIndexes,
+        Number.MAX_SAFE_INTEGER,
+      ).flatMap((index) => {
+        const entry = indexedLines.get(index)
+        return entry ? [entry] : []
+      })
+    : matchingLines
+  const visibleLines = orderedLines.slice(0, linesToShow)
   const knownTotal = totalMatchingLines ?? totalLines
-  const remainingLines =
-    typeof knownTotal === 'number' &&
-    Number.isSafeInteger(knownTotal) &&
-    knownTotal >= 0
-      ? Math.max(knownTotal - visibleLines.length, 0)
-      : null
+  const remainingLines = isNonNegativeInteger(knownTotal)
+    ? Math.max(knownTotal - visibleLines.length, 0)
+    : null
   const mayHaveMoreLines =
     remainingLines === null &&
-    (matchingLines.length > visibleLines.length ||
+    (orderedLines.length > visibleLines.length ||
       takeUniqueMatchingLineIndexes(
         matchingLineIndexes ?? [],
         visibleLines.length + 1,
       ).length > visibleLines.length)
+  const showRemainingMessage = shouldShowRemainingMessage(
+    hideRemainingMessage,
+    remainingLines,
+    mayHaveMoreLines,
+  )
 
   return (
     <table>
       <tbody>
-        {visibleLines.map(({ line, location }, index) => {
-          const label = formatLineLocation(line, location)
-          const hash = lineHash(line, location)
-          const columns = [
-            {
-              span: 1,
-              content: createColumns(line.content).flatMap(
-                (column) => column.content,
-              ),
-            },
-          ]
-
-          return (
-            <tr key={index}>
-              <td className={'fragment-lines-with-lemma__line-number'}>
-                {hash ? (
-                  <FragmentLink number={fragment.number} hash={hash}>
-                    {label}
-                  </FragmentLink>
-                ) : (
-                  label
-                )}
-              </td>
-              <LineColumns
-                columns={columns}
-                maxColumns={1}
-                TokenActionWrapper={LemmaPopover}
-                conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
-              />
-            </tr>
-          )
-        })}
-        {((remainingLines !== null && remainingLines > 0) ||
-          mayHaveMoreLines) && (
+        {visibleLines.map(({ line, location }, index) => (
+          <FragmentLineRow
+            key={index}
+            fragmentNumber={fragment.number}
+            line={line}
+            location={location}
+            lemmaIds={lemmaIds}
+          />
+        ))}
+        {showRemainingMessage && (
           <tr>
             <td></td>
             <td>

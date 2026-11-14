@@ -43,7 +43,9 @@ describe('FragmentLines', () => {
       5,
     )
 
-    expect(screen.getByText('And 2 more matching lines')).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'Show 2 more matching lines' }),
+    ).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 
@@ -59,7 +61,7 @@ describe('FragmentLines', () => {
     })
 
     expect(
-      screen.getByText('More matching lines may be available'),
+      screen.getByRole('button', { name: 'Show more matching lines' }),
     ).toBeVisible()
     expect(screen.queryByText(/And \d+ more/)).not.toBeInTheDocument()
   })
@@ -198,6 +200,8 @@ describe('FragmentLines', () => {
       5,
     )
 
-    expect(screen.getByText('And 5 more matching lines')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Show 5 more matching lines' }),
+    ).toBeInTheDocument()
   })
 })

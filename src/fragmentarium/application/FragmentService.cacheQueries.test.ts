@@ -60,6 +60,29 @@ describe('query result caching', () => {
     expect(fragmentRepository.find).toHaveBeenCalledTimes(0)
   })
 
+  test('serves prefetched fragments when matching lines repeat', async () => {
+    fragmentRepository.query.mockReturnValue(
+      Promise.resolve({
+        items: [
+          {
+            museumNumber: number,
+            matchingLines: [5, 1, 5, 6],
+            matchCount: 1,
+            fragment: cachedFragment,
+          } as QueryResult['items'][number],
+        ],
+        matchCountTotal: 1,
+      }),
+    )
+
+    await service.query(query)
+    await expect(service.find(number, [5, 1, 6], false)).resolves.toMatchObject(
+      { number: cachedFragment.number },
+    )
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(0)
+  })
+
   test('refreshes expired query results', async () => {
     fragmentRepository.query
       .mockReturnValueOnce(Promise.resolve(queryResult))

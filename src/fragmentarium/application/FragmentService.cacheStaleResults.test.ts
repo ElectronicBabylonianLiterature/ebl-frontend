@@ -142,6 +142,7 @@ describe('stale results after updates', () => {
       number,
       [1, 2, 3],
       false,
+      undefined,
     )
   })
 })
