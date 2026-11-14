@@ -14,30 +14,47 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
+import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import {
+  countUniqueMatchingLines,
+  matchingLineTotal,
+} from 'query/matchingLineTotals'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
 
 const FragmentLines = withData<
-  { lemmaId: string; lineIndexes: readonly number[] },
+  {
+    lemmaId: string
+    lineIndexes: readonly number[]
+    totalMatchingLines?: number | null
+  },
   {
     museumNumber: string
     fragmentService: FragmentService
   },
   Fragment
 >(
-  ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => (
+  ({
+    data: fragment,
+    lemmaId,
+    lineIndexes,
+    totalMatchingLines,
+  }): JSX.Element => (
     <RenderFragmentLines
       fragment={fragment}
       linesToShow={FRAGMENT_LINES_TO_SHOW}
-      totalLines={lineIndexes.length}
+      totalMatchingLines={
+        totalMatchingLines ?? countUniqueMatchingLines(lineIndexes)
+      }
+      matchingLineIndexes={lineIndexes}
       lemmaIds={[lemmaId]}
     />
   ),
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      _.take(props.lineIndexes, FRAGMENT_LINES_TO_SHOW),
+      takeUniqueMatchingLineIndexes(props.lineIndexes, FRAGMENT_LINES_TO_SHOW),
     ),
   {
     watch: ({ museumNumber, lineIndexes }) => [
@@ -61,7 +78,8 @@ function QueryItemFragmentLines({
       <RenderFragmentLines
         fragment={queryItem.fragment}
         linesToShow={FRAGMENT_LINES_TO_SHOW}
-        totalLines={queryItem.matchCount}
+        totalMatchingLines={matchingLineTotal(queryItem, { lemmas: lemmaId })}
+        matchingLineIndexes={queryItem.matchingLines}
         lemmaIds={[lemmaId]}
       />
     )
@@ -74,6 +92,7 @@ function QueryItemFragmentLines({
   return (
     <FragmentLines
       lineIndexes={queryItem.matchingLines}
+      totalMatchingLines={queryItem.totalMatchingLines}
       museumNumber={queryItem.museumNumber}
       fragmentService={fragmentService}
       lemmaId={lemmaId}
@@ -96,12 +115,16 @@ function FragmentLemmaLines({
         (queryItem, index) => {
           return (
             <Row key={index}>
-              <Col xs={1}>
+              <Col
+                xs={12}
+                sm={1}
+                className="fragment-lines-with-lemma__identifier"
+              >
                 <FragmentLink number={queryItem.museumNumber}>
                   {queryItem.museumNumber}
                 </FragmentLink>
               </Col>
-              <Col className={'fragmentlines-column'}>
+              <Col xs={12} sm={11} className={'fragmentlines-column'}>
                 <QueryItemFragmentLines
                   queryItem={queryItem}
                   fragmentService={fragmentService}
