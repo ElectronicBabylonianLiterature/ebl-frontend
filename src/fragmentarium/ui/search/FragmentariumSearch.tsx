@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
@@ -19,7 +19,7 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
-import useSearchTab from './useSearchTab'
+import useSearchTab from 'fragmentarium/ui/search/useSearchTab'
 
 type Props = Pick<
   SearchFormProps,
@@ -57,11 +57,14 @@ function FragmentariumSearch({
   activeTab,
 }: Props): JSX.Element {
   const { selectedTab, selectTab } = useSearchTab(activeTab)
-  const corpusQuery: CorpusQuery = _.pick(
-    fragmentQuery,
-    'lemmas',
-    'lemmaOperator',
-    'transliteration',
+  const { lemmas, lemmaOperator, transliteration } = fragmentQuery
+  const corpusQuery: CorpusQuery = useMemo(
+    () =>
+      _.pickBy(
+        { lemmas, lemmaOperator, transliteration },
+        (value): boolean => value !== undefined,
+      ),
+    [lemmas, lemmaOperator, transliteration],
   )
   const hasCorpusCriteria = hasNonDefaultValues(corpusQuery)
 
