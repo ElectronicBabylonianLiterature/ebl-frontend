@@ -82,3 +82,23 @@ test('reports a pending original download and its failure', async () => {
   expect(await screen.findByText('Download unavailable')).toBeVisible()
   expect(screen.queryByRole('status')).not.toBeInTheDocument()
 })
+
+test('displays supplied creator, institution, copyright and reproduction rights', async () => {
+  render(
+    <MediaViewer
+      fragment={fragmentFactory.build()}
+      media={mediaFixture({
+        creator: 'A. Photographer',
+        sourceInstitution: 'Holding museum',
+        copyrightHolder: 'Rights owner',
+        rightsStatement: 'Reproduction authorized',
+      })}
+      binaryLoader={galleryServices().binaryLoader}
+    />,
+  )
+  expect(screen.getByText('Creator: A. Photographer')).toBeVisible()
+  expect(screen.getByText('Source: Holding museum')).toBeVisible()
+  expect(screen.getByText('Copyright: Rights owner')).toBeVisible()
+  expect(screen.getByText('Reproduction authorized')).toBeVisible()
+  await screen.findByRole('img')
+})

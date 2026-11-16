@@ -1,8 +1,7 @@
-import _ from 'lodash'
+import { storePrefetchedFragment } from 'fragmentarium/application/fragmentCachePrefetch'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { QueryResult } from 'query/QueryResult'
-import { hasPrefetchableFullFragment } from 'query/queryItemRenderReady'
 import { CacheEntry, setCachedValue } from 'common/utils/cache'
 import { ThumbnailBlob } from 'fragmentarium/application/fragmentServicePorts'
 import {
@@ -12,6 +11,7 @@ import {
 } from 'fragmentarium/application/scopedCache'
 import {
   deleteByPrefix,
+  deleteQueriesContainingFragment,
   fragmentKey,
   fragmentKeyPrefix,
   provenanceCacheKey,
@@ -24,8 +24,6 @@ export const maximumCachedThumbnails = 250
 export const maximumCachedProvenanceRecords = 250
 export const maximumCachedProvenanceChildren = 250
 export const maximumCachedQueryResults = 250
-
-type QueryItemWithPrefetchedFragment = QueryResult['items'][number]
 
 export class FragmentCache {
   private readonly scoped: ScopedCache
@@ -200,12 +198,7 @@ export class FragmentCache {
     deleteByPrefix(this.thumbnails, prefix)
     deleteByPrefix(this.thumbnailRequests, prefix)
     deleteByPrefix(this.prefetchedFragments, prefix)
-    for (const [key, entry] of this.queryResults) {
-      if (entry.value.items.some((item) => item.museumNumber === number))
-        this.queryResults.delete(key)
-    }
-    // In-flight query membership is unknown until it completes. Detaching
-    // requests prevents pre-mutation responses from repopulating this cache.
+    deleteQueriesContainingFragment(this.queryResults, number)
     this.queryResultRequests.clear()
     this.scoped.bumpGeneration()
   }
@@ -213,7 +206,7 @@ export class FragmentCache {
   storePrefetchedFragments(queryResult: QueryResult): void {
     this.prefetchedFragments.clear()
     queryResult.items.forEach((queryItem) =>
-      this.storePrefetchedFragment(queryItem),
+      storePrefetchedFragment(this.prefetchedFragments, queryItem),
     )
   }
 
@@ -233,26 +226,5 @@ export class FragmentCache {
     maximumCacheSize: number,
   ): void {
     this.scoped.trimCache(cache, maximumCacheSize)
-  }
-
-  private storePrefetchedFragment(
-    queryItem: QueryItemWithPrefetchedFragment,
-  ): void {
-    if (!hasPrefetchableFullFragment(queryItem)) {
-      return
-    }
-
-    const prefetchedFragment = queryItem.fragment
-    const lines = _.take(queryItem.matchingLines, 3)
-    const excludeLines = _.isEmpty(queryItem.matchingLines)
-
-    this.prefetchedFragments.set(
-      fragmentKey(queryItem.museumNumber, lines, excludeLines),
-      prefetchedFragment,
-    )
-    this.prefetchedFragments.set(
-      fragmentKey(queryItem.museumNumber),
-      prefetchedFragment,
-    )
   }
 }

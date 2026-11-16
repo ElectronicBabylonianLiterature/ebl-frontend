@@ -1,4 +1,4 @@
-import { ApiError } from './ApiError'
+import { ApiError } from 'http/ApiError'
 
 export interface BinaryUploadOptions {
   signal?: AbortSignal
@@ -26,8 +26,6 @@ function succeeded(request: XMLHttpRequest): boolean {
 }
 
 function responseError(request: XMLHttpRequest, body: unknown): ApiError {
-  // Proxies and gateways (e.g. an nginx 413 or 502 page) answer with HTML or
-  // an empty body; report their status like ApiError.fromResponse does.
   if (body === unparsed || !body || typeof body !== 'object')
     return new ApiError(
       request.status === 413

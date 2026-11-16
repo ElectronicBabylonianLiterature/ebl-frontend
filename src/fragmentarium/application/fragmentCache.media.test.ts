@@ -1,5 +1,8 @@
-import { FragmentCache } from './fragmentCache'
-import { fragmentKey, thumbnailKey } from './fragmentCacheKeys'
+import { FragmentCache } from 'fragmentarium/application/fragmentCache'
+import {
+  fragmentKey,
+  thumbnailKey,
+} from 'fragmentarium/application/fragmentCacheKeys'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 test('media invalidation refreshes only affected fragment, thumbnails and cached result membership', async () => {

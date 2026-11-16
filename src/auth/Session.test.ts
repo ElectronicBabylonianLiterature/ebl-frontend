@@ -118,3 +118,8 @@ describe.each([
     expect(session.isAllowedToReadFolio(folio)).toBe(folio.isOpen)
   })
 })
+
+test('guest proper-noun creation is denied and a memory session is identified as authenticated', () => {
+  expect(guestSession.isAllowedToCreateProperNouns()).toBe(false)
+  expect(new MemorySession([]).isGuestSession()).toBe(false)
+})

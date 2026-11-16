@@ -1,4 +1,3 @@
-/** Request identities also support browsers predating crypto.randomUUID. */
 export default function mediaUploadId(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(16))
   bytes[6] = (bytes[6] & 15) | 64

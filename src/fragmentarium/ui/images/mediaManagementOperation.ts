@@ -9,12 +9,6 @@ interface OperationFailure {
   readonly followUp?: () => void
 }
 
-/**
- * Decides what a failed mutation shows the user and which refresh it needs: a
- * stale revision (412/428) gets an explanatory message and `onStale`; any other
- * failure that does not prove the server rejected it (anything but HTTP 4xx)
- * keeps its own message and triggers `onUncertain`.
- */
 function classifyFailure(
   error: unknown,
   onUncertain: () => void,
@@ -28,7 +22,6 @@ function classifyFailure(
   }
 }
 
-/** An abort controller that is aborted when the component unmounts. */
 function useUnmountController() {
   const controller = useRef(new AbortController())
   useEffect(() => {
@@ -39,14 +32,6 @@ function useUnmountController() {
   return controller
 }
 
-/**
- * Runs one media mutation. `onUncertain` fires when the mutation failed in a
- * way that does not prove the server rejected it (anything but HTTP 4xx), so
- * the caller can refresh while the error is still surfaced to the user.
- * `onStale` fires instead when the server refused the item's revision (412/428):
- * the user acted on an outdated view, so the caller must refresh and let them
- * review the current item before acting again.
- */
 export function useMediaOperation(
   onSuccess: () => void,
   onUncertain: () => void = () => undefined,

@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
-import MediaMetadataFields, { emptyMediaMetadata } from './MediaMetadataFields'
+import MediaMetadataFields, {
+  emptyMediaMetadata,
+} from 'fragmentarium/ui/images/MediaMetadataFields'
 
 function MetadataForm({
   onSubmit,
@@ -104,4 +106,14 @@ test('replaces local identifier drafts when external metadata changes', async ()
   )
   expect(references).toHaveValue('external-reference')
   expect(projects).toHaveValue('RECC')
+})
+
+test('changing image type submits the selected domain value', async () => {
+  const onSubmit = jest.fn()
+  render(<MetadataForm onSubmit={onSubmit} />)
+  await userEvent.selectOptions(screen.getByLabelText('Image type'), 'COPY')
+  await userEvent.click(screen.getByRole('button', { name: 'Save metadata' }))
+  expect(onSubmit).toHaveBeenCalledWith(
+    expect.objectContaining({ type: 'COPY' }),
+  )
 })

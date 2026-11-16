@@ -172,3 +172,30 @@ test('renders an empty gallery without starting binary requests', () => {
   render(<MediaGallery fragment={fragment} media={[]} services={services} />)
   expect(services.binaryLoader.fetch).not.toHaveBeenCalled()
 })
+
+test('management mutations also complete when no change observer was provided', async () => {
+  const media = mediaFixture({ publicationStatus: 'PUBLISHED' })
+  const setPrimary = jest.fn().mockResolvedValue(media)
+  const services = {
+    ...galleryServices([media]),
+    canManage: true,
+    management: {
+      setPrimary,
+      upload: jest.fn(),
+      update: jest.fn(),
+      publish: jest.fn(),
+      reject: jest.fn(),
+      remove: jest.fn(),
+    },
+  }
+  render(
+    <MediaGallery fragment={fragment} media={[media]} services={services} />,
+  )
+  await userEvent.click(screen.getByRole('button', { name: 'Set as primary' }))
+  await waitFor(() =>
+    expect(
+      screen.getByRole('button', { name: 'Set as primary' }),
+    ).toBeEnabled(),
+  )
+  expect(setPrimary).toHaveBeenCalledTimes(1)
+})

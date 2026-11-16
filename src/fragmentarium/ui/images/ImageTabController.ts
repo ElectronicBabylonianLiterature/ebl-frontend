@@ -56,14 +56,8 @@ export function hasUsableCdliTab(fragment: Fragment): boolean {
 }
 
 export interface MediaTabOptions {
-  /** Whether the Images/Photo tab is offered at all. Defaults to `fragment.hasPhoto`. */
   readonly hasMedia?: boolean
-  /**
-   * Whether the Images/Photo tab opens by default. Only actual imagery should
-   * make it the default; a tab offered solely so that an uploader or manager
-   * can add the first image must not hide folios or CDLI images. Defaults to
-   * `hasMedia`.
-   */
+
   readonly defaultsToMedia?: boolean
 }
 

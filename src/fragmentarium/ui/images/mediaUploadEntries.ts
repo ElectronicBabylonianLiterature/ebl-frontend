@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 import { mediaMetadataFitsHeader } from 'fragmentarium/application/mediaMetadataHeader'
-import mediaUploadId from './mediaUploadId'
+import mediaUploadId from 'fragmentarium/ui/images/mediaUploadId'
 
 export type UploadState =
   | 'Ready to upload'
@@ -17,7 +17,7 @@ export interface UploadEntry {
   file: File
   metadata: MediaMetadata
   state: UploadState
-  /** Identity and payload of every request that was started. */
+
   attempted?: readonly { key: string; metadata: MediaMetadata }[]
   percent?: number
   error?: string
@@ -26,7 +26,7 @@ export const completed = (entry: UploadEntry): boolean =>
   ['Submitted for review', 'Published'].includes(entry.state)
 export const busy = (entry: UploadEntry): boolean =>
   ['Uploading', 'Processing'].includes(entry.state)
-/** The API rejects metadata whose encoded upload header exceeds its limit. */
+
 export const metadataTooLong = (entry: UploadEntry): boolean =>
   !mediaMetadataFitsHeader(entry.metadata, entry.file.name)
 
@@ -66,10 +66,7 @@ export function selectUploadEntries(
   })
   return { entries, error: errors.join(' ') }
 }
-/**
- * Compares the metadata that would be sent: JSON drops undefined fields, so
- * an absent optional field equals an explicitly undefined one.
- */
+
 export function sameUploadMetadata(
   first: MediaMetadata,
   second: MediaMetadata,
@@ -79,18 +76,14 @@ export function sameUploadMetadata(
     JSON.parse(JSON.stringify(second)),
   )
 }
-/**
- * Replaces an entry's metadata. The idempotency key rotates only when the
- * effective metadata changed: an unchanged retry must replay the original
- * request, while changed metadata would be rejected under the old key.
- */
+
 export function withUploadMetadata(
   entry: UploadEntry,
   metadata: MediaMetadata,
   state: UploadState = entry.state,
 ): UploadEntry {
   if (sameUploadMetadata(entry.metadata, metadata)) return entry
-  // Returning to exactly what was already sent restores that request identity.
+
   const key =
     entry.attempted?.find((sent) => sameUploadMetadata(sent.metadata, metadata))
       ?.key ?? mediaUploadId()
@@ -106,13 +99,9 @@ const textFields = [
   'description',
 ] as const
 const listFields = ['references', 'projects'] as const
-/** The image type the shared form starts with; only a different choice counts as filled in. */
+
 const defaultMediaType: MediaMetadata['type'] = 'PHOTO'
-/**
- * Overlays only the shared fields the user actually filled in: non-blank
- * text, non-empty lists, a checked permission attestation and a non-default
- * image type. Blank or absent shared fields keep each entry's own value.
- */
+
 export function mergeSharedMetadata(
   own: MediaMetadata,
   shared: MediaMetadata,
@@ -130,10 +119,7 @@ export function mergeSharedMetadata(
   if (shared.type !== defaultMediaType) merged.type = shared.type
   return merged
 }
-/**
- * Applies the batch form to one entry. The key rotates only when the merge
- * actually changed the entry (see withUploadMetadata).
- */
+
 export function sharedUploadMetadata(
   entry: UploadEntry,
   metadata: MediaMetadata,

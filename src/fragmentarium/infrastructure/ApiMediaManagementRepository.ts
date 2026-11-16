@@ -22,12 +22,10 @@ function mediaUrl(fragment: string, id: string, action = ''): string {
   return `/media/${encodeURIComponent(id)}${action ? `/${action}` : ''}?fragment=${encodeURIComponent(fragment)}`
 }
 
-/** `If-Match` for a known revision; no header when the revision is unknown. */
 function ifMatch(revision: number | undefined): Record<string, string> {
   return revision === undefined ? {} : { 'If-Match': `"${revision}"` }
 }
 
-/** Request options for a dispatched mutation guarded by `If-Match`. */
 function mutationOptions(
   signal: AbortSignal,
   onDispatched: () => void,
@@ -114,12 +112,6 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
       this.onChanged(fragment)
       return result
     } catch (error) {
-      // A sent request may have committed unless the server definitively
-      // rejected it (HTTP 4xx): cancellation, network loss, gateway errors and
-      // unreadable success bodies all leave the outcome uncertain. Disposal
-      // permanently fences this request even if the adapter is activated again.
-      // A stale revision (412/428) is definitive for this request, but proves
-      // someone else changed the item, so cached views are out of date too.
       if (
         !reported &&
         dispatched &&
@@ -142,7 +134,7 @@ export default class ApiMediaManagementRepository implements MediaManagementRepo
     options: MediaUploadOptions = {},
   ): Promise<MediaResource> {
     const metadataHeader = encodeMediaMetadataHeader(metadata, file.name)
-    // The API would answer 413; never send a request that cannot succeed.
+
     if (metadataHeader.length > MEDIA_METADATA_HEADER_LIMIT)
       return Promise.reject(
         new ApiError(MEDIA_METADATA_TOO_LONG_MESSAGE, {}, 413),

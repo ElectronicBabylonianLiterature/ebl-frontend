@@ -41,10 +41,6 @@ import { prefetchFrom } from 'fragmentarium/application/fragmentPrefetch'
 export * from 'fragmentarium/application/fragmentServicePorts'
 
 export class FragmentService extends FragmentServiceBase {
-  invalidateMedia(number: string): void {
-    this.cache.invalidateMedia(number)
-  }
-
   statistics(signal?: AbortSignal): Promise<FragmentStatistics> {
     return this.fragmentRepository.statistics(signal)
   }

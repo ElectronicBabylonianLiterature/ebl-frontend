@@ -1,9 +1,5 @@
 import type { MediaUploadMetadata } from 'fragmentarium/application/MediaManagementRepository'
 
-/**
- * The API rejects an upload (413) when the URI-encoded `X-Media-Metadata`
- * header is longer than this many characters.
- */
 export const MEDIA_METADATA_HEADER_LIMIT = 16384
 
 export const MEDIA_METADATA_TOO_LONG_MESSAGE =

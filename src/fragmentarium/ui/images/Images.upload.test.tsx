@@ -3,13 +3,17 @@ import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Images from './Images'
+import Images from 'fragmentarium/ui/images/Images'
 import {
   MediaGalleryContext,
   MediaGalleryServices,
 } from 'fragmentarium/application/MediaGalleryContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { galleryServices, imageBlob, mediaFixture } from './gallery.testSupport'
+import {
+  galleryServices,
+  imageBlob,
+  mediaFixture,
+} from 'fragmentarium/ui/images/gallery.testSupport'
 
 global.ResizeObserver = ResizeObserver
 const fragmentService = {

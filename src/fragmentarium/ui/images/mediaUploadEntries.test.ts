@@ -5,7 +5,7 @@ import {
   sharedUploadMetadata,
   withUploadMetadata,
   type UploadEntry,
-} from './mediaUploadEntries'
+} from 'fragmentarium/ui/images/mediaUploadEntries'
 
 beforeEach(() => {
   let counter = 0
@@ -134,4 +134,11 @@ test('flags entries whose encoded metadata exceeds the upload header limit', () 
       entry({ metadata: { ...metadata, description: 'š'.repeat(3000) } }),
     ),
   ).toBe(true)
+})
+
+test('shared metadata never changes completed uploads or their retry identity', () => {
+  const published = entry({ state: 'Published' })
+  expect(
+    sharedUploadMetadata(published, { ...metadata, caption: 'Changed' }),
+  ).toBe(published)
 })

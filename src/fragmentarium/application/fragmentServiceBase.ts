@@ -50,6 +50,10 @@ export class FragmentServiceBase {
     this.cache = new FragmentCache(getCacheScope)
   }
 
+  invalidateMedia(number: string): void {
+    this.cache.invalidateMedia(number)
+  }
+
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateGenres(number, genres))
   }

@@ -1,6 +1,6 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import useObjectUrl from './useObjectUrl'
+import { render, renderHook, screen } from '@testing-library/react'
+import useObjectUrl from 'common/hooks/useObjectUrl'
 
 test('StrictMode replays create a fresh live URL and release every generation', () => {
   let next = 0
@@ -77,4 +77,13 @@ test('failed intermediate creation never resurrects the revoked URL of a reused 
   rerender(<Preview image={failingImage} />)
   rerender(<Preview image={image} />)
   expect(staleRenderUrls).toEqual([])
+})
+
+test('an empty object URL is never revoked', () => {
+  jest.spyOn(URL, 'createObjectURL').mockReturnValue('')
+  const revoke = jest.spyOn(URL, 'revokeObjectURL')
+  const image = new Blob(['image'])
+  const { unmount } = renderHook(() => useObjectUrl(image))
+  unmount()
+  expect(revoke).not.toHaveBeenCalled()
 })

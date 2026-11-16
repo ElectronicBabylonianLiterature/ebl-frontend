@@ -7,8 +7,11 @@ import {
   sharedUploadMetadata,
   withUploadMetadata,
   type UploadEntry,
-} from './mediaUploadEntries'
-import { uploadBatch, uploadEntry } from './mediaUploadRequest'
+} from 'fragmentarium/ui/images/mediaUploadEntries'
+import {
+  uploadBatch,
+  uploadEntry,
+} from 'fragmentarium/ui/images/mediaUploadRequest'
 
 export function useMediaUploadQueue(
   fragment: string,

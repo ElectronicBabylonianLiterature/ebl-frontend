@@ -135,3 +135,24 @@ test('restores a legacy card image when its new preview is missing', async () =>
   )
   expect(fragmentService.findThumbnail).toHaveBeenCalledTimes(1)
 })
+
+test.each(['/public/thumbnail.png', null])(
+  'summary legacy thumbnails use only the supplied path %p',
+  (thumbnailPath) => {
+    const service = { findThumbnail: jest.fn() }
+    render(
+      <FragmentCardThumbnail
+        fragment={fragmentFactory.build({ number: 'K.1', hasPhoto: true })}
+        fragmentService={service}
+        queryItem={{ ...queryItem, thumbnailPath }}
+      />,
+    )
+    if (thumbnailPath)
+      expect(screen.getByRole('img')).toHaveAttribute(
+        'src',
+        expect.stringContaining(thumbnailPath),
+      )
+    else expect(screen.queryByRole('img')).not.toBeInTheDocument()
+    expect(service.findThumbnail).not.toHaveBeenCalled()
+  },
+)

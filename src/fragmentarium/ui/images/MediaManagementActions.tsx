@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import type { MediaResource } from 'fragmentarium/domain/media'
-import { publicationReady } from './mediaManagementMetadata'
+import { publicationReady } from 'fragmentarium/ui/images/mediaManagementMetadata'
 
 export type ManagementDialog = 'edit' | 'remove' | 'reject'
 export default function MediaManagementActions({

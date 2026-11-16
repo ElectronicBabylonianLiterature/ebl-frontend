@@ -1,4 +1,4 @@
-import ApiMediaManagementRepository from './ApiMediaManagementRepository'
+import ApiMediaManagementRepository from 'fragmentarium/infrastructure/ApiMediaManagementRepository'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 import {
   encodeMediaMetadataHeader,

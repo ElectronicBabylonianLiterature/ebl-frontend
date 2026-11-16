@@ -2,9 +2,12 @@ import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import FragmentMediaGallery from './FragmentMediaGallery'
+import FragmentMediaGallery from 'fragmentarium/ui/images/FragmentMediaGallery'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { galleryServices, mediaFixture } from './gallery.testSupport'
+import {
+  galleryServices,
+  mediaFixture,
+} from 'fragmentarium/ui/images/gallery.testSupport'
 import ApiMediaRepository from 'fragmentarium/infrastructure/ApiMediaRepository'
 import { ApiError } from 'http/ApiClient'
 

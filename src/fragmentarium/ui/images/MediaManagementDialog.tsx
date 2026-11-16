@@ -3,8 +3,8 @@ import { Button, Form, Modal } from 'react-bootstrap'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import type { MediaResource } from 'fragmentarium/domain/media'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
-import type { ManagementDialog } from './MediaManagementActions'
-import MediaMetadataFields from './MediaMetadataFields'
+import type { ManagementDialog } from 'fragmentarium/ui/images/MediaManagementActions'
+import MediaMetadataFields from 'fragmentarium/ui/images/MediaMetadataFields'
 
 const titles = {
   edit: 'Edit image metadata',

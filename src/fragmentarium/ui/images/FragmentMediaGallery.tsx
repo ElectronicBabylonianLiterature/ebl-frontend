@@ -10,7 +10,7 @@ import type { MediaResource } from 'fragmentarium/domain/media'
 import { UnsupportedMediaResponseError } from 'fragmentarium/application/MediaRepository'
 import type { MediaGalleryServices } from 'fragmentarium/application/MediaGalleryContext'
 import MediaGallery from 'fragmentarium/ui/images/MediaGallery'
-import MediaUploadDialog from './MediaUploadDialog'
+import MediaUploadDialog from 'fragmentarium/ui/images/MediaUploadDialog'
 
 interface Props {
   fragment: Fragment
@@ -35,7 +35,6 @@ interface GalleryFailure extends Scoped {
   error: Error
 }
 
-/** Access was refused: previously loaded private data must not stay visible. */
 function definitiveAccessFailure(error: unknown): boolean {
   return (
     error instanceof ApiError && (error.status === 401 || error.status === 403)
@@ -43,15 +42,16 @@ function definitiveAccessFailure(error: unknown): boolean {
 }
 
 async function loadGallery(
-  { fragment, services }: Pick<Props, 'fragment' | 'services'>,
+  fragmentNumber: string,
+  services: MediaGalleryServices,
   signal: AbortSignal,
 ): Promise<GalleryResponse> {
   try {
     if (services.repository.findGallery) {
-      return await services.repository.findGallery(fragment.number, signal)
+      return await services.repository.findGallery(fragmentNumber, signal)
     }
     return {
-      media: await services.repository.findByFragment(fragment.number, signal),
+      media: await services.repository.findByFragment(fragmentNumber, signal),
     }
   } catch (error) {
     if (error instanceof UnsupportedMediaResponseError) {
@@ -65,12 +65,6 @@ async function loadGallery(
   }
 }
 
-/**
- * A refresh after a mutation (revision change) keeps the previous response on
- * screen so the gallery's selection and focus survive. A response is only ever
- * shown for the exact fragment and services session that requested it, and
- * responses to superseded requests are discarded.
- */
 function useGallery(
   { fragment, services }: Pick<Props, 'fragment' | 'services'>,
   revision: number,
@@ -78,27 +72,26 @@ function useGallery(
   const [loaded, setLoaded] = useState<LoadedGallery | null>(null)
   const [failure, setFailure] = useState<GalleryFailure | null>(null)
   const [retryCount, setRetryCount] = useState(0)
+  const fragmentNumber = fragment.number
   useEffect(() => {
     const controller = new AbortController()
     setFailure(null)
-    loadGallery({ fragment, services }, controller.signal)
+    loadGallery(fragmentNumber, services, controller.signal)
       .then((response) => {
         if (!controller.signal.aborted)
-          setLoaded({ number: fragment.number, services, response })
+          setLoaded({ number: fragmentNumber, services, response })
       })
       .catch((reason) => {
         if (isCancellation(reason, controller.signal)) return
         if (definitiveAccessFailure(reason)) setLoaded(null)
         setFailure({
-          number: fragment.number,
+          number: fragmentNumber,
           services,
           error: reason as Error,
         })
       })
     return () => controller.abort()
-    // The fragment object changes identity on unrelated refreshes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fragment.number, services, revision, retryCount])
+  }, [fragmentNumber, services, revision, retryCount])
   const inScope = (value: Scoped | null): boolean =>
     value !== null &&
     value.number === fragment.number &&
@@ -106,8 +99,7 @@ function useGallery(
   const data = loaded && inScope(loaded) ? loaded.response : null
   const error = failure && inScope(failure) ? failure.error : null
   const retry = () => setRetryCount((count) => count + 1)
-  // Without loaded images a server error degrades to an empty gallery that
-  // still offers the lazy legacy choice; with them it keeps the images shown.
+
   return !data && error && isServerError(error)
     ? { data: { media: [], error }, error: null, retry }
     : { data, error, retry }

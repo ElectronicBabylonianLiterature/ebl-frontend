@@ -11,7 +11,7 @@ import {
 import MediaViewer from 'fragmentarium/ui/images/MediaViewer'
 import MediaThumbnail from 'fragmentarium/ui/images/MediaThumbnail'
 import 'fragmentarium/ui/images/MediaGallery.css'
-import MediaManagementControls from './MediaManagementControls'
+import MediaManagementControls from 'fragmentarium/ui/images/MediaManagementControls'
 
 const pageSize = 12
 

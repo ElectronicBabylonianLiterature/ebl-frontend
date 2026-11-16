@@ -2,8 +2,8 @@ import {
   encodeMediaMetadataHeader,
   MEDIA_METADATA_HEADER_LIMIT,
   mediaMetadataFitsHeader,
-} from './mediaMetadataHeader'
-import type { MediaUploadMetadata } from './MediaManagementRepository'
+} from 'fragmentarium/application/mediaMetadataHeader'
+import type { MediaUploadMetadata } from 'fragmentarium/application/MediaManagementRepository'
 
 const metadata: MediaUploadMetadata = {
   type: 'PHOTO',

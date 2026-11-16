@@ -2,11 +2,16 @@ import React, { useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 import type { MediaGalleryServices } from 'fragmentarium/application/MediaGalleryContext'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
-import MediaMetadataFields, { emptyMediaMetadata } from './MediaMetadataFields'
-import MediaUploadEntry from './MediaUploadEntry'
-import { useMediaUploadQueue } from './MediaUploadQueue'
-import { completed, metadataTooLong } from './mediaUploadEntries'
-import './MediaManagement.css'
+import MediaMetadataFields, {
+  emptyMediaMetadata,
+} from 'fragmentarium/ui/images/MediaMetadataFields'
+import MediaUploadEntry from 'fragmentarium/ui/images/MediaUploadEntry'
+import { useMediaUploadQueue } from 'fragmentarium/ui/images/MediaUploadQueue'
+import {
+  completed,
+  metadataTooLong,
+} from 'fragmentarium/ui/images/mediaUploadEntries'
+import 'fragmentarium/ui/images/MediaManagement.css'
 
 export default function MediaUploadDialog({
   show,

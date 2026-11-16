@@ -26,12 +26,6 @@ export interface MediaUploadOptions {
   onProcessing?: () => void
 }
 
-/**
- * Mutations of an existing item take the `revision` of the item the user was
- * looking at and send it as `If-Match`. The server answers 412 when someone
- * else changed the item since; publish and reject require it (428 without).
- * Never refetch to obtain a revision: that would defeat the guard.
- */
 export default interface MediaManagementRepository {
   upload(
     fragment: string,

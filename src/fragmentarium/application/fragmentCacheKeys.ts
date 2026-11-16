@@ -1,3 +1,5 @@
+import type { QueryResult } from 'query/QueryResult'
+import type { CacheEntry } from 'common/utils/cache'
 import { stringify } from 'common/utils/queryString'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { ThumbnailSize } from 'fragmentarium/application/fragmentServicePorts'
@@ -35,5 +37,15 @@ export function deleteByPrefix<CacheValue>(
     if (key.startsWith(prefix)) {
       cache.delete(key)
     }
+  }
+}
+
+export function deleteQueriesContainingFragment(
+  cache: Map<string, CacheEntry<QueryResult>>,
+  number: string,
+): void {
+  for (const [key, entry] of cache) {
+    if (entry.value.items.some((item) => item.museumNumber === number))
+      cache.delete(key)
   }
 }

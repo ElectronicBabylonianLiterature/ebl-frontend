@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { screen, waitFor } from '@testing-library/react'
 import { eblNameProperty } from 'auth/Auth'
@@ -16,6 +17,21 @@ jest.mock('App', () => {
     return <div data-testid="app">App</div>
   }
 })
+
+jest.mock('fragmentarium/infrastructure/MediaGalleryProvider', () => ({
+  MediaGalleryProvider: ({
+    children,
+    onMediaChanged,
+  }: {
+    children: React.ReactNode
+    onMediaChanged: (number: string) => void
+  }) => (
+    <>
+      <button onClick={() => onMediaChanged('K.1')}>Media changed</button>
+      {children}
+    </>
+  ),
+}))
 
 jest.mock('http/ApiClient')
 jest.mock('dictionary/infrastructure/WordRepository')
@@ -204,4 +220,10 @@ describe('InjectedApp', () => {
 
     expect(getCacheScope()).toBe('authenticated:auth0|subject-b')
   })
+})
+
+test('media mutation notifications invalidate the fragment service cache', async () => {
+  renderInjectedApp()
+  await userEvent.click(screen.getByRole('button', { name: 'Media changed' }))
+  expect(FragmentService.prototype.invalidateMedia).toHaveBeenCalledWith('K.1')
 })

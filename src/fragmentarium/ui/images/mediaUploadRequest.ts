@@ -6,7 +6,7 @@ import {
   completed,
   metadataTooLong,
   type UploadEntry,
-} from './mediaUploadEntries'
+} from 'fragmentarium/ui/images/mediaUploadEntries'
 
 export interface UploadRuntime {
   controllers: Map<string, AbortController>
@@ -44,7 +44,6 @@ export async function uploadEntry(
   entry: UploadEntry,
   { fragment, management, runtime, update, onChanged }: UploadContext,
 ): Promise<void> {
-  // Oversized metadata is shown as a validation error and never sent.
   if (
     !management ||
     runtime.controllers.has(entry.id) ||
@@ -91,10 +90,7 @@ export async function uploadEntry(
     }
   } catch (error) {
     update(entry.id, failedEntry(error as Error, controller))
-    // Unless the server definitively rejected it (HTTP 4xx), the upload may
-    // already have been committed server-side (cancellation, network loss,
-    // gateway errors). Refresh the gallery of this still-mounted fragment;
-    // success is never assumed and an idempotent retry stays available.
+
     if (
       runtime.mounted.current &&
       (controller.signal.aborted || !isDefinitiveRejection(error))

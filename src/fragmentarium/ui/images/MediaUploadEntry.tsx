@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Button, ProgressBar } from 'react-bootstrap'
-import MediaMetadataFields from './MediaMetadataFields'
+import MediaMetadataFields from 'fragmentarium/ui/images/MediaMetadataFields'
 import {
   busy,
   completed,
   metadataTooLong,
   type UploadEntry,
-} from './mediaUploadEntries'
+} from 'fragmentarium/ui/images/mediaUploadEntries'
 import { MEDIA_METADATA_TOO_LONG_MESSAGE } from 'fragmentarium/application/mediaMetadataHeader'
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 

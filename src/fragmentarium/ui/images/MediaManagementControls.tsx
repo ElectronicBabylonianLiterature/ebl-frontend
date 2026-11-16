@@ -5,15 +5,15 @@ import type { MediaGalleryServices } from 'fragmentarium/application/MediaGaller
 import type { MediaMetadata } from 'fragmentarium/application/MediaManagementRepository'
 import MediaManagementActions, {
   type ManagementDialog,
-} from './MediaManagementActions'
-import MediaManagementDialog from './MediaManagementDialog'
+} from 'fragmentarium/ui/images/MediaManagementActions'
+import MediaManagementDialog from 'fragmentarium/ui/images/MediaManagementDialog'
 import {
   canEditMedia,
   changedMetadata,
   metadataOf,
   ownsSubmission,
-} from './mediaManagementMetadata'
-import { useMediaOperation } from './mediaManagementOperation'
+} from 'fragmentarium/ui/images/mediaManagementMetadata'
+import { useMediaOperation } from 'fragmentarium/ui/images/mediaManagementOperation'
 
 function PublicationStatus({ media }: { media: MediaResource }): JSX.Element {
   const labels = {
@@ -56,8 +56,6 @@ export default function MediaManagementControls({
     },
     onChanged,
     () => {
-      // The draft or decision was based on an outdated item: drop it and show
-      // the stale-revision message beside the refreshed item instead.
       setDialog(null)
       onChanged()
     },
@@ -66,11 +64,9 @@ export default function MediaManagementControls({
   const authorized = manager || ownsSubmission(media, services)
   if (!services.management || !authorized) return null
   const management = services.management
-  // The revision of the item as displayed; never refetched before a mutation.
+
   const revision = media.revision
   const open = (next: ManagementDialog): void => {
-    // A gallery refresh may arrive while the dialog is open. Keep its draft
-    // and decision tied to the item the user actually reviewed.
     setDialogMedia(media)
     if (next === 'edit') setMetadata(metadataOf(media))
     if (next === 'reject') setReason('')

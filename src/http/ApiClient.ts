@@ -1,10 +1,10 @@
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
 import { createAbortError, isAbortError } from 'common/utils/abortError'
-import { ApiError } from './ApiError'
-import { BinaryUploadOptions, uploadBinaryRequest } from './binaryUpload'
+import { ApiError } from 'http/ApiError'
+import { BinaryUploadOptions, uploadBinaryRequest } from 'http/binaryUpload'
 
-export { ApiError } from './ApiError'
+export { ApiError } from 'http/ApiError'
 
 export type AccessTokenProvider = Pick<
   AuthenticationService,
@@ -31,7 +31,7 @@ async function deserializeJson(response: Response): Promise<unknown> {
   if (response.status === 204) {
     return null
   }
-  // Any success status may legitimately carry an empty body.
+
   const responseText = await response.text()
   return responseText.trim() ? JSON.parse(responseText) : null
 }

@@ -60,16 +60,6 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * True only when the server definitively rejected a request (HTTP 4xx) and so
- * cannot have committed it. Every other failure of a sent mutation — network
- * errors (status 0), gateway/server errors, unreadable success bodies, aborts —
- * leaves the server-side outcome uncertain.
- *
- * 409 is excluded: the backend answers a retried idempotency key with 409 while
- * the original upload is still being processed or has already committed, so a
- * conflict can mean the change exists on the server.
- */
 export function isDefinitiveRejection(error: unknown): boolean {
   const status = apiErrorStatus(error)
   return isClientErrorStatus(status) && status !== 409
@@ -87,20 +77,10 @@ const STALE_REVISION_STATUSES: ReadonlySet<number | undefined> = new Set([
   412, 428,
 ])
 
-/**
- * True when the server refused a conditional request because the client's
- * `If-Match` revision is stale (412) or was required but missing (428). The
- * item changed — or may have changed — since the client loaded it, so the
- * caller must refresh before the user can act on it again.
- */
 export function isStaleRevision(error: unknown): boolean {
   return STALE_REVISION_STATUSES.has(apiErrorStatus(error))
 }
 
-/**
- * True when the server failed to handle a request (HTTP 5xx). Such failures
- * are transient from the client's point of view and worth retrying.
- */
 export function isServerError(error: unknown): boolean {
   const status = apiErrorStatus(error)
   return status !== undefined && status >= 500 && status < 600

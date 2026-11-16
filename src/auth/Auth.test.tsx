@@ -62,8 +62,8 @@ describe('requested Auth0 scopes', () => {
       else process.env.REACT_APP_MEDIA_UPLOAD_ENABLED = flag
       try {
         jest.isolateModules(() => {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          const { scopeString } = require('auth/Auth')
+          const { scopeString } =
+            jest.requireActual<typeof import('auth/Auth')>('auth/Auth')
           expect(scopeString).toEqual(
             createScopeString({ mediaUploadEnabled: expected }),
           )
