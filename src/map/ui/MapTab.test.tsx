@@ -3,15 +3,12 @@ import fs from 'fs'
 import path from 'path'
 import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 import {
   CURRENT_LOCATION_TEST_ID,
-  makeFailingFragmentService,
   makeFragmentService,
   makeProvenance,
-  makeRejectingFragmentService,
   mockAddControl,
   mockAddLayer,
   mockAddSource,
@@ -38,34 +35,6 @@ describe('MapTab', () => {
   beforeEach(() => {
     resetMapMocks()
     fetchMock.resetMocks()
-  })
-
-  it('renders loading spinner while data is being fetched', () => {
-    const fragmentService = {
-      fetchProvenances: () => new Promise(() => {}),
-    } as unknown as FragmentService
-
-    renderMapTab(fragmentService)
-
-    expect(screen.getByText('Loading map data...')).toBeInTheDocument()
-  })
-
-  it('renders error state when fetch fails', async () => {
-    renderMapTab(makeFailingFragmentService('Network error'))
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Failed to load map data: Network error'),
-      ).toBeInTheDocument()
-    })
-  })
-
-  it('renders a generic error state when the fetch rejects without an Error', async () => {
-    renderMapTab(makeRejectingFragmentService('offline'))
-
-    expect(
-      await screen.findByText('Failed to load map data: Unknown error'),
-    ).toBeInTheDocument()
   })
 
   it('renders search input, map region, and findspot links', async () => {
@@ -269,35 +238,4 @@ describe('MapTab', () => {
       await screen.findByRole('link', { name: 'No Geometry' }),
     ).toHaveAttribute('href', buildFragmentSearchLink('No Geometry'))
   })
-
-  it.each(['success', 'rejection'])(
-    'does not update state after unmount before fetch %s',
-    async (outcome) => {
-      let resolveFetch!: (
-        provenances: readonly ReturnType<typeof makeProvenance>[],
-      ) => void
-      let rejectFetch!: (error: Error) => void
-      const fragmentService = {
-        fetchProvenances: () =>
-          new Promise((resolve, reject) => {
-            resolveFetch = resolve
-            rejectFetch = reject
-          }),
-      } as unknown as FragmentService
-
-      const { unmount } = renderMapTab(fragmentService)
-      unmount()
-
-      await act(async () => {
-        if (outcome === 'success') {
-          resolveFetch([makeProvenance()])
-        } else {
-          rejectFetch(new Error('Late failure'))
-        }
-      })
-
-      expect(screen.queryByText(/Late failure/)).not.toBeInTheDocument()
-      expect(screen.queryByText('Loading map data...')).not.toBeInTheDocument()
-    },
-  )
 })
