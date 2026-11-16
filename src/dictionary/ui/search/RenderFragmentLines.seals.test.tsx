@@ -8,6 +8,8 @@ import TransliterationLines, {
   TranslationStyle,
 } from 'transliteration/ui/TransliterationLines'
 import {
+  atLineLabelKeys,
+  sealContextMarkers,
   explicitSealText,
   fullSealText,
   sealFragment,
@@ -16,6 +18,8 @@ import {
 import { createTransliteration } from 'transliteration/application/dtos'
 import { previewLine } from 'test-support/fragment-query-preview'
 import { Text } from 'transliteration/domain/text'
+import { createQueryResult } from 'fragmentarium/infrastructure/fragmentQueryMapping'
+import { fragmentDto } from 'test-support/test-fragment'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -123,3 +127,64 @@ test('null metadata falls back to a seal-only marker', () => {
   renderPair(text, fullSealText(true, [0]))
   assertTargets(['seal 0 1'])
 })
+
+test.each(['inline', 'standoff'] as const)(
+  'backend preview clears the seal before the next surface and targets %s anchors',
+  (style) => {
+    const locations = [
+      { surface: 'o', column: null, object: null, sealNumber: 1 },
+      { surface: 'r', column: null, object: null, sealNumber: null },
+    ]
+    const result = createQueryResult({
+      matchCountTotal: 2,
+      items: [
+        {
+          museumNumber: fragmentDto.museumNumber,
+          description: 'summary',
+          script: { ...fragmentDto.script, period: 'LB' },
+          matchingLines: [2, 4],
+          matchCount: 2,
+          hasPhoto: false,
+          matchingLinePreview: {
+            totalMatchingLines: 2,
+            lines: locations.map((location, index) => ({
+              ...previewLine(index + 1, []),
+              index: index === 0 ? 2 : 4,
+              location,
+            })),
+          },
+        },
+      ],
+    })
+    const preview = result.items[0].fragment
+    expect(preview).toBeDefined()
+    if (!preview) {
+      throw new Error('The backend preview must hydrate successfully')
+    }
+    const canonical = createTransliteration({
+      lines: [
+        sealContextMarkers[1],
+        sealMarker(1),
+        previewLine(1, []),
+        {
+          ...sealContextMarkers[1],
+          displayValue: 'reverse',
+          [atLineLabelKeys.surface]: {
+            surface: 'REVERSE',
+            text: '',
+            abbreviation: 'r',
+            status: [],
+          },
+        },
+        previewLine(2, []),
+      ],
+    })
+    expect(preview.text.lines).toEqual(
+      locations.map((location, index) =>
+        expect.objectContaining({ location, index: index === 0 ? 2 : 4 }),
+      ),
+    )
+    renderPair(preview.text, canonical, style)
+    assertTargets(['o seal 1 1', 'r 2'])
+  },
+)
