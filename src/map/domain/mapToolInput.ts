@@ -1,4 +1,5 @@
 import type { Position } from 'geojson'
+import { isFinitePosition } from 'map/domain/geodesy'
 
 const EDITABLE_TAG_NAMES = new Set(['INPUT', 'TEXTAREA', 'SELECT'])
 
@@ -13,9 +14,6 @@ export function finitePosition(
   longitude: number,
   latitude: number,
 ): Position | null {
-  return Number.isFinite(longitude) &&
-    Number.isFinite(latitude) &&
-    Math.abs(latitude) <= 90
-    ? [longitude, latitude]
-    : null
+  const position: Position = [longitude, latitude]
+  return isFinitePosition(position) ? position : null
 }
