@@ -24,3 +24,17 @@ it('accepts finite coordinates and rejects malformed positions', () => {
   expect(finitePosition(Number.NaN, 35)).toBeNull()
   expect(finitePosition(43, Number.POSITIVE_INFINITY)).toBeNull()
 })
+
+it.each([-90, 90])(
+  'accepts latitude boundary %s with world-copy longitude',
+  (latitude) => {
+    expect(finitePosition(403, latitude)).toEqual([403, latitude])
+  },
+)
+
+it.each([-90.01, 90.01])(
+  'rejects latitude %s outside the valid range',
+  (latitude) => {
+    expect(finitePosition(43, latitude)).toBeNull()
+  },
+)
