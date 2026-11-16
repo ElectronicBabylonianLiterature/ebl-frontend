@@ -1,8 +1,8 @@
 import React, { useId } from 'react'
-import useMatchControlFocus from './useMatchControlFocus'
+import useMatchControlFocus from 'fragmentarium/ui/search/useMatchControlFocus'
 import useFragmentMatchExpansion, {
   EXPANSION_BATCH_SIZE,
-} from './useFragmentMatchExpansion'
+} from 'fragmentarium/ui/search/useFragmentMatchExpansion'
 
 function MatchStatus({
   error,

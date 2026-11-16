@@ -8,7 +8,7 @@ import {
   concurrencyLimit,
   fragmentRepository,
   number,
-} from './fragmentServiceAbort.testSupport'
+} from 'fragmentarium/application/fragmentServiceAbort.testSupport'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 
 it('aborts the repository request and frees its limiter slot', async () => {

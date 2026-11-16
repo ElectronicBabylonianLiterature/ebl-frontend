@@ -4,7 +4,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import useFragmentMatchExpansion from 'fragmentarium/ui/search/useFragmentMatchExpansion'
-import FragmentMatchControls from './FragmentMatchControls'
+import FragmentMatchControls from 'fragmentarium/ui/search/FragmentMatchControls'
 
 export default function ExpandableFragmentMatches({
   fragment,

@@ -6,7 +6,7 @@ import {
   repositorySignal,
   fragmentRepository,
   number,
-} from './fragmentServiceAbort.testSupport'
+} from 'fragmentarium/application/fragmentServiceAbort.testSupport'
 
 describe('callers sharing one in-flight request', () => {
   it('keeps the request running until every signal has aborted', async () => {

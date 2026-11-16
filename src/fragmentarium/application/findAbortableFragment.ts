@@ -1,7 +1,10 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { FragmentCache } from './fragmentCache'
-import { fragmentKey } from './fragmentCacheKeys'
-import { FragmentRepository, onError } from './fragmentServicePorts'
+import { FragmentCache } from 'fragmentarium/application/fragmentCache'
+import { fragmentKey } from 'fragmentarium/application/fragmentCacheKeys'
+import {
+  FragmentRepository,
+  onError,
+} from 'fragmentarium/application/fragmentServicePorts'
 import SharedAbortableRequests from 'common/utils/SharedAbortableRequests'
 import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import { rejectOnAbort } from 'common/utils/abortError'

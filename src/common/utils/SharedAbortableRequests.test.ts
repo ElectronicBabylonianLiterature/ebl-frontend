@@ -1,4 +1,4 @@
-import SharedAbortableRequests from './SharedAbortableRequests'
+import SharedAbortableRequests from 'common/utils/SharedAbortableRequests'
 
 test('settling an abandoned request does not detach a newer request with the same key', async () => {
   const shared = new SharedAbortableRequests<string>()
