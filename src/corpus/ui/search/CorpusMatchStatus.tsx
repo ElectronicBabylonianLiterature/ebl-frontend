@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ChapterMatchState } from './useCorpusChapterMatches'
+import type { ChapterMatchState } from 'corpus/ui/search/useCorpusChapterMatches'
 
 export default function CorpusMatchStatus({
   state,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { Col, Row } from 'react-bootstrap'
-import type { ChapterMatchState } from './useCorpusChapterMatches'
+import type { ChapterMatchState } from 'corpus/ui/search/useCorpusChapterMatches'
 
 function useMatchControlRef(
   restoreFocus: React.MutableRefObject<boolean>,
