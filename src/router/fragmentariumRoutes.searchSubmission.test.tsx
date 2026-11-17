@@ -47,6 +47,7 @@ function renderSearch(hash: string): ReturnType<typeof getServices> {
   jest.spyOn(services.wordService, 'findAll').mockResolvedValue([])
   jest.spyOn(services.textService, 'query').mockResolvedValue({
     items: [],
+    totalChapters: 0,
     matchCountTotal: 0,
     hasNextPage: false,
   })
@@ -74,7 +75,7 @@ it.each([
   'preserves $tab on actual search submission and history (keyboard=$keyboard, hash=$hash)',
   async ({ tab, hash, keyboard }) => {
     const { textService } = renderSearch(hash)
-    await screen.findByText('Found 0 lines in 0 chapters')
+    await screen.findByText('Found 0 matching line variants in 0 chapters')
     expect(screen.getByRole('tab', { name: tab, selected: true })).toBeVisible()
     const input = screen.getByLabelText('Transliteration')
     await userEvent.clear(input)
@@ -86,7 +87,7 @@ it.each([
     }
     await waitFor(() =>
       expect(textService.query).toHaveBeenLastCalledWith(
-        { transliteration: 'a+b &e₂' },
+        { transliteration: 'a+b &e₂', limit: 51, offset: 0 },
         expect.any(AbortSignal),
       ),
     )

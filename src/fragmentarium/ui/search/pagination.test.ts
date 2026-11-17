@@ -134,7 +134,7 @@ describe('parseSearchCriteria', () => {
   it('drops pagination parameters so they cannot reach the API untranslated', () => {
     expect(
       parseSearchCriteria(
-        '?project=CAIC&paginationIndex=3&limit=25&offset=99&count=none',
+        '?project=CAIC&paginationIndex=3&limit=25&corpusPaginationIndex=2&corpusLimit=100&offset=99&count=none',
       ),
     ).toEqual({ project: 'CAIC' })
   })

@@ -75,6 +75,21 @@ test('keeps the Library tab selected when paginating after a tab switch', async 
   ).toBeVisible()
 })
 
+test('does not browse the Corpus for Library-only search criteria', async () => {
+  harness.fragmentService.query.mockResolvedValue(queryResult())
+  harness.renderSearch({ number: 'K.1' })
+
+  await screen.findByText('Found 1 document')
+  await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+
+  expect(
+    screen.getByText(
+      'Enter a transliteration or lemma search to search the Corpus.',
+    ),
+  ).toBeVisible()
+  expect(harness.textService.query).not.toHaveBeenCalled()
+})
+
 test('opens the Library tab when no tab is requested', async () => {
   harness.fragmentService.query.mockResolvedValue(queryResult())
 

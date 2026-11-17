@@ -64,8 +64,20 @@
     &__toggle
         width: 1.5em
         color: $ebl-color-brand-primary
-        cursor: pointer
         text-align: center
+
+        button
+            width: 100%
+            padding: 0
+            border: 0
+            background: transparent
+            color: inherit
+            font: inherit
+            cursor: pointer
+
+            &:focus-visible
+                outline: 2px solid $ebl-color-brand-primary-dark
+                outline-offset: 2px
 
     &__manuscripts
         margin-left: 0.75em

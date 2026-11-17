@@ -65,9 +65,9 @@ describe('PaginationItems', () => {
   it('uses hasNextPage as the only Next navigation signal', () => {
     renderPaginationItems(4, false)
 
-    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+    expect(screen.getAllByRole('listitem')[1]).not.toHaveClass('disabled')
     expect(screen.getByText('Page 5')).toBeInTheDocument()
-    expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
+    expect(screen.getAllByRole('listitem')[3]).toHaveClass('disabled')
   })
 
   it('preserves encoded query values when going next', async () => {

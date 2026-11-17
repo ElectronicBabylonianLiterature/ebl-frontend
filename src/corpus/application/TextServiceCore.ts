@@ -22,6 +22,7 @@ import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import { CacheEntry } from 'common/utils/cache'
+import { AbortableRequest } from 'common/utils/getOrFetchAbortableCachedValue'
 
 import { createChapterUrl } from 'corpus/application/chapterUrls'
 
@@ -51,7 +52,7 @@ export class TextServiceCore {
 
   protected readonly cachedChapterDisplayRequests = new Map<
     string,
-    Promise<ChapterDisplay>
+    AbortableRequest<ChapterDisplay>
   >()
 
   protected readonly chapterDisplayFetchLimiter = new ConcurrencyLimiter(

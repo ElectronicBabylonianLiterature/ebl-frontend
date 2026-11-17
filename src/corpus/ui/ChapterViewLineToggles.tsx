@@ -20,15 +20,20 @@ function ToggleCell({
   iconClasses: Record<string, boolean>
 }): JSX.Element {
   return (
-    <td className="chapter-display__toggle" onClick={onToggle}>
+    <td className="chapter-display__toggle">
       {visible && (
-        <i
-          className={classNames({ fas: true, ...iconClasses })}
+        <button
+          type="button"
+          onClick={onToggle}
           aria-expanded={show}
           aria-controls={controls}
           aria-label={label}
-          role="button"
-        ></i>
+        >
+          <i
+            className={classNames({ fas: true, ...iconClasses })}
+            aria-hidden="true"
+          />
+        </button>
       )}
     </td>
   )

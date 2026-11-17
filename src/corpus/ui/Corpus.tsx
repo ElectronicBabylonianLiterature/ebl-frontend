@@ -91,14 +91,21 @@ function Texts({
   )
 }
 
-export function genreFromAbbr(
-  abbr: string,
-): 'Literature' | 'Divination' | 'Medicine' | 'Magic' {
-  const genre = genres.filter(({ genre }) => genre === abbr)[0]
-  if (!genre) {
-    throw new Error(`Genre Abbreviation '${abbr}' has to be one of L, D, Med.`)
+const additionalGenreNames = new Map([
+  ['Sum', 'Sumerian'],
+  ['Lex', 'Lexical'],
+])
+
+export function genreFromAbbr(abbr: string): string {
+  const name =
+    genres.find(({ genre }) => genre === abbr)?.name ??
+    additionalGenreNames.get(abbr)
+  if (!name) {
+    throw new Error(
+      `Genre Abbreviation '${abbr}' has to be one of L, D, Med, Mag, Sum, Lex.`,
+    )
   }
-  return genre.name as 'Literature' | 'Divination' | 'Medicine' | 'Magic'
+  return name
 }
 
 export const genres: readonly {

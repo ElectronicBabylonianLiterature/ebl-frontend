@@ -62,7 +62,7 @@ describe('genreFromAbbr', () => {
 
   it('rejects an unknown abbreviation', () => {
     expect(() => genreFromAbbr('X')).toThrow(
-      "Genre Abbreviation 'X' has to be one of L, D, Med.",
+      "Genre Abbreviation 'X' has to be one of L, D, Med, Mag, Sum, Lex.",
     )
   })
 })
