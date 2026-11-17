@@ -18,13 +18,12 @@ function CurrentLocation(): JSX.Element {
 }
 
 describe('FindspotConstraint', () => {
-  it('makes the active findspot filter visible and clearable', async () => {
+  it('shows the requested filter without claiming server-confirmed result scoping', async () => {
     const onClear = jest.fn()
     render(<FindspotConstraint findspotId={0} onClear={onClear} />)
 
-    expect(
-      screen.getByText(/limited to the selected findspot/),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Selected findspot filter/)).toBeInTheDocument()
+    expect(screen.queryByText(/Results are limited/)).not.toBeInTheDocument()
     await userEvent.click(
       screen.getByRole('button', { name: 'Clear findspot filter' }),
     )
@@ -115,9 +114,7 @@ describe('FindspotConstraint', () => {
         <SearchForm {...props} />
       </MemoryRouter>,
     )
-    expect(
-      screen.getByText(/limited to the selected findspot/),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Selected findspot filter/)).toBeInTheDocument()
 
     rerender(
       <MemoryRouter>
@@ -126,7 +123,7 @@ describe('FindspotConstraint', () => {
     )
 
     expect(
-      await screen.findByText(/limited to the selected findspot/),
+      await screen.findByText(/Selected findspot filter/),
     ).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: 'Search' }))
     expect(navigate).toHaveBeenLastCalledWith({
