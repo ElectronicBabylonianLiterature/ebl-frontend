@@ -1,6 +1,10 @@
 import type { QueryItem } from 'query/QueryResult'
 import type { FragmentSearchCriteria } from 'query/FragmentQuery'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import {
+  isMultilineTransliteration,
+  isMultiLemmaPhrase,
+} from 'query/queryShape'
 
 export function countUniqueMatchingLines(
   lineIndexes: readonly number[],
@@ -17,9 +21,7 @@ export function matchingLineTotal(
   query: FragmentSearchCriteria,
 ): number | null | undefined {
   if (item.totalMatchingLines != null) return item.totalMatchingLines
-  if (query.transliteration?.trim().includes('\n')) return undefined
-  if (!query.transliteration && query.lemmaOperator === 'phrase') {
-    if ((query.lemmas?.split('+').length ?? 0) > 1) return undefined
-  }
+  if (isMultilineTransliteration(query) || isMultiLemmaPhrase(query))
+    return undefined
   return query.transliteration || query.lemmas ? item.matchCount : undefined
 }
