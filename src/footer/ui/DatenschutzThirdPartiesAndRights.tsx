@@ -82,6 +82,21 @@ export default function DatenschutzThirdPartiesAndRights(): JSX.Element {
         </p>
       </section>
       <section>
+        <h3>Interaktive Karten</h3>
+        <p>
+          Bei der Nutzung interaktiver Karten lädt Ihr Browser Kartenkacheln von
+          CARTO über basemaps.cartocdn.com. Wenn Sie die Geländeansicht
+          einschalten, lädt Ihr Browser zusätzlich Höhenkacheln über
+          s3.amazonaws.com.
+        </p>
+        <p>
+          Diese direkten Anfragen übermitteln den jeweiligen Anbietern Ihre
+          IP-Adresse und technische Verbindungsdaten. Die angeforderten Kacheln
+          entsprechen dem angezeigten Kartenausschnitt. Höhenkacheln werden nur
+          bei eingeschalteter Geländeansicht angefordert.
+        </p>
+      </section>
+      <section>
         <h3>Anmelde- und Kontaktformulare</h3>
         <p>
           Personenbezogene Daten, die Sie gegebenenfalls über Kontaktformulare,

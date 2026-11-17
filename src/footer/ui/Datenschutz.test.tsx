@@ -8,6 +8,7 @@ const sectionHeadings = [
   'Auswertung thematischer Schwerpunkte',
   'Newsletter',
   'Social Media und externe Dienstleister',
+  'Interaktive Karten',
   'Anmelde- und Kontaktformulare',
   'Weitergabe personenbezogener Daten',
   'Ihre Rechte',
@@ -27,6 +28,12 @@ test('renders all privacy policy sections in order', () => {
       .getAllByRole('heading', { level: 3 })
       .map(({ textContent }) => textContent),
   ).toEqual(sectionHeadings)
+  expect(
+    screen.getByText('basemaps.cartocdn.com', { exact: false }),
+  ).toHaveTextContent('s3.amazonaws.com')
+  expect(screen.getByText(/Höhenkacheln werden nur/)).toHaveTextContent(
+    'bei eingeschalteter Geländeansicht angefordert.',
+  )
   expect(
     screen.getByText('Letzter Stand dieser Datenschutzerklärung: 12.12.2019'),
   ).toBeInTheDocument()
