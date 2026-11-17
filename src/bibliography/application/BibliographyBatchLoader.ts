@@ -1,6 +1,6 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-import { ApiError } from 'http/ApiClient'
+import { isNotFoundError } from 'http/ApiClient'
 import _ from 'lodash'
 
 interface FoundEntry {
@@ -20,10 +20,6 @@ type CacheEntry = (
   entry: BibliographyEntry,
   generation: number,
 ) => void
-
-export function isNotFoundError(error: unknown): error is ApiError {
-  return error instanceof ApiError && error.status === 404
-}
 
 export function handleLookupError(
   error: Error,

@@ -15,7 +15,7 @@ import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 import { ErrorCapturer } from 'http/ApiClient'
-import { isNotFoundError } from 'bibliography/application/BibliographyBatchLoader'
+import { isNotFoundError } from 'http/ApiClient'
 
 const markupLineTypes = ['NoteLine', 'TranslationLine']
 
