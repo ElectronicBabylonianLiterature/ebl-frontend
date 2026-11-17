@@ -3,6 +3,7 @@ import {
   ObjectAtLine,
   SurfaceAtLine,
   ColumnAtLine,
+  SealAtLine,
 } from 'transliteration/domain/at-lines'
 import { NoteLine } from 'transliteration/domain/note-line'
 import {
@@ -130,6 +131,10 @@ export function isSurfaceAtLine(line: AbstractLine): line is SurfaceAtLine {
 
 export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
   return line instanceof ColumnAtLine
+}
+
+export function isSealAtLine(line: AbstractLine): line is SealAtLine {
+  return line instanceof SealAtLine
 }
 
 export function isDollarLine(line: AbstractLine): line is DollarLine {

@@ -3,10 +3,81 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineLocation } from 'transliteration/domain/text-line'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import 'dictionary/ui/search/FragmentLemmaLines.sass'
 import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import {
+  createLineAnchorId,
+  defaultLabels,
+  labelAbbreviation,
+  Labels,
+  sealAbbreviation,
+} from 'transliteration/domain/labels'
+import { getCurrentLabels } from 'transliteration/domain/lineLabels'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
+
+function locationFromLabels(labels: Labels): TextLineLocation | null {
+  if (
+    !labels.object &&
+    !labels.surface &&
+    !labels.column &&
+    labels.sealNumber == null
+  ) {
+    return null
+  }
+  return {
+    object: labels.object ? labelAbbreviation(labels.object) : null,
+    surface: labels.surface ? labelAbbreviation(labels.surface) : null,
+    column: labels.column ? labelAbbreviation(labels.column) : null,
+    sealNumber: labels.sealNumber ?? null,
+  }
+}
+
+function formatLineLocation(
+  line: TextLine,
+  location: TextLineLocation | null,
+): string {
+  const number = lineNumberToString(line.lineNumber)
+  if (!location) {
+    return number
+  }
+  const object =
+    typeof location.object === 'string' ? location.object.trim() : ''
+  const surface =
+    typeof location.surface === 'string' ? location.surface.trim() : ''
+  const column =
+    typeof location.column === 'string' ? location.column.trim() : ''
+  const surfaceLabel =
+    surface && !surface.endsWith('.') ? `${surface}.` : surface
+  return [
+    object,
+    surfaceLabel,
+    column,
+    sealAbbreviation(location.sealNumber),
+    number,
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+function lineHash(
+  line: TextLine,
+  location: TextLineLocation | null,
+): string | null {
+  if (!location) {
+    return null
+  }
+  const labels = [
+    location.object,
+    location.surface,
+    location.column,
+    sealAbbreviation(location.sealNumber),
+  ].filter(
+    (label): label is string => typeof label === 'string' && !!label.trim(),
+  )
+  return labels.length ? createLineAnchorId(labels, line.lineNumber) : null
+}
 
 export default function RenderFragmentLines({
   fragment,
@@ -25,9 +96,19 @@ export default function RenderFragmentLines({
   matchingLineIndexes?: readonly number[]
   remainderNoun?: 'line' | 'matching line'
 }): JSX.Element {
-  const matchingLines = fragment.text.lines.filter(
-    (line) => line.type === 'TextLine',
-  ) as TextLine[]
+  let labels = defaultLabels
+  const matchingLines: { line: TextLine; location: TextLineLocation | null }[] =
+    []
+  for (const line of fragment.text.lines) {
+    if (line.type === 'TextLine') {
+      const textLine = line as TextLine
+      matchingLines.push({
+        line: textLine,
+        location: textLine.location ?? locationFromLabels(labels),
+      })
+    }
+    labels = getCurrentLabels(labels, line)
+  }
   const visibleLines = matchingLines.slice(0, linesToShow)
   const knownTotal = totalMatchingLines ?? totalLines
   const remainingLines =
@@ -47,7 +128,9 @@ export default function RenderFragmentLines({
   return (
     <table>
       <tbody>
-        {visibleLines.map((line, index) => {
+        {visibleLines.map(({ line, location }, index) => {
+          const label = formatLineLocation(line, location)
+          const hash = lineHash(line, location)
           const columns = [
             {
               span: 1,
@@ -60,7 +143,13 @@ export default function RenderFragmentLines({
           return (
             <tr key={index}>
               <td className={'fragment-lines-with-lemma__line-number'}>
-                {lineNumberToString(line.lineNumber)}
+                {hash ? (
+                  <FragmentLink number={fragment.number} hash={hash}>
+                    {label}
+                  </FragmentLink>
+                ) : (
+                  label
+                )}
               </td>
               <LineColumns
                 columns={columns}
