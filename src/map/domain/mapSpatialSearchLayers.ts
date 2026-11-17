@@ -7,6 +7,7 @@ import type {
   Map as MapLibreMap,
 } from 'maplibre-gl'
 import type { BoundingBox } from 'map/domain/mapGeometry'
+import { isFinitePosition } from 'map/domain/geodesy'
 import { geometryOfBounds } from 'map/domain/spatialBounds'
 
 export const SPATIAL_SEARCH_SOURCE_ID = 'ebl-spatial-search'
@@ -95,11 +96,7 @@ export function spatialSearchCollection(
   const geometry = geometryOfBounds(bounds.filter(validBounds))
   const features: FeatureCollection['features'] = []
 
-  if (
-    firstCorner &&
-    Number.isFinite(firstCorner[0]) &&
-    Number.isFinite(firstCorner[1])
-  ) {
+  if (isFinitePosition(firstCorner)) {
     features.push({
       type: 'Feature',
       properties: {},
