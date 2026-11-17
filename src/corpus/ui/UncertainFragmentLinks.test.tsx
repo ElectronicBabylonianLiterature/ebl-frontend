@@ -84,6 +84,42 @@ test('preserves every number when lookups succeed, miss or fail independently', 
   expect(screen.getByRole('button', { name: 'Retry' })).toBeVisible()
 })
 
+test('groups failures and retries only failed lookups while preserving successes', async () => {
+  let shouldFail = true
+  isInFragmentarium.mockImplementation(async (number) => {
+    if (shouldFail && number.startsWith('K.5')) throw new Error('Unavailable')
+    return number !== 'K.404'
+  })
+  renderLinks([
+    { museumNumber: 'K.1' },
+    { museumNumber: 'K.404' },
+    { museumNumber: 'K.500' },
+    { museumNumber: 'K.501' },
+    { museumNumber: 'K.500' },
+  ])
+
+  expect(
+    await screen.findByText('2 fragment lookups failed. Unavailable'),
+  ).toBeVisible()
+  expect(screen.getAllByRole('alert')).toHaveLength(1)
+  expect(screen.getAllByRole('button', { name: 'Retry' })).toHaveLength(1)
+  expect(screen.getByRole('link', { name: 'K.1' })).toBeVisible()
+  shouldFail = false
+  await act(async () => screen.getByRole('button', { name: 'Retry' }).click())
+
+  expect(await screen.findAllByRole('link', { name: 'K.500' })).toHaveLength(2)
+  expect(screen.getByRole('link', { name: 'K.501' })).toBeVisible()
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  expect(isInFragmentarium.mock.calls.map(([number]) => number)).toEqual([
+    'K.1',
+    'K.404',
+    'K.500',
+    'K.501',
+    'K.500',
+    'K.501',
+  ])
+})
+
 test('does not apply a previous fragment list result after props change', async () => {
   let resolvePrevious: (exists: boolean) => void = () => undefined
   isInFragmentarium

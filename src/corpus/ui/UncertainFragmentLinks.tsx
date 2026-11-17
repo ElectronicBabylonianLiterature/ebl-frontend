@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import _ from 'lodash'
 import type { UncertainFragment } from 'corpus/domain/text'
 import FragmentariumLink from 'corpus/ui/FragmentariumLink'
@@ -18,22 +18,34 @@ interface LookupResult {
   error: Error | null
 }
 
+interface LookupSnapshot {
+  key: string
+  service: Props['fragmentService']
+  values: ReadonlyMap<string, LookupResult>
+}
+
 export default function UncertainFragmentLinks({
   uncertainFragments,
   fragmentService,
 }: Props): JSX.Element {
-  const [results, setResults] = useState<{
-    key: string
-    service: Props['fragmentService']
-    values: ReadonlyMap<string, LookupResult>
-  }>()
+  const [results, setResults] = useState<LookupSnapshot>()
+  const completed = useRef<LookupSnapshot>()
   const [retry, setRetry] = useState(0)
   const key = JSON.stringify(
     uncertainFragments.map(({ museumNumber }) => museumNumber),
   )
   useEffect(() => {
     const controller = new AbortController()
-    const numbers = _.uniq(JSON.parse(key) as string[])
+    const previous = completed.current
+    const values = new Map(
+      previous?.key === key && previous.service === fragmentService
+        ? previous.values
+        : [],
+    )
+    completed.current = { key, service: fragmentService, values }
+    const numbers = _.uniq(JSON.parse(key) as string[]).filter(
+      (number) => values.get(number)?.error !== null,
+    )
     numbers.forEach((museumNumber) => {
       fragmentExistenceLimiter
         .run(
@@ -47,15 +59,8 @@ export default function UncertainFragmentLinks({
         )
         .then((result) => {
           if (controller.signal.aborted) return
-          setResults((previous) => {
-            const values = new Map(
-              previous?.key === key && previous.service === fragmentService
-                ? previous.values
-                : [],
-            )
-            values.set(museumNumber, result)
-            return { key, service: fragmentService, values }
-          })
+          values.set(museumNumber, result)
+          setResults({ key, service: fragmentService, values: new Map(values) })
         })
     })
     return () => controller.abort()
@@ -64,25 +69,36 @@ export default function UncertainFragmentLinks({
     results?.key === key && results.service === fragmentService
       ? results.values
       : undefined
-  return (
-    <ul className="list-of-manuscripts__uncertain-fragments">
-      {uncertainFragments.map((uncertainFragment, index) => {
-        const result = values?.get(uncertainFragment.museumNumber)
-        return (
-          <li key={`${uncertainFragment.museumNumber}-${index}`}>
-            <FragmentariumLink
-              item={{
-                ...uncertainFragment,
-                isInFragmentarium: result?.exists === true,
-              }}
-            />
-            <ErrorAlert
-              error={result?.error ?? null}
-              onRetry={() => setRetry((attempt) => attempt + 1)}
-            />
-          </li>
+  const errors = [...(values?.values() ?? [])].flatMap(({ error }) =>
+    error ? [error] : [],
+  )
+  const error =
+    errors.length > 1
+      ? new Error(
+          `${errors.length} fragment lookups failed. ${errors[0].message}`,
         )
-      })}
-    </ul>
+      : (errors[0] ?? null)
+  return (
+    <>
+      <ul className="list-of-manuscripts__uncertain-fragments">
+        {uncertainFragments.map((uncertainFragment, index) => {
+          const result = values?.get(uncertainFragment.museumNumber)
+          return (
+            <li key={`${uncertainFragment.museumNumber}-${index}`}>
+              <FragmentariumLink
+                item={{
+                  ...uncertainFragment,
+                  isInFragmentarium: result?.exists === true,
+                }}
+              />
+            </li>
+          )
+        })}
+      </ul>
+      <ErrorAlert
+        error={error}
+        onRetry={() => setRetry((attempt) => attempt + 1)}
+      />
+    </>
   )
 }

@@ -1,5 +1,5 @@
 import type { FragmentRepository } from 'fragmentarium/application/fragmentServicePorts'
-import { ApiError } from 'http/ApiClient'
+import { isNotFoundError } from 'http/ApiClient'
 
 export default async function findFragmentExistence(
   repository: Pick<FragmentRepository, 'find'>,
@@ -10,7 +10,7 @@ export default async function findFragmentExistence(
     await repository.find(number, undefined, true, signal)
     return true
   } catch (error) {
-    if (error instanceof ApiError && error.status === 404) {
+    if (isNotFoundError(error)) {
       return false
     }
     throw error
