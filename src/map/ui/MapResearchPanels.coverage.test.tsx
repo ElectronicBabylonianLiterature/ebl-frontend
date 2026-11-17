@@ -26,7 +26,6 @@ it('explains why a selected area cannot yet be exported', () => {
         rows={[]}
         scope={context.scope}
         buildContext={() => context}
-        imageExport={{ isAllowed: false, explanation: 'Source restrictions.' }}
       />
     </MemoryRouter>,
   )
@@ -49,7 +48,6 @@ it.each([1, 2])('describes a viewport export containing %i areas', (count) => {
         rows={rows}
         scope={{ type: 'viewport', bounds: [[43, 35, 44, 36]] }}
         buildContext={() => context}
-        imageExport={{ isAllowed: true, explanation: '' }}
       />
     </MemoryRouter>,
   )
