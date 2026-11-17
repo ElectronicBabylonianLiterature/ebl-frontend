@@ -7,7 +7,6 @@ import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
 import type { MapTabState } from 'map/ui/useMapTabState'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import { exportDataStatuses } from 'map/domain/mapExportData'
-import { assessImageExport } from 'map/domain/mapImageExportRights'
 import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 
@@ -94,7 +93,6 @@ export default function buildMapToolPanels(
             scope: state.exportView.scope,
             dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
           })}
-          imageExport={assessImageExport()}
         />
       ),
     },

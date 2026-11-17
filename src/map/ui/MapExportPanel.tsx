@@ -10,13 +10,11 @@ import {
   downloadExportCsv,
   downloadExportGeoJson,
 } from 'map/domain/mapExportDownload'
-import type { ImageExportAssessment } from 'map/domain/mapImageExportRights'
 
 interface Props {
   readonly rows: readonly MapExportRow[]
   readonly scope: MapExportScope
   readonly buildContext: () => MapExportContext
-  readonly imageExport: ImageExportAssessment
 }
 
 function scopeDescription(scope: MapExportScope, rowCount: number): string {
@@ -36,7 +34,6 @@ export default function MapExportPanel({
   rows,
   scope,
   buildContext,
-  imageExport,
 }: Props): JSX.Element {
   const isEmpty = rows.length === 0
 
@@ -66,11 +63,11 @@ export default function MapExportPanel({
         </Button>
       </div>
       <MapShareLink />
-      {imageExport.isAllowed ? null : (
-        <p className="map-tool-panel__note">
-          Image export is unavailable. {imageExport.explanation}
-        </p>
-      )}
+      <p className="map-tool-panel__note">
+        Image export is unavailable. Saving a rendered map image needs basemap
+        and overlay licensing to be confirmed first. Use GeoJSON or CSV export,
+        or the shareable map link.
+      </p>
       <p className="map-tool-panel__note">
         Linked-data fields are blank when site data is unavailable. Counts are
         caller-authorized snapshots at the export time.

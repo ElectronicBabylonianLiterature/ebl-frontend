@@ -53,11 +53,6 @@ const CONTEXT: MapExportContext = {
   dataStatuses: { assur: 'loaded-empty' },
 }
 
-const IMAGE_BLOCKED = {
-  isAllowed: false as const,
-  explanation: 'The active basemap does not grant redistribution rights.',
-}
-
 describe('MapExportPanel', () => {
   beforeEach(jest.clearAllMocks)
 
@@ -67,7 +62,6 @@ describe('MapExportPanel', () => {
         rows={[]}
         scope={CONTEXT.scope}
         buildContext={() => CONTEXT}
-        imageExport={IMAGE_BLOCKED}
       />,
     )
     expect(screen.getByRole('status')).toHaveTextContent(
@@ -87,7 +81,6 @@ describe('MapExportPanel', () => {
           }))}
           scope={{ type: 'viewport', bounds: [[43, 35, 44, 36]] }}
           buildContext={() => CONTEXT}
-          imageExport={IMAGE_BLOCKED}
         />,
       )
       expect(screen.getByRole('status')).toHaveTextContent(
@@ -105,7 +98,6 @@ describe('MapExportPanel', () => {
         rows={[]}
         scope={{ type: 'viewport', bounds: [[43, 35, 44, 36]] }}
         buildContext={() => CONTEXT}
-        imageExport={IMAGE_BLOCKED}
       />,
     )
 
@@ -116,9 +108,7 @@ describe('MapExportPanel', () => {
       screen.getByRole('button', { name: 'Download GeoJSON' }),
     ).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Download CSV' })).toBeDisabled()
-    expect(
-      screen.getByText(/does not grant redistribution rights/),
-    ).toBeVisible()
+    expect(screen.getByText(/basemap and overlay licensing/)).toBeVisible()
   })
 
   it('builds fresh snapshot context for each selected-area download', async () => {
@@ -128,7 +118,6 @@ describe('MapExportPanel', () => {
         rows={[ROW]}
         scope={CONTEXT.scope}
         buildContext={buildContext}
-        imageExport={IMAGE_BLOCKED}
       />,
     )
 
@@ -151,7 +140,6 @@ describe('MapExportPanel', () => {
         rows={[ROW]}
         scope={CONTEXT.scope}
         buildContext={() => CONTEXT}
-        imageExport={{ isAllowed: true, explanation: '' }}
       />,
     )
 
@@ -159,8 +147,6 @@ describe('MapExportPanel', () => {
       screen.getByText(/fields are blank when site data is unavailable/),
     ).toBeVisible()
     expect(screen.getByText(/caller-authorized snapshots/)).toBeVisible()
-    expect(
-      screen.queryByText(/Image export is unavailable/),
-    ).not.toBeInTheDocument()
+    expect(screen.getByText(/Image export is unavailable/)).toBeVisible()
   })
 })
