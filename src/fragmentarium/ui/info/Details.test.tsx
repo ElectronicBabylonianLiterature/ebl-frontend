@@ -166,13 +166,7 @@ describe('All details', () => {
 
   it('groups excavation and findspot details in the provenance list item', async () => {
     await setupAllDetails()
-    const provenanceItem = screen
-      .getAllByRole('listitem')
-      .find((item) => within(item).queryByText(/Provenance:/))
-    expect(provenanceItem).toBeDefined()
-    if (!provenanceItem) {
-      throw new Error('Expected provenance list item')
-    }
+    const provenanceItem = screen.getByText(/Provenance:/, { selector: 'li' })
     const provenanceList = within(provenanceItem).getByRole('list')
 
     expect(within(provenanceList).getByText(/Excavation no\.:/)).toBeVisible()
