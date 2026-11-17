@@ -82,6 +82,20 @@ it.each<PanelCase>([
     closeCalls: 2,
   },
   {
+    active: 'export',
+    selectedPolygonId: null,
+    canShowExcavationAreas: true,
+    isBackgroundUnavailable: true,
+    closeCalls: 0,
+  },
+  {
+    active: 'export',
+    selectedPolygonId: null,
+    canShowExcavationAreas: false,
+    isBackgroundUnavailable: false,
+    closeCalls: 1,
+  },
+  {
     active: 'layers',
     selectedPolygonId: null,
     canShowExcavationAreas: false,
@@ -128,14 +142,14 @@ it('reevaluates the active panel when its prerequisites change', () => {
   })
   expect(close).toHaveBeenCalledTimes(1)
   rerender({
-    active: 'visualization',
+    active: 'export',
     selectedPolygonId: null,
     canShowExcavationAreas: true,
     isBackgroundUnavailable: true,
   })
   expect(close).toHaveBeenCalledTimes(1)
   rerender({
-    active: 'visualization',
+    active: 'export',
     selectedPolygonId: null,
     canShowExcavationAreas: false,
     isBackgroundUnavailable: true,

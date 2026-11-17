@@ -12,7 +12,6 @@ import useFragmentMapData, {
 } from 'map/domain/useFragmentMapData'
 import useMapExperience, { type MapExperience } from 'map/ui/useMapExperience'
 import useMapPanel, { type MapPanelController } from 'map/ui/useMapPanel'
-import useMapPanelAvailability from 'map/ui/useMapPanelAvailability'
 import useMapVisualization, {
   type MapVisualization,
 } from 'map/ui/useMapVisualization'
@@ -25,6 +24,7 @@ import useMapSpatialSearch, {
 import useMapLayoutEffects from 'map/ui/useMapLayoutEffects'
 import { resetMapCamera } from 'map/maplibre/mapCamera'
 import { filterProvenances } from 'map/domain/findspotFilter'
+import useMapPanelAvailability from 'map/ui/useMapPanelAvailability'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import {
   anySiteHasExcavationPolygons,
@@ -35,6 +35,7 @@ import {
   sortedExcavationPolygons,
   type ExcavationPolygon,
 } from 'map/domain/excavationPolygonIndex'
+import useMapExportView, { type MapExportView } from 'map/ui/useMapExportView'
 
 export interface MapTabState {
   readonly provenances: readonly ProvenanceRecord[]
@@ -55,6 +56,7 @@ export interface MapTabState {
   readonly visualization: MapVisualization
   readonly measurement: MeasurementController
   readonly spatialSearch: SpatialSearchController
+  readonly exportView: MapExportView
   readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly resetView: () => void
 }
@@ -81,7 +83,8 @@ export default function useMapTabState(
     isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
     experience.showExcavationAreas ||
       experience.selection !== null ||
-      panel.active === 'spatial-search',
+      panel.active === 'spatial-search' ||
+      panel.active === 'export',
   )
   const isExcavationAreasUnavailable =
     polygonIndexError !== null || isRenderedAreasUnavailable
@@ -185,10 +188,6 @@ export default function useMapTabState(
     drawerRef,
     experience.presentation.isActive ? null : panel.active,
   )
-  const excavationPolygons = useMemo(
-    () => sortedExcavationPolygons(polygonIndex),
-    [polygonIndex],
-  )
   const spatialSearch = useMapSpatialSearch(
     mapRef,
     isSpatialSearchActive,
@@ -196,6 +195,17 @@ export default function useMapTabState(
     fragmentMapData,
   )
   const measurement = useMapMeasurement(mapRef, isMeasurementActive)
+  const excavationPolygons = useMemo(
+    () => sortedExcavationPolygons(polygonIndex),
+    [polygonIndex],
+  )
+  const exportView = useMapExportView(
+    mapRef,
+    showExcavationAreas,
+    excavationPolygons,
+    selectedPolygon,
+    fragmentMapData,
+  )
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)
     experience.resetState()
@@ -223,6 +233,7 @@ export default function useMapTabState(
     visualization,
     measurement,
     spatialSearch,
+    exportView,
     resetView,
   }
 }
