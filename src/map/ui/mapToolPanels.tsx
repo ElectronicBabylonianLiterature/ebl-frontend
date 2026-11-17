@@ -8,7 +8,6 @@ import MapTerrainPanel from 'map/ui/MapTerrainPanel'
 import type { MapTabState } from 'map/domain/mapTabState'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import { exportDataStatuses } from 'map/domain/mapExportData'
-import { assessImageExport } from 'map/domain/mapImageExportRights'
 import { mapSiteName, isMapSiteId } from 'fragmentarium/domain/mapSites'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 
@@ -95,7 +94,6 @@ export default function buildMapToolPanels(
             scope: state.exportView.scope,
             dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
           })}
-          imageExport={assessImageExport()}
         />
       ),
     },

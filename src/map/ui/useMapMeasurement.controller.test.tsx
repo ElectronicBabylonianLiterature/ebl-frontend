@@ -56,3 +56,20 @@ it('keeps existing points when the map reports an invalid center', () => {
 
   expect(result.current.pointCount).toBe(1)
 })
+
+it('ignores consecutive duplicate points while retaining a return to an earlier point', () => {
+  const mapRef = { current: asLibreMap(mockMapInstance) }
+  const { result } = renderHook(() => useMapMeasurement(mapRef, true))
+  act(() => {
+    result.current.addPointAtCenter()
+    result.current.addPointAtCenter()
+  })
+  expect(result.current.pointCount).toBe(1)
+
+  mockGetCenter.mockReturnValue({ lng: 44, lat: 33 })
+  act(() => result.current.addPointAtCenter())
+  mockGetCenter.mockReturnValue({ lng: 43.25, lat: 35.45 })
+  act(() => result.current.addPointAtCenter())
+
+  expect(result.current.pointCount).toBe(3)
+})

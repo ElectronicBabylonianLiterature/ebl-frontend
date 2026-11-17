@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse
 import json
 import tempfile
 import unicodedata
 from pathlib import Path
 from typing import Any
 
+from findspot_asset_arguments import parse_args
 from findspot_json import load_json
 from findspot_artifact_manifest import build_manifest
 from findspot_artifact_validation import load_inventory, load_mapping
 from findspot_geometry_identity import geometry_checksum
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_ARTIFACT_DIR = ROOT / ".map-processing" / "backend-artifacts"
 SITES = ("assur", "kalhu", "nippur", "uruk")
 DEFAULT_EXPECTATIONS = {
     "assur": {"features": 134, "inventory": 134, "mappings": 315, "mapped": 133},
@@ -197,42 +195,6 @@ def atomic_write_outputs(
                 else:
                     output_paths[name].write_bytes(original)
             raise
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Build canonical multi-site findspot map GeoJSON assets from the backend "
-            "metadata transfer and the four site geometry files. Validates content "
-            "hashes, canonical polygon IDs and counts before atomically publishing "
-            "the five GeoJSON files and manifest.json. Geometry is preserved."
-        ),
-        epilog=(
-            "Keep extracted transfers in .map-processing/backend-artifacts. Run "
-            "test_findspot_map_handoff.py first against the same directories. "
-            "Use --expectations only for an explicitly reviewed alternate dataset. "
-            "When research exports are present, also update the bundled artifact "
-            "provenance from the published manifest."
-        ),
-    )
-    parser.add_argument(
-        "--findspot-dir",
-        type=Path,
-        required=True,
-        help="Directory containing assur/kalhu/nippur/uruk.geojson.",
-    )
-    parser.add_argument(
-        "--artifact-dir",
-        type=Path,
-        default=DEFAULT_ARTIFACT_DIR,
-        help="Extracted backend inventories, mappings and transfer manifest.",
-    )
-    parser.add_argument(
-        "--expectations",
-        type=Path,
-        help="Reviewed alternative per-site counts; canonical counts are the default.",
-    )
-    return parser.parse_args()
 
 
 def main() -> None:

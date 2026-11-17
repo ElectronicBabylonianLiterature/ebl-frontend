@@ -51,14 +51,13 @@ function panel(
   return definition
 }
 
-it('renders a truthful empty inspector when no area is selected', () => {
-  const inspector = panel(mapState(), 'inspector')
+it('omits the inspector panel when no area is selected', () => {
+  const panelIds = buildMapToolPanels(mapState(), jest.fn()).map(
+    (entry) => entry.id,
+  )
 
-  expect(inspector.isSupported).toBe(false)
-  render(<MemoryRouter>{inspector.render()}</MemoryRouter>)
-
-  expect(screen.getByText('No excavation area is selected.')).toBeVisible()
-  expect(screen.queryByText('Mapped findspots')).not.toBeInTheDocument()
+  expect(panelIds).not.toContain('inspector')
+  expect(panelIds).toContain('export')
 })
 
 it.each([

@@ -47,7 +47,6 @@ it.each(['loading', 'error', 'not-configured', 'loaded-empty'] as const)(
           rows={toExportRows([polygon], sites)}
           scope={context.scope}
           buildContext={() => context}
-          imageExport={{ isAllowed: false, explanation: '' }}
         />
       </MemoryRouter>,
     )
