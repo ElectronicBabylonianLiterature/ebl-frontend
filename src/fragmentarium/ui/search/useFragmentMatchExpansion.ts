@@ -13,7 +13,6 @@ import {
   expansionReducer,
   initialExpansionState,
 } from 'fragmentarium/ui/search/fragmentMatchExpansionState'
-export { EXPANSION_BATCH_SIZE } from 'fragmentarium/ui/search/fragmentMatchExpansionState'
 
 function countVisibleTextLines(
   fragment: Fragment,

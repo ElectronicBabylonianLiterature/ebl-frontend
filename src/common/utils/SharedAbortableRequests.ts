@@ -1,9 +1,9 @@
 import { createAbortError, rejectOnAbort } from 'common/utils/abortError'
+import AbortableRequestConsumers from 'common/utils/AbortableRequestConsumers'
 
 type SharedRequest = {
   readonly controller: AbortController
-  subscribers: number
-  hasUncancellableConsumer: boolean
+  readonly consumers: AbortableRequestConsumers
   settled: Promise<void>
 }
 
@@ -47,24 +47,28 @@ export default class SharedAbortableRequests<Value> {
       started = true
       return fetch(controller?.signal)
     })
-    if (!started) {
-      this.join(this.requests.get(key), signal)
-    } else if (signal && controller) {
-      this.track(key, controller, signal, result)
-    }
-    return result
+    const request =
+      started && signal && controller
+        ? this.track(key, controller, result)
+        : this.requests.get(key)
+    return request
+      ? request.consumers.subscribe(
+          result,
+          signal,
+          () => request.controller.abort(),
+          request.settled,
+        )
+      : result
   }
 
   private track(
     key: string,
     controller: AbortController,
-    signal: AbortSignal,
     result: Promise<Value>,
-  ): void {
+  ): SharedRequest {
     const request: SharedRequest = {
       controller,
-      subscribers: 0,
-      hasUncancellableConsumer: false,
+      consumers: new AbortableRequestConsumers(),
       settled: Promise.resolve(),
     }
     const forget = (): void => {
@@ -74,28 +78,6 @@ export default class SharedAbortableRequests<Value> {
     }
     request.settled = result.then(forget, forget)
     this.requests.set(key, request)
-    this.join(request, signal)
-  }
-
-  private join(
-    request: SharedRequest | undefined,
-    signal: AbortSignal | undefined,
-  ): void {
-    if (!request) {
-      return
-    }
-    if (!signal) {
-      request.hasUncancellableConsumer = true
-      return
-    }
-    request.subscribers += 1
-    signal.addEventListener('abort', () => this.leave(request), { once: true })
-  }
-
-  private leave(request: SharedRequest): void {
-    request.subscribers -= 1
-    if (request.subscribers === 0 && !request.hasUncancellableConsumer) {
-      request.controller.abort()
-    }
+    return request
   }
 }
