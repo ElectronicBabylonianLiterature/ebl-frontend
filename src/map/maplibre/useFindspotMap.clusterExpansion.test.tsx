@@ -80,6 +80,35 @@ describe('useFindspotMap cluster expansion', () => {
     expect(unhandledRejections).toEqual([])
   })
 
+  it('does not pan after interaction ownership changes', async () => {
+    const { rerender } = renderHarness(
+      <HookHarness provenances={[makeProvenance()]} isInteractionEnabled />,
+    )
+    let resolveZoom!: (zoom: number) => void
+    mockGetSource.mockReturnValue({
+      getClusterExpansionZoom: mockGetClusterExpansionZoom,
+    })
+    mockGetClusterExpansionZoom.mockReturnValue(
+      new Promise((resolve) => {
+        resolveZoom = resolve
+      }),
+    )
+
+    clickCluster()
+    rerender(
+      <HookHarness
+        provenances={[makeProvenance()]}
+        isInteractionEnabled={false}
+      />,
+    )
+    await act(async () => {
+      resolveZoom(9)
+      await Promise.resolve()
+    })
+
+    expect(mockEaseTo).not.toHaveBeenCalled()
+  })
+
   it('does not pan a stale map generation when expansion fails', async () => {
     const { unmount } = renderHarness(
       <HookHarness provenances={[makeProvenance()]} />,

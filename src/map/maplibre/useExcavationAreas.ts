@@ -35,6 +35,7 @@ export interface ExcavationAreaOptions {
   readonly values?: PolygonVisualizationValues
   readonly onSelectPolygon: (polygonId: string) => void
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
+  readonly isInteractionEnabled?: boolean
 }
 
 function observeExcavationClicks(
@@ -43,7 +44,7 @@ function observeExcavationClicks(
   isCurrentMap: () => boolean,
 ): () => void {
   const handleClick = (event: MapMouseEvent): void => {
-    if (!isCurrentMap()) return
+    if (!isCurrentMap() || getOptions().isInteractionEnabled === false) return
     const [feature] = map.queryRenderedFeatures(event.point, {
       layers: [EXCAVATION_AREA_FILL_LAYER_ID],
     })

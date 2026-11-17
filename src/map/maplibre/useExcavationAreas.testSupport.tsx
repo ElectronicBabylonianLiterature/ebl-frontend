@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/maplibre/useExcavationAreas'
 import type { PolygonVisualizationValues } from 'map/domain/mapVisualizationValues'
-import { mockMapInstance, mockRemove } from 'map/testSupport/mapLibreMock'
+import { mockMapInstance } from 'map/testSupport/mapLibreMock'
+import { useDisposingMockMap } from 'map/testSupport/mapLibreDisposedMock.testSupport'
 const POLYGON_INDEX = new Map()
 
 export function Harness({
@@ -33,16 +34,7 @@ export function Harness({
 }
 
 export function OwnerTeardownHarness(): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useEffect(
-    () => () => {
-      mockRemove()
-      mapRef.current = null
-    },
-    [],
-  )
+  const mapRef = useDisposingMockMap()
   useExcavationAreas(mapRef, {
     isVisible: true,
     polygonIndex: POLYGON_INDEX,
