@@ -15,7 +15,7 @@ export default function FindspotConstraint({
   return findspotId === null ? null : (
     <Alert variant={isValid ? 'info' : 'warning'}>
       {isValid ? (
-        <>Results are limited to the selected findspot (ID {findspotId}).</>
+        <>Selected findspot filter (ID {findspotId}).</>
       ) : (
         <>
           Findspot ID {findspotId} is invalid. Clear the findspot filter to

@@ -52,6 +52,8 @@ export default function useMapMeasurement(
   const addPoint = useCallback(
     (position: Position): void => {
       if (positionsRef.current.length >= MAX_MEASUREMENT_POINTS) return
+      const previous = positionsRef.current.at(-1)
+      if (previous?.[0] === position[0] && previous[1] === position[1]) return
       replacePositions([...positionsRef.current, position])
     },
     [replacePositions],
