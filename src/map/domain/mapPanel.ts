@@ -1,4 +1,4 @@
-export type MapPanelId = 'layers' | 'inspector'
+export type MapPanelId = 'layers' | 'inspector' | 'visualization'
 
 export type ActiveMapPanel = MapPanelId | null
 

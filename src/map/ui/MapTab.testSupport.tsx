@@ -43,7 +43,7 @@ export function makeRejectingFragmentService(
 }
 
 const DEFAULT_FINDSPOT_SERVICE = {
-  fetchMapData: () => Promise.resolve([]),
+  fetchMapData: () => new Promise(() => undefined),
 } as unknown as FindspotService
 
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
