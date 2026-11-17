@@ -28,9 +28,9 @@ test('renders all privacy policy sections in order', () => {
       .getAllByRole('heading', { level: 3 })
       .map(({ textContent }) => textContent),
   ).toEqual(sectionHeadings)
-  expect(screen.getByText(/basemaps.cartocdn.com/)).toHaveTextContent(
-    's3.amazonaws.com',
-  )
+  expect(
+    screen.getByText('basemaps.cartocdn.com', { exact: false }),
+  ).toHaveTextContent('s3.amazonaws.com')
   expect(screen.getByText(/Höhenkacheln werden nur/)).toHaveTextContent(
     'bei eingeschalteter Geländeansicht angefordert.',
   )
