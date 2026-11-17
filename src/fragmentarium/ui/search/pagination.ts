@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { parse } from 'common/utils/queryString'
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 
 export const paginationURLParam = 'paginationIndex'
@@ -21,8 +22,7 @@ export function getRequestedPaginationIndex(
       ? Number.NaN
       : Number(paginationIndex)
 
-  return Number.isSafeInteger(parsedPaginationIndex) &&
-    parsedPaginationIndex >= 0
+  return isNonNegativeInteger(parsedPaginationIndex)
     ? parsedPaginationIndex
     : undefined
 }

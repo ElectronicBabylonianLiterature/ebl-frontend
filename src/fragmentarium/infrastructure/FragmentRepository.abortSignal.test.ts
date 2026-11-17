@@ -1,3 +1,4 @@
+import { fragmentDto } from 'test-support/test-fragment'
 import {
   apiClient,
   fragmentId,
@@ -17,6 +18,13 @@ type AbortableRead = {
 const fragmentInfosResponse = [fragmentInfoDto]
 
 const abortableReads: readonly AbortableRead[] = [
+  {
+    name: 'find',
+    call: (signal) =>
+      fragmentRepository.find(fragmentId, undefined, undefined, signal),
+    expectedPath: `/fragments/${encodeURIComponent(fragmentId)}`,
+    response: fragmentDto,
+  },
   {
     name: 'statistics',
     call: (signal) => fragmentRepository.statistics(signal),

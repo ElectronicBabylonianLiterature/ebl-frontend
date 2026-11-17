@@ -78,7 +78,9 @@ describe('FragmentLines', () => {
     ).toBeVisible()
     expect(screen.getByText('1')).toBeVisible()
     expect(screen.getByRole('table')).toHaveTextContent('kur ša')
-    expect(screen.getByText('And 3 more matching lines')).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'Show 3 more matching lines' }),
+    ).toBeVisible()
     expect(
       screen.getByText(/Borger/, {
         selector: '.reference-popover__interactive',

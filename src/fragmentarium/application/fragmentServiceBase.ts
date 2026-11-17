@@ -13,6 +13,7 @@ import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { AnnotationSaveResult } from 'fragmentarium/ui/text-annotation/annotationSave'
 import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+import SharedAbortableRequests from 'common/utils/SharedAbortableRequests'
 import {
   AnnotationRepository,
   EditionFields,
@@ -37,6 +38,7 @@ export class FragmentServiceBase {
   protected readonly thumbnailFetchLimiter = new ConcurrencyLimiter(
     thumbnailFetchConcurrencyLimit,
   )
+  protected readonly fragmentRequests = new SharedAbortableRequests<Fragment>()
 
   constructor(
     protected readonly fragmentRepository: FragmentRepository &
