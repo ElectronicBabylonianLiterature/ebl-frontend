@@ -1,11 +1,11 @@
 import { createAbortError } from 'common/utils/abortError'
 import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
+import AbortableRequestConsumers from 'common/utils/AbortableRequestConsumers'
 
 export type AbortableRequest<CacheValue> = {
   readonly promise: Promise<CacheValue>
   readonly controller: AbortController
-  abortableSubscribers: number
-  pinned: boolean
+  readonly consumers: AbortableRequestConsumers
 }
 
 type GetOrFetchAbortableCachedValueParams<CacheKey, CacheValue> = {
@@ -55,37 +55,10 @@ function startRequest<CacheKey, CacheValue>({
   const request = {
     promise,
     controller,
-    abortableSubscribers: 0,
-    pinned: false,
+    consumers: new AbortableRequestConsumers(),
   }
   requests.set(key, request)
   return request
-}
-
-function subscribe<CacheValue>(
-  request: AbortableRequest<CacheValue>,
-  signal: AbortSignal | undefined,
-  abandonRequest: () => void,
-): Promise<CacheValue> {
-  if (!signal) {
-    request.pinned = true
-    return request.promise
-  }
-
-  request.abortableSubscribers += 1
-  return new Promise<CacheValue>((resolve, reject) => {
-    const abortSubscriber = (): void => {
-      request.abortableSubscribers -= 1
-      reject(createAbortError(signal))
-      if (request.abortableSubscribers === 0 && !request.pinned) {
-        abandonRequest()
-      }
-    }
-    signal.addEventListener('abort', abortSubscriber, { once: true })
-    request.promise.then(resolve, reject).finally(() => {
-      signal.removeEventListener('abort', abortSubscriber)
-    })
-  })
 }
 
 export default function getOrFetchAbortableCachedValue<CacheKey, CacheValue>(
@@ -105,7 +78,7 @@ export default function getOrFetchAbortableCachedValue<CacheKey, CacheValue>(
   const request =
     requests.get(key) ?? startRequest({ ...params, getCurrentTime })
 
-  return subscribe(request, signal, () => {
+  return request.consumers.subscribe(request.promise, signal, () => {
     if (requests.get(key) === request) {
       requests.delete(key)
     }
