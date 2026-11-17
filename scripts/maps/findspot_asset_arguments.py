@@ -41,4 +41,3 @@ def parse_args() -> argparse.Namespace:
         help="Reviewed alternative per-site counts; canonical counts are the default.",
     )
     return parser.parse_args()
-
