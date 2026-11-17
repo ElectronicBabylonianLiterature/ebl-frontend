@@ -1,4 +1,5 @@
 import { matchingLineTotal } from 'query/matchingLineTotals'
+import getLibraryCountUnit from 'fragmentarium/ui/search/getLibraryCountUnit'
 
 const item = {
   museumNumber: 'BM.23658',
@@ -39,4 +40,12 @@ test('the backend distinct-line total takes precedence over window counts', () =
       { transliteration: 'ku' },
     ),
   ).toBe(0)
+})
+
+test('combined multiline and lemma queries count lines but need a distinct-line total', () => {
+  const query = { transliteration: 'ku\nana', lemmas: 'ku I+ana I' }
+
+  expect(getLibraryCountUnit(query)).toBe('matching line')
+  expect(matchingLineTotal(item, query)).toBeUndefined()
+  expect(matchingLineTotal({ ...item, totalMatchingLines: 9 }, query)).toBe(9)
 })

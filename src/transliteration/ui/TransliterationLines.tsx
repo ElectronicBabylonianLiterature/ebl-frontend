@@ -17,7 +17,6 @@ import {
   getCurrentLabels,
   hasTextLineWithId,
 } from 'transliteration/domain/lineLabels'
-export { getCurrentLabels } from 'transliteration/domain/lineLabels'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 interface TextDisplayProps {
