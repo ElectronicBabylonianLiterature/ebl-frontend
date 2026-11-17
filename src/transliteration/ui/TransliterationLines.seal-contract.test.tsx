@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import DisplayTextLine from 'transliteration/ui/text-line'
-import { getCurrentLabels } from 'transliteration/ui/TransliterationLines'
+import { getCurrentLabels } from 'transliteration/domain/lineLabels'
 import {
   defaultLabels,
   labelsAbbreviation,

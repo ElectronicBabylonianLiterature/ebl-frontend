@@ -1,4 +1,4 @@
-import { getCurrentLabels } from 'transliteration/ui/TransliterationLines'
+import { getCurrentLabels } from 'transliteration/domain/lineLabels'
 import { defaultLabels } from 'transliteration/domain/labels'
 import { column, heading, object, surface } from 'test-support/lines/at'
 

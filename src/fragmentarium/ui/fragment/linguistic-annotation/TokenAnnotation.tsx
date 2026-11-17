@@ -3,9 +3,9 @@ import { Notes, Text } from 'transliteration/domain/text'
 import { LineProps } from 'transliteration/ui/LineProps'
 import {
   defaultLineComponents,
-  getCurrentLabels,
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
+import { getCurrentLabels } from 'transliteration/domain/lineLabels'
 import { Token } from 'transliteration/domain/token'
 import type { OnChangeValue } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
