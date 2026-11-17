@@ -51,14 +51,11 @@ class ApiFragmentRepository
       { lines: lines, excludeLines: excludeLines },
       (value) => _.isNil(value),
     )
+    const path = `/fragments/${encodeURIComponent(number)}${
+      _.isEmpty(params) ? '' : `?${stringify(params)}`
+    }`
     return this.apiClient
-      .fetchJson<FragmentDto>(
-        `/fragments/${encodeURIComponent(number)}${
-          _.isEmpty(params) ? '' : `?${stringify(params)}`
-        }`,
-        false,
-        signal,
-      )
+      .fetchJson<FragmentDto>(path, false, signal)
       .then(createFragment)
   }
 
