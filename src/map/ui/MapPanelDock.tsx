@@ -7,6 +7,7 @@ import type { MapPanelController } from 'map/ui/useMapPanel'
 interface Props {
   readonly panels: readonly MapPanelDefinition[]
   readonly panel: MapPanelController
+  readonly selectionAction?: React.ReactNode
   readonly drawerRef?: RefObject<HTMLElement>
   readonly status?: React.ReactNode
 }
@@ -14,6 +15,7 @@ interface Props {
 export default function MapPanelDock({
   panels,
   panel,
+  selectionAction,
   drawerRef,
   status,
 }: Props): JSX.Element {
@@ -30,6 +32,7 @@ export default function MapPanelDock({
         panels={panels}
         active={panel.active}
         onToggle={panel.toggle}
+        extraAction={selectionAction}
       />
       {status ? <div className="map-panel-dock__status">{status}</div> : null}
       {activePanel ? (

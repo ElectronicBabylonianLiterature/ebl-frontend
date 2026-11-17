@@ -2,8 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MapLayerPanel from 'map/ui/MapLayerPanel'
-import type { MapSiteId } from 'fragmentarium/domain/mapSites'
-import type { SiteFragmentMapDataState } from 'map/domain/useFragmentMapData'
 import { excavationPolygon } from 'test-support/map-fixtures'
 
 const polygon = excavationPolygon({ polygonId: 'area-a', siteId: 'assur' })
@@ -11,95 +9,65 @@ const polygon = excavationPolygon({ polygonId: 'area-a', siteId: 'assur' })
 function panelState(): React.ComponentProps<typeof MapLayerPanel>['state'] {
   return {
     experience: {
-      setSelection: jest.fn(),
       setShowExcavationAreas: jest.fn(),
+      setSelection: jest.fn(),
     },
+    panel: { open: jest.fn() },
     selectedPolygon: null,
     excavationPolygons: [polygon],
     showExcavationAreas: true,
     canShowExcavationAreas: true,
-    fragmentMapData: {
-      sites: new Map(),
-      findspots: [],
-      polygonSummaries: new Map(),
-    },
   }
 }
 
-it('keeps keyboard area selection, deselection and layer controls connected', async () => {
+it('keeps keyboard area selection and layer controls connected without opening another panel', async () => {
   const state = panelState()
   render(<MapLayerPanel state={state} />)
 
-  expect(screen.queryByRole('region')).not.toBeInTheDocument()
   await userEvent.selectOptions(
     screen.getByRole('combobox', { name: 'Select excavation area' }),
     polygon.polygonId,
   )
-  expect(state.experience.setSelection).toHaveBeenLastCalledWith({
+  expect(state.experience.setSelection).toHaveBeenCalledWith({
     type: 'excavation-area',
     polygonId: polygon.polygonId,
   })
-  await userEvent.selectOptions(
-    screen.getByRole('combobox', { name: 'Select excavation area' }),
-    '',
-  )
-  expect(state.experience.setSelection).toHaveBeenLastCalledWith(null)
+  expect(state.panel.open).not.toHaveBeenCalled()
   await userEvent.click(
     screen.getByRole('checkbox', { name: 'Excavation areas' }),
   )
   expect(state.experience.setShowExcavationAreas).toHaveBeenCalledWith(false)
 })
 
-it.each(['assur', 'unknown-site'])(
-  'keeps selected areas without linked configuration visible for %s',
-  async (siteId) => {
-    const state = panelState()
-    render(
-      <MapLayerPanel
-        state={{ ...state, selectedPolygon: { ...polygon, siteId } }}
-      />,
-    )
+it('clears a selection without opening or closing a panel', async () => {
+  const state = { ...panelState(), selectedPolygon: polygon }
+  render(<MapLayerPanel state={state} />)
 
-    expect(
-      screen.getByText(
-        'No linked tablet data is configured for this site yet.',
-      ),
-    ).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: 'Clear' }))
-    expect(state.experience.setSelection).toHaveBeenCalledWith(null)
-  },
-)
+  const selector = screen.getByRole('combobox', {
+    name: 'Select excavation area',
+  })
+  expect(selector).toHaveValue(polygon.polygonId)
+  await userEvent.selectOptions(selector, '')
+  expect(state.experience.setSelection).toHaveBeenCalledWith(null)
+  expect(state.panel.open).not.toHaveBeenCalled()
+})
 
-it('shows the selected site failure instead of a different site empty result', () => {
-  const state = panelState()
-  const sites = new Map<MapSiteId, SiteFragmentMapDataState>([
-    [
-      'assur' as const,
-      { status: 'error' as const, findspots: [], polygonSummaries: new Map() },
-    ],
-    [
-      'kalhu' as const,
-      {
-        status: 'loaded-empty' as const,
-        findspots: [],
-        polygonSummaries: new Map(),
-      },
-    ],
-  ])
-  render(
-    <MapLayerPanel
-      state={{
-        ...state,
-        selectedPolygon: polygon,
-        fragmentMapData: { ...state.fragmentMapData, sites },
-      }}
-    />,
-  )
+it('opens the inspector only when View area is activated', async () => {
+  const state = { ...panelState(), selectedPolygon: polygon }
+  render(<MapLayerPanel state={state} />)
 
-  expect(
-    screen.getByText('Linked tablet data is unavailable right now.'),
-  ).toBeInTheDocument()
-  expect(
-    screen.queryByText('No tablets are linked to this excavation area.'),
-  ).not.toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: 'View area' }))
+
+  expect(state.panel.open).toHaveBeenCalledWith('inspector')
+  expect(state.experience.setSelection).not.toHaveBeenCalled()
+})
+
+it('disables unavailable excavation layers', async () => {
+  const state = { ...panelState(), canShowExcavationAreas: false }
+  render(<MapLayerPanel state={state} />)
+
+  const checkbox = screen.getByRole('checkbox', { name: 'Excavation areas' })
+  expect(checkbox).toBeDisabled()
+  await userEvent.click(checkbox)
+  expect(state.experience.setShowExcavationAreas).not.toHaveBeenCalled()
 })

@@ -14,6 +14,7 @@ export const MAP_PANEL_CONTAINER_ID = 'map-panel-drawer'
 interface Props {
   readonly panels: readonly MapPanelDefinition[]
   readonly active: ActiveMapPanel
+  readonly extraAction?: React.ReactNode
   readonly onToggle: (panel: MapPanelId) => void
 }
 function focusClosedTool(
@@ -32,6 +33,7 @@ function focusClosedTool(
 export default function MapToolbar({
   panels,
   active,
+  extraAction,
   onToggle,
 }: Props): JSX.Element | null {
   const buttonRefs = useRef(new Map<MapPanelId, HTMLButtonElement>())
@@ -83,6 +85,7 @@ export default function MapToolbar({
           </Button>
         )
       })}
+      {extraAction}
     </div>
   )
 }
