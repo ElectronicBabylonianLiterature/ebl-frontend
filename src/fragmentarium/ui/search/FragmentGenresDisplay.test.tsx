@@ -25,8 +25,8 @@ test('exposes genres as a single semantic list without nested empty lists', () =
   expect(screen.getAllByRole('list')).toHaveLength(1)
 })
 
-test('an empty genre collection does not invent a list item', () => {
+test('an empty genre collection does not render an empty list', () => {
   render(<FragmentGenresDisplay genres={new Genres([])} />)
 
-  expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
+  expect(screen.queryByRole('list')).not.toBeInTheDocument()
 })

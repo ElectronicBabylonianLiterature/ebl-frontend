@@ -5,7 +5,9 @@ export default function FragmentGenresDisplay({
   genres,
 }: {
   genres: Genres
-}): JSX.Element {
+}): JSX.Element | null {
+  if (genres.genres.length === 0) return null
+
   return (
     <ul className="list-unstyled">
       {genres.genres.map((genreItem, index) => (
