@@ -34,7 +34,7 @@ describe('RealiaDisplay cross-references and access', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('IV. See Also')).toBeInTheDocument()
+    expect(screen.getByText('V. See Also')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
       'href',
       '/tools/realia/Anu',
@@ -52,7 +52,7 @@ describe('RealiaDisplay cross-references and access', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/V\. See Also/)).not.toBeInTheDocument()
   })
 
   it('renders a redirect document as a pointer to its target lemma', async () => {
@@ -78,7 +78,7 @@ describe('RealiaDisplay cross-references and access', () => {
       'href',
       '/tools/realia/Nusku',
     )
-    expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/V\. See Also/)).not.toBeInTheDocument()
     expect(
       screen.queryByRole('navigation', { name: 'On this page' }),
     ).not.toBeInTheDocument()

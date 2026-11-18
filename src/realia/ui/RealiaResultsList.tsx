@@ -1,6 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import {
+  getReferenceTypes,
+  getReferenceTypeSectionSizes,
+  RealiaEntry,
+} from 'realia/domain/RealiaEntry'
 import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import 'realia/ui/Realia.sass'
 
@@ -10,13 +14,13 @@ interface SourceBadge {
 }
 
 function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
-  const badges: SourceBadge[] = []
-  if (entry.reallexikon.length > 0) {
-    badges.push({ label: 'RlA', count: entry.reallexikon.length })
-  }
-  if (entry.afoRegister.length > 0) {
-    badges.push({ label: 'AfO', count: entry.afoRegister.length })
-  }
+  const sectionSizes = getReferenceTypeSectionSizes(entry)
+  const badges: SourceBadge[] = getReferenceTypes(entry).map(
+    (referenceType) => ({
+      label: referenceType,
+      count: sectionSizes[referenceType],
+    }),
+  )
   if (entry.references.length > 0) {
     badges.push({ label: 'References', count: entry.references.length })
   }
