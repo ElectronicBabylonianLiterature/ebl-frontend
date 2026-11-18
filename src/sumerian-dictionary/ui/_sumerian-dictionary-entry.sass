@@ -1,0 +1,144 @@
+@use 'src/design-tokens' as *
+@use 'src/common/ui/entry-page/entry-link-pill' as *
+@use 'src/common/ui/entry-page/entry-subsection' as *
+
+.SumerianDictionary__heading
+    display: flex
+    flex-wrap: wrap
+    align-items: baseline
+    gap: 0.75rem
+
+.SumerianDictionary__heading-cuneiform
+    font-size: 0.95em
+    color: $ebl-color-text-neutral
+
+.SumerianDictionary__guide-word
+    font-size: 0.5em
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__atf
+    font-size: 0.9em
+    color: $ebl-color-text-primary
+
+.SumerianDictionary__subsection
+    @extend %entry-subsection-surface
+
+.SumerianDictionary__subsection-title
+    @extend %entry-subsection-title
+    font-weight: 700
+
+    small
+        margin-left: 0.4rem
+        font-weight: 400
+        color: $ebl-color-text-secondary
+
+.SumerianDictionary__subsection-body
+    padding: 0.75rem 0.75rem 0.25rem
+
+.SumerianDictionary__senses,
+.SumerianDictionary__citations
+    margin: 0
+    padding-left: 2rem
+
+    li + li
+        margin-top: 0.2rem
+
+.SumerianDictionary__passage
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__forms
+    width: 100%
+    font-size: 0.92rem
+    border-collapse: collapse
+
+    th
+        padding: 0.3rem 0.5rem
+        font-size: 0.75rem
+        font-weight: 600
+        letter-spacing: 0.03em
+        text-align: left
+        text-transform: uppercase
+        color: $ebl-color-text-secondary
+        border-bottom: 1px solid $ebl-color-border-default
+
+    td
+        padding: 0.3rem 0.5rem
+        vertical-align: middle
+        border-bottom: 1px solid $ebl-color-border-light
+
+    .SumerianDictionary__cuneiform
+        font-size: 1.2rem
+
+.SumerianDictionary__count
+    width: 5rem
+    text-align: right
+    font-variant-numeric: tabular-nums
+
+.SumerianDictionary__share
+    width: 30%
+
+.SumerianDictionary__bar
+    height: 0.5rem
+    overflow: hidden
+    background-color: $ebl-color-brand-soft
+    border-radius: 0.25rem
+
+    span
+        display: block
+        height: 100%
+        background-color: $ebl-color-brand-primary
+        border-radius: 0.25rem
+
+.SumerianDictionary__variants
+    margin: 0
+    padding-left: 1.75rem
+
+    li + li
+        margin-top: 0.6rem
+        padding-top: 0.6rem
+        border-top: 1px solid $ebl-color-border-light
+
+.SumerianDictionary__variant-head
+    display: flex
+    flex-wrap: wrap
+    align-items: baseline
+    gap: 0.6rem
+
+.SumerianDictionary__attestations
+    margin: 0.2rem 0 0
+    padding-left: 0.6rem
+    font-size: 0.85rem
+    font-style: italic
+    color: $ebl-color-text-secondary
+
+.SumerianDictionary__cross-references
+    margin: 0
+    padding: 0
+    list-style: none
+
+    li + li
+        margin-top: 0.4rem
+
+.SumerianDictionary__link-group
+    display: inline-flex
+    flex-wrap: wrap
+    gap: 0.4rem
+    margin-right: 0.6rem
+
+    a
+        @extend %entry-link-pill
+
+.SumerianDictionary__provenance
+    display: grid
+    grid-template-columns: max-content 1fr
+    gap: 0.35rem 1rem
+    margin: 0
+    font-size: 0.92rem
+
+    dt
+        font-weight: 600
+        color: $ebl-color-text-primary
+
+    dd
+        margin: 0
+        color: $ebl-color-text-neutral

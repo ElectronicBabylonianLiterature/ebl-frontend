@@ -6,6 +6,7 @@ export type ToolsContentMockName =
   | 'references'
   | 'afoRegister'
   | 'realia'
+  | 'sumerianDictionary'
   | 'dossiers'
   | 'genres'
   | 'dateConverter'
@@ -49,6 +50,10 @@ const TOOLS_CONTENT_MOCKS: Record<ToolsContentMockName, ToolsContentMock> = {
     'AfO-Register Mock',
   ),
   realia: createMockPageModule('realia/ui/RealiaSearchPage', 'Realia Mock'),
+  sumerianDictionary: createMockPageModule(
+    'sumerian-dictionary/ui/SumerianDictionarySearchPage',
+    'Sumerian Dictionary Mock',
+  ),
   dossiers: createMockPageModule(
     'dossiers/ui/DossiersSearchPage',
     'Dossiers Mock',

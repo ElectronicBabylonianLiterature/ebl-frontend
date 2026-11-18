@@ -9,6 +9,7 @@ import MarkupService, {
 import SignService from 'signs/application/SignService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
+import SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import 'router/router.sass'
@@ -25,6 +26,7 @@ export default interface Services {
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
   dossiersService: DossiersService
   findspotService: FindspotService
 }

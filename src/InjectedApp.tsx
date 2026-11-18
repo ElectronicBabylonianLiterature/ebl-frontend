@@ -23,6 +23,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import RealiaService from 'realia/application/RealiaService'
 import RealiaServiceContext from 'realia/application/RealiaServiceContext'
+import SumerianDictionaryRepository from 'sumerian-dictionary/infrastructure/SumerianDictionaryRepository'
+import SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
@@ -193,6 +195,13 @@ export default function InjectedApp({
       ),
     [dossiersRepository, authenticationService],
   )
+  const sumerianDictionaryService = useMemo(
+    () =>
+      new SumerianDictionaryService(
+        new SumerianDictionaryRepository(apiClient),
+      ),
+    [apiClient],
+  )
   const findspotService = useMemo(
     () => new FindspotService(findspotRepository),
     [findspotRepository],
@@ -221,6 +230,7 @@ export default function InjectedApp({
         cachedMarkupService={cachedMarkupService}
         afoRegisterService={afoRegisterService}
         realiaService={realiaService}
+        sumerianDictionaryService={sumerianDictionaryService}
         dossiersService={dossiersService}
         findspotService={findspotService}
       />
