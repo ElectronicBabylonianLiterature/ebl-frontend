@@ -13,7 +13,7 @@ type Options = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>
 }
 
-type ErrorCapturer = Pick<ErrorReporter, 'captureException'>
+export type ErrorCapturer = Pick<ErrorReporter, 'captureException'>
 
 export function apiUrl(path: string): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -88,6 +88,10 @@ export class ApiError extends Error {
       : ''
     return `${title}${description}`
   }
+}
+
+export function isNotFoundError(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 404
 }
 
 export default class ApiClient {
