@@ -40,7 +40,7 @@ test('the outline fixture matches the line fixtures', () => {
   expect(outline.lines[0].isBeginningOfSection).toBe(true)
 })
 
-test('more lines can be built for paging and navigation', () => {
+test('more lines can be built for navigation', () => {
   const manyLines = buildEditLiteLines(12)
 
   expect(manyLines.slice(0, 3)).toEqual(lines)

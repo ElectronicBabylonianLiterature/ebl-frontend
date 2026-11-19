@@ -12,6 +12,7 @@ import { legacyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
   countRequests,
   createEditLiteFakeApi,
+  editFirstLine,
   editLiteChapterId,
   editLiteHeading,
   editLitePath,
@@ -65,16 +66,11 @@ function sourceKind(): HTMLElement {
   return screen.getByTestId('edit-lite-source-kind')
 }
 
-async function editFirstLine(): Promise<void> {
-  await userEvent.click(screen.getByRole('button', { name: /^1 %n/ }))
-  await userEvent.type(await screen.findByLabelText('Number'), 'a')
-}
-
 test('the application renders the split view from the new endpoints', async () => {
   const fakeApi = createApiFakeApi()
   const appDriver = new AppDriver(fakeApi.client)
     .withSession()
-    .withPath(`${editLitePath}?variant=split`)
+    .withPath(editLitePath)
     .render()
 
   await appDriver.waitForText('lite preview')
@@ -84,10 +80,6 @@ test('the application renders the split view from the new endpoints', async () =
     screen.getByRole('heading', { name: editLiteHeading }),
   ).toBeInTheDocument()
   appDriver.breadcrumbs.expectCrumbs(['Corpus', 'Edit (lite preview)'])
-  expect(screen.getByRole('link', { name: 'C · Split view' })).toHaveAttribute(
-    'aria-current',
-    'page',
-  )
   expect(options()).toHaveLength(lines.length)
   expect(within(editor).getByLabelText('Number')).toHaveValue('1')
   expect(sourceKind()).toHaveTextContent('api')
@@ -151,8 +143,9 @@ test('an api source saves the edited line and shows the new outline', async () =
   await userEvent.click(screen.getByRole('button', { name: 'Save line' }))
 
   expect(
-    await screen.findByRole('button', { name: /^1a %n/ }),
+    await screen.findByRole('region', { name: 'Line 1a' }),
   ).toBeInTheDocument()
+  expect(options()[0]).toHaveTextContent(/^1a%n/)
   expect(countRequests(fakeApi, savedLineUrl)).toBe(1)
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(screen.getAllByRole('alert')).toHaveLength(1)

@@ -91,3 +91,17 @@ about 1.8 s.
 - Gates after the change: `yarn lint` and `yarn tsc` clean; `yarn test:ci`
   736 suites, 6508 tests passed, zero console output; coverage 98.71 %
   statements, 96.58 % branches.
+
+## Step 2: split view only
+
+- Removed versions A (accordion), B (pages), D (inline score) and the
+  version switcher with their styles and tests: 27 files.
+- `findLineIndex` moved to `lineIndex.ts`; `?line=` still selects a line.
+  The `variant` and `size` parameters are gone and are ignored if present.
+- qlty reports no findings on the branch (the `StaticScoreLine` finding
+  went with its file).
+- Gates: `yarn lint` and `yarn tsc` clean; `yarn test:ci` 726 suites,
+  6362 tests passed, zero console output; coverage 98.69 % statements,
+  96.51 % branches; `yarn build:ci-stable` succeeds.
+- Browser check against production (Enūma eliš I): split view renders,
+  `?line=40` opens line 40, one Ace editor mounts on click.

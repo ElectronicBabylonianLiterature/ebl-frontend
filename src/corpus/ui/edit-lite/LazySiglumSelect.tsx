@@ -9,7 +9,7 @@ interface Props {
   readonly disabled?: boolean
 }
 
-export const unknownSiglum = '<unknown>'
+const unknownSiglum = '<unknown>'
 
 function findSiglum(
   manuscripts: readonly ManuscriptSummary[],

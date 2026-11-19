@@ -8,8 +8,8 @@ import { createText } from 'corpus/domain/text'
 import ChapterEditLiteView from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
   editLiteChapterId,
-  editLiteHeading,
   mockEditSource,
+  waitForLoadedEditLite,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
@@ -80,7 +80,7 @@ function lastProps(): ManuscriptsProps {
 
 async function renderOpenManuscripts(): Promise<RenderResult> {
   const view = render(createView(''))
-  await screen.findByRole('heading', { name: editLiteHeading })
+  await waitForLoadedEditLite()
   await userEvent.click(screen.getByRole('tab', { name: 'Manuscripts' }))
   expect(screen.getByText('Manuscripts of I')).toBeInTheDocument()
   return view
@@ -95,7 +95,7 @@ beforeEach(() => {
 
 test('renders no manuscripts before the tab is opened', async () => {
   render(createView(''))
-  await screen.findByRole('heading', { name: editLiteHeading })
+  await waitForLoadedEditLite()
 
   expect(mockManuscriptsRenders).toHaveLength(0)
   expect(textService.find).toHaveBeenCalledWith(
@@ -125,7 +125,6 @@ test('searches the bibliography through the service', async () => {
 test('does not render the manuscripts again while a line is edited', async () => {
   await renderOpenManuscripts()
   await userEvent.click(screen.getByRole('tab', { name: 'Lines' }))
-  await userEvent.click(screen.getByRole('button', { name: /^1 %n/ }))
 
   await userEvent.type(await screen.findByLabelText('Number'), 'abc')
 
@@ -137,7 +136,7 @@ test('keeps the uncertain fragments and the search when the route renders again'
   const view = await renderOpenManuscripts()
   const firstProps = lastProps()
 
-  view.rerender(createView('?variant=split'))
+  view.rerender(createView('?line=2'))
   await screen.findByRole('listbox', { name: 'Lines' })
   await screen.findByLabelText('Number')
 

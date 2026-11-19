@@ -3,13 +3,16 @@ import userEvent from '@testing-library/user-event'
 import {
   countRequests,
   createEditLiteFakeApi,
+  editFirstLine,
   editLiteChapterId,
   editLiteManuscriptDtos,
+  editLitePath,
   mockEditSource,
   renderEditLiteRoute,
   renderLoadedEditLiteRoute,
   secondEditLiteChapterId,
   secondEditLitePath,
+  waitForLoadedLines,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import {
@@ -65,8 +68,9 @@ async function previewUncertainFragments(
   mockEditSource({ kind: 'legacy' })
   renderEditLiteRoute({ fakeApi, path })
   await screen.findByRole('tab', { name: 'Manuscripts' })
+  await waitForLoadedLines()
   await openManuscriptsTab()
-  const preview = within(await openPreview())
+  const preview = within(await openPreview(tabPanel('Manuscripts')))
 
   expect(preview.getByText(`POST ${manuscriptsUrl(id)}`)).toBeInTheDocument()
   return JSON.parse(preview.getByLabelText('Request body').textContent ?? '')
@@ -113,10 +117,11 @@ test('loads the manuscripts once and keeps them mounted', async () => {
   expect(countManuscriptRequests(fakeApi)).toBe(1)
 })
 
-test('keeps manuscript edits across tabs and versions', async () => {
+test('keeps manuscript edits across tabs and parameter changes', async () => {
+  const lineLink = `${editLitePath}?line=2`
   const fakeApi = createEditLiteFakeApi()
   mockEditSource()
-  await renderLoadedEditLiteRoute({ fakeApi })
+  await renderLoadedEditLiteRoute({ fakeApi, links: [lineLink] })
   await openManuscriptsTab()
   const editor = await openManuscript(firstSiglum)
 
@@ -125,7 +130,7 @@ test('keeps manuscript edits across tabs and versions', async () => {
   expect(screen.getByText('1 manuscript, 1 edited')).toBeInTheDocument()
 
   await openTab('Lines')
-  await userEvent.click(screen.getByRole('link', { name: 'C · Split view' }))
+  await userEvent.click(screen.getByRole('link', { name: lineLink }))
   await loadedEditor('1')
   await openTab('Manuscripts')
 
@@ -137,8 +142,7 @@ test('keeps manuscript edits across tabs and versions', async () => {
 test('keeps line drafts while the manuscripts tab is open', async () => {
   mockEditSource()
   await renderLoadedEditLiteRoute()
-  await userEvent.click(screen.getByRole('button', { name: /^1 %n/ }))
-  await userEvent.type(await screen.findByLabelText('Number'), 'a')
+  await editFirstLine()
 
   await openManuscriptsTab()
 

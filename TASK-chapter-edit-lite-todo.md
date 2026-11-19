@@ -22,6 +22,7 @@ This repository holds the page; the new endpoints are in ebl-api.
 - [x] Step 1: review notes on pull request #869
   - [x] qlty: `findKeyTarget` and `editLiteReducer` use lookup tables
   - [x] Chapter revision sent on every load and save; 409 handled
+- [x] Step 2: reduced to the split view; versions A, B, D and the version switcher removed
 
 ## Open
 

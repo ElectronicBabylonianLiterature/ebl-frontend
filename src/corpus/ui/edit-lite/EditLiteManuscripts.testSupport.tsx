@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult, screen } from '@testing-library/react'
+import { render, RenderResult, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -147,8 +147,12 @@ export async function openManuscript(siglum: string): Promise<HTMLElement> {
   return screen.getByRole('group', { name: editorName(siglum) })
 }
 
-export async function openPreview(): Promise<HTMLElement> {
-  await userEvent.click(screen.getByRole('button', { name: 'Preview request' }))
+export async function openPreview(
+  container: HTMLElement = document.body,
+): Promise<HTMLElement> {
+  await userEvent.click(
+    within(container).getByRole('button', { name: 'Preview request' }),
+  )
   return screen.getByRole('dialog', { name: 'Request preview' })
 }
 

@@ -1,5 +1,12 @@
 import React from 'react'
-import { render, RenderResult, screen } from '@testing-library/react'
+import {
+  render,
+  RenderResult,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Link, MemoryRouter } from 'react-router-dom'
 import MemorySession, { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
@@ -14,6 +21,7 @@ import {
   FakeChapterEditSourceOptions,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
+import { loadedEditor } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { Switch } from 'router/compat'
 import CorpusRoutes from 'router/corpusRoutes'
 import { getServices } from 'test-support/AppDriver'
@@ -151,10 +159,26 @@ export function renderEditLiteRoute({
   )
 }
 
+export async function waitForLoadedLines(): Promise<void> {
+  await waitFor(() =>
+    expect(screen.queryByText('Loading line...')).not.toBeInTheDocument(),
+  )
+}
+
+export async function waitForLoadedEditLite(): Promise<void> {
+  await screen.findByRole('heading', { name: editLiteHeading })
+  await waitForLoadedLines()
+}
+
 export async function renderLoadedEditLiteRoute(
   options: EditLiteRouteOptions = {},
 ): Promise<RenderResult> {
   const view = renderEditLiteRoute(options)
-  await screen.findByRole('heading', { name: editLiteHeading })
+  await waitForLoadedEditLite()
   return view
+}
+
+export async function editFirstLine(): Promise<void> {
+  const editor = await loadedEditor('1')
+  await userEvent.type(within(editor).getByLabelText('Number'), 'a')
 }

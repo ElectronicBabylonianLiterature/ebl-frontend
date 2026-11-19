@@ -15,6 +15,7 @@ import {
   mockEditSource,
   renderEditLiteRoute,
   renderLoadedEditLiteRoute,
+  waitForLoadedLines,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import {
   buildEditLiteLines,
@@ -53,6 +54,7 @@ test('shows a spinner until the text and the source are loaded', async () => {
   ).toHaveTextContent(
     'Edit Poem of Creation Standard Babylonian I lite preview',
   )
+  await waitForLoadedLines()
   expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
   fakeApi.verifyExpectations()
   expect(countTextRequests(fakeApi)).toBe(1)

@@ -18,15 +18,12 @@ import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import EditLiteContext from 'corpus/ui/edit-lite/EditLiteContext'
 import EditLiteManuscripts from 'corpus/ui/edit-lite/EditLiteManuscripts'
-import {
-  EditLiteParameters,
-  parseEditLiteParameters,
-} from 'corpus/ui/edit-lite/editLiteParameters'
+import { parseEditLiteParameters } from 'corpus/ui/edit-lite/editLiteParameters'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
+import { findInitialLine } from 'corpus/ui/edit-lite/lineIndex'
 import PerformanceReadout from 'corpus/ui/edit-lite/PerformanceReadout'
+import SplitLines from 'corpus/ui/edit-lite/SplitLines'
 import useEditLite from 'corpus/ui/edit-lite/useEditLite'
-import VariantLines from 'corpus/ui/edit-lite/VariantLines'
-import VariantSwitcher from 'corpus/ui/edit-lite/VariantSwitcher'
 import GenreCrumb from 'corpus/ui/GenreCrumb'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -117,9 +114,10 @@ function EditLiteView({
 }: ViewProps): JSX.Element {
   const tabsId = useId()
   const { state, context } = useEditLite(source, outline)
-  const parameters = useMemo<EditLiteParameters>(
-    () => parseEditLiteParameters(search),
-    [search],
+  const lines = state.outline.lines
+  const initialLine = useMemo<number | undefined>(
+    () => findInitialLine(lines, parseEditLiteParameters(search).line),
+    [lines, search],
   )
   const chapterCrumb = new ChapterCrumb(id)
 
@@ -148,12 +146,11 @@ function EditLiteView({
           </Alert.Link>
           .{source.kind === 'legacy' && ` ${legacyNotice}`}
         </Alert>
-        <VariantSwitcher variant={parameters.variant} search={search} />
         <PerformanceReadout
-          recountKey={`${parameters.variant}:${countSettledLines(state)}`}
+          recountKey={`${countSettledLines(state)}`}
           loadMilliseconds={loadMilliseconds}
           kind={source.kind}
-          lineCount={state.outline.lines.length}
+          lineCount={lines.length}
           manuscriptCount={state.outline.manuscripts.length}
           diagnostics={source.diagnostics}
         />
@@ -165,7 +162,7 @@ function EditLiteView({
         >
           <Tab eventKey="lines" title="Lines">
             <EditLiteContext.Provider value={context}>
-              <VariantLines state={state} parameters={parameters} />
+              <SplitLines state={state} initialLine={initialLine} />
             </EditLiteContext.Provider>
           </Tab>
           <Tab eventKey="manuscripts" title="Manuscripts">

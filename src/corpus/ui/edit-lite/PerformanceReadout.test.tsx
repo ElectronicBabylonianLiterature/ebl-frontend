@@ -99,18 +99,18 @@ test('counts the document on mount and on refresh', async () => {
 })
 
 test('counts the document again when the recount key changes', async () => {
-  const { rerender } = render(createReadout(diagnostics, 'accordion:0'))
+  const { rerender } = render(createReadout(diagnostics, '0'))
   const elementCount = countElementTags()
   await userEvent.click(
     screen.getByRole('button', { name: 'Show 2 diagnostics' }),
   )
   renderMoreContent()
 
-  rerender(createReadout(diagnostics, 'accordion:0'))
+  rerender(createReadout(diagnostics, '0'))
 
   expect(numberOf('edit-lite-dom-nodes')).toBe(elementCount)
 
-  rerender(createReadout(diagnostics, 'accordion:10'))
+  rerender(createReadout(diagnostics, '10'))
 
   expect(numberOf('edit-lite-dom-nodes')).toBe(elementCount + 7)
   expect(numberOf('edit-lite-ace-editors')).toBe(1)
