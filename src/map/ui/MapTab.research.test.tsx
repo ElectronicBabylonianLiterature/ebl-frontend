@@ -149,10 +149,29 @@ it('provides keyboard access to canonical excavation areas and restores selector
   await userEvent.selectOptions(select, first.properties.id)
   expect(screen.getByRole('region', { name: 'Location details' })).toBeVisible()
   expect(select).toHaveValue(first.properties.id)
+  expect(select).toHaveFocus()
+  expect(
+    screen.getByText(`Showing details for ${first.properties.name}.`),
+  ).toHaveAttribute('role', 'status')
+  const second = JSON.parse(ASSET).features[1]
+  await userEvent.selectOptions(select, second.properties.id)
+  expect(select).toHaveFocus()
+  expect(
+    within(screen.getByRole('region', { name: 'Location details' })).getByRole(
+      'heading',
+      { name: second.properties.name },
+    ),
+  ).toBeVisible()
+  expect(
+    screen.getByText(`Showing details for ${second.properties.name}.`),
+  ).toHaveAttribute('role', 'status')
+  fireEvent.keyDown(select, { key: 'Escape' })
+  expect(screen.getByRole('region', { name: 'Location details' })).toBeVisible()
   await userEvent.click(
     screen.getByRole('button', { name: 'Close location details' }),
   )
   expect(select).toHaveFocus()
+  expect(screen.queryByText(/^Showing details for /)).not.toBeInTheDocument()
 })
 
 it('keeps an honest empty inspector if a selected marker has no current provenance', async () => {

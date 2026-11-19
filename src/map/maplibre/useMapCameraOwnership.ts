@@ -11,22 +11,26 @@ export default function useMapCameraOwnership(
   provenances: readonly ProvenanceRecord[] | null,
 ): MapCameraOwnership {
   const latestData = useRef(provenances)
-  latestData.current = provenances
-  const request = useRef<{ data: typeof provenances }>()
+  const dataVersion = useRef(0)
+  if (latestData.current !== provenances) {
+    latestData.current = provenances
+    dataVersion.current += 1
+  }
+  const request = useRef<{ dataVersion: number }>()
 
   return useMemo(() => {
     const capture = () => {
       const owner = request.current
-      const data = latestData.current
-      return () => request.current === owner && latestData.current === data
+      const version = dataVersion.current
+      return () => request.current === owner && dataVersion.current === version
     }
     return {
       capture,
       claim: () => {
-        request.current = { data: latestData.current }
+        request.current = { dataVersion: dataVersion.current }
         return capture()
       },
-      shouldFitData: () => request.current?.data !== latestData.current,
+      shouldFitData: () => request.current?.dataVersion !== dataVersion.current,
     }
   }, [])
 }

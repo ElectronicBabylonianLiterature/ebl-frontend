@@ -15,6 +15,7 @@ interface Props {
   readonly provenance?: ProvenanceRecord
   readonly polygon?: ExcavationPolygon
   readonly onClose: () => void
+  readonly focusHeading?: boolean
 }
 
 function ProvenanceDetails({
@@ -115,14 +116,15 @@ export default function MapResearchInspector({
   provenance,
   polygon,
   onClose,
+  focusHeading = true,
 }: Props): JSX.Element {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const site = polygon ? findMapSite(polygon.siteId) : undefined
   const siteName = provenance?.longName ?? site?.siteName
 
   useEffect(() => {
-    headingRef.current?.focus()
-  }, [selectionId])
+    if (focusHeading) headingRef.current?.focus()
+  }, [focusHeading, selectionId])
 
   return (
     <section

@@ -16,18 +16,27 @@ export default function MapSelectionInspector({
   readonly provenances: readonly ProvenanceRecord[]
   readonly polygonIndex: ExcavationPolygonIndex
 }): JSX.Element | null {
-  const { selection, selectedSiteId, selectedAreaId, close } = research
-  if (!selection) return null
+  const { selection, selectedSiteId, selectedAreaId, close, focusInspector } =
+    research
+  const polygon = selectedAreaId
+    ? findExcavationPolygon(polygonIndex, selectedAreaId)
+    : undefined
   return (
-    <MapResearchInspector
-      selectionId={`${selection.kind}:${selection.id}`}
-      provenance={provenances.find(({ id }) => id === selectedSiteId)}
-      polygon={
-        selectedAreaId
-          ? findExcavationPolygon(polygonIndex, selectedAreaId)
-          : undefined
-      }
-      onClose={close}
-    />
+    <>
+      <span role="status" className="visually-hidden">
+        {!focusInspector && polygon
+          ? `Showing details for ${polygon.name ?? 'the selected excavation area'}.`
+          : ''}
+      </span>
+      {selection ? (
+        <MapResearchInspector
+          selectionId={`${selection.kind}:${selection.id}`}
+          provenance={provenances.find(({ id }) => id === selectedSiteId)}
+          polygon={polygon}
+          focusHeading={focusInspector}
+          onClose={close}
+        />
+      ) : null}
+    </>
   )
 }

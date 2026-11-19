@@ -67,6 +67,30 @@ async function renderLoadedControls(): Promise<void> {
   await screen.findByRole('combobox', { name: 'Inspect excavation area' })
 }
 
+function deferClusterExpansion() {
+  let resolveCluster: (zoom: number) => void = () => undefined
+  let rejectCluster: (error: Error) => void = () => undefined
+  mockGetClusterExpansionZoom.mockReturnValueOnce(
+    new Promise<number>((resolve, reject) => {
+      resolveCluster = resolve
+      rejectCluster = reject
+    }),
+  )
+  mockGetSource.mockReturnValue({
+    getClusterExpansionZoom: mockGetClusterExpansionZoom,
+    setData: jest.fn(),
+  })
+  mockQueryRenderedFeatures.mockReturnValueOnce([
+    {
+      properties: { [CLUSTER_ID_PROPERTY]: 1 },
+      geometry: { type: 'Point', coordinates: [44, 33] },
+    },
+  ])
+  act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+  expect(mockGetClusterExpansionZoom).toHaveBeenCalledWith(1)
+  return { resolveCluster, rejectCluster }
+}
+
 beforeEach(() => {
   resetMapMocks()
   fetchMock.resetMocks()
@@ -91,26 +115,7 @@ it.each(ACTIONS)(
 describe.each(['resolve', 'reject'] as const)('late cluster %s', (outcome) => {
   it.each(ACTIONS)('preserves the newer %s action', async (action) => {
     await renderLoadedControls()
-    let resolveCluster: (zoom: number) => void = () => undefined
-    let rejectCluster: (error: Error) => void = () => undefined
-    mockGetClusterExpansionZoom.mockReturnValueOnce(
-      new Promise<number>((resolve, reject) => {
-        resolveCluster = resolve
-        rejectCluster = reject
-      }),
-    )
-    mockGetSource.mockReturnValue({
-      getClusterExpansionZoom: mockGetClusterExpansionZoom,
-      setData: jest.fn(),
-    })
-    mockQueryRenderedFeatures.mockReturnValueOnce([
-      {
-        properties: { [CLUSTER_ID_PROPERTY]: 1 },
-        geometry: { type: 'Point', coordinates: [44, 33] },
-      },
-    ])
-    act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
-    expect(mockGetClusterExpansionZoom).toHaveBeenCalledWith(1)
+    const { resolveCluster, rejectCluster } = deferClusterExpansion()
     takeCameraAction(action)
     await act(async () => {
       if (outcome === 'resolve') resolveCluster(12)
@@ -120,7 +125,51 @@ describe.each(['resolve', 'reject'] as const)('late cluster %s', (outcome) => {
     expect(mockEaseTo).not.toHaveBeenCalled()
     expect(mockCaptureException).not.toHaveBeenCalled()
   })
+
+  it('keeps an old cluster inactive after filtering and clearing search', async () => {
+    await renderLoadedControls()
+    jest.useFakeTimers()
+    const { resolveCluster, rejectCluster } = deferClusterExpansion()
+    const search = screen.getByLabelText('Search sites')
+    fireEvent.change(search, { target: { value: 'Bab' } })
+    act(() => jest.advanceTimersByTime(250))
+    mockFitBounds.mockClear()
+
+    fireEvent.change(search, { target: { value: '' } })
+    act(() => jest.advanceTimersByTime(250))
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+    mockFitBounds.mockClear()
+    mockEaseTo.mockClear()
+    await act(async () => {
+      if (outcome === 'resolve') resolveCluster(12)
+      else rejectCluster(new Error('stale cluster failure'))
+    })
+
+    expect(mockFitBounds).not.toHaveBeenCalled()
+    expect(mockEaseTo).not.toHaveBeenCalled()
+    expect(mockCaptureException).not.toHaveBeenCalled()
+  })
 })
+
+it.each(ACTIONS)(
+  'fits all sites again after %s, filtering and clearing search',
+  async (action) => {
+    await renderLoadedControls()
+    jest.useFakeTimers()
+    mockGetSource.mockReturnValue({ setData: jest.fn() })
+    takeCameraAction(action)
+    const search = screen.getByLabelText('Search sites')
+    fireEvent.change(search, { target: { value: 'Bab' } })
+    act(() => jest.advanceTimersByTime(250))
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+    mockFitBounds.mockClear()
+
+    fireEvent.change(search, { target: { value: '' } })
+    act(() => jest.advanceTimersByTime(250))
+
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  },
+)
 
 it.each(ACTIONS)(
   'preserves %s when a debounced filter fit finishes later',

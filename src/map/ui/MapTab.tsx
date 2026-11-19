@@ -42,11 +42,11 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const searchContainer = useRef<HTMLDivElement>(null)
-  const research = useMapResearchSelection(searchContainer)
+  const experience = useMapExperience()
+  const research = useMapResearchSelection(searchContainer, experience.filter)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const [areasRetryVersion, setAreasRetryVersion] = useState(0)
-  const experience = useMapExperience()
   const {
     index: polygonIndex,
     isLoaded: isPolygonIndexLoaded,
@@ -103,10 +103,7 @@ function LoadedMapTab({
             <FindspotFilterInput
               provenances={provenances}
               filter={experience.filter}
-              onFilterChange={(filter) => {
-                research.clear()
-                experience.setFilter(filter)
-              }}
+              onFilterChange={experience.setFilter}
             />
           </div>
         }
@@ -155,7 +152,7 @@ function LoadedMapTab({
             selectedId={research.selectedAreaId}
             onSelect={(id, trigger) => {
               camera.claim()
-              research.selectArea(id, trigger)
+              research.selectArea(id, trigger, false)
               const polygon = findExcavationPolygon(polygonIndex, id)
               if (polygon?.bounds && mapRef.current)
                 mapRef.current.fitBounds(
