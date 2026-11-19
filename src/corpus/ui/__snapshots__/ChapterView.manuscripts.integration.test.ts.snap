@@ -311,6 +311,11 @@ exports[`Display chapter Show manuscripts 1`] = `
                     aria-hidden="true"
                     class="fas fa-file-download"
                   />
+                  <span
+                    class="visually-hidden"
+                  >
+                    Download
+                  </span>
                 </button>
               </div>
               <div
