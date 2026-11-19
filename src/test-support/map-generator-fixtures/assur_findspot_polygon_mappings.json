@@ -1,0 +1,22 @@
+[
+  {
+    "findspotId": 0,
+    "polygonIds": [
+      "assur-aa1i-5a8de4db07d8"
+    ],
+    "locationPrecision": "excavation-area",
+    "matchMethod": "verified-source",
+    "source": "assur-fixture.ods",
+    "sourceRevision": "fixture-v1"
+  },
+  {
+    "findspotId": 1,
+    "polygonIds": [
+      "assur-aa2i-66ccd74581e0"
+    ],
+    "locationPrecision": "excavation-area",
+    "matchMethod": "verified-source",
+    "source": "assur-fixture.ods",
+    "sourceRevision": "fixture-v1"
+  }
+]
