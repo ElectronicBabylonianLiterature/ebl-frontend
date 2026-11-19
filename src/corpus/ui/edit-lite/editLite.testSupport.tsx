@@ -127,8 +127,11 @@ export function buildEditLiteLines(count = 3): Line[] {
   )
 }
 
+export const editLiteRevision = 'revision-1'
+
 export function buildEditLiteOutline(
   lines: readonly Line[] = buildEditLiteLines(),
+  revision: string = editLiteRevision,
 ): ChapterOutline {
   return {
     textId: { genre: 'L', category: 1, index: 2 },
@@ -140,6 +143,7 @@ export function buildEditLiteOutline(
     uncertainFragments: [],
     manuscripts: editLiteManuscripts,
     lines: lines.map(toLineOutline),
+    revision,
   }
 }
 

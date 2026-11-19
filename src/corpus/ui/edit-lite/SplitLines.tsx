@@ -26,27 +26,23 @@ interface OptionProps {
 
 const pageStep = 10
 
+type KeyTarget = (index: number, lastIndex: number) => number
+
+const keyTargets: ReadonlyMap<string, KeyTarget> = new Map<string, KeyTarget>([
+  ['ArrowUp', (index) => index - 1],
+  ['ArrowDown', (index) => index + 1],
+  ['PageUp', (index) => index - pageStep],
+  ['PageDown', (index) => index + pageStep],
+  ['Home', () => 0],
+  ['End', (_index, lastIndex) => lastIndex],
+])
+
 function findKeyTarget(
   key: string,
   index: number,
   lastIndex: number,
 ): number | null {
-  switch (key) {
-    case 'ArrowUp':
-      return index - 1
-    case 'ArrowDown':
-      return index + 1
-    case 'PageUp':
-      return index - pageStep
-    case 'PageDown':
-      return index + pageStep
-    case 'Home':
-      return 0
-    case 'End':
-      return lastIndex
-    default:
-      return null
-  }
+  return keyTargets.get(key)?.(index, lastIndex) ?? null
 }
 
 export function revealOption(list: HTMLElement | null, index: number): void {

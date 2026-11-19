@@ -73,6 +73,7 @@ const linesPage: LinesPageDto = {
       variants: [],
     },
   ],
+  revision: 'revision-7',
 }
 
 beforeEach(() => {
@@ -143,6 +144,44 @@ describe('findChapterLines', () => {
     expect(apiClient.fetchJson.mock.calls).toEqual([
       [`${chapterUrl}/lines?offset=200&limit=10`, false, undefined],
     ])
+  })
+
+  it('asks for the lines of the given revision', async () => {
+    const signal = new AbortController().signal
+    apiClient.fetchJson.mockResolvedValueOnce(linesPage)
+
+    await expect(
+      service.findChapterLines(chapterId, 20, 2, signal, 'revision 7/a'),
+    ).resolves.toEqual(linesPage.lines.map(fromLineDto))
+    expect(apiClient.fetchJson.mock.calls).toEqual([
+      [
+        `${chapterUrl}/lines?offset=20&limit=2&revision=revision%207%2Fa`,
+        false,
+        signal,
+      ],
+    ])
+  })
+
+  it.each([[undefined], ['']])(
+    'omits the unknown revision %p',
+    async (revision) => {
+      apiClient.fetchJson.mockResolvedValueOnce(linesPage)
+
+      await service.findChapterLines(chapterId, 20, 2, undefined, revision)
+
+      expect(apiClient.fetchJson.mock.calls).toEqual([
+        [`${chapterUrl}/lines?offset=20&limit=2`, false, undefined],
+      ])
+    },
+  )
+
+  it('rejects with the request error', async () => {
+    const error = new Error('Conflict')
+    apiClient.fetchJson.mockRejectedValueOnce(error)
+
+    await expect(
+      service.findChapterLines(chapterId, 20, 2, undefined, 'revision-7'),
+    ).rejects.toBe(error)
   })
 })
 

@@ -76,3 +76,18 @@ about 1.8 s.
 - Data layer, shared blocks, four versions, manuscripts tab and shell
   built in separate packages against a written contract.
 - Review findings fixed; all gates re-run on the final tree.
+
+## Step 1: review notes on pull request #869
+
+- qlty, many returns: `findKeyTarget` looks the key up in a map of
+  handlers and `editLiteReducer` dispatches through a typed handler map.
+- qlty, complexity of `StaticScoreLine`: not changed. The file belongs to
+  version D and is deleted in step 2.
+- Chapter revision (ebl-api #827): `ChapterOutline` and the lines page
+  carry `revision`. The api source keeps the latest one and sends it with
+  every lines request and every save. A 409 is shown as "The chapter was
+  changed by someone else since it was loaded".
+- The legacy source has no revision and never saves.
+- Gates after the change: `yarn lint` and `yarn tsc` clean; `yarn test:ci`
+  736 suites, 6508 tests passed, zero console output; coverage 98.71 %
+  statements, 96.58 % branches.

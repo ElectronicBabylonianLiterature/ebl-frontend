@@ -5,6 +5,7 @@ import {
   editProvenanceRecords,
   snapshotDto,
 } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import { legacyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
@@ -38,13 +39,15 @@ jest.mock('editor/Editor', () =>
 const chapterUrl = createChapterUrl(editLiteChapterId)
 const outlineUrl = `${chapterUrl}/outline`
 const snapshotUrl = `${chapterUrl}/display?lines=0&variants=0`
+const savedLineUrl = `${chapterUrl}/lines?offset=0&limit=1&revision=revision-2`
 const lines: readonly Line[] = buildEditLiteLines()
+const outline: ChapterOutline = buildEditLiteOutline(lines)
 
 function createApiFakeApi(): EditLiteFakeApi {
   return createEditLiteFakeApi()
-    .expectChapterOutline(buildEditLiteOutline(lines))
-    .allowChapterLines(editLiteChapterId, 0, 1, lines)
-    .allowChapterLines(editLiteChapterId, 0, 2, lines)
+    .expectChapterOutline(outline)
+    .allowChapterLines(outline, 0, 1, lines)
+    .allowChapterLines(outline, 0, 2, lines)
 }
 
 function createLegacyFakeApi(): EditLiteFakeApi {
@@ -134,11 +137,14 @@ test('a forced api source does not fall back', async () => {
 
 test('an api source saves the edited line and shows the new outline', async () => {
   const savedLines = [setLineNumber(lines[0], '1a'), ...lines.slice(1)]
-  const fakeApi = createApiFakeApi().expectUpdateEditedLines(
-    editLiteChapterId,
-    toLineEditsDto(0, savedLines[0]),
-    buildEditLiteOutline(savedLines),
-  )
+  const savedOutline = buildEditLiteOutline(savedLines, 'revision-2')
+  const fakeApi = createApiFakeApi()
+    .expectUpdateEditedLines(
+      outline,
+      toLineEditsDto(0, savedLines[0]),
+      savedOutline,
+    )
+    .allowChapterLines(savedOutline, 0, 1, savedLines)
   await renderLoadedEditLiteRoute({ fakeApi })
   await editFirstLine()
 
@@ -147,6 +153,7 @@ test('an api source saves the edited line and shows the new outline', async () =
   expect(
     await screen.findByRole('button', { name: /^1a %n/ }),
   ).toBeInTheDocument()
+  expect(countRequests(fakeApi, savedLineUrl)).toBe(1)
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(screen.getAllByRole('alert')).toHaveLength(1)
   expect(fakeApi.client.postJson).toHaveBeenCalledTimes(1)

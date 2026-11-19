@@ -1,6 +1,7 @@
 import React from 'react'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
@@ -10,7 +11,6 @@ import {
   FakeChapterEditSource,
   renderWithEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
-import { lineChangedOnServerMessage } from 'corpus/ui/edit-lite/editLiteReducer'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'

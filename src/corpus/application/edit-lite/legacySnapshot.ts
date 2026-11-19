@@ -182,6 +182,7 @@ export function createLegacySnapshot(
       uncertainFragments: [],
       manuscripts,
       lines: lines.map(toLineOutline),
+      revision: '',
     },
     lines,
     diagnostics: [

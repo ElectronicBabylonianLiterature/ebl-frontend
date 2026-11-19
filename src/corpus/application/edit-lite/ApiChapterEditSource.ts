@@ -5,6 +5,10 @@ import {
   ChapterEditSourceKind,
   LinesUpdateDto,
 } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  chapterChangedMessage,
+  numberedLineChangedMessage,
+} from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import {
   areLinesEqual,
@@ -12,6 +16,7 @@ import {
 } from 'corpus/application/edit-lite/lineEdits'
 import type TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
+import { ApiError } from 'http/ApiClient'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export type ApiChapterEditTextService = Pick<
@@ -42,6 +47,12 @@ function splitIntoRanges(offset: number, limit: number): LineRange[] {
   return ranges
 }
 
+function rejectRevisionConflict(error: unknown): never {
+  throw error instanceof ApiError && error.status === 409
+    ? new Error(chapterChangedMessage)
+    : error
+}
+
 export class ApiChapterEditSource implements ChapterEditSource {
   readonly kind: ChapterEditSourceKind = 'api'
   readonly diagnostics: readonly string[] = []
@@ -49,6 +60,7 @@ export class ApiChapterEditSource implements ChapterEditSource {
     maximumConcurrentLineRequests,
   )
   private readonly saveQueue = new SerialQueue()
+  private revision: string | undefined = undefined
 
   constructor(
     private readonly textService: ApiChapterEditTextService,
@@ -57,7 +69,9 @@ export class ApiChapterEditSource implements ChapterEditSource {
   ) {}
 
   loadOutline(signal?: AbortSignal): Promise<ChapterOutline> {
-    return this.textService.findChapterOutline(this.id, signal)
+    return this.textService
+      .findChapterOutline(this.id, signal)
+      .then((outline) => this.keepRevision(outline))
   }
 
   loadLines(
@@ -68,13 +82,7 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return Promise.all(
       splitIntoRanges(offset, limit).map((range) =>
         this.lineRequestLimiter.run(
-          () =>
-            this.textService.findChapterLines(
-              this.id,
-              range.offset,
-              range.limit,
-              signal,
-            ),
+          () => this.findLines(range.offset, range.limit, signal),
           signal,
         ),
       ),
@@ -106,16 +114,32 @@ export class ApiChapterEditSource implements ChapterEditSource {
     original: Line,
     draft: Line,
   ): Promise<ChapterOutline> {
-    const [current] = await this.textService.findChapterLines(this.id, index, 1)
+    const [current] = await this.findLines(index, 1)
     if (current === undefined || !areLinesEqual(current, original)) {
-      throw new Error(
-        `Line ${original.number} has changed on the server since it was loaded. Reload the chapter and apply your changes again.`,
-      )
+      throw new Error(numberedLineChangedMessage(original.number))
     }
-    return this.textService.updateEditedLines(
-      this.id,
-      this.describeSave(index, draft),
-    )
+    return this.textService
+      .updateEditedLines(
+        this.id,
+        this.describeSave(index, draft),
+        this.revision,
+      )
+      .then((outline) => this.keepRevision(outline), rejectRevisionConflict)
+  }
+
+  private findLines(
+    offset: number,
+    limit: number,
+    signal?: AbortSignal,
+  ): Promise<readonly Line[]> {
+    return this.textService
+      .findChapterLines(this.id, offset, limit, signal, this.revision)
+      .catch(rejectRevisionConflict)
+  }
+
+  private keepRevision(outline: ChapterOutline): ChapterOutline {
+    this.revision = outline.revision
+    return outline
   }
 }
 

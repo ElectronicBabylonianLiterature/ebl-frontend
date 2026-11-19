@@ -19,6 +19,10 @@ This repository holds the page; the new endpoints are in ebl-api.
 - [x] Production build against the live API
 - [x] Measurements and screenshots against production
 
+- [x] Step 1: review notes on pull request #869
+  - [x] qlty: `findKeyTarget` and `editLiteReducer` use lookup tables
+  - [x] Chapter revision sent on every load and save; 409 handled
+
 ## Open
 
 - [x] Pick one version: C, split view

@@ -1,7 +1,10 @@
 import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
-import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
+import {
+  ChapterOutline,
+  LinesPageDto,
+} from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
 import FakeApi from 'test-support/FakeApi'
 import { createChapterUrl, Dto } from 'test-support/FakeApiExpectation'
@@ -9,6 +12,10 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 
 function toChapterId(outline: ChapterOutline): ChapterId {
   return { textId: outline.textId, stage: outline.stage, name: outline.name }
+}
+
+function linesUrl(outline: ChapterOutline): string {
+  return `${createChapterUrl(toChapterId(outline))}/lines`
 }
 
 export default class EditLiteFakeApi extends FakeApi {
@@ -20,19 +27,21 @@ export default class EditLiteFakeApi extends FakeApi {
   }
 
   allowChapterLines(
-    id: ChapterId,
+    outline: ChapterOutline,
     offset: number,
     limit: number,
     lines: readonly Line[],
   ): this {
+    const page: LinesPageDto = {
+      total: lines.length,
+      offset,
+      limit,
+      lines: lines.slice(offset, offset + limit).map(toLineDto),
+      revision: outline.revision,
+    }
     return this.allowGet(
-      `${createChapterUrl(id)}/lines?offset=${offset}&limit=${limit}`,
-      {
-        total: lines.length,
-        offset,
-        limit,
-        lines: lines.slice(offset, offset + limit).map(toLineDto),
-      },
+      `${linesUrl(outline)}?offset=${offset}&limit=${limit}&revision=${outline.revision}`,
+      page,
     )
   }
 
@@ -51,14 +60,14 @@ export default class EditLiteFakeApi extends FakeApi {
   }
 
   expectUpdateEditedLines(
-    id: ChapterId,
-    update: LinesUpdateDto,
     outline: ChapterOutline,
+    update: LinesUpdateDto,
+    savedOutline: ChapterOutline,
   ): this {
     return this.expectPost(
-      `${createChapterUrl(id)}/lines?view=outline`,
+      `${linesUrl(outline)}?view=outline&revision=${outline.revision}`,
       update,
-      outline,
+      savedOutline,
     )
   }
 }

@@ -1,3 +1,4 @@
+import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
@@ -7,7 +8,6 @@ import {
   createEditLiteState,
   editLiteReducer,
   isLineDirty,
-  lineChangedOnServerMessage,
 } from 'corpus/ui/edit-lite/editLiteReducer'
 import {
   EditLiteAction,

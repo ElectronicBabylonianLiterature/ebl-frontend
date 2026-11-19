@@ -175,6 +175,7 @@ export const legacyOutline: ChapterOutline = {
       ],
     },
   ],
+  revision: '',
 }
 
 export const apiOutline: ChapterOutline = {
@@ -182,6 +183,7 @@ export const apiOutline: ChapterOutline = {
   classification: 'Ancient',
   order: 1,
   uncertainFragments: ['K.1'],
+  revision: 'revision-1',
 }
 
 export function createTextServiceMock(): jest.Mocked<ChapterEditTextService> {

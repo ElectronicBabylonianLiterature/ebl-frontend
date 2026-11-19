@@ -62,9 +62,10 @@ export default class TextService extends ChapterOutlineService {
   updateEditedLines(
     id: ChapterId,
     update: LinesUpdateDto,
+    revision?: string,
   ): Promise<ChapterOutline> {
     return this.apiClient.postJson<ChapterOutline>(
-      `${createChapterUrl(id)}/lines?view=outline`,
+      this.createLinesUrl(id, { view: 'outline', revision }),
       update,
     )
   }

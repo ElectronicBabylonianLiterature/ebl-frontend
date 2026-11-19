@@ -77,7 +77,7 @@ describe('loadLines', () => {
       linesIn(3, 10),
     )
     expect(textService.findChapterLines.mock.calls).toEqual([
-      [editChapterId, 3, 10, signal],
+      [editChapterId, 3, 10, signal, undefined],
     ])
   })
 

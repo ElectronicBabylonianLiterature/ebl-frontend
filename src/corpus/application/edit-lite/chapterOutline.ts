@@ -31,6 +31,7 @@ export interface ChapterOutline {
   readonly uncertainFragments: readonly string[]
   readonly manuscripts: readonly ManuscriptSummary[]
   readonly lines: readonly LineOutline[]
+  readonly revision: string
 }
 
 export interface LinesPageDto {
@@ -38,4 +39,5 @@ export interface LinesPageDto {
   readonly offset: number
   readonly limit: number
   readonly lines: readonly Record<string, unknown>[]
+  readonly revision: string
 }

@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { areLinesEqual } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
@@ -9,9 +10,6 @@ import {
 } from 'corpus/ui/edit-lite/editLiteState'
 
 type LineStateEntry = readonly [number, LineState]
-
-export const lineChangedOnServerMessage =
-  'This line has changed on the server since it was loaded. Reload the chapter and apply your changes again.'
 
 const loadingLine: LineState = {
   status: 'loading',
@@ -157,46 +155,58 @@ function storeSavedLine(
   }
 }
 
+type ActionHandler<Action> = (
+  state: EditLiteState,
+  action: Action,
+) => EditLiteState
+
+type ActionHandlers = {
+  readonly [Type in EditLiteAction['type']]: ActionHandler<
+    Extract<EditLiteAction, { readonly type: Type }>
+  >
+}
+
+const actionHandlers: ActionHandlers = {
+  linesRequested: (state, action) =>
+    withLines(
+      state,
+      action.indices.map((index) => [index, loadingLine]),
+    ),
+  linesLoaded: (state, action) =>
+    withLines(
+      state,
+      action.lines.map((line, position) => [
+        action.offset + position,
+        readyLine(line),
+      ]),
+    ),
+  linesFailed: (state, action) =>
+    withLines(
+      state,
+      action.indices.map((index) => [index, failedLine(action.error)]),
+    ),
+  lineChanged: (state, action) => changeLine(state, action.index, action.draft),
+  lineReset: (state, action) => resetLine(state, action.index),
+  saveStarted: (state, action) =>
+    updateLine(state, action.index, (lineState) => ({
+      ...lineState,
+      status: 'saving',
+      error: null,
+    })),
+  saveSucceeded: (state, action) =>
+    storeSavedLine(state, action.index, action.outline, action.line),
+  saveFailed: (state, action) =>
+    updateLine(state, action.index, (lineState) => ({
+      ...lineState,
+      status: 'failed',
+      error: action.error,
+    })),
+}
+
 export function editLiteReducer(
   state: EditLiteState,
   action: EditLiteAction,
 ): EditLiteState {
-  switch (action.type) {
-    case 'linesRequested':
-      return withLines(
-        state,
-        action.indices.map((index) => [index, loadingLine]),
-      )
-    case 'linesLoaded':
-      return withLines(
-        state,
-        action.lines.map((line, position) => [
-          action.offset + position,
-          readyLine(line),
-        ]),
-      )
-    case 'linesFailed':
-      return withLines(
-        state,
-        action.indices.map((index) => [index, failedLine(action.error)]),
-      )
-    case 'lineChanged':
-      return changeLine(state, action.index, action.draft)
-    case 'lineReset':
-      return resetLine(state, action.index)
-    case 'saveStarted':
-      return updateLine(state, action.index, (lineState) => ({
-        ...lineState,
-        status: 'saving',
-        error: null,
-      }))
-    case 'saveSucceeded':
-      return storeSavedLine(state, action.index, action.outline, action.line)
-    case 'saveFailed':
-      return updateLine(state, action.index, (lineState) => ({
-        ...lineState,
-        status: 'failed',
-        error: action.error,
-      }))
-  }
+  const handle = actionHandlers[action.type] as ActionHandler<EditLiteAction>
+  return handle(state, action)
 }

@@ -59,6 +59,30 @@ describe('updateEditedLines', () => {
     ])
   })
 
+  it('posts the edits against the given revision', async () => {
+    apiClient.postJson.mockResolvedValueOnce(apiOutline)
+
+    await expect(
+      textService.updateEditedLines(chapterId, update, 'revision 7/a'),
+    ).resolves.toBe(apiOutline)
+    expect(apiClient.postJson.mock.calls).toEqual([
+      [`${chapterUrl}/lines?view=outline&revision=revision%207%2Fa`, update],
+    ])
+  })
+
+  it.each([[undefined], ['']])(
+    'omits the unknown revision %p',
+    async (revision) => {
+      apiClient.postJson.mockResolvedValueOnce(apiOutline)
+
+      await textService.updateEditedLines(chapterId, update, revision)
+
+      expect(apiClient.postJson.mock.calls).toEqual([
+        [`${chapterUrl}/lines?view=outline`, update],
+      ])
+    },
+  )
+
   it('loads neither the chapter nor the provenances', async () => {
     apiClient.postJson.mockResolvedValueOnce(apiOutline)
 

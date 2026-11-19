@@ -98,10 +98,10 @@ it('refetches the line, posts the edit and resolves with the new outline', async
   )
 
   expect(textService.findChapterLines.mock.calls).toEqual([
-    [editChapterId, 4, 1],
+    [editChapterId, 4, 1, undefined, undefined],
   ])
   expect(textService.updateEditedLines.mock.calls).toEqual([
-    [editChapterId, source.describeSave(4, draft)],
+    [editChapterId, source.describeSave(4, draft), undefined],
   ])
 })
 
@@ -163,7 +163,7 @@ it('runs saves one after the other', async () => {
   await settle()
 
   expect(textService.findChapterLines.mock.calls).toEqual([
-    [editChapterId, 4, 1],
+    [editChapterId, 4, 1, undefined, undefined],
   ])
   expect(textService.updateEditedLines).toHaveBeenCalledTimes(1)
 
@@ -172,8 +172,8 @@ it('runs saves one after the other', async () => {
   await expect(firstSave).resolves.toBe(apiOutline)
   await expect(secondSave).resolves.toBe(updatedOutline)
   expect(textService.findChapterLines.mock.calls).toEqual([
-    [editChapterId, 4, 1],
-    [editChapterId, 9, 1],
+    [editChapterId, 4, 1, undefined, undefined],
+    [editChapterId, 9, 1, undefined, apiOutline.revision],
   ])
   expect(textService.updateEditedLines).toHaveBeenCalledTimes(2)
 })
