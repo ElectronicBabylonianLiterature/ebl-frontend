@@ -1,4 +1,4 @@
-const UNSAFE_URL_CHARACTERS = /[\\?#]/
+const UNSAFE_URL_CHARACTERS = /[\\#]/
 const TRAVERSAL_SEGMENT = '..'
 
 function hasControlCharacter(value: string): boolean {
@@ -29,34 +29,72 @@ function decodeUrlSegment(segment: string): string | undefined {
   }
 }
 
-export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
-  const url = normalizeNonEmptyString(value)
-  if (url === undefined || !url.startsWith('/') || url.startsWith('//')) {
-    return undefined
+function isFragmentMediaQuery(
+  pathname: string,
+  query: string,
+  extraQuery: string | undefined,
+): boolean {
+  if (
+    extraQuery !== undefined ||
+    !/^\/media\/[^/]+\/(file|display|thumbnail\/(small|medium|large))$/.test(
+      pathname,
+    ) ||
+    !query.startsWith('fragment=') ||
+    query.includes('&')
+  ) {
+    return false
   }
+  const fragment = decodeUrlSegment(query.slice('fragment='.length))
+  return (
+    fragment !== undefined &&
+    fragment.trim().length > 0 &&
+    !hasControlCharacter(fragment) &&
+    !fragment.split('/').includes(TRAVERSAL_SEGMENT)
+  )
+}
 
-  if (UNSAFE_URL_CHARACTERS.test(url) || hasControlCharacter(url)) {
-    return undefined
-  }
+function isRootRelativePath(url: string): boolean {
+  return (
+    url.startsWith('/') &&
+    !url.startsWith('//') &&
+    !UNSAFE_URL_CHARACTERS.test(url) &&
+    !hasControlCharacter(url)
+  )
+}
 
-  const segments = url.split('/')
+function hasSafeQuery(url: string): boolean {
+  const [pathname, query, extraQuery] = url.split('?')
+  return (
+    query === undefined || isFragmentMediaQuery(pathname, query, extraQuery)
+  )
+}
+
+function hasSafeSegments(url: string): boolean {
+  const segments = url.split('?')[0].split('/')
   const decodedSegments = segments.flatMap((segment) => {
     const decodedSegment = decodeUrlSegment(segment)
     return decodedSegment === undefined
       ? [undefined]
       : decodedSegment.split('/')
   })
-  if (
-    decodedSegments.includes(undefined) ||
-    decodedSegments.includes(TRAVERSAL_SEGMENT) ||
-    decodedSegments.some(
+  return (
+    !decodedSegments.includes(undefined) &&
+    !decodedSegments.includes(TRAVERSAL_SEGMENT) &&
+    !decodedSegments.some(
       (segment) => segment !== undefined && hasControlCharacter(segment),
-    )
-  ) {
-    return undefined
-  }
+    ) &&
+    segments.slice(1).some((segment) => segment !== '')
+  )
+}
 
-  return segments.slice(1).some((segment) => segment !== '') ? url : undefined
+export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
+  const url = normalizeNonEmptyString(value)
+  return url !== undefined &&
+    isRootRelativePath(url) &&
+    hasSafeQuery(url) &&
+    hasSafeSegments(url)
+    ? url
+    : undefined
 }
 
 export function normalizeNonNegativeInteger(

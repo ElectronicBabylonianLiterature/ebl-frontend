@@ -33,6 +33,19 @@
         &.left-align
             text-align: left
 
+    &__old-line-reference-fallback
+        display: inline-block
+        max-width: min(24em, 35vw)
+        white-space: normal
+        overflow-wrap: anywhere
+        line-height: 1.4
+        color: $ebl-color-text-corpus-subtle
+        top: 0
+        vertical-align: text-top
+
+    &__old-line-numbers--with-fallback
+        white-space: normal
+
     &__old-line-numbers.hidden
         display: none
 
