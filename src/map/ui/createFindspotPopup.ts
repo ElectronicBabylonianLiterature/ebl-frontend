@@ -77,9 +77,7 @@ export function createFindspotPopup(
   }
 
   content.append(
-    createRow(
-      geometryType === 'polygon' ? 'Approximate area location' : 'Single point',
-    ),
+    createRow(geometryType === 'polygon' ? 'Mapped area' : 'Site location'),
     link,
   )
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { Alert } from 'react-bootstrap'
+import { Alert, Button } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Spinner from 'common/ui/Spinner'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -8,21 +8,20 @@ import useMapSourceData from 'map/maplibre/useMapSourceData'
 import useProvenances, { ProvenanceSource } from 'map/ui/useProvenances'
 import useExcavationAreas from 'map/maplibre/useExcavationAreas'
 import useExcavationPolygonIndex from 'map/maplibre/useExcavationPolygonIndex'
+import useMapFeatureSelection from 'map/maplibre/useMapFeatureSelection'
 import useMapExperience from 'map/ui/useMapExperience'
-import useMapPanel from 'map/ui/useMapPanel'
-import useMapLayoutEffects from 'map/ui/useMapLayoutEffects'
+import useMapContainerResize from 'map/ui/useMapContainerResize'
 import { resetMapCamera } from 'map/maplibre/mapCamera'
+import { focusFindspot } from 'map/maplibre/focusFindspot'
 import {
   anySiteHasExcavationPolygons,
   deriveMapSiteCapabilities,
 } from 'map/domain/mapSiteCapabilities'
 import MapStage from 'map/ui/MapStage'
-import MapPanelDock from 'map/ui/MapPanelDock'
 import MapExperienceHeader from 'map/ui/MapExperienceHeader'
-import MapPresentationBar from 'map/ui/MapPresentationBar'
-import useMapPresentationFocus from 'map/ui/useMapPresentationFocus'
 import MapLayerControls from 'map/ui/MapLayerControls'
-import type { MapPanelDefinition } from 'map/ui/MapToolbar'
+import MapResearchInspector from 'map/ui/MapResearchInspector'
+import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 import { filterProvenances } from 'map/domain/findspotFilter'
@@ -33,185 +32,215 @@ interface Props {
   fragmentService: ProvenanceSource
 }
 
+interface Selection {
+  readonly kind: 'site' | 'area'
+  readonly id: string
+}
+
 function LoadedMapTab({
   provenances,
 }: {
   provenances: readonly ProvenanceRecord[]
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const drawerRef = useRef<HTMLElement>(null)
-  const presentationTriggerRef = useRef<HTMLButtonElement>(null)
+  const searchContainer = useRef<HTMLDivElement>(null)
+  const selectionTrigger = useRef<HTMLElement | null>(null)
+  const [selection, setSelection] = useState<Selection | null>(null)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const [cameraResetVersion, setCameraResetVersion] = useState(0)
-
+  const [areasRetryVersion, setAreasRetryVersion] = useState(0)
   const experience = useMapExperience()
-  const panel = useMapPanel()
-  const isPresenting = experience.presentation.isActive
-  useMapPresentationFocus(presentationTriggerRef, isPresenting)
-  const description = isPresenting
-    ? {
-        className: 'visually-hidden',
-        content: 'Interactive findspot map in presentation mode.',
-      }
-    : {
-        className: 'map-tab__description',
-        content: 'Matching tablet search links are available below the map.',
-      }
-
   const {
     index: polygonIndex,
     isLoaded: isPolygonIndexLoaded,
     error: polygonIndexError,
+    retry,
   } = useExcavationPolygonIndex()
+  const canShowExcavationAreas =
+    isPolygonIndexLoaded &&
+    polygonIndexError === null &&
+    anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex))
   const excavationAreasUnavailable =
     polygonIndexError !== null || mapExcavationAreasError
-  const canShowExcavationAreas = useMemo(
-    () =>
-      isPolygonIndexLoaded &&
-      !excavationAreasUnavailable &&
-      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
-    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
-  )
-  const showExcavationAreas =
-    experience.showExcavationAreas && canShowExcavationAreas
-
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, experience.filter),
     [provenances, experience.filter],
   )
-  const visibleFindspotCount = useMemo(
-    () => provenanceToGeoJson(filteredProvenances).features.length,
+  const visibleFeatures = useMemo(
+    () => provenanceToGeoJson(filteredProvenances).features,
     [filteredProvenances],
   )
-  const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
-    setMapBackgroundError(hasError)
+  const selectMapSite = useCallback((id: string) => {
+    selectionTrigger.current = document.activeElement as HTMLElement
+    setSelection({ kind: 'site', id })
   }, [])
-  const handleExcavationAreasAvailabilityChange = useCallback(
-    (isUnavailable: boolean) => {
-      setMapExcavationAreasError(isUnavailable)
-    },
-    [],
-  )
+  const selectMapArea = useCallback((id: string) => {
+    selectionTrigger.current = document.activeElement as HTMLElement
+    setSelection({ kind: 'area', id })
+  }, [])
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
-    handleMapBackgroundErrorChange,
+    setMapBackgroundError,
     cameraResetVersion,
+    selectMapSite,
+    selectMapArea,
   )
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
   useExcavationAreas(
     mapRef,
-    showExcavationAreas,
-    handleExcavationAreasAvailabilityChange,
+    experience.showExcavationAreas && canShowExcavationAreas,
+    setMapExcavationAreasError,
     isPolygonIndexLoaded && polygonIndexError === null ? polygonIndex : null,
+    areasRetryVersion,
   )
-  useMapLayoutEffects(
-    mapContainer,
+  useMapContainerResize(mapContainer, mapRef)
+  useMapFeatureSelection(
     mapRef,
-    drawerRef,
-    isPresenting ? null : panel.active,
+    selection?.kind === 'site' ? selection.id : null,
+    selection?.kind === 'area' ? selection.id : null,
+    polygonIndex,
+    areasRetryVersion,
   )
-
-  const resetView = useCallback(() => {
-    setCameraResetVersion((current) => current + 1)
-    experience.resetState()
-    resetMapCamera(mapRef.current)
-  }, [experience, mapRef])
-
-  const panels: readonly MapPanelDefinition[] = [
-    {
-      id: 'layers',
-      label: 'Map layers',
-      isSupported: true,
-      render: () => (
-        <>
-          {!isPolygonIndexLoaded ? (
-            <p role="status">Loading excavation areas…</p>
-          ) : null}
-          <MapLayerControls
-            showExcavationAreas={showExcavationAreas}
-            canShowExcavationAreas={canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-        </>
-      ),
-    },
-  ]
-
-  const excavationStatus =
-    excavationAreasUnavailable &&
-    (experience.showExcavationAreas ||
-      (!isPresenting && panel.active === 'layers')) ? (
-      <Alert variant="warning">Excavation areas are unavailable.</Alert>
-    ) : null
+  const selectedProvenance =
+    selection?.kind === 'site'
+      ? provenances.find(({ id }) => id === selection.id)
+      : undefined
+  const selectedPolygon =
+    selection?.kind === 'area'
+      ? [...polygonIndex.values()]
+          .flat()
+          .find(({ polygonId }) => polygonId === selection.id)
+      : undefined
 
   return (
-    <div
-      className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
-    >
-      {isPresenting ? (
-        <MapPresentationBar onExit={experience.presentation.exit} />
-      ) : (
-        <MapExperienceHeader
-          visibleSiteCount={visibleFindspotCount}
-          onResetView={resetView}
-          presentationTriggerRef={presentationTriggerRef}
-          onEnterPresentation={experience.presentation.enter}
-          filterControl={
+    <div className="map-tab map-experience">
+      <MapExperienceHeader
+        visibleSiteCount={visibleFeatures.length}
+        onResetView={() => {
+          setCameraResetVersion((current) => current + 1)
+          resetMapCamera(mapRef.current)
+        }}
+        filterControl={
+          <div ref={searchContainer}>
             <FindspotFilterInput
               provenances={provenances}
               filter={experience.filter}
-              onFilterChange={experience.setFilter}
+              onFilterChange={(filter) => {
+                setSelection(null)
+                experience.setFilter(filter)
+              }}
             />
-          }
-        />
-      )}
-      {isPresenting ? null : (
-        <FindspotEmptyState
-          provenances={filteredProvenances}
-          filter={experience.filter}
-        />
-      )}
-
+          </div>
+        }
+        layerControl={
+          <MapLayerControls
+            showExcavationAreas={experience.showExcavationAreas}
+            onShowExcavationAreasChange={experience.setShowExcavationAreas}
+          />
+        }
+      />
+      {!isPolygonIndexLoaded ? (
+        <p role="status">Loading excavation areas…</p>
+      ) : null}
+      {excavationAreasUnavailable ? (
+        <Alert variant="warning" className="map-experience__layer-warning">
+          <span>Excavation areas are unavailable.</span>{' '}
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={() => {
+              setMapExcavationAreasError(false)
+              setAreasRetryVersion((current) => current + 1)
+              retry()
+            }}
+          >
+            Retry excavation areas
+          </Button>
+        </Alert>
+      ) : null}
       <div className="map-experience__body">
         <MapStage
           containerRef={mapContainer}
           isBackgroundUnavailable={mapBackgroundError}
           describedById="findspot-map-description"
-          showFallbackHint={!isPresenting}
-          overlay={
-            <MapPanelDock
-              panels={isPresenting ? [] : panels}
-              status={excavationStatus}
-              panel={panel}
-              drawerRef={drawerRef}
-            />
-          }
+          showFallbackHint
         />
+        <aside className="map-research-panel" aria-label="Site research">
+          {selection ? (
+            <MapResearchInspector
+              selectionId={`${selection.kind}:${selection.id}`}
+              provenance={selectedProvenance}
+              polygon={selectedPolygon}
+              onClose={() => {
+                setSelection(null)
+                if (
+                  selectionTrigger.current &&
+                  selectionTrigger.current !== document.body &&
+                  document.contains(selectionTrigger.current)
+                ) {
+                  selectionTrigger.current.focus()
+                } else {
+                  searchContainer.current?.querySelector('input')?.focus()
+                }
+              }}
+            />
+          ) : null}
+          <MapExcavationBrowser
+            polygonIndex={polygonIndex}
+            selectedId={selection?.kind === 'area' ? selection.id : null}
+            onSelect={(id, trigger) => {
+              selectionTrigger.current = trigger
+              setSelection({ kind: 'area', id })
+              const polygon = [...polygonIndex.values()]
+                .flat()
+                .find((entry) => entry.polygonId === id)
+              if (polygon?.bounds && mapRef.current)
+                mapRef.current.fitBounds(
+                  [...polygon.bounds] as [number, number, number, number],
+                  {
+                    padding: 40,
+                    maxZoom: 17,
+                  },
+                )
+            }}
+          />
+          <FindspotEmptyState
+            provenances={filteredProvenances}
+            filter={experience.filter}
+          />
+          <FindspotSearchList
+            provenances={filteredProvenances}
+            selectedId={selection?.kind === 'site' ? selection.id : null}
+            onSelect={(id, trigger) => {
+              selectionTrigger.current = trigger
+              setSelection({ kind: 'site', id })
+              const feature = visibleFeatures.find((entry) => entry.id === id)
+              if (feature && mapRef.current) {
+                focusFindspot(
+                  mapRef.current,
+                  feature.geometry.coordinates as [number, number],
+                  filteredProvenances.find((entry) => entry.id === id),
+                )
+              }
+            }}
+          />
+        </aside>
       </div>
-      <p id="findspot-map-description" className={description.className}>
-        {description.content}
+      <p id="findspot-map-description" className="map-tab__description">
+        Explore mapped sites and excavation areas. Site details and Library
+        searches are available beside or below the map.
       </p>
-      {isPresenting ? null : (
-        <>
-          <FindspotSearchList provenances={filteredProvenances} />
-        </>
-      )}
     </div>
   )
 }
 
 export default function MapTab({ fragmentService }: Props): JSX.Element {
   const { provenances, error } = useProvenances(fragmentService)
-
-  if (error) {
+  if (error)
     return <Alert variant="danger">Failed to load map data: {error}</Alert>
-  }
-
-  if (provenances === null) {
-    return <Spinner>Loading map data...</Spinner>
-  }
-
+  if (provenances === null) return <Spinner>Loading map data...</Spinner>
   return <LoadedMapTab provenances={provenances} />
 }

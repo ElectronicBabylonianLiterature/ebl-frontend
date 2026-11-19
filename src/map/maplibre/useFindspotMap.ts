@@ -26,13 +26,19 @@ import {
 import { initializeFindspotSource } from 'map/maplibre/mapFindspotSource'
 import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/maplibre/mapCamera'
 import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
-import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
+import {
+  MAP_STYLE_URL,
+  installFallbackMapBackground,
+} from 'map/maplibre/mapBackgroundError'
+import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/maplibre/mapExcavationLayers'
 
 interface FindspotMapHandlers {
   isActive: () => boolean
   provenances: () => readonly ProvenanceRecord[] | null
   navigate: (path: string) => void
   reportError: (error: Error) => void
+  onFindspotSelect?: (id: string) => void
+  onExcavationSelect?: (polygonId: string) => void
 }
 
 function expandCluster(
@@ -76,6 +82,9 @@ function openFindspotPopup(
   const popupProperties = getPopupProperties(feature, coordinates)
   if (!popupProperties) return
 
+  if (typeof feature.properties?.id === 'string') {
+    handlers.onFindspotSelect?.(feature.properties.id)
+  }
   focusFindspot(
     map,
     coordinates,
@@ -104,6 +113,14 @@ function handleMapClick(
   ])
   if (findspot) {
     openFindspotPopup(map, findspot, handlers)
+    return
+  }
+
+  const [area] = queryFindspotFeatures(map, event.point, [
+    EXCAVATION_AREA_FILL_LAYER_ID,
+  ])
+  if (typeof area?.properties?.id === 'string') {
+    handlers.onExcavationSelect?.(area.properties.id)
   }
 }
 
@@ -112,6 +129,8 @@ export default function useFindspotMap(
   provenances: readonly ProvenanceRecord[] | null,
   onMapBackgroundErrorChange?: (hasError: boolean) => void,
   cameraResetVersion = 0,
+  onFindspotSelect?: (id: string) => void,
+  onExcavationSelect?: (polygonId: string) => void,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const history = useHistory()
@@ -126,6 +145,8 @@ export default function useFindspotMap(
     previousCameraResetVersionRef.current = cameraResetVersion
     cameraResetProvenancesRef.current = provenances
   }
+  const latestSelectionRef = useRef({ onFindspotSelect, onExcavationSelect })
+  latestSelectionRef.current = { onFindspotSelect, onExcavationSelect }
   const latestServicesRef = useRef({ history, errorReporter })
   latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
@@ -154,15 +175,23 @@ export default function useFindspotMap(
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
     let clickVersion = 0
+    let hasFallbackBackground = false
     const handlers: FindspotMapHandlers = {
       isActive: () => isActive && mapRef.current === map,
       provenances: () => latestProvenancesRef.current,
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
+      onFindspotSelect: (id) =>
+        latestSelectionRef.current.onFindspotSelect?.(id),
+      onExcavationSelect: (id) =>
+        latestSelectionRef.current.onExcavationSelect?.(id),
     }
     const handleStyleLoad = () => {
-      onMapBackgroundErrorChange?.(false)
+      onMapBackgroundErrorChange?.(
+        hasFallbackBackground &&
+          map.getStyle()?.metadata?.['ebl:fallback'] === true,
+      )
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
         const resetStillOwnsLatestData =
@@ -188,7 +217,13 @@ export default function useFindspotMap(
         })
       },
       reportError: handlers.reportError,
-      onBackgroundErrorChange: onMapBackgroundErrorChange,
+      onBackgroundErrorChange: (hasError) => {
+        onMapBackgroundErrorChange?.(hasError)
+        if (hasError && !hasFallbackBackground && !map.getStyle()) {
+          hasFallbackBackground = true
+          installFallbackMapBackground(map)
+        }
+      },
     })
     if (map.getStyle()) handleStyleLoad()
 

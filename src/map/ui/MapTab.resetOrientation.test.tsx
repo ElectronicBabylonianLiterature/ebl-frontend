@@ -14,7 +14,7 @@ beforeEach(resetMapMocks)
 
 it('resets map orientation and zoom when Reset view is activated', async () => {
   renderMapTab(makeFragmentService([makeProvenance()]))
-  await screen.findByLabelText('Filter findspots by name')
+  await screen.findByLabelText('Search sites')
   mockEaseTo.mockClear()
   await userEvent.click(screen.getByRole('button', { name: 'Reset view' }))
   await waitFor(() =>
