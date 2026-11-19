@@ -90,6 +90,31 @@ describe('useFindspotMap', () => {
     expect(mockFitBounds).not.toHaveBeenCalled()
   })
 
+  it('still fits initial data after a click on the unloaded blank canvas', () => {
+    deferMapLoad()
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+    act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+    act(() => triggerMapEvent(MAP_STYLE_LOAD_EVENT))
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  })
+
+  it('fits a newly created map even when the previous map had a camera owner', () => {
+    const provenances = [makeProvenance()]
+    const { rerender } = renderHarness(
+      <HookHarness provenances={provenances} cameraResetVersion={0} />,
+    )
+    rerender(<HookHarness provenances={provenances} cameraResetVersion={1} />)
+    mockFitBounds.mockClear()
+    rerender(
+      <HookHarness
+        provenances={provenances}
+        cameraResetVersion={1}
+        onMapBackgroundErrorChange={() => undefined}
+      />,
+    )
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  })
+
   it('fits a newer filter applied after reset but before style load', () => {
     deferMapLoad()
     const { rerender } = renderHarness(

@@ -31,9 +31,20 @@ import {
   installFallbackMapBackground,
 } from 'map/maplibre/mapBackgroundError'
 import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/maplibre/mapExcavationLayers'
+import useMapCameraOwnership, {
+  type MapCameraOwnership,
+} from 'map/maplibre/useMapCameraOwnership'
+
+interface FindspotMapOptions {
+  readonly onMapBackgroundErrorChange?: (hasError: boolean) => void
+  readonly camera?: MapCameraOwnership
+  readonly onFindspotSelect?: (id: string) => void
+  readonly onExcavationSelect?: (polygonId: string) => void
+}
 
 interface FindspotMapHandlers {
   isActive: () => boolean
+  camera: MapCameraOwnership
   provenances: () => readonly ProvenanceRecord[] | null
   navigate: (path: string) => void
   reportError: (error: Error) => void
@@ -51,13 +62,15 @@ function expandCluster(
 
   const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
   if (!source) return
+  const isCurrent = handlers.camera.claim()
+  const isActive = () => handlers.isActive() && isCurrent()
 
   const center = (cluster.geometry as Point).coordinates.slice() as [
     number,
     number,
   ]
   const easeToClusterCenter = (zoom?: number): void => {
-    if (handlers.isActive()) {
+    if (isActive()) {
       map.easeTo(zoom === undefined ? { center } : { center, zoom })
     }
   }
@@ -66,7 +79,7 @@ function expandCluster(
     .getClusterExpansionZoom(clusterId)
     .then(easeToClusterCenter)
     .catch((error: Error) => {
-      if (handlers.isActive()) handlers.reportError(error)
+      if (isActive()) handlers.reportError(error)
       easeToClusterCenter()
     })
 }
@@ -81,6 +94,7 @@ function openFindspotPopup(
 
   const popupProperties = getPopupProperties(feature, coordinates)
   if (!popupProperties) return
+  handlers.camera.claim()
 
   if (typeof feature.properties?.id === 'string') {
     handlers.onFindspotSelect?.(feature.properties.id)
@@ -120,6 +134,7 @@ function handleMapClick(
     EXCAVATION_AREA_FILL_LAYER_ID,
   ])
   if (typeof area?.properties?.id === 'string') {
+    handlers.camera.claim()
     handlers.onExcavationSelect?.(area.properties.id)
   }
 }
@@ -127,24 +142,20 @@ function handleMapClick(
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
-  onMapBackgroundErrorChange?: (hasError: boolean) => void,
-  cameraResetVersion = 0,
-  onFindspotSelect?: (id: string) => void,
-  onExcavationSelect?: (polygonId: string) => void,
+  {
+    onMapBackgroundErrorChange,
+    camera: sharedCamera,
+    onFindspotSelect,
+    onExcavationSelect,
+  }: FindspotMapOptions = {},
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
+  const defaultCamera = useMapCameraOwnership(provenances)
+  const camera = sharedCamera ?? defaultCamera
   const history = useHistory()
   const errorReporter = useContext(ErrorReporterContext)
   const latestProvenancesRef = useRef(provenances)
   latestProvenancesRef.current = provenances
-  const latestCameraResetVersionRef = useRef(cameraResetVersion)
-  const previousCameraResetVersionRef = useRef(cameraResetVersion)
-  const cameraResetProvenancesRef = useRef(provenances)
-  latestCameraResetVersionRef.current = cameraResetVersion
-  if (previousCameraResetVersionRef.current !== cameraResetVersion) {
-    previousCameraResetVersionRef.current = cameraResetVersion
-    cameraResetProvenancesRef.current = provenances
-  }
   const latestSelectionRef = useRef({ onFindspotSelect, onExcavationSelect })
   latestSelectionRef.current = { onFindspotSelect, onExcavationSelect }
   const latestServicesRef = useRef({ history, errorReporter })
@@ -154,7 +165,7 @@ export default function useFindspotMap(
   useEffect(() => {
     if (!containerRef.current || !isReady) return
 
-    const cameraResetVersionAtCreation = latestCameraResetVersionRef.current
+    const isInitialCamera = camera.capture()
     let map: MapLibreMap
     try {
       maplibregl.setWorkerUrl(maplibreWorkerUrl)
@@ -178,6 +189,7 @@ export default function useFindspotMap(
     let hasFallbackBackground = false
     const handlers: FindspotMapHandlers = {
       isActive: () => isActive && mapRef.current === map,
+      camera,
       provenances: () => latestProvenancesRef.current,
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
@@ -194,14 +206,10 @@ export default function useFindspotMap(
       )
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
-        const resetStillOwnsLatestData =
-          latestCameraResetVersionRef.current !==
-            cameraResetVersionAtCreation &&
-          loadedProvenances === cameraResetProvenancesRef.current
         initializeFindspotSource(
           map,
           loadedProvenances,
-          !resetStillOwnsLatestData,
+          camera.shouldFitData() || isInitialCamera(),
         )
       }
     }
@@ -233,7 +241,7 @@ export default function useFindspotMap(
       map.remove()
       mapRef.current = null
     }
-  }, [containerRef, isReady, onMapBackgroundErrorChange])
+  }, [camera, containerRef, isReady, onMapBackgroundErrorChange])
 
   return mapRef
 }

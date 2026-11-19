@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Spinner from 'common/ui/Spinner'
@@ -11,6 +11,9 @@ import useExcavationPolygonIndex from 'map/maplibre/useExcavationPolygonIndex'
 import useMapFeatureSelection from 'map/maplibre/useMapFeatureSelection'
 import useMapExperience from 'map/ui/useMapExperience'
 import useMapContainerResize from 'map/ui/useMapContainerResize'
+import useMapCameraOwnership from 'map/maplibre/useMapCameraOwnership'
+import useMapResearchSelection from 'map/ui/useMapResearchSelection'
+import { findExcavationPolygon } from 'map/domain/excavationPolygonIndex'
 import { resetMapCamera } from 'map/maplibre/mapCamera'
 import { focusFindspot } from 'map/maplibre/focusFindspot'
 import {
@@ -20,7 +23,7 @@ import {
 import MapStage from 'map/ui/MapStage'
 import MapExperienceHeader from 'map/ui/MapExperienceHeader'
 import MapLayerControls from 'map/ui/MapLayerControls'
-import MapResearchInspector from 'map/ui/MapResearchInspector'
+import MapSelectionInspector from 'map/ui/MapSelectionInspector'
 import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
@@ -32,11 +35,6 @@ interface Props {
   fragmentService: ProvenanceSource
 }
 
-interface Selection {
-  readonly kind: 'site' | 'area'
-  readonly id: string
-}
-
 function LoadedMapTab({
   provenances,
 }: {
@@ -44,11 +42,9 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const searchContainer = useRef<HTMLDivElement>(null)
-  const selectionTrigger = useRef<HTMLElement | null>(null)
-  const [selection, setSelection] = useState<Selection | null>(null)
+  const research = useMapResearchSelection(searchContainer)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
-  const [cameraResetVersion, setCameraResetVersion] = useState(0)
   const [areasRetryVersion, setAreasRetryVersion] = useState(0)
   const experience = useMapExperience()
   const {
@@ -71,23 +67,14 @@ function LoadedMapTab({
     () => provenanceToGeoJson(filteredProvenances).features,
     [filteredProvenances],
   )
-  const selectMapSite = useCallback((id: string) => {
-    selectionTrigger.current = document.activeElement as HTMLElement
-    setSelection({ kind: 'site', id })
-  }, [])
-  const selectMapArea = useCallback((id: string) => {
-    selectionTrigger.current = document.activeElement as HTMLElement
-    setSelection({ kind: 'area', id })
-  }, [])
-  const mapRef = useFindspotMap(
-    mapContainer,
-    filteredProvenances,
-    setMapBackgroundError,
-    cameraResetVersion,
-    selectMapSite,
-    selectMapArea,
-  )
-  useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
+  const camera = useMapCameraOwnership(filteredProvenances)
+  const mapRef = useFindspotMap(mapContainer, filteredProvenances, {
+    onMapBackgroundErrorChange: setMapBackgroundError,
+    camera,
+    onFindspotSelect: research.selectSite,
+    onExcavationSelect: research.selectArea,
+  })
+  useMapSourceData(mapRef, filteredProvenances, camera)
   useExcavationAreas(
     mapRef,
     experience.showExcavationAreas && canShowExcavationAreas,
@@ -98,28 +85,17 @@ function LoadedMapTab({
   useMapContainerResize(mapContainer, mapRef)
   useMapFeatureSelection(
     mapRef,
-    selection?.kind === 'site' ? selection.id : null,
-    selection?.kind === 'area' ? selection.id : null,
+    research.selectedSiteId,
+    research.selectedAreaId,
     polygonIndex,
     areasRetryVersion,
   )
-  const selectedProvenance =
-    selection?.kind === 'site'
-      ? provenances.find(({ id }) => id === selection.id)
-      : undefined
-  const selectedPolygon =
-    selection?.kind === 'area'
-      ? [...polygonIndex.values()]
-          .flat()
-          .find(({ polygonId }) => polygonId === selection.id)
-      : undefined
-
   return (
     <div className="map-tab map-experience">
       <MapExperienceHeader
         visibleSiteCount={visibleFeatures.length}
         onResetView={() => {
-          setCameraResetVersion((current) => current + 1)
+          camera.claim()
           resetMapCamera(mapRef.current)
         }}
         filterControl={
@@ -128,7 +104,7 @@ function LoadedMapTab({
               provenances={provenances}
               filter={experience.filter}
               onFilterChange={(filter) => {
-                setSelection(null)
+                research.clear()
                 experience.setFilter(filter)
               }}
             />
@@ -169,34 +145,18 @@ function LoadedMapTab({
           showFallbackHint
         />
         <aside className="map-research-panel" aria-label="Site research">
-          {selection ? (
-            <MapResearchInspector
-              selectionId={`${selection.kind}:${selection.id}`}
-              provenance={selectedProvenance}
-              polygon={selectedPolygon}
-              onClose={() => {
-                setSelection(null)
-                if (
-                  selectionTrigger.current &&
-                  selectionTrigger.current !== document.body &&
-                  document.contains(selectionTrigger.current)
-                ) {
-                  selectionTrigger.current.focus()
-                } else {
-                  searchContainer.current?.querySelector('input')?.focus()
-                }
-              }}
-            />
-          ) : null}
+          <MapSelectionInspector
+            research={research}
+            provenances={provenances}
+            polygonIndex={polygonIndex}
+          />
           <MapExcavationBrowser
             polygonIndex={polygonIndex}
-            selectedId={selection?.kind === 'area' ? selection.id : null}
+            selectedId={research.selectedAreaId}
             onSelect={(id, trigger) => {
-              selectionTrigger.current = trigger
-              setSelection({ kind: 'area', id })
-              const polygon = [...polygonIndex.values()]
-                .flat()
-                .find((entry) => entry.polygonId === id)
+              camera.claim()
+              research.selectArea(id, trigger)
+              const polygon = findExcavationPolygon(polygonIndex, id)
               if (polygon?.bounds && mapRef.current)
                 mapRef.current.fitBounds(
                   [...polygon.bounds] as [number, number, number, number],
@@ -213,10 +173,10 @@ function LoadedMapTab({
           />
           <FindspotSearchList
             provenances={filteredProvenances}
-            selectedId={selection?.kind === 'site' ? selection.id : null}
+            selectedId={research.selectedSiteId}
             onSelect={(id, trigger) => {
-              selectionTrigger.current = trigger
-              setSelection({ kind: 'site', id })
+              camera.claim()
+              research.selectSite(id, trigger)
               const feature = visibleFeatures.find((entry) => entry.id === id)
               if (feature && mapRef.current) {
                 focusFindspot(
