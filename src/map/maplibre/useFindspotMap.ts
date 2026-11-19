@@ -23,13 +23,10 @@ import {
   clusterLayer,
   unclusteredLayer,
 } from 'map/maplibre/mapLayers'
-import { initializeFindspotSource } from 'map/maplibre/mapFindspotSource'
+import { createFindspotStyleHandlers } from 'map/maplibre/mapFindspotStyle'
 import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/maplibre/mapCamera'
 import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
-import {
-  MAP_STYLE_URL,
-  installFallbackMapBackground,
-} from 'map/maplibre/mapBackgroundError'
+import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
 import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/maplibre/mapExcavationLayers'
 import useMapCameraOwnership, {
   type MapCameraOwnership,
@@ -186,7 +183,6 @@ export default function useFindspotMap(
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
     let clickVersion = 0
-    let hasFallbackBackground = false
     const handlers: FindspotMapHandlers = {
       isActive: () => isActive && mapRef.current === map,
       camera,
@@ -199,23 +195,15 @@ export default function useFindspotMap(
       onExcavationSelect: (id) =>
         latestSelectionRef.current.onExcavationSelect?.(id),
     }
-    const handleStyleLoad = () => {
-      onMapBackgroundErrorChange?.(
-        hasFallbackBackground &&
-          map.getStyle()?.metadata?.['ebl:fallback'] === true,
-      )
-      const loadedProvenances = latestProvenancesRef.current
-      if (loadedProvenances) {
-        initializeFindspotSource(
-          map,
-          loadedProvenances,
-          camera.shouldFitData() || isInitialCamera(),
-        )
-      }
-    }
+    const styleHandlers = createFindspotStyleHandlers(map, {
+      camera,
+      provenances: handlers.provenances,
+      isInitialCamera,
+      onBackgroundErrorChange: onMapBackgroundErrorChange,
+    })
     const unsubscribe = subscribeFindspotMapEvents(map, MAP_STYLE_LOAD_EVENT, {
       isActive: handlers.isActive,
-      onStyleLoad: handleStyleLoad,
+      ...styleHandlers,
       onClick: (event) => {
         const currentClickVersion = ++clickVersion
         handleMapClick(map, event, {
@@ -225,15 +213,8 @@ export default function useFindspotMap(
         })
       },
       reportError: handlers.reportError,
-      onBackgroundErrorChange: (hasError) => {
-        onMapBackgroundErrorChange?.(hasError)
-        if (hasError && !hasFallbackBackground && !map.getStyle()) {
-          hasFallbackBackground = true
-          installFallbackMapBackground(map)
-        }
-      },
     })
-    if (map.getStyle()) handleStyleLoad()
+    if (map.getStyle()) styleHandlers.onStyleLoad()
 
     return () => {
       isActive = false
