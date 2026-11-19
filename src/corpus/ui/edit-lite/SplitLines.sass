@@ -1,0 +1,74 @@
+@use 'src/design-tokens' as *
+
+.edit-lite-split
+  display: grid
+  gap: 0.75rem
+  grid-template-columns: minmax(0, 1fr)
+
+  @media (min-width: $ebl-breakpoint-lg)
+    align-items: start
+    grid-template-columns: minmax(16rem, 2fr) minmax(0, 3fr)
+
+  &__list
+    list-style: none
+    margin: 0
+    max-height: 40vh
+    overflow-y: auto
+    padding: 0
+
+    &:focus-visible
+      outline: 2px solid $ebl-color-brand-primary
+      outline-offset: 1px
+
+  &__list,
+  &__editor
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 4px
+    min-width: 0
+
+    @media (min-width: $ebl-breakpoint-lg)
+      max-height: calc(100vh - 1rem)
+      overflow-y: auto
+      position: sticky
+      top: 0.5rem
+
+  &__option
+    border-top: 1px solid $ebl-color-border-corpus-soft
+    cursor: pointer
+    padding: 0.3rem 0.6rem
+
+    &:first-child
+      border-top: 0
+
+    &:hover
+      background: $ebl-color-brand-soft-subtle
+
+    &--selected,
+    &--selected:hover
+      background: $ebl-color-surface-corpus-soft
+      box-shadow: inset 3px 0 0 $ebl-color-brand-primary
+
+  &__toolbar
+    align-items: center
+    background: $ebl-color-surface-corpus-soft
+    border-bottom: 1px solid $ebl-color-border-corpus-soft
+    display: flex
+    flex-wrap: wrap
+    gap: 0.4rem
+    padding: 0.3rem 0.6rem
+    position: sticky
+    top: 0
+    z-index: 10
+
+  &__heading
+    color: $ebl-color-text-corpus-primary
+    font-size: 0.95rem
+    font-weight: 700
+    line-height: 1.3
+    margin: 0 0 0 0.3rem
+
+  &__position,
+  &__empty
+    color: $ebl-color-text-corpus-muted
+    font-size: 0.85rem
+    margin: 0

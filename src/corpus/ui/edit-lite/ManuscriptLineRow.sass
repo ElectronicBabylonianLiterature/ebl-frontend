@@ -1,0 +1,21 @@
+@use 'src/design-tokens' as *
+
+.edit-lite-manuscripts
+  display: grid
+  gap: 0.2rem
+  margin-top: 0.4rem
+
+.edit-lite-manuscript
+  align-items: start
+  display: grid
+  gap: 0.25rem
+  grid-template-columns: minmax(0, 1fr) 4.5rem 5rem
+
+  > :last-child
+    grid-column: 1 / -1
+
+  @media (min-width: $ebl-breakpoint-md)
+    grid-template-columns: minmax(6rem, 10rem) 4.5rem 5rem minmax(0, 1fr)
+
+    > :last-child
+      grid-column: auto

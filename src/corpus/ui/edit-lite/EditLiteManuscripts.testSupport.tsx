@@ -1,0 +1,167 @@
+import React from 'react'
+import { render, RenderResult, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _ from 'lodash'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
+import TextService from 'corpus/application/TextService'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
+import { getProvenanceByName } from 'corpus/domain/provenance'
+import EditLiteManuscripts from 'corpus/ui/edit-lite/EditLiteManuscripts'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import {
+  restoreProvenanceState,
+  snapshotProvenanceState,
+  upsertProvenanceRecords,
+} from 'test-support/provenance-state'
+import { ChapterId } from 'transliteration/domain/chapter-id'
+
+export interface ManuscriptsServices {
+  readonly textService: jest.Mocked<TextService>
+  readonly fragmentService: jest.Mocked<FragmentService>
+  readonly searchBibliography: jest.Mock<
+    Promise<readonly BibliographyEntry[]>,
+    [string]
+  >
+}
+
+export const manuscriptsChapterId: ChapterId = {
+  textId: { genre: 'L', category: 1, index: 2 },
+  stage: 'Standard Babylonian',
+  name: 'I',
+}
+
+export const manuscriptsUncertainFragments: readonly string[] = ['K.1']
+
+export const manuscriptsProvenanceRecords: readonly ProvenanceRecord[] = [
+  {
+    id: 'BABYLON',
+    longName: 'Babylon',
+    abbreviation: 'Bab',
+    parent: 'Babylonia',
+    sortKey: 1,
+  },
+  {
+    id: 'ASSYRIA',
+    longName: 'Assyria',
+    abbreviation: 'Assa',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'NINEVEH',
+    longName: 'Nineveh',
+    abbreviation: 'Nin',
+    parent: 'Assyria',
+    sortKey: 3,
+  },
+  {
+    id: 'BABYLONIA',
+    longName: 'Babylonia',
+    abbreviation: 'Baba',
+    parent: null,
+    sortKey: 4,
+  },
+]
+
+export const firstSiglum = 'NinNA1a'
+export const secondSiglum = 'BabNBSch1'
+
+export function setUpManuscriptsProvenances(): void {
+  let provenanceSnapshot = snapshotProvenanceState()
+
+  beforeEach(() => {
+    provenanceSnapshot = snapshotProvenanceState()
+    upsertProvenanceRecords(manuscriptsProvenanceRecords)
+  })
+
+  afterEach(() => {
+    restoreProvenanceState(provenanceSnapshot)
+  })
+}
+
+export function buildManuscripts(): Manuscript[] {
+  return [
+    new Manuscript({
+      id: 1,
+      siglumDisambiguator: '1a',
+      museumNumber: 'K.5419.C',
+      period: Periods['Neo-Assyrian'],
+      provenance: getProvenanceByName('Nineveh'),
+      type: ManuscriptTypes.Library,
+      notes: 'first note',
+    }),
+    new Manuscript({
+      id: 2,
+      siglumDisambiguator: '1',
+      accession: 'A.33',
+      periodModifier: PeriodModifiers.Late,
+      period: Periods['Neo-Babylonian'],
+      provenance: getProvenanceByName('Babylon'),
+      type: ManuscriptTypes.School,
+    }),
+  ]
+}
+
+export function createManuscriptsElement(
+  services: ManuscriptsServices,
+  id: ChapterId = manuscriptsChapterId,
+): JSX.Element {
+  return (
+    <EditLiteManuscripts
+      id={id}
+      uncertainFragments={manuscriptsUncertainFragments}
+      textService={services.textService}
+      fragmentService={services.fragmentService}
+      searchBibliography={services.searchBibliography}
+    />
+  )
+}
+
+export async function renderLoadedManuscripts(
+  services: ManuscriptsServices,
+): Promise<RenderResult> {
+  const view = render(createManuscriptsElement(services))
+  await screen.findByRole('list', { name: 'Manuscripts' })
+  return view
+}
+
+export function toggleOf(siglum: string): HTMLElement {
+  return screen.getByRole('button', {
+    name: new RegExp(`^${_.escapeRegExp(siglum)}`),
+  })
+}
+
+export function editorName(siglum: string): string {
+  return `Editor for manuscript ${siglum}`
+}
+
+export function queryEditor(siglum: string): HTMLElement | null {
+  return screen.queryByRole('group', { name: editorName(siglum) })
+}
+
+export async function openManuscript(siglum: string): Promise<HTMLElement> {
+  await userEvent.click(toggleOf(siglum))
+  return screen.getByRole('group', { name: editorName(siglum) })
+}
+
+export async function openPreview(): Promise<HTMLElement> {
+  await userEvent.click(screen.getByRole('button', { name: 'Preview request' }))
+  return screen.getByRole('dialog', { name: 'Request preview' })
+}
+
+function prototypesOf(value: object): object[] {
+  const prototype: object | null = Object.getPrototypeOf(value)
+  return prototype === null ? [] : [prototype, ...prototypesOf(prototype)]
+}
+
+export function calledMethodNames(service: object): string[] {
+  return _.uniq(prototypesOf(service).flatMap(Object.getOwnPropertyNames))
+    .filter((name) => name !== 'constructor')
+    .filter((name) => {
+      const method: unknown = Reflect.get(service, name)
+      return jest.isMockFunction(method) && method.mock.calls.length > 0
+    })
+}
