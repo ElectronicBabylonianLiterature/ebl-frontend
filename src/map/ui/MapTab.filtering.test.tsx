@@ -128,8 +128,11 @@ describe('MapTab filtering', () => {
       triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
-    expect(mockAddSource).toHaveBeenCalledTimes(1)
-    const source = mockAddSource.mock.calls[0][1]
+    const findspotSourceCalls = mockAddSource.mock.calls.filter(
+      ([sourceId]) => sourceId === 'ebl-findspots',
+    )
+    expect(findspotSourceCalls).toHaveLength(1)
+    const source = findspotSourceCalls[0][1]
     expect(source.data.features).toHaveLength(1)
     expect(source.data.features[0].properties.name).toBe('Babylon')
   })

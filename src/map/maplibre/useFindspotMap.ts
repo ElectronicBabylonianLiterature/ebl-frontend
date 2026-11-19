@@ -174,6 +174,7 @@ export default function useFindspotMap(
       reportError: handlers.reportError,
       onBackgroundErrorChange: onMapBackgroundErrorChange,
     })
+    if (map.getStyle()) handleStyleLoad()
 
     return () => {
       isActive = false
