@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'common/utils/queryString'
 import { produce } from 'immer'
@@ -228,7 +228,13 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
 
 function SearchFormWithRouter(props: Omit<SearchFormProps, 'navigate'>) {
   const navigate = useNavigate()
-  return <SearchForm {...props} navigate={navigate} />
+  const location = useLocation()
+  return (
+    <SearchForm
+      {...props}
+      navigate={(options) => navigate({ ...options, hash: location.hash })}
+    />
+  )
 }
 
 export default SearchFormWithRouter

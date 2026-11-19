@@ -5,25 +5,36 @@ import type {
 } from 'fragmentarium/application/MediaBinaryLoader'
 
 function segment(value: string): string {
-  return encodeURIComponent(value)
+  return encodeURIComponent(value).replace(
+    /[!'()*]/g,
+    (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`,
+  )
 }
 
-function fragmentMediaBase(fragmentNumber: string, mediaId: string): string {
-  return `/fragments/${segment(fragmentNumber)}/media/${segment(mediaId)}`
+function fragmentQuery(fragmentNumber: string): string {
+  return `?fragment=${segment(fragmentNumber)}`
+}
+
+export function fragmentMediaListUrl(fragmentNumber: string): string {
+  return `/media${fragmentQuery(fragmentNumber)}`
+}
+
+function fragmentMediaBase(mediaId: string): string {
+  return `/media/${segment(mediaId)}`
 }
 
 export function fragmentMediaOriginalUrl(
   fragmentNumber: string,
   mediaId: string,
 ): string {
-  return `${fragmentMediaBase(fragmentNumber, mediaId)}/file`
+  return `${fragmentMediaBase(mediaId)}/file${fragmentQuery(fragmentNumber)}`
 }
 
 export function fragmentMediaDisplayUrl(
   fragmentNumber: string,
   mediaId: string,
 ): string {
-  return `${fragmentMediaBase(fragmentNumber, mediaId)}/display`
+  return `${fragmentMediaBase(mediaId)}/display${fragmentQuery(fragmentNumber)}`
 }
 
 export function fragmentMediaThumbnailUrl(
@@ -31,8 +42,8 @@ export function fragmentMediaThumbnailUrl(
   mediaId: string,
   size: ThumbnailSize,
 ): string {
-  const base = fragmentMediaBase(fragmentNumber, mediaId)
-  return `${base}/thumbnail/${segment(size)}`
+  const base = fragmentMediaBase(mediaId)
+  return `${base}/thumbnail/${segment(size)}${fragmentQuery(fragmentNumber)}`
 }
 
 function resolveBinaryUrl(
