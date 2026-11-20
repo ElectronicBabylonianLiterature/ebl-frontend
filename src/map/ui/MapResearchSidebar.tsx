@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
 import { isMapSiteId, mapSiteName } from 'fragmentarium/domain/mapSites'
 import type { MapTabState } from 'map/ui/useMapTabState'
 import MapSelectionInspector from 'map/ui/MapSelectionInspector'
@@ -81,6 +80,7 @@ export default function MapResearchSidebar({
   ]
   return (
     <aside className="map-research-panel" aria-label="Site research">
+      <MapPanelDock panel={state.panel} panels={panels} />
       <MapSelectionInspector
         research={state.research}
         provenances={state.provenances}
@@ -91,22 +91,6 @@ export default function MapResearchSidebar({
             data={state.fragmentMapData}
           />
         )}
-      />
-      <MapPanelDock
-        panel={state.panel}
-        panels={panels}
-        selectionAction={
-          polygon && state.panel.active !== 'inspector' ? (
-            <Button
-              type="button"
-              size="sm"
-              variant="outline-secondary"
-              onClick={() => state.panel.open('inspector')}
-            >
-              Show selected area
-            </Button>
-          ) : null
-        }
       />
       <MapExcavationBrowser
         polygonIndex={state.polygonIndex}

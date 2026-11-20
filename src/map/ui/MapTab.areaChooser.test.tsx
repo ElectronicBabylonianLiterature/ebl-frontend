@@ -70,9 +70,7 @@ it('retains the native chooser and focus while inspecting, revising and clearing
   )
 
   await userEvent.selectOptions(selector, POLYGON_ID)
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Show selected area' }),
-  )
+  await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
   expect(screen.getByRole('region', { name: 'Selected area' })).toBeVisible()
   expect(
     screen.getByRole('button', { name: 'Close Selected area' }),

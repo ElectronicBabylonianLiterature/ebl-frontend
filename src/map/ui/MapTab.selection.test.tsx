@@ -127,9 +127,7 @@ describe('MapTab excavation selection', () => {
     expect(
       screen.getAllByRole('region', { name: 'Linked tablets' }),
     ).toHaveLength(1)
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Show selected area' }),
-    )
+    await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
     expect(
       within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
         'status',
