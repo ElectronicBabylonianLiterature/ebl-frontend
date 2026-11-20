@@ -1,9 +1,12 @@
 import {
+  ChapterChange,
   ChapterEditSource,
   ChapterEditSourceKind,
+  ChapterRequest,
   LinesUpdateDto,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
+import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
 import {
   createLegacySnapshot,
   LegacySnapshot,
@@ -17,6 +20,9 @@ export type LegacyChapterEditTextService = Pick<
   TextService,
   'findChapterAtfSnapshot'
 >
+
+export const savingNotAvailableMessage =
+  'Saving is not available: this chapter was loaded as a read-only ATF snapshot.'
 
 export class LegacyChapterEditSource implements ChapterEditSource {
   readonly kind: ChapterEditSourceKind = 'legacy'
@@ -51,12 +57,32 @@ export class LegacyChapterEditSource implements ChapterEditSource {
     return toLineEditsDto(index, draft)
   }
 
+  describeChange(change: ChapterChange): ChapterRequest {
+    return describeChapterChange(this.id, change)
+  }
+
   saveLine(): Promise<ChapterOutline> {
-    return Promise.reject(
-      new Error(
-        'Saving is not available: this chapter was loaded as a read-only ATF snapshot.',
-      ),
-    )
+    return this.refuseToSave()
+  }
+
+  addLine(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  deleteLine(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  importLines(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  saveManuscripts(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  private refuseToSave(): Promise<ChapterOutline> {
+    return Promise.reject(new Error(savingNotAvailableMessage))
   }
 
   private loadSnapshot(signal?: AbortSignal): Promise<LegacySnapshot> {

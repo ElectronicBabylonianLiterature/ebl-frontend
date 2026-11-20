@@ -52,7 +52,9 @@ interface Props {
     manuscriptIndex: number,
     manuscriptLine: ManuscriptLine,
   ) => void
+  readonly onDelete: (manuscriptIndex: number) => void
   readonly disabled: boolean
+  readonly readOnly: boolean
 }
 
 function ManuscriptLineRow({
@@ -60,9 +62,12 @@ function ManuscriptLineRow({
   manuscriptLine,
   manuscripts,
   onChange,
+  onDelete,
   disabled,
+  readOnly,
 }: Props): JSX.Element {
   const id = useId()
+  const caption = `manuscript line ${manuscriptIndex + 1}`
   const change = (changedLine: ManuscriptLine): void =>
     onChange(manuscriptIndex, changedLine)
 
@@ -70,7 +75,7 @@ function ManuscriptLineRow({
     <div
       className="edit-lite-manuscript"
       role="group"
-      aria-label={`Manuscript line ${manuscriptIndex + 1}`}
+      aria-label={_.upperFirst(caption)}
     >
       <LazySiglumSelect
         value={manuscriptLine.manuscriptId}
@@ -79,6 +84,7 @@ function ManuscriptLineRow({
           change(setManuscriptId(manuscriptLine, manuscriptId))
         }
         disabled={disabled}
+        readOnly={readOnly}
       />
       <LabelsInput
         labels={manuscriptLine.labels}
@@ -97,15 +103,28 @@ function ManuscriptLineRow({
           change(setManuscriptNumber(manuscriptLine, event.target.value))
         }
       />
-      <LazyAtfEditor
-        name={`Text-${id}`}
-        label="Text"
-        value={manuscriptLine.atf}
-        onChange={(atf: string): void =>
-          change(setManuscriptAtf(manuscriptLine, atf))
-        }
-        disabled={disabled}
-      />
+      <div className="edit-lite-manuscript__text">
+        <LazyAtfEditor
+          name={`Text-${id}`}
+          label="Text"
+          value={manuscriptLine.atf}
+          onChange={(atf: string): void =>
+            change(setManuscriptAtf(manuscriptLine, atf))
+          }
+          disabled={disabled}
+        />
+      </div>
+      {!readOnly && (
+        <button
+          type="button"
+          className="edit-lite-link-button edit-lite-manuscript__delete"
+          aria-label={`Delete ${caption}`}
+          disabled={disabled}
+          onClick={(): void => onDelete(manuscriptIndex)}
+        >
+          Delete
+        </button>
+      )}
     </div>
   )
 }

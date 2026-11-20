@@ -3,6 +3,8 @@ import { ManuscriptSummary } from 'corpus/application/edit-lite/chapterOutline'
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import LazyAtfEditor from 'corpus/ui/edit-lite/LazyAtfEditor'
 import {
+  addVariantManuscriptLine,
+  removeVariantManuscriptLine,
   setVariantIntertext,
   setVariantManuscriptLine,
   setVariantReconstruction,
@@ -18,7 +20,9 @@ interface Props {
   readonly variant: LineVariant
   readonly manuscripts: readonly ManuscriptSummary[]
   readonly onChange: (variantIndex: number, variant: LineVariant) => void
+  readonly onDelete: (variantIndex: number) => void
   readonly disabled: boolean
+  readonly readOnly: boolean
 }
 
 function LineVariantPanel({
@@ -27,7 +31,9 @@ function LineVariantPanel({
   variant,
   manuscripts,
   onChange,
+  onDelete,
   disabled,
+  readOnly,
 }: Props): JSX.Element {
   const id = useId()
   const caption = `Variant ${variantIndex + 1}`
@@ -43,6 +49,13 @@ function LineVariantPanel({
       onChange(
         variantIndex,
         setVariantManuscriptLine(variant, manuscriptIndex, manuscriptLine),
+      ),
+  )
+  const handleManuscriptLineDelete = useStableCallback(
+    (manuscriptIndex: number): void =>
+      onChange(
+        variantIndex,
+        removeVariantManuscriptLine(variant, manuscriptIndex),
       ),
   )
 
@@ -86,7 +99,7 @@ function LineVariantPanel({
             <span>Siglum</span>
             <span>Labels</span>
             <span>Line nr.</span>
-            <span>Text</span>
+            <span className="edit-lite-manuscript__text">Text</span>
           </div>
           {variant.manuscripts.map((manuscriptLine, manuscriptIndex) => (
             <ManuscriptLineRow
@@ -95,9 +108,36 @@ function LineVariantPanel({
               manuscriptLine={manuscriptLine}
               manuscripts={manuscripts}
               onChange={handleManuscriptLineChange}
+              onDelete={handleManuscriptLineDelete}
               disabled={disabled}
+              readOnly={readOnly}
             />
           ))}
+        </div>
+      )}
+      {!readOnly && (
+        <div className="edit-lite-variant__actions">
+          <button
+            type="button"
+            className="edit-lite-link-button"
+            disabled={disabled}
+            onClick={(): void =>
+              onChange(variantIndex, addVariantManuscriptLine(variant))
+            }
+          >
+            Add manuscript line
+          </button>
+          {isCaptionVisible && (
+            <button
+              type="button"
+              className="edit-lite-link-button"
+              aria-label={`Delete ${caption.toLowerCase()}`}
+              disabled={disabled}
+              onClick={(): void => onDelete(variantIndex)}
+            >
+              Delete variant
+            </button>
+          )}
         </div>
       )}
     </div>

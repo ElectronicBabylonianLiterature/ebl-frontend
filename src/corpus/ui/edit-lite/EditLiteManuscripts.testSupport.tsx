@@ -5,9 +5,18 @@ import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { PeriodModifiers } from 'common/utils/period'
 import { Periods } from 'common/utils/periodDefinitions'
+import {
+  ChapterChange,
+  ChapterRequest,
+} from 'corpus/application/edit-lite/ChapterEditSource'
+import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
 import TextService from 'corpus/application/TextService'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { getProvenanceByName } from 'corpus/domain/provenance'
+import EditLiteContext, {
+  EditLiteActions,
+  EditLiteContextValue,
+} from 'corpus/ui/edit-lite/EditLiteContext'
 import EditLiteManuscripts from 'corpus/ui/edit-lite/EditLiteManuscripts'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -105,25 +114,76 @@ export function buildManuscripts(): Manuscript[] {
   ]
 }
 
+export interface ManuscriptsContext extends EditLiteContextValue {
+  readonly actions: jest.Mocked<EditLiteActions>
+  readonly describeChange: jest.Mock<ChapterRequest, [ChapterChange]>
+}
+
+export interface ManuscriptsElementOptions {
+  readonly id?: ChapterId
+  readonly context?: ManuscriptsContext
+  readonly version?: number
+  readonly uncertainFragments?: readonly string[]
+}
+
+export function createManuscriptsContext(
+  overrides: Partial<EditLiteContextValue> = {},
+  id: ChapterId = manuscriptsChapterId,
+): ManuscriptsContext {
+  return {
+    kind: 'legacy',
+    canSave: false,
+    canWrite: true,
+    manuscripts: [],
+    ...overrides,
+    actions: {
+      ensureLines: jest.fn(),
+      changeLine: jest.fn(),
+      resetLine: jest.fn(),
+      saveLine: jest.fn(),
+      addLine: jest.fn(),
+      deleteLine: jest.fn(),
+      importLines: jest.fn(),
+      saveManuscripts: jest.fn(),
+      reportUnsavedManuscripts: jest.fn(),
+    },
+    describeChange: jest.fn(
+      (change: ChapterChange): ChapterRequest =>
+        describeChapterChange(id, change),
+    ),
+  }
+}
+
 export function createManuscriptsElement(
   services: ManuscriptsServices,
-  id: ChapterId = manuscriptsChapterId,
+  idOrOptions: ChapterId | ManuscriptsElementOptions = {},
 ): JSX.Element {
+  const options: ManuscriptsElementOptions =
+    'textId' in idOrOptions ? { id: idOrOptions } : idOrOptions
+  const id = options.id ?? manuscriptsChapterId
   return (
-    <EditLiteManuscripts
-      id={id}
-      uncertainFragments={manuscriptsUncertainFragments}
-      textService={services.textService}
-      fragmentService={services.fragmentService}
-      searchBibliography={services.searchBibliography}
-    />
+    <EditLiteContext.Provider
+      value={options.context ?? createManuscriptsContext({}, id)}
+    >
+      <EditLiteManuscripts
+        id={id}
+        uncertainFragments={
+          options.uncertainFragments ?? manuscriptsUncertainFragments
+        }
+        version={options.version ?? 0}
+        textService={services.textService}
+        fragmentService={services.fragmentService}
+        searchBibliography={services.searchBibliography}
+      />
+    </EditLiteContext.Provider>
   )
 }
 
 export async function renderLoadedManuscripts(
   services: ManuscriptsServices,
+  options: ManuscriptsElementOptions = {},
 ): Promise<RenderResult> {
-  const view = render(createManuscriptsElement(services))
+  const view = render(createManuscriptsElement(services, options))
   await screen.findByRole('list', { name: 'Manuscripts' })
   return view
 }

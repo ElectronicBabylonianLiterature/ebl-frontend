@@ -1,7 +1,7 @@
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
 
-export type LineStatus = 'loading' | 'ready' | 'saving' | 'failed'
+export type LineStatus = 'loading' | 'ready' | 'saving' | 'deleting' | 'failed'
 
 export interface LineState {
   readonly status: LineStatus
@@ -13,6 +13,25 @@ export interface LineState {
 export interface EditLiteState {
   readonly outline: ChapterOutline
   readonly lines: Readonly<Record<number, LineState>>
+  readonly newLine: LineState | null
+  readonly layoutVersion: number
+  readonly manuscriptsVersion: number
+  readonly hasUnsavedManuscripts: boolean
+}
+
+interface IndexedAction<Type extends string> {
+  readonly type: Type
+  readonly index: number
+}
+
+interface OutlineAction<Type extends string> {
+  readonly type: Type
+  readonly outline: ChapterOutline
+}
+
+interface FailureAction<Type extends string> {
+  readonly type: Type
+  readonly error: string
 }
 
 export type EditLiteAction =
@@ -22,26 +41,19 @@ export type EditLiteAction =
       readonly offset: number
       readonly lines: readonly Line[]
     }
-  | {
-      readonly type: 'linesFailed'
-      readonly indices: readonly number[]
-      readonly error: string
-    }
-  | {
-      readonly type: 'lineChanged'
-      readonly index: number
-      readonly draft: Line
-    }
-  | { readonly type: 'lineReset'; readonly index: number }
-  | { readonly type: 'saveStarted'; readonly index: number }
-  | {
-      readonly type: 'saveSucceeded'
-      readonly index: number
-      readonly outline: ChapterOutline
-      readonly line: Line
-    }
-  | {
-      readonly type: 'saveFailed'
-      readonly index: number
-      readonly error: string
-    }
+  | (FailureAction<'linesFailed'> & { readonly indices: readonly number[] })
+  | (IndexedAction<'lineChanged'> & { readonly draft: Line })
+  | IndexedAction<'lineReset'>
+  | IndexedAction<'saveStarted'>
+  | (IndexedAction<'saveSucceeded'> &
+      OutlineAction<'saveSucceeded'> & { readonly line: Line })
+  | (IndexedAction<'saveFailed'> & FailureAction<'saveFailed'>)
+  | { readonly type: 'lineAddStarted' }
+  | { readonly type: 'lineAdded'; readonly line: Line }
+  | (OutlineAction<'newLineSaved'> & { readonly line: Line | null })
+  | FailureAction<'newLineSaveFailed'>
+  | IndexedAction<'deleteStarted'>
+  | (IndexedAction<'lineDeleted'> & OutlineAction<'lineDeleted'>)
+  | OutlineAction<'outlineReplaced'>
+  | OutlineAction<'manuscriptsSaved'>
+  | { readonly type: 'manuscriptsEdited'; readonly hasUnsaved: boolean }

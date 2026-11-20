@@ -1,39 +1,33 @@
 import _ from 'lodash'
-import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
-import { areLinesEqual } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import {
   EditLiteAction,
   EditLiteState,
   LineState,
 } from 'corpus/ui/edit-lite/editLiteState'
+import {
+  failedLine,
+  findLineState,
+  findNewLineIndex,
+  hasLineChanged,
+  loadingLine,
+  readyLine,
+} from 'corpus/ui/edit-lite/lineStates'
+import {
+  removeLine,
+  replaceOutline,
+  withLines,
+} from 'corpus/ui/edit-lite/outlineChanges'
 
-type LineStateEntry = readonly [number, LineState]
-
-const loadingLine: LineState = {
-  status: 'loading',
-  original: null,
-  draft: null,
-  error: null,
-}
-
-function readyLine(line: Line): LineState {
-  return { status: 'ready', original: line, draft: line, error: null }
-}
-
-function failedLine(error: string): LineState {
-  return { status: 'failed', original: null, draft: null, error }
-}
-
-function withLines(
+function withLine(
   state: EditLiteState,
-  entries: readonly LineStateEntry[],
+  index: number,
+  lineState: LineState,
 ): EditLiteState {
-  return {
-    ...state,
-    lines: { ...state.lines, ...Object.fromEntries(entries) },
-  }
+  return index === findNewLineIndex(state)
+    ? { ...state, newLine: lineState }
+    : withLines(state, [[index, lineState]])
 }
 
 function updateLine(
@@ -41,10 +35,10 @@ function updateLine(
   index: number,
   update: (lineState: LineState) => LineState,
 ): EditLiteState {
-  const lineState: LineState | undefined = state.lines[index]
+  const lineState = findLineState(state, index)
   return lineState === undefined
     ? state
-    : withLines(state, [[index, update(lineState)]])
+    : withLine(state, index, update(lineState))
 }
 
 function changeLine(
@@ -52,14 +46,17 @@ function changeLine(
   index: number,
   draft: Line,
 ): EditLiteState {
-  const lineState: LineState | undefined = state.lines[index]
+  const lineState = findLineState(state, index)
   return lineState === undefined || lineState.original === null
     ? state
-    : withLines(state, [[index, { ...lineState, draft }]])
+    : withLine(state, index, { ...lineState, draft })
 }
 
 function resetLine(state: EditLiteState, index: number): EditLiteState {
   const lineState: LineState | undefined = state.lines[index]
+  if (index === findNewLineIndex(state)) {
+    return state.newLine === null ? state : { ...state, newLine: null }
+  }
   if (lineState === undefined) {
     return state
   }
@@ -71,88 +68,36 @@ function resetLine(state: EditLiteState, index: number): EditLiteState {
     : state
 }
 
-function reuseEqualItems<Item>(
-  previous: readonly Item[],
-  next: readonly Item[],
-): readonly Item[] {
-  return _.isEqual(previous, next)
-    ? previous
-    : next.map((item, index) =>
-        _.isEqual(item, previous[index]) ? previous[index] : item,
-      )
+function storeSavedNewLine(
+  state: EditLiteState,
+  savedOutline: ChapterOutline,
+  line: Line | null,
+): EditLiteState {
+  const savedState = replaceOutline({ ...state, newLine: null }, savedOutline)
+  return line === null
+    ? savedState
+    : withLines(savedState, [
+        [savedState.outline.lines.length - 1, readyLine(line)],
+      ])
 }
 
-function mergeOutline(
-  previous: ChapterOutline,
-  next: ChapterOutline,
-): ChapterOutline {
-  return {
-    ...next,
-    manuscripts: reuseEqualItems(previous.manuscripts, next.manuscripts),
-    lines: reuseEqualItems(previous.lines, next.lines),
-  }
+function failLine(lineState: LineState, error: string): LineState {
+  return { ...lineState, status: 'failed', error }
 }
 
 export function createEditLiteState(outline: ChapterOutline): EditLiteState {
-  return { outline, lines: {} }
+  return {
+    outline,
+    lines: {},
+    newLine: null,
+    layoutVersion: 0,
+    manuscriptsVersion: 0,
+    hasUnsavedManuscripts: false,
+  }
 }
 
 export function isLineDirty(lineState: LineState | undefined): boolean {
-  const original = lineState?.original ?? null
-  const draft = lineState?.draft ?? null
-  return (
-    original !== null &&
-    draft !== null &&
-    draft !== original &&
-    !areLinesEqual(original, draft)
-  )
-}
-
-function reconcileLine(
-  lineState: LineState,
-  isOutlineUnchanged: boolean,
-): LineState | null {
-  if (
-    isOutlineUnchanged ||
-    lineState.status === 'loading' ||
-    lineState.status === 'saving'
-  ) {
-    return lineState
-  }
-  return isLineDirty(lineState)
-    ? { ...lineState, status: 'failed', error: lineChangedOnServerMessage }
-    : null
-}
-
-function reconcileLines(
-  state: EditLiteState,
-  outline: ChapterOutline,
-): readonly LineStateEntry[] {
-  return Object.keys(state.lines)
-    .map(Number)
-    .flatMap((index): LineStateEntry[] => {
-      const isOutlineUnchanged =
-        index < outline.lines.length &&
-        outline.lines[index] === state.outline.lines[index]
-      const lineState = reconcileLine(state.lines[index], isOutlineUnchanged)
-      return lineState === null ? [] : [[index, lineState]]
-    })
-}
-
-function storeSavedLine(
-  state: EditLiteState,
-  index: number,
-  savedOutline: ChapterOutline,
-  line: Line,
-): EditLiteState {
-  const outline = mergeOutline(state.outline, savedOutline)
-  return {
-    outline,
-    lines: Object.fromEntries([
-      ...reconcileLines(state, outline),
-      [index, readyLine(line)],
-    ]),
-  }
+  return hasLineChanged(lineState)
 }
 
 type ActionHandler<Action> = (
@@ -194,13 +139,40 @@ const actionHandlers: ActionHandlers = {
       error: null,
     })),
   saveSucceeded: (state, action) =>
-    storeSavedLine(state, action.index, action.outline, action.line),
+    withLines(replaceOutline(state, action.outline), [
+      [action.index, readyLine(action.line)],
+    ]),
   saveFailed: (state, action) =>
+    updateLine(state, action.index, (lineState) =>
+      failLine(lineState, action.error),
+    ),
+  lineAddStarted: (state) =>
+    state.newLine === null ? { ...state, newLine: loadingLine } : state,
+  lineAdded: (state, action) => ({ ...state, newLine: readyLine(action.line) }),
+  newLineSaved: (state, action) =>
+    storeSavedNewLine(state, action.outline, action.line),
+  newLineSaveFailed: (state, action) =>
+    state.newLine === null
+      ? state
+      : { ...state, newLine: failLine(state.newLine, action.error) },
+  deleteStarted: (state, action) =>
     updateLine(state, action.index, (lineState) => ({
       ...lineState,
-      status: 'failed',
-      error: action.error,
+      status: 'deleting',
+      error: null,
     })),
+  lineDeleted: (state, action) =>
+    removeLine(state, action.index, action.outline),
+  outlineReplaced: (state, action) => replaceOutline(state, action.outline),
+  manuscriptsSaved: (state, action) => ({
+    ...replaceOutline(state, action.outline),
+    manuscriptsVersion: state.manuscriptsVersion + 1,
+    hasUnsavedManuscripts: false,
+  }),
+  manuscriptsEdited: (state, action) =>
+    state.hasUnsavedManuscripts === action.hasUnsaved
+      ? state
+      : { ...state, hasUnsavedManuscripts: action.hasUnsaved },
 }
 
 export function editLiteReducer(

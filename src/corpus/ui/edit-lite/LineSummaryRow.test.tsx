@@ -74,3 +74,10 @@ test('re-renders only the row whose line changed', () => {
   expect(screen.getByText('1a')).toBeVisible()
   expect(screen.getByText('edited')).toBeVisible()
 })
+
+test('marks a line that was not saved yet as new', () => {
+  render(<LineSummaryRow line={firstLine} isNew />)
+
+  expect(screen.getByText('new')).toBeVisible()
+  expect(screen.queryByText('edited')).not.toBeInTheDocument()
+})

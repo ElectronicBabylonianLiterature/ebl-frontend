@@ -23,6 +23,12 @@ This repository holds the page; the new endpoints are in ebl-api.
   - [x] qlty: `findKeyTarget` and `editLiteReducer` use lookup tables
   - [x] Chapter revision sent on every load and save; 409 handled
 - [x] Step 2: reduced to the split view; versions A, B, D and the version switcher removed
+- [x] Step 3: full editor for lines and manuscripts
+  - [x] Add and delete lines, variants and manuscript lines
+  - [x] Import tab
+  - [x] Manuscripts tab saves; add and delete manuscripts; uncertain fragments
+  - [x] Unsaved-changes warning
+  - [x] Read-only without write permission
 
 ## Open
 

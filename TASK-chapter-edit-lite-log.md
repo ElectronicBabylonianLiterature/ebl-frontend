@@ -105,3 +105,27 @@ about 1.8 s.
   96.51 % branches; `yarn build:ci-stable` succeeds.
 - Browser check against production (Enūma eliš I): split view renders,
   `?line=40` opens line 40, one Ace editor mounts on click.
+
+## Step 3: full editor for lines and manuscripts
+
+- Lines: "Add line" appends one unsaved new line (the API only appends);
+  "Delete line" asks for confirmation. After a delete the drafts of later
+  lines move down with their lines.
+- Variants and manuscript lines can be added and deleted in the line
+  editor. A manuscript line without a siglum blocks saving.
+- Import tab posts to `{chapter}/import`; the Manuscripts tab saves to
+  `{chapter}/manuscripts`, with add and delete for manuscripts and editing
+  of uncertain fragments. Both go through the edit source so the chapter
+  revision stays in sync.
+- The browser warns before leaving with unsaved line drafts, an unsaved
+  new line or unsaved manuscript edits.
+- Without permission to write texts the page is read-only in both source
+  modes. With permission the legacy source still only shows the request.
+- The Import tab unmounts when left, so text that was not imported is
+  lost on switching tabs. One unsaved new line at a time.
+- Gates: `yarn lint` and `yarn tsc` clean; `yarn test:ci` 753 suites,
+  6632 tests passed, zero console output; coverage 98.72 % statements,
+  96.61 % branches; qlty no findings; `yarn build:ci-stable` succeeds.
+- Browser run against a local ebl-api with seeded data: 54 checks passed
+  (save, add, delete with a draft elsewhere, import, manuscripts, 409,
+  unsaved warning, read-only).

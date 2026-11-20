@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { screen, within } from '@testing-library/react'
 import { Line } from 'corpus/domain/line'
 import {
+  EditLiteRenderOptions,
   EditLiteRenderResult,
   renderWithEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
@@ -41,7 +42,11 @@ function StatefulPanel({
   )
 }
 
-export function renderPanel(line: Line, disabled?: boolean): RenderedPanel {
+export function renderPanel(
+  line: Line,
+  disabled?: boolean,
+  options: EditLiteRenderOptions = {},
+): RenderedPanel {
   const onChange = jest.fn<void, [Line]>()
   const view = renderWithEditLite(
     <StatefulPanel
@@ -49,6 +54,7 @@ export function renderPanel(line: Line, disabled?: boolean): RenderedPanel {
       onChange={onChange}
       disabled={disabled}
     />,
+    options,
   )
   return {
     ...view,

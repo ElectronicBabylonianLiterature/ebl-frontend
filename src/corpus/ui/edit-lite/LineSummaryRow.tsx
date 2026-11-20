@@ -11,9 +11,14 @@ import 'corpus/ui/edit-lite/edit-lite.sass'
 interface Props {
   readonly line: LineOutline
   readonly isDirty?: boolean
+  readonly isNew?: boolean
 }
 
-function LineSummaryRow({ line, isDirty = false }: Props): JSX.Element {
+function LineSummaryRow({
+  line,
+  isDirty = false,
+  isNew = false,
+}: Props): JSX.Element {
   return (
     <span className="edit-lite-summary">
       <span className="edit-lite-summary__number">{line.number}</span>
@@ -34,6 +39,9 @@ function LineSummaryRow({ line, isDirty = false }: Props): JSX.Element {
         <span className="edit-lite-badge">
           {pluralize(countManuscriptLines(line), 'manuscript')}
         </span>
+        {isNew && (
+          <span className="edit-lite-badge edit-lite-badge--edited">new</span>
+        )}
         {isDirty && (
           <span className="edit-lite-badge edit-lite-badge--edited">
             edited

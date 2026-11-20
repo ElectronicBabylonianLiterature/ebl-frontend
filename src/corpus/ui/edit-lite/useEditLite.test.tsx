@@ -1,4 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
+import { ChapterChange } from 'corpus/application/edit-lite/ChapterEditSource'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import {
@@ -7,6 +8,7 @@ import {
   createFakeChapterEditSource,
   FakeChapterEditSource,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
+import { createEditLiteState } from 'corpus/ui/edit-lite/editLiteReducer'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import useEditLite, {
   EditLite,
@@ -27,7 +29,7 @@ function renderEditLite(
 ): EditLiteView {
   const { result, rerender } = renderHook(
     (currentSource: FakeChapterEditSource) =>
-      useEditLite(currentSource, outline),
+      useEditLite(currentSource, outline, true),
     { initialProps: source },
   )
   return { source, result, rerender }
@@ -53,12 +55,19 @@ test('starts with the outline and exposes the source', () => {
   )
   const { state, context } = result.current
 
-  expect(state).toEqual({ outline, lines: {} })
+  expect(state).toEqual(createEditLiteState(outline))
   expect(context.kind).toBe('legacy')
   expect(context.canSave).toBe(false)
   expect(context.manuscripts).toBe(outline.manuscripts)
-  expect(context.describeSave(1, lines[1])).toEqual(toLineEditsDto(1, lines[1]))
-  expect(source.describeSave).toHaveBeenCalledWith(1, lines[1])
+  const change: ChapterChange = { type: 'saveLine', index: 1, line: lines[1] }
+
+  expect(context.canWrite).toBe(true)
+  expect(context.describeChange(change)).toEqual({
+    method: 'POST',
+    url: '/texts/L/1/2/chapters/Standard%20Babylonian/I/lines?view=outline&revision=revision-1',
+    body: toLineEditsDto(1, lines[1]),
+  })
+  expect(source.describeChange).toHaveBeenCalledWith(change)
 })
 
 test('ensureLines marks the lines as loading and then stores them', async () => {

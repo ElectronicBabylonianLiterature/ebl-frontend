@@ -35,7 +35,7 @@ async function waitForStatus(
 
 async function renderWithDraft(): Promise<EditLiteView> {
   const source = createFakeChapterEditSource({ lines })
-  const { result } = renderHook(() => useEditLite(source, outline))
+  const { result } = renderHook(() => useEditLite(source, outline, true))
   const view = { source, result }
   act(() => result.current.context.actions.ensureLines(1, 1))
   await waitForStatus(view, 'ready')
@@ -147,7 +147,7 @@ test('saveLine does not start a second save while one is running', async () => {
 test('saveLine ignores lines that are not loaded', async () => {
   const source = createFakeChapterEditSource({ lines })
   source.loadLines.mockRejectedValueOnce(new Error('Network error'))
-  const { result } = renderHook(() => useEditLite(source, outline))
+  const { result } = renderHook(() => useEditLite(source, outline, true))
   act(() => result.current.context.actions.saveLine(0))
   act(() => result.current.context.actions.ensureLines(1, 1))
   act(() => result.current.context.actions.saveLine(1))

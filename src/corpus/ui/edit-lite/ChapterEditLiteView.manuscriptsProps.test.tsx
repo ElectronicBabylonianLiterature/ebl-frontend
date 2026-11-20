@@ -2,6 +2,7 @@ import React from 'react'
 import { render, RenderResult, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
+import SessionContext from 'auth/SessionContext'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import TextService from 'corpus/application/TextService'
 import { createText } from 'corpus/domain/text'
@@ -10,6 +11,7 @@ import {
   editLiteChapterId,
   mockEditSource,
   waitForLoadedEditLite,
+  writerSession,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
@@ -18,6 +20,7 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 interface ManuscriptsProps {
   readonly id: ChapterId
   readonly uncertainFragments: readonly string[]
+  readonly version: number
   readonly textService: TextService
   readonly fragmentService: FragmentService
   readonly searchBibliography: (
@@ -63,13 +66,15 @@ const bibliographyService = { search: jest.fn() }
 function createView(search: string): JSX.Element {
   return (
     <MemoryRouter>
-      <ChapterEditLiteView
-        id={{ ...editLiteChapterId }}
-        textService={textService}
-        fragmentService={fragmentService}
-        bibliographyService={bibliographyService}
-        search={search}
-      />
+      <SessionContext.Provider value={writerSession}>
+        <ChapterEditLiteView
+          id={{ ...editLiteChapterId }}
+          textService={textService}
+          fragmentService={fragmentService}
+          bibliographyService={bibliographyService}
+          search={search}
+        />
+      </SessionContext.Provider>
     </MemoryRouter>
   )
 }
@@ -110,6 +115,7 @@ test('gives the manuscripts the chapter, the services and the uncertain fragment
   expect(mockManuscriptsRenders).toHaveLength(1)
   expect(lastProps().id).toEqual(editLiteChapterId)
   expect(lastProps().uncertainFragments).toEqual(['K.1', 'BM.2'])
+  expect(lastProps().version).toBe(0)
   expect(lastProps().textService).toBe(textService)
   expect(lastProps().fragmentService).toBe(fragmentService)
 })

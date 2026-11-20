@@ -8,7 +8,10 @@ import {
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
-import { legacyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
+import {
+  legacyNotice,
+  readOnlyNotice,
+} from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
   countRequests,
   createEditLiteFakeApi,
@@ -153,20 +156,24 @@ test('an api source saves the edited line and shows the new outline', async () =
   fakeApi.verifyExpectations()
 })
 
-test('a reader with an api source previews the request instead of saving', async () => {
+test('a reader with an api source gets a read-only page', async () => {
   const fakeApi = createApiFakeApi()
   await renderLoadedEditLiteRoute({
     fakeApi,
     search: '?source=api',
     session: guestSession,
   })
-  await editFirstLine()
+  const editor = await loadedEditor('1')
 
-  await userEvent.click(screen.getByRole('button', { name: 'Save line' }))
-
+  expect(screen.getByText(readOnlyNotice, { exact: false })).toBeVisible()
+  expect(within(editor).getByLabelText('Number')).toBeDisabled()
   expect(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  ).toBeInTheDocument()
+    screen.queryByRole('button', { name: 'Save line' }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByRole('button', { name: 'Preview request' }),
+  ).not.toBeInTheDocument()
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(fakeApi.client.postJson).not.toHaveBeenCalled()
   expect(countRequests(fakeApi, snapshotUrl)).toBe(0)
 })

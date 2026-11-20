@@ -6,12 +6,50 @@ import {
   setUpEditProvenances,
   snapshotDto,
 } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
-import { ChapterEditSource } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  ChapterChange,
+  ChapterEditSource,
+} from 'corpus/application/edit-lite/ChapterEditSource'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
+import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
 import { ChapterEditTextService } from 'corpus/application/edit-lite/createChapterEditSource'
 import LegacyChapterEditSource, {
   LegacyChapterEditSource as NamedLegacyChapterEditSource,
+  savingNotAvailableMessage,
 } from 'corpus/application/edit-lite/LegacyChapterEditSource'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
+import { Manuscript } from 'corpus/domain/manuscript'
+
+type Apply = (source: ChapterEditSource) => Promise<ChapterOutline>
+
+const manuscripts: readonly Manuscript[] = [new Manuscript({ id: 1 })]
+const operations: readonly [string, ChapterChange, Apply][] = [
+  [
+    'saveLine',
+    { type: 'saveLine', index: 1, line: legacyLines[1] },
+    (source) => source.saveLine(1, legacyLines[1], legacyLines[1]),
+  ],
+  [
+    'addLine',
+    { type: 'addLine', line: legacyLines[0] },
+    (source) => source.addLine(legacyLines[0]),
+  ],
+  [
+    'deleteLine',
+    { type: 'deleteLine', index: 1 },
+    (source) => source.deleteLine(1),
+  ],
+  [
+    'importLines',
+    { type: 'importLines', atf: '1. kur' },
+    (source) => source.importLines('1. kur'),
+  ],
+  [
+    'saveManuscripts',
+    { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
+    (source) => source.saveManuscripts(manuscripts, ['K.1']),
+  ],
+]
 
 let textService: jest.Mocked<ChapterEditTextService>
 let source: ChapterEditSource
@@ -119,4 +157,25 @@ it('refuses to save', async () => {
   )
   expect(textService.updateEditedLines).not.toHaveBeenCalled()
   expect(textService.findChapterAtfSnapshot).not.toHaveBeenCalled()
+})
+
+describe.each(operations)('%s', (_name, change, apply) => {
+  it('stays a dry run that sends nothing', async () => {
+    await expect(apply(source)).rejects.toThrow(savingNotAvailableMessage)
+
+    expect(textService.updateEditedLines).not.toHaveBeenCalled()
+    expect(textService.updateChapterOutline).not.toHaveBeenCalled()
+    expect(textService.findChapterAtfSnapshot).not.toHaveBeenCalled()
+  })
+
+  it('describes the request that would be sent', async () => {
+    const { endpoint, body } = toChapterUpdate(change)
+    await source.loadOutline()
+
+    expect(source.describeChange(change)).toEqual({
+      method: 'POST',
+      url: `/texts/L/1/2/chapters/Standard%20Babylonian/I/${endpoint}?view=outline`,
+      body,
+    })
+  })
 })

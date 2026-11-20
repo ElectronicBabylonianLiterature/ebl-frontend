@@ -1,4 +1,3 @@
-import { stringify } from 'common/utils/queryString'
 import { createChapterUrl } from 'corpus/application/chapterUrls'
 import { fromLineDto } from 'corpus/application/dtos'
 import {
@@ -6,11 +5,10 @@ import {
   LinesPageDto,
 } from 'corpus/application/edit-lite/chapterOutline'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
+import { createChapterEndpointUrl } from 'corpus/application/edit-lite/chapterRequests'
 import TextReadService from 'corpus/application/TextReadService'
 import { Line } from 'corpus/domain/line'
 import { ChapterId } from 'transliteration/domain/chapter-id'
-
-type LinesUrlParameters = Readonly<Record<string, string | number | undefined>>
 
 export class ChapterOutlineService extends TextReadService {
   findChapterOutline(
@@ -33,19 +31,11 @@ export class ChapterOutlineService extends TextReadService {
   ): Promise<readonly Line[]> {
     return this.apiClient
       .fetchJson<LinesPageDto>(
-        this.createLinesUrl(id, { offset, limit, revision }),
+        createChapterEndpointUrl(id, 'lines', { offset, limit, revision }),
         false,
         signal,
       )
       .then((page) => page.lines.map(fromLineDto))
-  }
-
-  protected createLinesUrl(
-    id: ChapterId,
-    parameters: LinesUrlParameters,
-  ): string {
-    const query = stringify(parameters, { sort: false, skipEmptyString: true })
-    return `${createChapterUrl(id)}/lines?${query}`
   }
 
   findChapterAtfSnapshot(

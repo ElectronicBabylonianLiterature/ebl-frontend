@@ -5,15 +5,12 @@ import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
 import TextService from 'corpus/application/TextService'
 import { Manuscript } from 'corpus/domain/manuscript'
 import { manuscriptsPreviewNotice } from 'corpus/ui/edit-lite/EditLiteManuscriptPreview'
-import {
-  createManuscriptsTarget,
-  manuscriptsNotice,
-} from 'corpus/ui/edit-lite/EditLiteManuscripts'
+import { manuscriptsNotice } from 'corpus/ui/edit-lite/EditLiteManuscripts'
 import {
   buildManuscripts,
+  createManuscriptsContext,
   createManuscriptsElement,
   firstSiglum,
-  manuscriptsChapterId,
   manuscriptsProvenanceRecords,
   ManuscriptsServices,
   manuscriptsUncertainFragments,
@@ -38,7 +35,8 @@ const services: ManuscriptsServices = {
   >)(),
   searchBibliography: jest.fn(),
 }
-const target = 'POST /texts/L/1/2/chapters/Standard%20Babylonian/I/manuscripts'
+const target =
+  'POST /texts/L/1/2/chapters/Standard%20Babylonian/I/manuscripts?view=outline'
 
 function requestBody(manuscripts: readonly Manuscript[]): string {
   return JSON.stringify(
@@ -67,10 +65,15 @@ test('states that edits are not sent', async () => {
 })
 
 test('previews the request of the unchanged manuscripts', async () => {
-  await renderLoadedManuscripts(services)
+  const context = createManuscriptsContext()
+  await renderLoadedManuscripts(services, { context })
   const dialog = within(await openPreview())
 
-  expect(createManuscriptsTarget(manuscriptsChapterId)).toBe(target)
+  expect(context.describeChange).toHaveBeenCalledWith({
+    type: 'saveManuscripts',
+    manuscripts: buildManuscripts(),
+    uncertainFragments: manuscriptsUncertainFragments,
+  })
   expect(dialog.getByText(target)).toBeVisible()
   expect(dialog.getByText(manuscriptsPreviewNotice)).toBeVisible()
   expect(manuscriptsPreviewNotice).toContain('nothing was sent')

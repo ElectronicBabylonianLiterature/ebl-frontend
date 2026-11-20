@@ -1,7 +1,9 @@
 import { fromLineDto } from 'corpus/application/dtos'
 import {
   areLinesEqual,
+  toDeletedLineDto,
   toLineEditsDto,
+  toNewLineDto,
 } from 'corpus/application/edit-lite/lineEdits'
 import { EditStatus, Line } from 'corpus/domain/line'
 
@@ -136,5 +138,21 @@ describe('areLinesEqual', () => {
   ])('is false when the %s differs', (_name, changedDto) => {
     expect(areLinesEqual(line, fromLineDto(changedDto))).toBe(false)
     expect(areLinesEqual(fromLineDto(changedDto), line)).toBe(false)
+  })
+})
+
+describe('toNewLineDto', () => {
+  it('sends the line as the only new line', () => {
+    expect(toNewLineDto(line)).toEqual({
+      new: [expectedLineDto],
+      deleted: [],
+      edited: [],
+    })
+  })
+})
+
+describe('toDeletedLineDto', () => {
+  it('sends the index as the only deleted line', () => {
+    expect(toDeletedLineDto(7)).toEqual({ new: [], deleted: [7], edited: [] })
   })
 })

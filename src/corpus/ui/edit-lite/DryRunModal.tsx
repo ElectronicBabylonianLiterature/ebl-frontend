@@ -1,30 +1,34 @@
 import React, { useId } from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
+import { ChapterRequest } from 'corpus/application/edit-lite/ChapterEditSource'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 
 interface Props {
-  readonly payload: LinesUpdateDto | Readonly<Record<string, unknown>> | null
+  readonly request: ChapterRequest | null
   readonly onHide: () => void
-  readonly target?: string
   readonly notice?: string
 }
 
-export const dryRunTarget = 'POST …/lines'
-export const dryRunNotice =
-  'Dry run: nothing was sent to the server. This is the request that saving would send.'
+export function createDryRunNotice(action: string): string {
+  return `Dry run: nothing was sent to the server. This is the request that ${action} would send.`
+}
+
+export const dryRunNotice = createDryRunNotice('saving')
+
+export function formatRequestTarget(request: ChapterRequest): string {
+  return `${request.method} ${request.url}`
+}
 
 export default function DryRunModal({
-  payload,
+  request,
   onHide,
-  target = dryRunTarget,
   notice = dryRunNotice,
 }: Props): JSX.Element {
   const titleId = useId()
 
   return (
     <Modal
-      show={payload !== null}
+      show={request !== null}
       onHide={onHide}
       size="lg"
       animation={false}
@@ -33,15 +37,17 @@ export default function DryRunModal({
       <Modal.Header closeButton>
         <Modal.Title id={titleId}>Request preview</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <p className="edit-lite-dry-run__notice">{notice}</p>
-        <p>
-          Target: <code>{target}</code>
-        </p>
-        <pre className="edit-lite-dry-run__body" aria-label="Request body">
-          {JSON.stringify(payload, null, 2)}
-        </pre>
-      </Modal.Body>
+      {request !== null && (
+        <Modal.Body>
+          <p className="edit-lite-dry-run__notice">{notice}</p>
+          <p>
+            Target: <code>{formatRequestTarget(request)}</code>
+          </p>
+          <pre className="edit-lite-dry-run__body" aria-label="Request body">
+            {JSON.stringify(request.body, null, 2)}
+          </pre>
+        </Modal.Body>
+      )}
       <Modal.Footer>
         <Button size="sm" variant="secondary" onClick={onHide}>
           Close

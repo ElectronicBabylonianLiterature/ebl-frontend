@@ -38,7 +38,14 @@ function readyLine(line: Line): LineState {
 }
 
 test('createEditLiteState starts without loaded lines', () => {
-  expect(initialState).toEqual({ outline, lines: {} })
+  expect(initialState).toEqual({
+    outline,
+    lines: {},
+    newLine: null,
+    layoutVersion: 0,
+    manuscriptsVersion: 0,
+    hasUnsavedManuscripts: false,
+  })
 })
 
 test('linesRequested marks the indices as loading', () => {

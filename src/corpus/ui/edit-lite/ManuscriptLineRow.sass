@@ -9,13 +9,48 @@
   align-items: start
   display: grid
   gap: 0.25rem
-  grid-template-columns: minmax(0, 1fr) 4.5rem 5rem
+  grid-template-columns: minmax(0, 1fr) 4.5rem 5rem auto
 
-  > :last-child
+  &__text
     grid-column: 1 / -1
+    grid-row: 2
+    min-width: 0
+
+  &__delete
+    grid-column: 4
+    grid-row: 1
 
   @media (min-width: $ebl-breakpoint-md)
-    grid-template-columns: minmax(6rem, 10rem) 4.5rem 5rem minmax(0, 1fr)
+    grid-template-columns: minmax(6rem, 10rem) 4.5rem 5rem minmax(0, 1fr) auto
 
-    > :last-child
-      grid-column: auto
+    &__text
+      grid-column: 4
+      grid-row: 1
+
+    &__delete
+      grid-column: 5
+
+.edit-lite-link-button
+  background: none
+  border: 1px solid transparent
+  border-radius: 3px
+  color: $ebl-color-text-corpus-medium
+  font-size: 0.8rem
+  line-height: 1.4
+  padding: 0.15rem 0.4rem
+
+  &:hover:not(:disabled),
+  &:focus-visible
+    border-color: $ebl-color-brand-primary
+    color: $ebl-color-brand-primary-dark
+
+  &:disabled
+    color: $ebl-color-text-secondary
+    cursor: default
+
+.edit-lite-variant__actions,
+.edit-lite-panel__actions
+  display: flex
+  flex-wrap: wrap
+  gap: 0.4rem
+  margin-top: 0.3rem

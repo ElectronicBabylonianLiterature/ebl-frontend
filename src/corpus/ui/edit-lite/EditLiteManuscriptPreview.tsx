@@ -1,25 +1,26 @@
 import React from 'react'
-import DryRunModal from 'corpus/ui/edit-lite/DryRunModal'
+import { ChapterRequest } from 'corpus/application/edit-lite/ChapterEditSource'
+import DryRunModal, {
+  createDryRunNotice,
+} from 'corpus/ui/edit-lite/DryRunModal'
 
 interface Props {
-  readonly target: string
-  readonly payload: Readonly<Record<string, unknown>> | null
+  readonly request: ChapterRequest | null
   readonly onHide: () => void
 }
 
-export const manuscriptsPreviewNotice =
-  'Dry run: nothing was sent to the server. This is the request that saving the manuscripts would send.'
+export const manuscriptsPreviewNotice = createDryRunNotice(
+  'saving the manuscripts',
+)
 
 export default function EditLiteManuscriptPreview({
-  target,
-  payload,
+  request,
   onHide,
 }: Props): JSX.Element {
   return (
     <DryRunModal
-      payload={payload}
+      request={request}
       onHide={onHide}
-      target={target}
       notice={manuscriptsPreviewNotice}
     />
   )

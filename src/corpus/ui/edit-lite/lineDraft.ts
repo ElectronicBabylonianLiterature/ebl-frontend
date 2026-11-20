@@ -1,5 +1,7 @@
 import { castDraft, Draft, produce } from 'immer'
 import {
+  createManuscriptLine,
+  createVariant,
   EditStatus,
   Line,
   LineVariant,
@@ -55,6 +57,18 @@ export function setLineVariant(
   })
 }
 
+export function addLineVariant(line: Line): Line {
+  return editLine(line, (draft) => {
+    draft.variants.push(castDraft(createVariant({})))
+  })
+}
+
+export function removeLineVariant(line: Line, variantIndex: number): Line {
+  return editLine(line, (draft) => {
+    draft.variants.splice(variantIndex, 1)
+  })
+}
+
 export function setVariantIntertext(
   variant: LineVariant,
   intertext: string,
@@ -80,6 +94,21 @@ export function setVariantManuscriptLine(
 ): LineVariant {
   return produce(variant, (draft) => {
     draft.manuscripts[manuscriptIndex] = castDraft(manuscriptLine)
+  })
+}
+
+export function addVariantManuscriptLine(variant: LineVariant): LineVariant {
+  return produce(variant, (draft) => {
+    draft.manuscripts.push(castDraft(createManuscriptLine({})))
+  })
+}
+
+export function removeVariantManuscriptLine(
+  variant: LineVariant,
+  manuscriptIndex: number,
+): LineVariant {
+  return produce(variant, (draft) => {
+    draft.manuscripts.splice(manuscriptIndex, 1)
   })
 }
 

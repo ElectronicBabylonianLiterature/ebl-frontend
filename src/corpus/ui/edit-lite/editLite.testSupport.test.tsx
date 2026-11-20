@@ -10,6 +10,7 @@ import {
   editLiteManuscripts,
   renderWithEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
+import { createEditLiteState } from 'corpus/ui/edit-lite/editLiteReducer'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 
@@ -105,7 +106,7 @@ test('renderWithEditLite provides the context and the state', async () => {
   expect(screen.getByText('0 lines')).toBeVisible()
   expect(view.source.kind).toBe('legacy')
   expect(view.outline).toEqual(buildEditLiteOutline(lines))
-  expect(view.getState()).toEqual({ outline: view.outline, lines: {} })
+  expect(view.getState()).toEqual(createEditLiteState(view.outline))
   expect(view.getContext().kind).toBe('legacy')
 
   act(() => view.getContext().actions.ensureLines(0, 2))

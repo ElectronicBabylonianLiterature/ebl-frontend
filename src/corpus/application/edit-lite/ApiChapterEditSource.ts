@@ -1,8 +1,10 @@
 import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import SerialQueue from 'common/utils/SerialQueue'
 import {
+  ChapterChange,
   ChapterEditSource,
   ChapterEditSourceKind,
+  ChapterRequest,
   LinesUpdateDto,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
@@ -11,21 +13,31 @@ import {
 } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import {
+  describeChapterChange,
+  toChapterUpdate,
+} from 'corpus/application/edit-lite/chapterRequests'
+import {
   areLinesEqual,
   toLineEditsDto,
 } from 'corpus/application/edit-lite/lineEdits'
 import type TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
+import { Manuscript } from 'corpus/domain/manuscript'
 import { ApiError } from 'http/ApiClient'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export type ApiChapterEditTextService = Pick<
   TextService,
-  'findChapterOutline' | 'findChapterLines' | 'updateEditedLines'
+  | 'findChapterOutline'
+  | 'findChapterLines'
+  | 'updateEditedLines'
+  | 'updateChapterOutline'
 >
 
 export const maximumLinesPerRequest = 10
 export const maximumConcurrentLineRequests = 3
+export const savingNotPermittedMessage =
+  'You do not have permission to save changes to this chapter.'
 
 interface LineRange {
   readonly offset: number
@@ -93,20 +105,56 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return toLineEditsDto(index, draft)
   }
 
+  describeChange(change: ChapterChange): ChapterRequest {
+    return describeChapterChange(this.id, change, this.revision)
+  }
+
   saveLine(
     index: number,
     original: Line,
     draft: Line,
   ): Promise<ChapterOutline> {
+    return this.enqueue(() => this.saveWhenCurrent(index, original, draft))
+  }
+
+  addLine(line: Line): Promise<ChapterOutline> {
+    return this.apply({ type: 'addLine', line })
+  }
+
+  deleteLine(index: number): Promise<ChapterOutline> {
+    return this.apply({ type: 'deleteLine', index })
+  }
+
+  importLines(atf: string): Promise<ChapterOutline> {
+    return this.apply({ type: 'importLines', atf })
+  }
+
+  saveManuscripts(
+    manuscripts: readonly Manuscript[],
+    uncertainFragments: readonly string[],
+  ): Promise<ChapterOutline> {
+    return this.apply({
+      type: 'saveManuscripts',
+      manuscripts,
+      uncertainFragments,
+    })
+  }
+
+  private apply(change: ChapterChange): Promise<ChapterOutline> {
+    return this.enqueue(() => {
+      const { endpoint, body } = toChapterUpdate(change)
+      return this.textService
+        .updateChapterOutline(this.id, endpoint, body, this.revision)
+        .then((outline) => this.keepRevision(outline), rejectRevisionConflict)
+    })
+  }
+
+  private enqueue(
+    save: () => Promise<ChapterOutline>,
+  ): Promise<ChapterOutline> {
     return this.canSave
-      ? this.saveQueue.enqueue(() =>
-          this.saveWhenCurrent(index, original, draft),
-        )
-      : Promise.reject(
-          new Error(
-            'You do not have permission to save changes to this chapter.',
-          ),
-        )
+      ? this.saveQueue.enqueue(save)
+      : Promise.reject(new Error(savingNotPermittedMessage))
   }
 
   private async saveWhenCurrent(

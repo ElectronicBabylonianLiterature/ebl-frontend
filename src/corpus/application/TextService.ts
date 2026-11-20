@@ -15,7 +15,12 @@ import {
 
 import { createChapterUrl } from 'corpus/application/chapterUrls'
 import ChapterOutlineService from 'corpus/application/ChapterOutlineService'
-import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  ChapterEndpoint,
+  ChapterRequestBody,
+  LinesUpdateDto,
+} from 'corpus/application/edit-lite/ChapterEditSource'
+import { createChapterUpdateUrl } from 'corpus/application/edit-lite/chapterRequests'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 
 export { createChapterUrl } from 'corpus/application/chapterUrls'
@@ -64,9 +69,18 @@ export default class TextService extends ChapterOutlineService {
     update: LinesUpdateDto,
     revision?: string,
   ): Promise<ChapterOutline> {
+    return this.updateChapterOutline(id, 'lines', update, revision)
+  }
+
+  updateChapterOutline(
+    id: ChapterId,
+    endpoint: ChapterEndpoint,
+    body: ChapterRequestBody,
+    revision?: string,
+  ): Promise<ChapterOutline> {
     return this.apiClient.postJson<ChapterOutline>(
-      this.createLinesUrl(id, { view: 'outline', revision }),
-      update,
+      createChapterUpdateUrl(id, endpoint, revision),
+      body,
     )
   }
 

@@ -1,97 +1,86 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Button } from 'react-bootstrap'
-import classNames from 'classnames'
 import _ from 'lodash'
 import { LineOutline } from 'corpus/application/edit-lite/chapterOutline'
+import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
+import { createLine } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
-import { isLineDirty } from 'corpus/ui/edit-lite/editLiteReducer'
-import { EditLiteState, LineState } from 'corpus/ui/edit-lite/editLiteState'
+import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'
 import { findInitialIndex } from 'corpus/ui/edit-lite/lineIndex'
-import LineSummaryRow from 'corpus/ui/edit-lite/LineSummaryRow'
+import {
+  countLines,
+  findLineActivity,
+  findLineState,
+} from 'corpus/ui/edit-lite/lineStates'
+import {
+  findKeyTarget,
+  revealOption,
+} from 'corpus/ui/edit-lite/splitNavigation'
+import SplitOption from 'corpus/ui/edit-lite/SplitOption'
 import 'corpus/ui/edit-lite/SplitLines.sass'
+
+export { revealOption } from 'corpus/ui/edit-lite/splitNavigation'
 
 interface Props {
   readonly state: EditLiteState
   readonly initialLine?: number
 }
 
-interface OptionProps {
-  readonly id: string
-  readonly line: LineOutline
-  readonly lineState: LineState | undefined
-  readonly isSelected: boolean
-  readonly onSelect: (index: number) => void
+interface AddLineProps {
+  readonly disabled: boolean
+  readonly onAdd: () => void
 }
 
-const pageStep = 10
+const emptyLine = createLine({})
 
-type KeyTarget = (index: number, lastIndex: number) => number
-
-const keyTargets: ReadonlyMap<string, KeyTarget> = new Map<string, KeyTarget>([
-  ['ArrowUp', (index) => index - 1],
-  ['ArrowDown', (index) => index + 1],
-  ['PageUp', (index) => index - pageStep],
-  ['PageDown', (index) => index + pageStep],
-  ['Home', () => 0],
-  ['End', (_index, lastIndex) => lastIndex],
-])
-
-function findKeyTarget(
-  key: string,
-  index: number,
-  lastIndex: number,
-): number | null {
-  return keyTargets.get(key)?.(index, lastIndex) ?? null
-}
-
-export function revealOption(list: HTMLElement | null, index: number): void {
-  const option = list?.children.item(index)
-  if (list && option) {
-    const visibleTop = list.getBoundingClientRect().top + list.clientTop
-    const visibleBottom = visibleTop + list.clientHeight
-    const { top, bottom } = option.getBoundingClientRect()
-    list.scrollTop +=
-      Math.min(top - visibleTop, 0) + Math.max(bottom - visibleBottom, 0)
-  }
-}
-
-const SplitOption = React.memo(function SplitOption({
-  id,
-  line,
-  lineState,
-  isSelected,
-  onSelect,
-}: OptionProps): JSX.Element {
-  return (
-    <li
-      id={id}
-      className={classNames('edit-lite-split__option', {
-        'edit-lite-split__option--selected': isSelected,
-      })}
-      role="option"
-      aria-selected={isSelected}
-      onClick={(): void => onSelect(line.index)}
+function AddLineButton({ disabled, onAdd }: AddLineProps): JSX.Element | null {
+  const { canWrite } = useEditLiteContext()
+  return canWrite ? (
+    <Button
+      size="sm"
+      variant="outline-primary"
+      className="edit-lite-split__add"
+      disabled={disabled}
+      onClick={onAdd}
     >
-      <LineSummaryRow line={line} isDirty={isLineDirty(lineState)} />
-    </li>
-  )
-})
+      Add line
+    </Button>
+  ) : null
+}
 
 function SplitView({ state, initialLine }: Props): JSX.Element {
   const id = useId()
   const { actions } = useEditLiteContext()
   const lines = state.outline.lines
-  const lastIndex = lines.length - 1
+  const newLineDraft = state.newLine?.draft
+  const hasNewLine = state.newLine !== null
+  const lastIndex = countLines(state) - 1
   const listRef = useRef<HTMLUListElement>(null)
   const [requestedIndex, setRequestedIndex] = useState<number>(
     () => findInitialIndex(initialLine, lines.length) ?? 0,
   )
   const selectedIndex = Math.min(requestedIndex, lastIndex)
+  const isNewSelected = hasNewLine && selectedIndex === lines.length
+  const newLine = useMemo<LineOutline>(
+    () => toLineOutline(newLineDraft ?? emptyLine, lines.length),
+    [newLineDraft, lines.length],
+  )
   const select = useCallback(
     (index: number): void => setRequestedIndex(_.clamp(index, 0, lastIndex)),
     [lastIndex],
   )
+
+  if (requestedIndex > lastIndex) {
+    setRequestedIndex(lastIndex)
+  }
 
   useEffect(() => {
     const firstNeighbour = Math.max(selectedIndex - 1, 0)
@@ -111,6 +100,10 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
       event.preventDefault()
       select(target)
     }
+  }
+  const addLine = (): void => {
+    actions.addLine()
+    setRequestedIndex(lines.length)
   }
 
   return (
@@ -134,6 +127,17 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
             onSelect={select}
           />
         ))}
+        {hasNewLine && (
+          <SplitOption
+            key="new"
+            id={`${id}-option-${newLine.index}`}
+            line={newLine}
+            lineState={undefined}
+            isSelected={isNewSelected}
+            isNew
+            onSelect={select}
+          />
+        )}
       </ul>
       <section
         className="edit-lite-split__editor"
@@ -157,25 +161,38 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
             Next
           </Button>
           <h3 id={`${id}-heading`} className="edit-lite-split__heading">
-            Line {lines[selectedIndex].number}
+            {isNewSelected ? 'New line' : `Line ${lines[selectedIndex].number}`}
           </h3>
           <span className="edit-lite-split__position">
-            {selectedIndex + 1} of {lines.length}
+            {selectedIndex + 1} of {lastIndex + 1}
           </span>
+          <AddLineButton disabled={hasNewLine} onAdd={addLine} />
         </div>
         <LineEditContainer
           key={selectedIndex}
           index={selectedIndex}
-          lineState={state.lines[selectedIndex]}
+          lineState={findLineState(state, selectedIndex)}
+          isNew={isNewSelected}
+          activity={findLineActivity(state)}
         />
       </section>
     </div>
   )
 }
 
+function EmptyLines(): JSX.Element {
+  const { actions } = useEditLiteContext()
+  return (
+    <div className="edit-lite-split__empty">
+      <p>This chapter has no lines.</p>
+      <AddLineButton disabled={false} onAdd={actions.addLine} />
+    </div>
+  )
+}
+
 export default function SplitLines({ state, initialLine }: Props): JSX.Element {
-  return state.outline.lines.length === 0 ? (
-    <p className="edit-lite-split__empty">This chapter has no lines.</p>
+  return countLines(state) === 0 ? (
+    <EmptyLines />
   ) : (
     <SplitView state={state} initialLine={initialLine} />
   )

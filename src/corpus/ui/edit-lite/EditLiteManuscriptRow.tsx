@@ -7,14 +7,16 @@ import {
   manuscriptColumns,
   summarizeManuscript,
 } from 'corpus/ui/edit-lite/EditLiteManuscriptSummary'
+import { ManuscriptStatus } from 'corpus/ui/edit-lite/manuscriptEdits'
 import ManuscriptForm from 'corpus/ui/manuscripts/ManuscriptForm'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 import 'corpus/ui/edit-lite/EditLiteManuscripts.sass'
+import 'corpus/ui/edit-lite/ManuscriptLineRow.sass'
 
 interface Props {
   readonly index: number
   readonly manuscript: Manuscript
-  readonly isEdited: boolean
+  readonly status: ManuscriptStatus
   readonly isOpen: boolean
   readonly provenances: readonly Provenance[]
   readonly searchBibliography: (
@@ -22,17 +24,23 @@ interface Props {
   ) => Promise<readonly BibliographyEntry[]>
   readonly onToggle: (index: number) => void
   readonly onChange: (index: number, manuscript: Manuscript) => void
+  readonly onDelete: (index: number) => void
+  readonly readOnly: boolean
+  readonly disabled: boolean
 }
 
 function EditLiteManuscriptRow({
   index,
   manuscript,
-  isEdited,
+  status,
   isOpen,
   provenances,
   searchBibliography,
   onToggle,
   onChange,
+  onDelete,
+  readOnly,
+  disabled,
 }: Props): JSX.Element {
   const panelId = useId()
   const summary = summarizeManuscript(manuscript)
@@ -67,9 +75,9 @@ function EditLiteManuscriptRow({
           </span>
         ))}
         <span className="edit-lite-manuscript-list__status">
-          {isEdited && (
+          {status !== 'unchanged' && (
             <span className="edit-lite-badge edit-lite-badge--edited">
-              edited
+              {status}
             </span>
           )}
         </span>
@@ -82,12 +90,23 @@ function EditLiteManuscriptRow({
         hidden={!isOpen}
       >
         {isOpen && (
-          <ManuscriptForm
-            manuscript={manuscript}
-            provenanceOptions={provenances}
-            onChange={handleChange}
-            searchBibliography={searchBibliography}
-          />
+          <fieldset disabled={readOnly || disabled}>
+            <ManuscriptForm
+              manuscript={manuscript}
+              provenanceOptions={provenances}
+              onChange={handleChange}
+              searchBibliography={searchBibliography}
+            />
+            {!readOnly && (
+              <button
+                type="button"
+                className="edit-lite-link-button"
+                onClick={(): void => onDelete(index)}
+              >
+                Delete manuscript
+              </button>
+            )}
+          </fieldset>
         )}
       </div>
     </li>

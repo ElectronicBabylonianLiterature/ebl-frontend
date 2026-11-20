@@ -106,15 +106,25 @@ test('a read-only source previews the request instead of saving', async () => {
   expect(screen.getByLabelText('Number')).toHaveValue('1a')
 })
 
-test('a user without write access is told that saving is a dry run', async () => {
-  const { source } = await renderEditedContainer({ canSave: false })
+test('a user without write access can read the line but not change it', async () => {
+  const { source, getState } = await renderLoadedContainer({
+    lines,
+    canSave: false,
+    canWrite: false,
+  })
 
-  expect(screen.getByText(/You are not allowed to save texts/)).toBeVisible()
+  expect(screen.getByLabelText('Number')).toBeDisabled()
+  expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  expect(screen.queryByText(/saving is a dry run/)).not.toBeInTheDocument()
 
-  await userEvent.click(button('Save line'))
+  await userEvent.click(screen.getByRole('textbox', { name: 'Translation' }))
 
-  expectDryRun()
+  expect(
+    screen.queryByRole('group', { name: 'Translation' }),
+  ).not.toBeInTheDocument()
+  expect(getState().lines[0].draft).toBe(lines[0])
   expect(source.saveLine).not.toHaveBeenCalled()
+  expect(source.describeChange).not.toHaveBeenCalled()
 })
 
 test('the request can be previewed at any time', async () => {
@@ -126,6 +136,10 @@ test('the request can be previewed at any time', async () => {
   ).toHaveTextContent(JSON.stringify(toLineEditsDto(0, lines[0]), null, 2), {
     normalizeWhitespace: false,
   })
-  expect(source.describeSave).toHaveBeenCalledWith(0, lines[0])
+  expect(source.describeChange).toHaveBeenCalledWith({
+    type: 'saveLine',
+    index: 0,
+    line: lines[0],
+  })
   expect(source.saveLine).not.toHaveBeenCalled()
 })

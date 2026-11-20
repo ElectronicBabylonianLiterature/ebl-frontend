@@ -20,6 +20,7 @@ import {
   FakeChapterEditSource,
   FakeChapterEditSourceOptions,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
+import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import { loadedEditor } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { Switch } from 'router/compat'
@@ -37,16 +38,12 @@ export interface EditLiteRouteOptions {
   readonly links?: readonly string[]
 }
 
+export { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
+
 export const editLitePath = '/corpus/L/1/2/SB/I/edit-lite'
 export const secondEditLitePath = '/corpus/L/1/2/SB/II/edit-lite'
 export const classicEditPath = '/corpus/L/1/2/SB/I/edit'
 export const editLiteHeading = /^Edit Poem of Creation Standard Babylonian I /
-
-export const editLiteChapterId: ChapterId = {
-  textId: { genre: 'L', category: 1, index: 2 },
-  stage: 'Standard Babylonian',
-  name: 'I',
-}
 
 export const secondEditLiteChapterId: ChapterId = {
   ...editLiteChapterId,
@@ -181,4 +178,30 @@ export async function renderLoadedEditLiteRoute(
 export async function editFirstLine(): Promise<void> {
   const editor = await loadedEditor('1')
   await userEvent.type(within(editor).getByLabelText('Number'), 'a')
+}
+
+export function tab(name: string): HTMLElement {
+  return screen.getByRole('tab', { name })
+}
+
+export function tabPanel(name: string): HTMLElement {
+  return screen.getByRole('tabpanel', { name })
+}
+
+export async function openTab(name: string): Promise<void> {
+  await userEvent.click(tab(name))
+  expect(tab(name)).toHaveAttribute('aria-selected', 'true')
+  expect(tabPanel(name)).toHaveClass('active')
+}
+
+export async function openManuscriptsTab(): Promise<HTMLElement> {
+  await openTab('Manuscripts')
+  return screen.findByRole('list', { name: 'Manuscripts' })
+}
+
+export function leavePage(): string {
+  const event = new Event('beforeunload', { cancelable: true })
+  Object.defineProperty(event, 'returnValue', { value: '', writable: true })
+  window.dispatchEvent(event)
+  return String((event as BeforeUnloadEvent).returnValue)
 }

@@ -7,6 +7,7 @@ interface Props {
   readonly manuscripts: readonly ManuscriptSummary[]
   readonly onChange: (manuscriptId: number) => void
   readonly disabled?: boolean
+  readonly readOnly?: boolean
 }
 
 const unknownSiglum = '<unknown>'
@@ -26,12 +27,15 @@ function LazySiglumSelect({
   manuscripts,
   onChange,
   disabled = false,
+  readOnly = false,
 }: Props): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(false)
   const selectRef = useRef<HTMLSelectElement>(null)
   const siglum = findSiglum(manuscripts, value)
 
-  if (isActive && disabled) {
+  const label = siglum ?? unknownSiglum
+
+  if (isActive && (disabled || readOnly)) {
     setIsActive(false)
   }
 
@@ -42,6 +46,15 @@ function LazySiglumSelect({
   }, [isActive])
 
   const activate = (): void => setIsActive(true)
+
+  if (readOnly) {
+    return (
+      <span className="edit-lite-siglum edit-lite-siglum--static">
+        <span className="visually-hidden">Siglum </span>
+        {label}
+      </span>
+    )
+  }
 
   return isActive ? (
     <select
@@ -69,12 +82,12 @@ function LazySiglumSelect({
     <button
       type="button"
       className="edit-lite-siglum edit-lite-siglum--static"
-      aria-label={`Siglum ${siglum ?? unknownSiglum}`}
+      aria-label={`Siglum ${label}`}
       disabled={disabled}
       onClick={activate}
       onFocus={activate}
     >
-      {siglum ?? unknownSiglum}
+      {label}
     </button>
   )
 }

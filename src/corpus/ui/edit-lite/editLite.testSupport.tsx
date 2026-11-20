@@ -1,39 +1,32 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import _ from 'lodash'
-import {
-  ChapterEditSource,
-  ChapterEditSourceKind,
-  LinesUpdateDto,
-} from 'corpus/application/edit-lite/ChapterEditSource'
-import {
-  ChapterOutline,
-  ManuscriptSummary,
-} from 'corpus/application/edit-lite/chapterOutline'
-import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
-import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
-import {
-  createLine,
-  createManuscriptLine,
-  createVariant,
-  EditStatus,
-  Line,
-  ManuscriptLine,
-} from 'corpus/domain/line'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import EditLiteContext, {
   EditLiteContextValue,
 } from 'corpus/ui/edit-lite/EditLiteContext'
+import {
+  buildEditLiteLines,
+  buildEditLiteOutline,
+} from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
+import {
+  createFakeChapterEditSource,
+  FakeChapterEditSource,
+  FakeChapterEditSourceOptions,
+} from 'corpus/ui/edit-lite/fakeChapterEditSource.testSupport'
 import useEditLite, { EditLite } from 'corpus/ui/edit-lite/useEditLite'
 
-export type FakeChapterEditSource = jest.Mocked<ChapterEditSource>
-
-export interface FakeChapterEditSourceOptions {
-  readonly kind?: ChapterEditSourceKind
-  readonly canSave?: boolean
-  readonly lines?: readonly Line[]
-  readonly diagnostics?: readonly string[]
-}
+export {
+  buildEditLiteLines,
+  buildEditLiteOutline,
+  editLiteManuscripts,
+  editLiteRevision,
+} from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
+export { createFakeChapterEditSource } from 'corpus/ui/edit-lite/fakeChapterEditSource.testSupport'
+export type {
+  FakeChapterEditSource,
+  FakeChapterEditSourceOptions,
+} from 'corpus/ui/edit-lite/fakeChapterEditSource.testSupport'
 
 export type EditLiteUi =
   | React.ReactElement
@@ -42,6 +35,7 @@ export type EditLiteUi =
 export interface EditLiteRenderOptions extends FakeChapterEditSourceOptions {
   readonly source?: FakeChapterEditSource
   readonly outline?: ChapterOutline
+  readonly canWrite?: boolean
 }
 
 export interface EditLiteRenderResult extends Omit<RenderResult, 'rerender'> {
@@ -52,142 +46,10 @@ export interface EditLiteRenderResult extends Omit<RenderResult, 'rerender'> {
   rerender(ui: EditLiteUi): void
 }
 
-export const editLiteManuscripts: readonly ManuscriptSummary[] = [
-  { id: 1, siglum: 'NinNA1a', museumNumber: 'K.5419.C', accession: '' },
-  { id: 2, siglum: 'BabaNBSch1', museumNumber: 'BM.34104', accession: 'A.2' },
-]
-
-function manuscriptLine(
-  manuscriptId: number,
-  labels: readonly string[],
-  number: string,
-  atf: string,
-): ManuscriptLine {
-  return createManuscriptLine({ manuscriptId, labels, number, atf })
-}
-
-function buildNamedLines(): Line[] {
-  return [
-    createLine({
-      number: '1',
-      isBeginningOfSection: true,
-      translation: '#tr.en: When on high\n#tr.ar: translation in Arabic',
-      variants: [
-        createVariant({
-          reconstruction: '%n enūma | eliš\n#note: a note',
-          manuscripts: [
-            manuscriptLine(1, ['o'], '1', 'e-nu-ma e-liš'),
-            manuscriptLine(2, ['o', 'i'], "6'", '[x x x] e-li-iš'),
-          ],
-        }),
-      ],
-    }),
-    createLine({
-      number: '2',
-      translation: '#tr.en: Nor below',
-      variants: [
-        createVariant({
-          reconstruction: '%n šapliš | ammatu',
-          manuscripts: [manuscriptLine(1, ['o'], '2', 'šap-liš am-ma-tu')],
-        }),
-        createVariant({ reconstruction: '%n šapliš | erṣetu' }),
-      ],
-    }),
-    createLine({
-      number: '3',
-      isSecondLineOfParallelism: true,
-      variants: [
-        createVariant({
-          reconstruction: '%n apsûm-ma',
-          manuscripts: [manuscriptLine(2, [], '8', 'ap-su-um-ma')],
-        }),
-      ],
-    }),
-  ]
-}
-
-function buildNumberedLine(index: number): Line {
-  const number = `${index + 1}`
-  return createLine({
-    number,
-    translation: `#tr.en: Translation of line ${number}`,
-    variants: [
-      createVariant({
-        reconstruction: `%n reconstruction of line ${number}`,
-        manuscripts: [manuscriptLine(1, ['o'], number, `kur ${number}`)],
-      }),
-    ],
-  })
-}
-
-export function buildEditLiteLines(count = 3): Line[] {
-  const namedLines = buildNamedLines()
-  return _.range(count).map(
-    (index) => namedLines[index] ?? buildNumberedLine(index),
-  )
-}
-
-export const editLiteRevision = 'revision-1'
-
-export function buildEditLiteOutline(
-  lines: readonly Line[] = buildEditLiteLines(),
-  revision: string = editLiteRevision,
-): ChapterOutline {
-  return {
-    textId: { genre: 'L', category: 1, index: 2 },
-    classification: 'Ancient',
-    stage: 'Standard Babylonian',
-    version: '',
-    name: 'I',
-    order: 1,
-    uncertainFragments: [],
-    manuscripts: editLiteManuscripts,
-    lines: lines.map(toLineOutline),
-    revision,
-  }
-}
-
-export function createFakeChapterEditSource(
-  options: FakeChapterEditSourceOptions = {},
-): FakeChapterEditSource {
-  const kind = options.kind ?? 'api'
-  const canSave = options.canSave ?? kind === 'api'
-  let lines: readonly Line[] = options.lines ?? buildEditLiteLines()
-  const save = (index: number, draft: Line): Promise<ChapterOutline> => {
-    if (!canSave) {
-      return Promise.reject(new Error('Saving is not available.'))
-    }
-    lines = lines.map((line, lineIndex) =>
-      lineIndex === index ? { ...draft, status: EditStatus.CLEAN } : line,
-    )
-    return Promise.resolve(buildEditLiteOutline(lines))
-  }
-
-  return {
-    kind,
-    canSave,
-    diagnostics: options.diagnostics ?? [],
-    loadOutline: jest.fn(
-      (): Promise<ChapterOutline> =>
-        Promise.resolve(buildEditLiteOutline(lines)),
-    ),
-    loadLines: jest.fn(
-      (offset: number, limit: number): Promise<readonly Line[]> =>
-        Promise.resolve(lines.slice(offset, offset + limit)),
-    ),
-    describeSave: jest.fn(
-      (index: number, draft: Line): LinesUpdateDto =>
-        toLineEditsDto(index, draft),
-    ),
-    saveLine: jest.fn((index: number, _original: Line, draft: Line) =>
-      save(index, draft),
-    ),
-  }
-}
-
 interface HarnessProps {
   readonly source: FakeChapterEditSource
   readonly outline: ChapterOutline
+  readonly canWrite: boolean
   readonly ui: EditLiteUi
   readonly latest: { current?: EditLite }
 }
@@ -195,10 +57,11 @@ interface HarnessProps {
 function EditLiteHarness({
   source,
   outline,
+  canWrite,
   ui,
   latest,
 }: HarnessProps): JSX.Element {
-  const editLite = useEditLite(source, outline)
+  const editLite = useEditLite(source, outline, canWrite)
   latest.current = editLite
   return (
     <EditLiteContext.Provider value={editLite.context}>
@@ -216,7 +79,12 @@ export function renderWithEditLite(
     options.source ?? createFakeChapterEditSource({ ...options, lines })
   const outline = options.outline ?? buildEditLiteOutline(lines)
   const latest: { current?: EditLite } = {}
-  const harnessProps = { source, outline, latest }
+  const harnessProps = {
+    source,
+    outline,
+    latest,
+    canWrite: options.canWrite ?? true,
+  }
   const wrap = (wrappedUi: EditLiteUi): JSX.Element => (
     <EditLiteHarness {...harnessProps} ui={wrappedUi} />
   )

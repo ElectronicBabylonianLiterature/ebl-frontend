@@ -1,6 +1,10 @@
+import _ from 'lodash'
 import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
-import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  ChapterEndpoint,
+  LinesUpdateDto,
+} from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   ChapterOutline,
   LinesPageDto,
@@ -59,14 +63,53 @@ export default class EditLiteFakeApi extends FakeApi {
     return this.allowGet(`${createChapterUrl(id)}/manuscripts`, manuscripts)
   }
 
+  allowAllChapterLines(outline: ChapterOutline, lines: readonly Line[]): this {
+    _.range(lines.length).forEach((offset) =>
+      _.range(1, 4).forEach((limit) =>
+        this.allowChapterLines(outline, offset, limit, lines),
+      ),
+    )
+    return this
+  }
+
   expectUpdateEditedLines(
     outline: ChapterOutline,
     update: LinesUpdateDto,
     savedOutline: ChapterOutline,
   ): this {
-    return this.expectPost(
-      `${linesUrl(outline)}?view=outline&revision=${outline.revision}`,
+    return this.expectOutlineUpdate(outline, 'lines', update, savedOutline)
+  }
+
+  expectImportLines(
+    outline: ChapterOutline,
+    atf: string,
+    savedOutline: ChapterOutline,
+  ): this {
+    return this.expectOutlineUpdate(outline, 'import', { atf }, savedOutline)
+  }
+
+  expectSaveManuscripts(
+    outline: ChapterOutline,
+    update: unknown,
+    savedOutline: ChapterOutline,
+  ): this {
+    return this.expectOutlineUpdate(
+      outline,
+      'manuscripts',
       update,
+      savedOutline,
+    )
+  }
+
+  private expectOutlineUpdate(
+    outline: ChapterOutline,
+    endpoint: ChapterEndpoint,
+    body: unknown,
+    savedOutline: ChapterOutline,
+  ): this {
+    return this.expectPost(
+      `${createChapterUrl(toChapterId(outline))}/${endpoint}?view=outline&revision=${outline.revision}`,
+      body,
       savedOutline,
     )
   }

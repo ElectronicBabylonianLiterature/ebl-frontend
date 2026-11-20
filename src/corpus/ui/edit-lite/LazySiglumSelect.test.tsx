@@ -7,12 +7,14 @@ import LazySiglumSelect from 'corpus/ui/edit-lite/LazySiglumSelect'
 interface Props {
   readonly initialValue?: number
   readonly disabled?: boolean
+  readonly readOnly?: boolean
   readonly onChange?: (manuscriptId: number) => void
 }
 
 function StatefulSelect({
   initialValue = 1,
   disabled,
+  readOnly,
   onChange,
 }: Props): JSX.Element {
   const [value, setValue] = useState<number>(initialValue)
@@ -26,6 +28,7 @@ function StatefulSelect({
           onChange?.(manuscriptId)
         }}
         disabled={disabled}
+        readOnly={readOnly}
       />
       <button type="button">Elsewhere</button>
     </>
@@ -100,4 +103,32 @@ test('disabling an open select closes it', async () => {
   rerender(<StatefulSelect disabled />)
 
   expectStatic('NinNA1a')
+})
+
+test('a read-only siglum is plain text that cannot be opened', async () => {
+  render(<StatefulSelect readOnly />)
+
+  expect(screen.getByText('NinNA1a')).toHaveTextContent(/^Siglum NinNA1a$/)
+  expect(
+    screen.queryByRole('button', { name: /^Siglum/ }),
+  ).not.toBeInTheDocument()
+
+  await userEvent.click(screen.getByText('NinNA1a'))
+
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+})
+
+test('a read-only siglum of an unknown manuscript shows the placeholder', () => {
+  render(<StatefulSelect initialValue={7} readOnly />)
+
+  expect(screen.getByText('<unknown>')).toBeVisible()
+})
+
+test('making an open select read-only closes it', async () => {
+  const { rerender } = render(<StatefulSelect />)
+  await userEvent.click(screen.getByRole('button', { name: 'Siglum NinNA1a' }))
+  rerender(<StatefulSelect readOnly />)
+
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+  expect(screen.getByText('NinNA1a')).toBeVisible()
 })

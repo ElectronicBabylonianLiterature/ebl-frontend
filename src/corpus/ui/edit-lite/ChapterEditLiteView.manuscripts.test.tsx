@@ -8,10 +8,13 @@ import {
   editLiteManuscriptDtos,
   editLitePath,
   mockEditSource,
+  openManuscriptsTab,
+  openTab,
   renderEditLiteRoute,
   renderLoadedEditLiteRoute,
   secondEditLiteChapterId,
   secondEditLitePath,
+  tabPanel,
   waitForLoadedLines,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
@@ -40,39 +43,24 @@ function countManuscriptRequests(fakeApi: EditLiteFakeApi): number {
   return countRequests(fakeApi, manuscriptsUrl(editLiteChapterId))
 }
 
-function tab(name: string): HTMLElement {
-  return screen.getByRole('tab', { name })
-}
-
-function tabPanel(name: string): HTMLElement {
-  return screen.getByRole('tabpanel', { name })
-}
-
-async function openTab(name: string): Promise<void> {
-  await userEvent.click(tab(name))
-  expect(tab(name)).toHaveAttribute('aria-selected', 'true')
-  expect(tabPanel(name)).toHaveClass('active')
-}
-
-async function openManuscriptsTab(): Promise<HTMLElement> {
-  await openTab('Manuscripts')
-  return screen.findByRole('list', { name: 'Manuscripts' })
-}
-
 async function previewUncertainFragments(
   id: ChapterId,
   path: string,
 ): Promise<unknown> {
   const fakeApi = createEditLiteFakeApi()
   fakeApi.allowChapterManuscripts(id, editLiteManuscriptDtos)
-  mockEditSource({ kind: 'legacy' })
+  mockEditSource({ kind: 'legacy', id })
   renderEditLiteRoute({ fakeApi, path })
   await screen.findByRole('tab', { name: 'Manuscripts' })
   await waitForLoadedLines()
   await openManuscriptsTab()
   const preview = within(await openPreview(tabPanel('Manuscripts')))
 
-  expect(preview.getByText(`POST ${manuscriptsUrl(id)}`)).toBeInTheDocument()
+  expect(
+    preview.getByText(
+      `POST ${manuscriptsUrl(id)}?view=outline&revision=revision-1`,
+    ),
+  ).toBeInTheDocument()
   return JSON.parse(preview.getByLabelText('Request body').textContent ?? '')
     .uncertainFragments
 }
@@ -85,6 +73,7 @@ test('does not load the manuscripts before their tab is opened', async () => {
   expect(screen.getAllByRole('tab').map((item) => item.textContent)).toEqual([
     'Lines',
     'Manuscripts',
+    'Import',
   ])
   expect(countManuscriptRequests(fakeApi)).toBe(0)
   expect(

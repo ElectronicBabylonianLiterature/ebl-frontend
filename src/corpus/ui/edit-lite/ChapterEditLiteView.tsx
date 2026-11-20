@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useId, useMemo } from 'react'
-import { Alert, Tab, Tabs } from 'react-bootstrap'
+import React, { useContext, useEffect, useMemo } from 'react'
+import { Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { createChapterUrl } from 'corpus/application/chapterUrls'
+import { ChapterEditSourceKind } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   createChapterEditSource,
   LoadedChapterEditSource,
@@ -16,16 +16,16 @@ import TextService from 'corpus/application/TextService'
 import { Text } from 'corpus/domain/text'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
-import EditLiteContext from 'corpus/ui/edit-lite/EditLiteContext'
-import EditLiteManuscripts from 'corpus/ui/edit-lite/EditLiteManuscripts'
 import { parseEditLiteParameters } from 'corpus/ui/edit-lite/editLiteParameters'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
+import EditLiteTabs from 'corpus/ui/edit-lite/EditLiteTabs'
 import { findInitialLine } from 'corpus/ui/edit-lite/lineIndex'
+import { hasUnsavedChanges } from 'corpus/ui/edit-lite/lineStates'
 import PerformanceReadout from 'corpus/ui/edit-lite/PerformanceReadout'
-import SplitLines from 'corpus/ui/edit-lite/SplitLines'
 import useEditLite from 'corpus/ui/edit-lite/useEditLite'
 import GenreCrumb from 'corpus/ui/GenreCrumb'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 import withData from 'http/withData'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import 'corpus/ui/ChapterEditView.sass'
@@ -43,30 +43,28 @@ interface SessionProps {
   readonly canWrite: boolean
 }
 
-interface EditLiteData extends LoadedChapterEditSource {
+interface EditLiteData extends LoadedChapterEditSource, SessionProps {
   readonly text: Text
   readonly loadMilliseconds: number
 }
 
-type ManuscriptsProps = Omit<Props, 'search'> & { readonly text: Text }
 type ViewProps = Props & { readonly data: EditLiteData }
 
 export const previewNotice =
   'This is a preview of a lighter chapter editor that loads lines on demand.'
 export const legacyNotice =
   'The data comes from the existing endpoints, so saving is a dry run that only shows the request.'
+export const readOnlyNotice =
+  'Editing needs permission to edit texts, so this page is read-only.'
 
-function findUncertainFragments(
-  text: Text,
-  stage: string,
-  name: string,
-): readonly string[] {
-  const chapter = text.chapters.find(
-    (listing) => listing.stage === stage && listing.name === name,
-  )
-  return (chapter?.uncertainFragments ?? []).map(
-    (fragment) => fragment.museumNumber,
-  )
+function findSourceNotice(
+  kind: ChapterEditSourceKind,
+  canWrite: boolean,
+): string | null {
+  if (!canWrite) {
+    return readOnlyNotice
+  }
+  return kind === 'legacy' ? legacyNotice : null
 }
 
 function countSettledLines(state: EditLiteState): number {
@@ -75,51 +73,28 @@ function countSettledLines(state: EditLiteState): number {
   ).length
 }
 
-const Manuscripts = React.memo(function Manuscripts({
-  id,
-  text,
-  textService,
-  fragmentService,
-  bibliographyService,
-}: ManuscriptsProps): JSX.Element {
-  const { stage, name } = id
-  const uncertainFragments = useMemo<readonly string[]>(
-    () => findUncertainFragments(text, stage, name),
-    [text, stage, name],
-  )
-  const searchBibliography = useCallback(
-    (query: string): Promise<readonly BibliographyEntry[]> =>
-      bibliographyService.search(query),
-    [bibliographyService],
-  )
-
-  return (
-    <EditLiteManuscripts
-      id={id}
-      uncertainFragments={uncertainFragments}
-      textService={textService}
-      fragmentService={fragmentService}
-      searchBibliography={searchBibliography}
-    />
-  )
-})
-
 function EditLiteView({
-  data: { text, source, outline, loadMilliseconds },
+  data: { text, source, outline, loadMilliseconds, canWrite },
   id,
   textService,
   fragmentService,
   bibliographyService,
   search,
 }: ViewProps): JSX.Element {
-  const tabsId = useId()
-  const { state, context } = useEditLite(source, outline)
+  const { state, context } = useEditLite(source, outline, canWrite)
   const lines = state.outline.lines
   const initialLine = useMemo<number | undefined>(
     () => findInitialLine(lines, parseEditLiteParameters(search).line),
     [lines, search],
   )
   const chapterCrumb = new ChapterCrumb(id)
+  const sourceNotice = findSourceNotice(source.kind, canWrite)
+  const hasUnsaved = hasUnsavedChanges(state)
+
+  useEffect(
+    () => runBeforeUnloadEvent({ hasChanges: (): boolean => hasUnsaved }),
+    [hasUnsaved],
+  )
 
   return (
     <AppContent
@@ -144,7 +119,7 @@ function EditLiteView({
           <Alert.Link as={Link} to={`${chapterCrumb.link}/edit`}>
             Open the classic edit page
           </Alert.Link>
-          .{source.kind === 'legacy' && ` ${legacyNotice}`}
+          .{sourceNotice !== null && ` ${sourceNotice}`}
         </Alert>
         <PerformanceReadout
           recountKey={`${countSettledLines(state)}`}
@@ -154,27 +129,16 @@ function EditLiteView({
           manuscriptCount={state.outline.manuscripts.length}
           diagnostics={source.diagnostics}
         />
-        <Tabs
-          defaultActiveKey="lines"
-          id={tabsId}
-          mountOnEnter
-          transition={false}
-        >
-          <Tab eventKey="lines" title="Lines">
-            <EditLiteContext.Provider value={context}>
-              <SplitLines state={state} initialLine={initialLine} />
-            </EditLiteContext.Provider>
-          </Tab>
-          <Tab eventKey="manuscripts" title="Manuscripts">
-            <Manuscripts
-              id={id}
-              text={text}
-              textService={textService}
-              fragmentService={fragmentService}
-              bibliographyService={bibliographyService}
-            />
-          </Tab>
-        </Tabs>
+        <EditLiteTabs
+          id={id}
+          text={text}
+          state={state}
+          context={context}
+          initialLine={initialLine}
+          textService={textService}
+          fragmentService={fragmentService}
+          bibliographyService={bibliographyService}
+        />
       </div>
     </AppContent>
   )
@@ -198,7 +162,7 @@ async function loadEditLiteData(
       loadMilliseconds: performance.now() - startedAt,
     })),
   ])
-  return { text, ...loadedSource }
+  return { text, canWrite, ...loadedSource }
 }
 
 const LoadedEditLiteView = withData<Props, SessionProps, EditLiteData>(

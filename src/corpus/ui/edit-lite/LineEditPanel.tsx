@@ -3,6 +3,8 @@ import { Line, LineVariant } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import LazyAtfEditor from 'corpus/ui/edit-lite/LazyAtfEditor'
 import {
+  addLineVariant,
+  removeLineVariant,
   setBeginningOfSection,
   setLineNumber,
   setLineTranslation,
@@ -12,6 +14,7 @@ import {
 import LineVariantPanel from 'corpus/ui/edit-lite/LineVariantPanel'
 import useStableCallback from 'corpus/ui/edit-lite/useStableCallback'
 import 'corpus/ui/edit-lite/edit-lite.sass'
+import 'corpus/ui/edit-lite/ManuscriptLineRow.sass'
 
 interface Props {
   readonly line: Line
@@ -25,7 +28,8 @@ function LineEditPanel({
   disabled = false,
 }: Props): JSX.Element {
   const id = useId()
-  const { manuscripts } = useEditLiteContext()
+  const { manuscripts, canWrite } = useEditLiteContext()
+  const isLocked = disabled || !canWrite
   const handleTranslationChange = useStableCallback(
     (translation: string): void =>
       onChange(setLineTranslation(line, translation)),
@@ -33,6 +37,9 @@ function LineEditPanel({
   const handleVariantChange = useStableCallback(
     (variantIndex: number, variant: LineVariant): void =>
       onChange(setLineVariant(line, variantIndex, variant)),
+  )
+  const handleVariantDelete = useStableCallback((variantIndex: number): void =>
+    onChange(removeLineVariant(line, variantIndex)),
   )
 
   return (
@@ -46,7 +53,7 @@ function LineEditPanel({
           className="edit-lite-input edit-lite-panel__number"
           type="text"
           value={line.number}
-          disabled={disabled}
+          disabled={isLocked}
           onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
             onChange(setLineNumber(line, event.target.value))
           }
@@ -55,7 +62,7 @@ function LineEditPanel({
           <input
             type="checkbox"
             checked={line.isSecondLineOfParallelism}
-            disabled={disabled}
+            disabled={isLocked}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
               onChange(setSecondLineOfParallelism(line, event.target.checked))
             }
@@ -66,7 +73,7 @@ function LineEditPanel({
           <input
             type="checkbox"
             checked={line.isBeginningOfSection}
-            disabled={disabled}
+            disabled={isLocked}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
               onChange(setBeginningOfSection(line, event.target.checked))
             }
@@ -83,7 +90,7 @@ function LineEditPanel({
           label="Translation"
           value={line.translation}
           onChange={handleTranslationChange}
-          disabled={disabled}
+          disabled={isLocked}
         />
       </div>
       {line.variants.map((variant, variantIndex) => (
@@ -94,9 +101,23 @@ function LineEditPanel({
           variant={variant}
           manuscripts={manuscripts}
           onChange={handleVariantChange}
-          disabled={disabled}
+          onDelete={handleVariantDelete}
+          disabled={isLocked}
+          readOnly={!canWrite}
         />
       ))}
+      {canWrite && (
+        <div className="edit-lite-panel__actions">
+          <button
+            type="button"
+            className="edit-lite-link-button"
+            disabled={disabled}
+            onClick={(): void => onChange(addLineVariant(line))}
+          >
+            Add variant
+          </button>
+        </div>
+      )}
     </div>
   )
 }
