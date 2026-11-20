@@ -66,7 +66,7 @@ describe('LemmaPopover portal context', () => {
     await userEvent.click(screen.getByRole('button'))
 
     await waitFor(() => {
-      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     await waitFor(() => {
@@ -86,8 +86,7 @@ describe('LemmaPopover portal context', () => {
     await userEvent.click(screen.getByRole('button'))
 
     await waitFor(() => {
-      const tooltip = screen.getByRole('tooltip')
-      expect(tooltip).toBeInTheDocument()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     await waitFor(() => {
@@ -107,8 +106,7 @@ describe('LemmaPopover portal context', () => {
     await userEvent.click(screen.getByRole('button'))
 
     await waitFor(() => {
-      const tooltip = screen.getByRole('tooltip')
-      expect(tooltip).toBeInTheDocument()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     await waitFor(() => {
@@ -172,13 +170,13 @@ describe('LemmaPopover portal context', () => {
     await userEvent.click(screen.getByRole('button'))
 
     await waitFor(() => {
-      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     await userEvent.click(screen.getByTestId('outside'))
 
     await waitFor(() => {
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
   })
 })

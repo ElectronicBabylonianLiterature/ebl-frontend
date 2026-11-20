@@ -62,13 +62,16 @@ export class TextServiceBase extends TextServiceCore {
     this.clearCachesWhenScopeChanges()
 
     if (!this.cachedTexts) {
-      this.cachedTexts = this.apiClient
+      const request = this.apiClient
         .fetchJson<unknown[]>('/texts', false)
         .then((dtos) => dtos.map(fromDto))
         .catch((error) => {
-          this.cachedTexts = null
+          if (this.cachedTexts === request) {
+            this.cachedTexts = null
+          }
           throw error
         })
+      this.cachedTexts = request
     }
     return this.cachedTexts
   }
@@ -120,6 +123,22 @@ export class TextServiceBase extends TextServiceCore {
     this.cachedChapterDisplayRequests.clear()
   }
 
+  protected invalidateChapterDisplayCache(id: ChapterId): void {
+    this.clearCachesWhenScopeChanges()
+    const chapterPrefix = this.createChapterDisplayCachePrefix(id)
+    const cacheKeys = new Set([
+      ...this.cachedChapterDisplays.keys(),
+      ...this.cachedChapterDisplayRequests.keys(),
+    ])
+
+    for (const cacheKey of cacheKeys) {
+      if (cacheKey.startsWith(chapterPrefix)) {
+        this.cachedChapterDisplays.delete(cacheKey)
+        this.cachedChapterDisplayRequests.delete(cacheKey)
+      }
+    }
+  }
+
   protected clearCachesWhenScopeChanges(): void {
     const nextScope = this.resolveCacheScope()
 
@@ -142,12 +161,16 @@ export class TextServiceBase extends TextServiceCore {
     }
   }
 
+  private createChapterDisplayCachePrefix(id: ChapterId): string {
+    return `${createChapterUrl(id)}?`
+  }
+
   protected createChapterDisplayCacheKey(
     id: ChapterId,
     lines: readonly number[],
     variants: readonly number[],
   ): string {
-    return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
+    return `${this.createChapterDisplayCachePrefix(id)}${stringify({ lines, variants })}`
   }
 }
 

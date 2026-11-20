@@ -4629,9 +4629,11 @@ exports[`correctly displays simple fragments 1`] = `
               <span
                 class="word-info__wrapper"
               >
-                <span
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="dialog"
                   class="word-info__trigger"
-                  role="button"
+                  type="button"
                 >
                   <span
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4738,7 +4740,7 @@ exports[`correctly displays simple fragments 1`] = `
                       </span>
                     </span>
                   </span>
-                </span>
+                </button>
               </span>
             </td>
             <td>
@@ -6279,11 +6281,7 @@ exports[`correctly displays simple fragments 1`] = `
             <span
               class="badge bg-danger"
             >
-              @bib{
-              RN1
-              @
-              5
-              }
+              @bib{RN1@5}
             </span>
           </span>
         </li>
@@ -6339,9 +6337,11 @@ exports[`correctly displays simple fragments 1`] = `
         <span
           class="word-info__wrapper"
         >
-          <span
+          <button
+            aria-expanded="false"
+            aria-haspopup="dialog"
             class="word-info__trigger"
-            role="button"
+            type="button"
           >
             <span
               class="Transliteration__Word"
@@ -6424,7 +6424,7 @@ exports[`correctly displays simple fragments 1`] = `
                 </span>
               </span>
             </span>
-          </span>
+          </button>
         </span>
       </span>
        (

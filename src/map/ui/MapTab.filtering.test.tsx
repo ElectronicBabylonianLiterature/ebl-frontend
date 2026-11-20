@@ -14,6 +14,7 @@ import {
   resetMapMocks,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
+
 import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')
@@ -31,7 +32,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'bab')
 
     await waitFor(() => {
@@ -53,7 +54,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'assur')
 
     await waitFor(() => {
@@ -75,7 +76,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await waitFor(() => expect(mockFitBounds).toHaveBeenCalled())
     const fitCallsBeforeFilter = mockFitBounds.mock.calls.length
 
@@ -99,7 +100,7 @@ describe('MapTab filtering', () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
 
     renderMapTab(makeFragmentService(provenances))
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await waitFor(() => expect(mockSetData).toHaveBeenCalled())
     mockFitBounds.mockClear()
 
@@ -119,7 +120,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'bab')
     expect(mockAddSource).not.toHaveBeenCalled()
 
@@ -127,8 +128,11 @@ describe('MapTab filtering', () => {
       triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
-    expect(mockAddSource).toHaveBeenCalledTimes(1)
-    const source = mockAddSource.mock.calls[0][1]
+    const findspotSourceCalls = mockAddSource.mock.calls.filter(
+      ([sourceId]) => sourceId === 'ebl-findspots',
+    )
+    expect(findspotSourceCalls).toHaveLength(1)
+    const source = findspotSourceCalls[0][1]
     expect(source.data.features).toHaveLength(1)
     expect(source.data.features[0].properties.name).toBe('Babylon')
   })
@@ -141,8 +145,9 @@ describe('MapTab filtering', () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
 
     renderMapTab(makeFragmentService(provenances))
-    const input = await screen.findByLabelText('Filter findspots by name')
-    await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
+    const input = await screen.findByLabelText('Search sites')
+    await waitFor(() => expect(mockSetData).toHaveBeenCalled())
+    mockSetData.mockClear()
 
     await userEvent.type(input, 'nip')
 
@@ -163,7 +168,7 @@ describe('MapTab filtering', () => {
         makeProvenance({ id: 'babylon', longName: 'Babylon' }),
       ]),
     )
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'bab')
 
     expect(mockSetData).not.toHaveBeenCalled()

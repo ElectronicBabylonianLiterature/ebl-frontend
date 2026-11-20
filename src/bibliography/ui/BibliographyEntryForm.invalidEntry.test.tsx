@@ -6,6 +6,7 @@ import {
   citeAsyncMock,
   dataField,
   parsedCitation,
+  parsedCitationWithoutEntries,
   submitForm,
   typeIntoDataField,
   setUpFakeTimersAroundTests,
@@ -51,3 +52,30 @@ test('Submitting before anything has been parsed does not emit an entry', () => 
 
   expect(onSubmit).not.toHaveBeenCalled()
 })
+
+test.each([
+  ['an empty array', '[]'],
+  ['an emptied field', ''],
+])(
+  'A parse of %s clears the entry parsed earlier and disables saving',
+  async (_, input) => {
+    const onSubmit = jest.fn()
+    citeAsyncMock().mockResolvedValueOnce(
+      parsedCitation('first', 'A rendered citation'),
+    )
+    render(<BibliographyEntryForm onSubmit={onSubmit} />)
+    typeIntoDataField('10.1000/valid')
+    await advancePastTheDebounce()
+    expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+
+    citeAsyncMock().mockResolvedValueOnce(parsedCitationWithoutEntries())
+    typeIntoDataField(input)
+    await advancePastTheDebounce()
+
+    expect(screen.queryByText('A rendered citation')).not.toBeInTheDocument()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    submitForm()
+    expect(onSubmit).not.toHaveBeenCalled()
+  },
+)

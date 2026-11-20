@@ -6,6 +6,7 @@ import {
   lineToVecRankingDto,
   resultStub,
 } from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
+import { fragmentDto } from 'test-support/test-fragment'
 
 type AbortableRead = {
   readonly name: string
@@ -17,6 +18,13 @@ type AbortableRead = {
 const fragmentInfosResponse = [fragmentInfoDto]
 
 const abortableReads: readonly AbortableRead[] = [
+  {
+    name: 'find',
+    call: (signal) =>
+      fragmentRepository.find(fragmentId, undefined, true, signal),
+    expectedPath: `/fragments/${encodeURIComponent(fragmentId)}?excludeLines=true`,
+    response: fragmentDto,
+  },
   {
     name: 'statistics',
     call: (signal) => fragmentRepository.statistics(signal),
