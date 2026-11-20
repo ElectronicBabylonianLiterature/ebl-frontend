@@ -22,6 +22,8 @@ const entry: RealiaEntry = {
   crossReferences: [],
   afoCrossReferences: [],
   references: [],
+  referenceType: [],
+  eblRealia: [],
 }
 
 const testData: TestData<RealiaService>[] = [

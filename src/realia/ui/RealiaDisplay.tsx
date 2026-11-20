@@ -15,9 +15,11 @@ import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import RealiaNavMenu from 'realia/ui/RealiaNavMenu'
 import { AfoRegisterVolumes } from 'realia/ui/RealiaAfoRegister'
 import { ReallexikonEntries } from 'realia/ui/RealiaReallexikon'
+import { EblRealiaEntries } from 'realia/ui/RealiaEblRealia'
 import {
   RealiaMetadata,
   RealiaSection,
+  ReferenceTypeBadges,
   SeeAlsoList,
 } from 'realia/ui/RealiaParts'
 import { RealiaRedirect } from 'realia/ui/RealiaRedirect'
@@ -126,6 +128,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         <div id={realiaSectionIds.top} className="Realia__top">
           <RealiaDevelopmentNotice />
           <h1>{entry.id}</h1>
+          <ReferenceTypeBadges entry={entry} />
           <RealiaMetadata entry={entry} />
         </div>
         {entry.reallexikon.length > 0 && (
@@ -151,10 +154,20 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
             />
           </RealiaSection>
         )}
+        {entry.eblRealia.length > 0 && (
+          <RealiaSection
+            id={realiaSectionIds.eblRealia}
+            heading="III. eBL Realia"
+            open={openSections[realiaSectionIds.eblRealia]}
+            onToggle={toggleSection}
+          >
+            <EblRealiaEntries entries={entry.eblRealia} />
+          </RealiaSection>
+        )}
         {entry.references.length > 0 && (
           <RealiaSection
             id={realiaSectionIds.references}
-            heading="III. References"
+            heading="IV. References"
             open={openSections[realiaSectionIds.references]}
             onToggle={toggleSection}
           >
@@ -164,7 +177,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         {crossReferences.length > 0 && (
           <RealiaSection
             id={realiaSectionIds.seeAlso}
-            heading="IV. See Also"
+            heading="V. See Also"
             open={openSections[realiaSectionIds.seeAlso]}
             onToggle={toggleSection}
           >

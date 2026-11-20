@@ -75,7 +75,7 @@ describe('RealiaDisplay sections and reallexikon', () => {
     const entry = realiaEntryFactory.build({ references: [] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.queryByText(/III\. References/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/IV\. References/)).not.toBeInTheDocument()
   })
 
   it('renders reallexikon entry with a reference', async () => {
@@ -208,7 +208,7 @@ describe('RealiaDisplay sections and reallexikon', () => {
     const entry = realiaEntryFactory.build({ references: [reference] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText(/III\. References/)).toBeInTheDocument()
+    expect(screen.getByText(/IV\. References/)).toBeInTheDocument()
   })
 
   it('renders "Related terms:" label when relatedTerms present', async () => {
@@ -240,6 +240,6 @@ describe('RealiaDisplay sections and reallexikon', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText(/I\. Reallexikon/)).toBeInTheDocument()
-    expect(screen.queryByText(/III\. References/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/IV\. References/)).not.toBeInTheDocument()
   })
 })
