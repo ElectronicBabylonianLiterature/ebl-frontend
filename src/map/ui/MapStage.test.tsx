@@ -30,7 +30,7 @@ describe('MapStage', () => {
     )
 
     expect(
-      screen.queryByText(/interactive map could not be loaded/i),
+      screen.queryByText(/map background is unavailable/i),
     ).not.toBeInTheDocument()
   })
 
@@ -41,8 +41,27 @@ describe('MapStage', () => {
     )
 
     expect(
-      screen.getByText(/interactive map could not be loaded/i),
+      screen.getByText(/map background is unavailable/i),
     ).toBeInTheDocument()
+  })
+
+  it('only advertises fallback links when they are rendered', () => {
+    const containerRef = createRef<HTMLDivElement>()
+    const { rerender } = render(
+      <MapStage
+        containerRef={containerRef}
+        isBackgroundUnavailable
+        showFallbackHint
+      />,
+    )
+    expect(
+      screen.getByText(/You can still browse sites and use Library links/),
+    ).toBeInTheDocument()
+
+    rerender(<MapStage containerRef={containerRef} isBackgroundUnavailable />)
+    expect(
+      screen.queryByText(/You can still browse sites and use Library links/),
+    ).not.toBeInTheDocument()
   })
 
   it('renders the overlay when provided', () => {

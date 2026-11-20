@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import fs from 'fs'
 import path from 'path'
 import fetchMock from 'jest-fetch-mock'
@@ -40,17 +40,14 @@ describe('MapTab', () => {
   it('renders search input, map region, and findspot links', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
-    expect(
-      await screen.findByLabelText('Filter findspots by name'),
-    ).toBeInTheDocument()
+    expect(await screen.findByLabelText('Search sites')).toBeInTheDocument()
     const mapRegion = screen.getByRole('region', {
       name: 'Interactive findspot map',
     })
     expect(mapRegion).toHaveAttribute('aria-describedby')
-    expect(screen.getByText(/Matching tablet search links/)).toHaveAttribute(
-      'id',
-      mapRegion.getAttribute('aria-describedby'),
-    )
+    expect(
+      screen.getByText(/Explore mapped sites and excavation areas/),
+    ).toHaveAttribute('id', mapRegion.getAttribute('aria-describedby'))
     expect(screen.getByRole('link', { name: 'Babylon' })).toHaveAttribute(
       'href',
       buildFragmentSearchLink('Babylon'),
@@ -60,7 +57,7 @@ describe('MapTab', () => {
   it('shows empty state when filter matches nothing', async () => {
     renderMapTab(makeFragmentService([makeProvenance({ longName: 'Babylon' })]))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'Nippur')
 
     expect(
@@ -133,13 +130,10 @@ describe('MapTab', () => {
       ),
     )
     renderMapTab(makeFragmentService([makeProvenance()]))
+    await screen.findByLabelText('Excavation areas')
     const checkbox = await screen.findByLabelText('Excavation areas')
     await waitFor(() => expect(checkbox).toBeEnabled())
-    await userEvent.click(checkbox)
     expect(checkbox).toBeChecked()
-    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
-      'areas=1',
-    )
     for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
       expect(mockSetLayoutProperty).toHaveBeenCalledWith(
         layer,
@@ -150,8 +144,8 @@ describe('MapTab', () => {
     mockSetLayoutProperty.mockClear()
     await userEvent.click(checkbox)
     expect(checkbox).not.toBeChecked()
-    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
-      'areas=1',
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+      'areas=0',
     )
     for (const layer of ['excavation-area-fill', 'excavation-area-outline']) {
       expect(mockSetLayoutProperty).toHaveBeenCalledWith(
@@ -162,12 +156,41 @@ describe('MapTab', () => {
     }
   })
 
+  it('shows loading beside the visible control until polygon assets arrive', async () => {
+    let complete!: (body: string) => void
+    fetchMock.mockResponseOnce(
+      () =>
+        new Promise<string>((resolve) => {
+          complete = resolve
+        }),
+    )
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await screen.findByLabelText('Excavation areas')
+    expect(screen.getByText('Loading excavation areas…')).toBeVisible()
+    expect(screen.getByLabelText('Excavation areas')).toBeChecked()
+    await act(async () =>
+      complete(
+        fs.readFileSync(
+          path.resolve(
+            __dirname,
+            '../../../public/map-data/findspots/all.geojson',
+          ),
+          'utf8',
+        ),
+      ),
+    )
+    await waitFor(() =>
+      expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
+    )
+    expect(
+      screen.queryByText('Loading excavation areas…'),
+    ).not.toBeInTheDocument()
+  })
+
   it('does not crash with empty provenance data', async () => {
     renderMapTab(makeFragmentService([]))
 
-    expect(
-      await screen.findByLabelText('Filter findspots by name'),
-    ).toBeInTheDocument()
+    expect(await screen.findByLabelText('Search sites')).toBeInTheDocument()
     expect(
       screen.getByRole('region', { name: 'Interactive findspot map' }),
     ).toBeInTheDocument()
@@ -192,6 +215,7 @@ describe('MapTab', () => {
     const sourceCall = mockAddSource.mock.calls[0]
     expect(sourceCall[1].data.features).toHaveLength(1)
     expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
+    expect(screen.getByText('1 map marker')).toBeInTheDocument()
   })
 
   it('links to searches for provenances that have no map geometry', async () => {

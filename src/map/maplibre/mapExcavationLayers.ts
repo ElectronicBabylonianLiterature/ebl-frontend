@@ -5,8 +5,8 @@ export const EXCAVATION_AREAS_SOURCE_ID = 'excavation-areas'
 export const EXCAVATION_AREA_FILL_LAYER_ID = 'excavation-area-fill'
 export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'excavation-area-outline'
 
-const NEUTRAL_FILL_COLOR = '#6c757d'
-const NEUTRAL_OUTLINE_COLOR = '#343a40'
+const NEUTRAL_FILL_COLOR = '#a27843'
+const NEUTRAL_OUTLINE_COLOR = '#624921'
 
 export function createExcavationAreasSource(
   index: ExcavationPolygonIndex,
@@ -39,7 +39,7 @@ export const excavationAreaFillLayer: AddLayerObject = {
   layout: { visibility: 'visible' },
   paint: {
     'fill-color': NEUTRAL_FILL_COLOR,
-    'fill-opacity': 0.15,
+    'fill-opacity': 0.2,
   },
 }
 
@@ -50,8 +50,8 @@ export const excavationAreaOutlineLayer: AddLayerObject = {
   layout: { visibility: 'visible', 'line-join': 'round' },
   paint: {
     'line-color': NEUTRAL_OUTLINE_COLOR,
-    'line-width': 1.5,
-    'line-opacity': 0.7,
+    'line-width': 1.75,
+    'line-opacity': 0.9,
   },
 }
 

@@ -24,7 +24,7 @@ it('frames the clicked provenance polygon before showing its tablet link', async
     ],
   })
   renderMapTab(makeFragmentService([provenance]))
-  await screen.findByLabelText('Filter findspots by name')
+  await screen.findByLabelText('Search sites')
   mockFitBounds.mockClear()
   mockQueryRenderedFeatures.mockReturnValueOnce([]).mockReturnValueOnce([
     {

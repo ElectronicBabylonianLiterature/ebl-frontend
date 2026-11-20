@@ -6,7 +6,10 @@ import {
   makeProvenance,
   mockAddSource,
   mockCaptureException,
+  mockFitBounds,
   mockOn,
+  mockSetStyle,
+  mockGetStyle,
   resetMapMocks,
   setWorkerUrl,
   triggerMapEvent,
@@ -70,6 +73,73 @@ describe('useFindspotMap', () => {
     expect(mockAddSource).not.toHaveBeenCalled()
   })
 
+  it('does not override a reset camera when the style loads later', () => {
+    deferMapLoad()
+    const { rerender } = renderHarness(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={0} />,
+    )
+
+    rerender(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={1} />,
+    )
+    act(() => {
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
+    })
+
+    expect(mockAddSource).toHaveBeenCalled()
+    expect(mockFitBounds).not.toHaveBeenCalled()
+  })
+
+  it('still fits initial data after a click on the unloaded blank canvas', () => {
+    deferMapLoad()
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+    act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+    act(() => triggerMapEvent(MAP_STYLE_LOAD_EVENT))
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  })
+
+  it('fits a newly created map even when the previous map had a camera owner', () => {
+    const provenances = [makeProvenance()]
+    const { rerender } = renderHarness(
+      <HookHarness provenances={provenances} cameraResetVersion={0} />,
+    )
+    rerender(<HookHarness provenances={provenances} cameraResetVersion={1} />)
+    mockFitBounds.mockClear()
+    rerender(
+      <HookHarness
+        provenances={provenances}
+        cameraResetVersion={1}
+        onMapBackgroundErrorChange={() => undefined}
+      />,
+    )
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  })
+
+  it('fits a newer filter applied after reset but before style load', () => {
+    deferMapLoad()
+    const { rerender } = renderHarness(
+      <HookHarness provenances={[makeProvenance()]} cameraResetVersion={0} />,
+    )
+
+    rerender(
+      <HookHarness
+        provenances={[makeProvenance({ id: 'all' })]}
+        cameraResetVersion={1}
+      />,
+    )
+    rerender(
+      <HookHarness
+        provenances={[makeProvenance({ id: 'later-filter' })]}
+        cameraResetVersion={1}
+      />,
+    )
+    act(() => {
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
+    })
+
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+  })
+
   it('does not require an error callback', () => {
     renderHarness(<HookHarness provenances={[makeProvenance()]} />)
 
@@ -127,4 +197,61 @@ describe('useFindspotMap', () => {
 
     expect(mockCaptureException).not.toHaveBeenCalled()
   })
+})
+
+it('keeps markers operational on a plain canvas when the background style fails', () => {
+  resetMapMocks()
+  deferMapLoad()
+  const onMapBackgroundErrorChange = jest.fn()
+  renderHarness(
+    <HookHarness
+      provenances={[makeProvenance()]}
+      onMapBackgroundErrorChange={onMapBackgroundErrorChange}
+    />,
+  )
+  act(() =>
+    triggerMapEvent('error', {
+      error: {
+        url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        message: 'offline',
+      },
+    }),
+  )
+  expect(mockSetStyle).toHaveBeenCalledWith(
+    expect.objectContaining({ version: 8, sources: {} }),
+  )
+  mockGetStyle.mockReturnValue({ metadata: { 'ebl:fallback': true } })
+  const onStyleLoad = mockOn.mock.calls.find(
+    ([event]) => event === 'style.load',
+  )?.[1]
+  act(() => onStyleLoad())
+  expect(mockAddSource).toHaveBeenCalledWith(
+    'ebl-findspots',
+    expect.any(Object),
+  )
+  expect(onMapBackgroundErrorChange).toHaveBeenLastCalledWith(true)
+  act(() =>
+    triggerMapEvent('error', {
+      error: {
+        url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      },
+    }),
+  )
+  expect(mockSetStyle).toHaveBeenCalledTimes(1)
+})
+
+it('can install a fallback background without a status callback', () => {
+  resetMapMocks()
+  deferMapLoad()
+  renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+  expect(() =>
+    act(() =>
+      triggerMapEvent('error', {
+        error: {
+          url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        },
+      }),
+    ),
+  ).not.toThrow()
+  expect(mockSetStyle).toHaveBeenCalledTimes(1)
 })

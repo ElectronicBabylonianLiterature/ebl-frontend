@@ -117,12 +117,14 @@ describe('useMapUrlState', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByTestId(SEARCH_TEST_ID)).toBeEmptyDOMElement()
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+        '?mv=1&areas=1',
+      )
     })
   })
 
-  it('writes and clears the excavation-area flag', async () => {
-    renderHarness('/tools/map?source=archive')
+  it('writes explicit enabled and disabled excavation-area flags', async () => {
+    renderHarness('/tools/map?source=archive&mv=1&areas=0')
 
     act(() => {
       screen.getByText('show-areas').click()
@@ -145,7 +147,7 @@ describe('useMapUrlState', () => {
       expect(screen.getByTestId(AREAS_TEST_ID)).toHaveTextContent('false')
     })
     expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
-      '?source=archive',
+      '?source=archive&mv=1&areas=0',
     )
   })
 

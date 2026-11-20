@@ -23,6 +23,15 @@ export type ExcavationPolygonIndex = ReadonlyMap<
   readonly ExcavationPolygon[]
 >
 
+export function findExcavationPolygon(
+  index: ExcavationPolygonIndex,
+  polygonId: string,
+): ExcavationPolygon | undefined {
+  return [...index.values()]
+    .flat()
+    .find((polygon) => polygon.polygonId === polygonId)
+}
+
 function propertyString(
   feature: Feature<Geometry, Record<string, unknown> | null>,
   key: string,

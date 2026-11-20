@@ -17,7 +17,7 @@ export interface MapUrlState {
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   version: MAP_URL_STATE_VERSION,
   filter: '',
-  showExcavationAreas: false,
+  showExcavationAreas: true,
 }
 
 export function normalizeMapFilter(filter: string): string {
@@ -45,14 +45,14 @@ export function parseMapUrlState(search: string): MapUrlState {
   const query = parse(search)
   const version = asString(query[VERSION_PARAM])
 
-  if (version !== String(MAP_URL_STATE_VERSION)) {
+  if (version && version !== String(MAP_URL_STATE_VERSION)) {
     return DEFAULT_MAP_URL_STATE
   }
 
   return normalizeMapUrlState({
     version: MAP_URL_STATE_VERSION,
     filter: asString(query[FILTER_PARAM]),
-    showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
+    showExcavationAreas: asString(query[AREAS_PARAM]) !== '0',
   })
 }
 
@@ -67,14 +67,18 @@ export function mergeMapUrlStateIntoSearch(
   const parameters = new URLSearchParams(search)
   const { filter, showExcavationAreas } = normalizeMapUrlState(state)
 
+  const hasExplicitAreas = parameters.has(AREAS_PARAM)
+
   parameters.delete(VERSION_PARAM)
   parameters.delete(FILTER_PARAM)
   parameters.delete(AREAS_PARAM)
-  if (filter || showExcavationAreas) {
+  if (filter || !showExcavationAreas || hasExplicitAreas) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
   }
   if (filter) parameters.set(FILTER_PARAM, filter)
-  if (showExcavationAreas) parameters.set(AREAS_PARAM, '1')
+  if (filter || !showExcavationAreas || hasExplicitAreas) {
+    parameters.set(AREAS_PARAM, showExcavationAreas ? '1' : '0')
+  }
 
   return parameters.toString()
 }
