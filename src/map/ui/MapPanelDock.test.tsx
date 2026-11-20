@@ -2,17 +2,12 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MapPanelDock from 'map/ui/MapPanelDock'
-import useMapPanel from 'map/ui/useMapPanel'
-import useIsNarrowViewport from 'map/domain/useIsNarrowViewport'
-
-jest.mock('map/domain/useIsNarrowViewport')
-
-beforeEach(() => (useIsNarrowViewport as jest.Mock).mockReturnValue(true))
+import useMapTools from 'map/ui/useMapTools'
 
 function PanelDock(): JSX.Element {
   return (
     <MapPanelDock
-      panel={useMapPanel()}
+      panel={useMapTools()}
       panels={[
         {
           id: 'layers',
@@ -35,7 +30,7 @@ it('expands and focuses a newly selected panel after collapsing another', async 
   render(<PanelDock />)
   await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
   await userEvent.click(
-    screen.getByRole('button', { name: 'Collapse Map layers' }),
+    screen.getByRole('button', { name: 'Close Map layers' }),
   )
   expect(screen.queryByText('Layer controls')).not.toBeInTheDocument()
 
@@ -47,7 +42,7 @@ it('expands and focuses a newly selected panel after collapsing another', async 
   ).toHaveFocus()
 })
 
-it('closes a focused drawer with Escape and returns focus to its toolbar button', async () => {
+it('closes a focused tool panel with Escape and returns focus to its toolbar button', async () => {
   render(<PanelDock />)
   await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
   await userEvent.keyboard('{Escape}')
@@ -56,7 +51,7 @@ it('closes a focused drawer with Escape and returns focus to its toolbar button'
   expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
 })
 
-it('keeps the drawer open for ordinary keyboard input', async () => {
+it('keeps the tool panel open for ordinary keyboard input', async () => {
   render(<PanelDock />)
   const button = screen.getByRole('button', { name: 'Map layers' })
   expect(button).not.toHaveAttribute('aria-controls')
@@ -64,5 +59,5 @@ it('keeps the drawer open for ordinary keyboard input', async () => {
   await userEvent.keyboard('{ArrowDown}')
   expect(screen.getByText('Layer controls')).toBeInTheDocument()
   expect(screen.getByRole('region', { name: 'Map layers' })).toBeVisible()
-  expect(button).toHaveAttribute('aria-controls', 'map-panel-drawer')
+  expect(button).toHaveAttribute('aria-controls', 'map-research-tool-panel')
 })

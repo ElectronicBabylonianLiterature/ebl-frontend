@@ -23,6 +23,30 @@ export type ExcavationPolygonIndex = ReadonlyMap<
   readonly ExcavationPolygon[]
 >
 
+export function findExcavationPolygon(
+  index: ExcavationPolygonIndex,
+  polygonId: string | null,
+): ExcavationPolygon | null {
+  if (polygonId === null) return null
+  for (const polygons of index.values()) {
+    const match = polygons.find((polygon) => polygon.polygonId === polygonId)
+    if (match) return match
+  }
+  return null
+}
+
+export function sortedExcavationPolygons(
+  index: ExcavationPolygonIndex,
+): readonly ExcavationPolygon[] {
+  return [...index.values()]
+    .flatMap((polygons) => [...polygons])
+    .sort((left, right) =>
+      (left.name ?? left.polygonId).localeCompare(
+        right.name ?? right.polygonId,
+      ),
+    )
+}
+
 function propertyString(
   feature: Feature<Geometry, Record<string, unknown> | null>,
   key: string,

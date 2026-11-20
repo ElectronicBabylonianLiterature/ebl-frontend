@@ -1,23 +1,16 @@
 import type { Feature, Point } from 'geojson'
+import { isFiniteNumberInRange } from 'map/domain/geodesy'
 
 const MAXIMUM_LONGITUDE = 180
 const MAXIMUM_LATITUDE = 90
-
-function isWithinRange(value: unknown, limit: number): value is number {
-  return (
-    typeof value === 'number' &&
-    Number.isFinite(value) &&
-    Math.abs(value) <= limit
-  )
-}
 
 export function isValidPointCoordinate(
   longitude: unknown,
   latitude: unknown,
 ): boolean {
   return (
-    isWithinRange(longitude, MAXIMUM_LONGITUDE) &&
-    isWithinRange(latitude, MAXIMUM_LATITUDE)
+    isFiniteNumberInRange(longitude, -MAXIMUM_LONGITUDE, MAXIMUM_LONGITUDE) &&
+    isFiniteNumberInRange(latitude, -MAXIMUM_LATITUDE, MAXIMUM_LATITUDE)
   )
 }
 

@@ -28,7 +28,6 @@ export default function MapLayerPanel({
       ) : null}
       <MapLayerControls
         showExcavationAreas={state.showExcavationAreas}
-        canShowExcavationAreas={state.canShowExcavationAreas}
         onShowExcavationAreasChange={state.experience.setShowExcavationAreas}
       />
       <MapExcavationAreaSelector

@@ -96,4 +96,5 @@ export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
 export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
 ]

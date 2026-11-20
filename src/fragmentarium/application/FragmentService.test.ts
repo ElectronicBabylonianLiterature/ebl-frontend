@@ -19,6 +19,7 @@ import { wordFactory } from 'test-support/word-fixtures'
 import { Text } from 'transliteration/domain/text'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
+import { ApiError } from 'http/ApiClient'
 import {
   bibliographyService,
   fragmentRepository,
@@ -159,18 +160,20 @@ describe('findPhoto', () => {
 })
 
 describe('isInFragmentarium', () => {
-  test('returns true when repository find does not throw synchronously', () => {
+  test('resolves true when repository find succeeds', async () => {
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
 
-    expect(fragmentService.isInFragmentarium('K.1')).toBe(true)
+    await expect(fragmentService.isInFragmentarium('K.1')).resolves.toBe(true)
   })
 
-  test('returns false when repository find throws synchronously', () => {
+  test('resolves false when repository find throws not found synchronously', async () => {
     fragmentRepository.find.mockImplementation(() => {
-      throw new Error('not found')
+      throw new ApiError('not found', {}, 404)
     })
 
-    expect(fragmentService.isInFragmentarium('K.404')).toBe(false)
+    await expect(fragmentService.isInFragmentarium('K.404')).resolves.toBe(
+      false,
+    )
   })
 })
 

@@ -22,8 +22,10 @@ export default function MapStage({
     <div className="map-stage">
       {isBackgroundUnavailable ? (
         <Alert variant="warning" className="map-stage__background-alert">
-          The interactive map could not be loaded.
-          {showFallbackHint ? ' Findspot links remain available below.' : null}
+          The map background is unavailable.
+          {showFallbackHint
+            ? ' You can still browse sites and use Library links.'
+            : null}
         </Alert>
       ) : null}
       {legend}

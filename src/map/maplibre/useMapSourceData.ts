@@ -5,22 +5,22 @@ import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { SOURCE_ID } from 'map/maplibre/mapLayers'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import { fitMapToData } from 'map/maplibre/mapBounds'
+import useMapCameraOwnership, {
+  type MapCameraOwnership,
+} from 'map/maplibre/useMapCameraOwnership'
 
 const FIT_BOUNDS_DEBOUNCE_MS = 250
 
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,
   provenances: readonly ProvenanceRecord[] | null,
-  cameraResetVersion = 0,
+  sharedCamera?: MapCameraOwnership,
 ): void {
   const fitBoundsTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
-  const previousCameraResetVersionRef = useRef(cameraResetVersion)
+  const defaultCamera = useMapCameraOwnership(provenances)
+  const camera = sharedCamera ?? defaultCamera
 
   useEffect(() => {
-    const cameraWasReset =
-      previousCameraResetVersionRef.current !== cameraResetVersion
-    previousCameraResetVersionRef.current = cameraResetVersion
-
     const map = mapRef.current
     if (!map || provenances === null) return
 
@@ -31,11 +31,12 @@ export default function useMapSourceData(
     source.setData(geoJson)
 
     clearTimeout(fitBoundsTimeoutRef.current)
-    if (cameraWasReset) return
+    if (!camera.shouldFitData()) return
 
+    const isCurrent = camera.capture()
     fitBoundsTimeoutRef.current = setTimeout(() => {
-      fitMapToData(map, geoJson.features)
+      if (isCurrent()) fitMapToData(map, geoJson.features)
     }, FIT_BOUNDS_DEBOUNCE_MS)
     return () => clearTimeout(fitBoundsTimeoutRef.current)
-  }, [cameraResetVersion, mapRef, provenances])
+  }, [camera, mapRef, provenances])
 }

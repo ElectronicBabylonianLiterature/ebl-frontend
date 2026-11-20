@@ -5,24 +5,16 @@ import {
   clusterCountLayer,
   unclusteredLayer,
 } from 'map/maplibre/mapLayers'
-import {
-  EXCAVATION_AREAS_SOURCE_ID,
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-} from 'map/domain/mapLayerIds'
+import { EXCAVATION_AREAS_SOURCE_ID } from 'map/domain/mapLayerIds'
 import {
   createExcavationAreasSource,
   excavationAreaFillLayer,
   excavationAreaOutlineLayer,
   excavationAreaSelectedLayer,
+  EXCAVATION_AREA_LAYER_IDS,
 } from 'map/maplibre/mapExcavationLayers'
 
-export const ALL_EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-]
+export const ALL_EXCAVATION_AREA_LAYER_IDS = EXCAVATION_AREA_LAYER_IDS
 export function addExcavationAreas(
   map: MapLibreMap,
   polygonIndex: ExcavationPolygonIndex,

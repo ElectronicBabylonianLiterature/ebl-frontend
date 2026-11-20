@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { stringify } from 'common/utils/queryString'
 import _ from 'lodash'
 import { produce } from 'immer'
@@ -147,7 +147,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent,
   ): void => {
     event.preventDefault()
-    this.navigateWithState(this.state)
+    if (this.state.isValid) this.navigateWithState(this.state)
   }
 
   private clearFindspotConstraint = (): void => {
@@ -191,7 +191,13 @@ function SearchFormWithRouter(
   props: Omit<SearchFormProps, 'navigate'>,
 ): JSX.Element {
   const navigate = useNavigate()
-  return <SearchForm {...props} navigate={navigate} />
+  const location = useLocation()
+  return (
+    <SearchForm
+      {...props}
+      navigate={(options) => navigate({ ...options, hash: location.hash })}
+    />
+  )
 }
 
 export default SearchFormWithRouter

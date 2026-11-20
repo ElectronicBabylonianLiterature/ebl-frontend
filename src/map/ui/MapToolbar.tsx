@@ -9,7 +9,7 @@ export interface MapPanelDefinition {
   readonly render: () => JSX.Element
 }
 
-export const MAP_PANEL_CONTAINER_ID = 'map-panel-drawer'
+export const MAP_PANEL_CONTAINER_ID = 'map-research-tool-panel'
 
 interface Props {
   readonly panels: readonly MapPanelDefinition[]

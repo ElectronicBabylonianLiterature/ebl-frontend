@@ -21,6 +21,10 @@ export function findspotMapDataDto(
   }
 }
 
+export function featureCollection(features: unknown[]): unknown {
+  return { type: 'FeatureCollection', features }
+}
+
 export function polygonFeature(
   polygonId: string,
   siteId: string,
