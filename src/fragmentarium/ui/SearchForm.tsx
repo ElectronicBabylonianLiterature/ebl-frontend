@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { stringify } from 'common/utils/queryString'
 import _ from 'lodash'
 import { produce } from 'immer'
@@ -191,7 +191,13 @@ function SearchFormWithRouter(
   props: Omit<SearchFormProps, 'navigate'>,
 ): JSX.Element {
   const navigate = useNavigate()
-  return <SearchForm {...props} navigate={navigate} />
+  const location = useLocation()
+  return (
+    <SearchForm
+      {...props}
+      navigate={(options) => navigate({ ...options, hash: location.hash })}
+    />
+  )
 }
 
 export default SearchFormWithRouter

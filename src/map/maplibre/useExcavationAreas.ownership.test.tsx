@@ -1,21 +1,16 @@
 import { act, renderHook } from '@testing-library/react'
 import { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/maplibre/useExcavationAreas'
-import {
-  EXCAVATION_AREA_LAYER_IDS,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-  EXCAVATION_AREA_FILL_LAYER_ID,
-} from 'map/maplibre/mapExcavationLayers'
+import { EXCAVATION_AREA_LAYER_IDS } from 'map/maplibre/mapExcavationLayers'
 import {
   clearMockStyleResources,
   mockAddLayer,
   mockAddSource,
-  markLayersAdded,
   mockGetSource,
+  markLayersAdded,
   mockOff,
   mockOn,
   mockSetLayoutProperty,
-  mockQueryRenderedFeatures,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/testSupport/mapLibreMock'
@@ -26,49 +21,12 @@ const POLYGON_INDEX = new Map()
 
 beforeEach(resetMapMocks)
 
-it('ignores empty and invalid hits and clicks from a replaced map', () => {
-  const onSelectPolygon = jest.fn()
-  const mapRef: { current: MapLibreMap | null } = {
-    current: new MapLibreMap({ container: document.createElement('div') }),
-  }
-  renderHook(() =>
-    useExcavationAreas(mapRef, {
-      isVisible: true,
-      polygonIndex: POLYGON_INDEX,
-      selectedPolygonId: null,
-      onSelectPolygon,
-    }),
-  )
-  const click = () =>
-    triggerMapEvent(
-      'click',
-      { point: { x: 0, y: 0 } },
-      EXCAVATION_AREA_FILL_LAYER_ID,
-    )
-  act(click)
-  mockQueryRenderedFeatures.mockReturnValue([{ id: 7 }])
-  act(click)
-  expect(onSelectPolygon).not.toHaveBeenCalled()
-  mockQueryRenderedFeatures.mockReturnValue([{ id: 'assur-area-a-checksum' }])
-  act(click)
-  expect(onSelectPolygon).toHaveBeenCalledTimes(1)
-  mapRef.current = null
-  act(click)
-  expect(onSelectPolygon).toHaveBeenCalledTimes(1)
-})
-
 it('ignores stale style events after the map owner replaces its instance', () => {
   const mapRef: { current: MapLibreMap | null } = {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, {
-      isVisible: true,
-      onAvailabilityChange: undefined,
-      selectedPolygonId: null,
-      onSelectPolygon: jest.fn(),
-      polygonIndex: POLYGON_INDEX,
-    }),
+    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
   )
   clearMockStyleResources()
   mockAddLayer.mockClear()
@@ -91,13 +49,7 @@ it('ignores callbacks captured before the hook unmounts', () => {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, {
-      isVisible: true,
-      onAvailabilityChange: undefined,
-      selectedPolygonId: null,
-      onSelectPolygon: jest.fn(),
-      polygonIndex: POLYGON_INDEX,
-    }),
+    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
   )
   const callbacks = mockOn.mock.calls
     .filter(([event]) => event === 'style.load')
@@ -116,15 +68,7 @@ it('ignores callbacks captured before the hook unmounts', () => {
 
 it('waits for a map owner before registering listeners', () => {
   renderHook(() =>
-    useExcavationAreas(
-      { current: null },
-      {
-        isVisible: true,
-        selectedPolygonId: null,
-        onSelectPolygon: jest.fn(),
-        polygonIndex: POLYGON_INDEX,
-      },
-    ),
+    useExcavationAreas({ current: null }, true, undefined, POLYGON_INDEX),
   )
 
   expect(mockOn).not.toHaveBeenCalled()
@@ -135,20 +79,9 @@ it('reuses source and layers already installed when the style event repeats', ()
   const mapRef = {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
-  markLayersAdded(
-    ...EXCAVATION_AREA_LAYER_IDS,
-    EXCAVATION_AREA_SELECTED_LAYER_ID,
-  )
+  markLayersAdded(...EXCAVATION_AREA_LAYER_IDS)
   mockGetSource.mockReturnValue({})
-  renderHook(() =>
-    useExcavationAreas(mapRef, {
-      isVisible: false,
-      onAvailabilityChange: undefined,
-      selectedPolygonId: null,
-      onSelectPolygon: jest.fn(),
-      polygonIndex: POLYGON_INDEX,
-    }),
-  )
+  renderHook(() => useExcavationAreas(mapRef, false, undefined, POLYGON_INDEX))
   act(() => triggerMapEvent('style.load'))
 
   expect(mockAddSource).not.toHaveBeenCalled()

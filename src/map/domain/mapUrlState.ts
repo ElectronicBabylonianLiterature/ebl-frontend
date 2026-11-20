@@ -24,7 +24,7 @@ export interface MapUrlState {
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   version: MAP_URL_STATE_VERSION,
   filter: '',
-  showExcavationAreas: false,
+  showExcavationAreas: true,
   selection: null,
 }
 
@@ -41,7 +41,7 @@ export function normalizeMapUrlState(state: MapUrlState): MapUrlState {
     version: MAP_URL_STATE_VERSION,
     filter: normalizeMapFilter(state.filter),
     showExcavationAreas: state.showExcavationAreas,
-    selection: state.selection,
+    selection: state.selection ?? null,
   }
 }
 
@@ -54,14 +54,14 @@ export function parseMapUrlState(search: string): MapUrlState {
   const query = parse(search)
   const version = asString(query[VERSION_PARAM])
 
-  if (version !== String(MAP_URL_STATE_VERSION)) {
+  if (version && version !== String(MAP_URL_STATE_VERSION)) {
     return DEFAULT_MAP_URL_STATE
   }
 
   return normalizeMapUrlState({
     version: MAP_URL_STATE_VERSION,
     filter: asString(query[FILTER_PARAM]),
-    showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
+    showExcavationAreas: asString(query[AREAS_PARAM]) !== '0',
     selection: parseMapSelection(asString(query[SELECTION_PARAM])),
   })
 }
@@ -78,18 +78,26 @@ export function mergeMapUrlStateIntoSearch(
   const { filter, showExcavationAreas, selection } = normalizeMapUrlState(state)
   const serializedSelection = serializeMapSelection(selection)
 
+  const hasExplicitAreas = parameters.has(AREAS_PARAM)
+
   parameters.delete(VERSION_PARAM)
   parameters.delete(FILTER_PARAM)
   parameters.delete(AREAS_PARAM)
   parameters.delete(SELECTION_PARAM)
-  if (filter || showExcavationAreas || serializedSelection) {
+  if (
+    filter ||
+    !showExcavationAreas ||
+    hasExplicitAreas ||
+    serializedSelection
+  ) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
   }
   if (filter) parameters.set(FILTER_PARAM, filter)
-  if (showExcavationAreas) parameters.set(AREAS_PARAM, '1')
-  if (serializedSelection) {
-    parameters.set(SELECTION_PARAM, serializedSelection)
+  if (filter || !showExcavationAreas || hasExplicitAreas) {
+    parameters.set(AREAS_PARAM, showExcavationAreas ? '1' : '0')
   }
+
+  if (serializedSelection) parameters.set(SELECTION_PARAM, serializedSelection)
 
   return parameters.toString()
 }

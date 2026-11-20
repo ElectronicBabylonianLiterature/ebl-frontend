@@ -9,7 +9,7 @@ import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import { Popover } from 'react-bootstrap'
-import FragmentariumLink from 'corpus/ui/FragmentariumLink'
+import UncertainFragmentLinks from 'corpus/ui/UncertainFragmentLinks'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ManuscriptJoins from 'corpus/ui/ManuscriptJoins'
@@ -169,21 +169,10 @@ export default withData<
                 <tr>
                   <td></td>
                   <td>
-                    <ul className="list-of-manuscripts__uncertain-fragments">
-                      {uncertainFragments.map((uncertainFragment, index) => (
-                        <li key={index}>
-                          <FragmentariumLink
-                            item={{
-                              ...uncertainFragment,
-                              isInFragmentarium:
-                                fragmentService.isInFragmentarium(
-                                  uncertainFragment.museumNumber,
-                                ),
-                            }}
-                          />
-                        </li>
-                      ))}
-                    </ul>
+                    <UncertainFragmentLinks
+                      uncertainFragments={uncertainFragments}
+                      fragmentService={fragmentService}
+                    />
                   </td>
                 </tr>
               </>

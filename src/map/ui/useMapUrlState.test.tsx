@@ -10,6 +10,7 @@ const AREAS_TEST_ID = 'harness-areas'
 const SEARCH_TEST_ID = 'harness-search'
 const HASH_TEST_ID = 'harness-hash'
 const STATE_TEST_ID = 'harness-state'
+const SELECTION_TEST_ID = 'harness-selection'
 const OVERLONG_FILTER = 'a'.repeat(MAX_FILTER_LENGTH + 50)
 const CAPPED_FILTER = 'a'.repeat(MAX_FILTER_LENGTH)
 
@@ -32,6 +33,17 @@ function Harness(): JSX.Element {
     <div>
       <div data-testid={FILTER_TEST_ID}>{state.filter}</div>
       <div data-testid={AREAS_TEST_ID}>{String(state.showExcavationAreas)}</div>
+      <div data-testid={SELECTION_TEST_ID}>{state.selection?.polygonId}</div>
+      <button
+        onClick={() =>
+          update({
+            selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
+          })
+        }
+      >
+        select-area
+      </button>
+      <button onClick={() => update({ selection: null })}>clear-area</button>
       <button onClick={() => update({ filter: 'Babylon' })}>set-babylon</button>
       <button onClick={() => update({ showExcavationAreas: true })}>
         show-areas
@@ -68,6 +80,28 @@ function renderHarness(initialEntry: InitialEntry = '/tools/map'): void {
 }
 
 describe('useMapUrlState', () => {
+  it('writes and clears area-only selections while preserving explicit visibility and unrelated state', () => {
+    renderHarness('/tools/map?source=archive&areas=0#location')
+    act(() => screen.getByText('select-area').click())
+    expect(screen.getByTestId(SELECTION_TEST_ID)).toHaveTextContent(
+      'assur-area-a',
+    )
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      'selected=area%3Aassur-area-a',
+    )
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('areas=0')
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      'source=archive',
+    )
+    act(() => screen.getByText('clear-area').click())
+    expect(screen.getByTestId(SELECTION_TEST_ID)).toBeEmptyDOMElement()
+    expect(screen.getByTestId(SEARCH_TEST_ID)).not.toHaveTextContent(
+      'selected=',
+    )
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('areas=0')
+    expect(screen.getByTestId(HASH_TEST_ID)).toHaveTextContent('#location')
+  })
+
   it('parses the filter already present in the URL on mount', () => {
     renderHarness('/tools/map?mv=1&findspot=Babylon')
 
@@ -117,12 +151,14 @@ describe('useMapUrlState', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByTestId(SEARCH_TEST_ID)).toBeEmptyDOMElement()
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+        '?mv=1&areas=1',
+      )
     })
   })
 
-  it('writes and clears the excavation-area flag', async () => {
-    renderHarness('/tools/map?source=archive')
+  it('writes explicit enabled and disabled excavation-area flags', async () => {
+    renderHarness('/tools/map?source=archive&mv=1&areas=0')
 
     act(() => {
       screen.getByText('show-areas').click()
@@ -145,7 +181,7 @@ describe('useMapUrlState', () => {
       expect(screen.getByTestId(AREAS_TEST_ID)).toHaveTextContent('false')
     })
     expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
-      '?source=archive',
+      '?source=archive&mv=1&areas=0',
     )
   })
 

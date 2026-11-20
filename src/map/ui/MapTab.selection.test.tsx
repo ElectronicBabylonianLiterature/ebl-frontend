@@ -10,14 +10,12 @@ import {
   mockAddLayer,
   mockQueryRenderedFeatures,
   mockSetLayoutProperty,
+  mockSetPaintProperty,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
-import {
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-} from 'map/maplibre/mapExcavationLayers'
+import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/maplibre/mapExcavationLayers'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 jest.mock('maplibre-gl')
@@ -83,7 +81,7 @@ describe('MapTab excavation selection', () => {
       ),
     )
     expect(
-      screen.queryByRole('region', { name: 'Selected excavation area' }),
+      screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
   })
 
@@ -107,14 +105,13 @@ describe('MapTab excavation selection', () => {
         'visible',
       ),
     )
-    mockQueryRenderedFeatures.mockReturnValue([{ id: POLYGON_ID }])
+    mockQueryRenderedFeatures
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([{ properties: { id: POLYGON_ID } }])
 
     act(() => {
-      triggerMapEvent(
-        'click',
-        { point: { x: 10, y: 20 } },
-        EXCAVATION_AREA_FILL_LAYER_ID,
-      )
+      triggerMapEvent('click', { point: { x: 10, y: 20 } })
     })
 
     await waitFor(() =>
@@ -123,23 +120,23 @@ describe('MapTab excavation selection', () => {
       ),
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
-    const showSelectedArea = await screen.findByRole('button', {
-      name: 'Show selected area',
-    })
-
-    await userEvent.click(showSelectedArea)
-
     expect(
-      screen.getAllByRole('region', { name: 'Selected excavation area' }),
+      screen.getAllByRole('region', { name: 'Linked tablets' }),
     ).toHaveLength(1)
     expect(
       await screen.findByText('3 accessible tablets across 1 findspot.'),
     ).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Clear' }))
+    expect(screen.getByRole('link', { name: 'Area A (3)' })).toHaveAttribute(
+      'href',
+      '/library/search?findspotId=7',
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Close location details' }),
+    )
 
     expect(
-      screen.queryByRole('region', { name: 'Selected excavation area' }),
+      screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
     expect(screen.getByTestId('current-location')).not.toHaveTextContent(
       'selected=',
@@ -148,9 +145,45 @@ describe('MapTab excavation selection', () => {
       { x: 10, y: 20 },
       { layers: [EXCAVATION_AREA_FILL_LAYER_ID] },
     )
-    expect(mockAddLayer).toHaveBeenCalledWith(
-      expect.objectContaining({ id: EXCAVATION_AREA_SELECTED_LAYER_ID }),
-      'ebl-clusters',
+    expect(mockSetPaintProperty).toHaveBeenCalledWith(
+      'excavation-area-outline',
+      'line-width',
+      ['case', ['==', ['get', 'id'], POLYGON_ID], 3.5, 1.75],
     )
+  })
+
+  it('shows linked tablets for a deep-linked area even when excavation rendering is off', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      `/tools/map?mv=1&areas=0&selected=area%3A${POLYGON_ID}`,
+      makeFindspotService(),
+    )
+    expect(
+      await screen.findByText('3 accessible tablets across 1 findspot.'),
+    ).toBeVisible()
+    expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
+    expect(
+      screen.getByRole('combobox', { name: 'Inspect excavation area' }),
+    ).toHaveValue(POLYGON_ID)
+  })
+
+  it('retains selector focus while showing honest linked-data failures in the sidebar', async () => {
+    const findspotService = {
+      fetchMapData: jest.fn().mockRejectedValue(new Error('offline')),
+    } as unknown as FindspotService
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map',
+      findspotService,
+    )
+    const select = await screen.findByRole('combobox', {
+      name: 'Inspect excavation area',
+    })
+    await userEvent.selectOptions(select, POLYGON_ID)
+    expect(
+      await screen.findByText('Linked tablet data is unavailable right now.'),
+    ).toBeVisible()
+    expect(select).toHaveFocus()
+    expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()
   })
 })

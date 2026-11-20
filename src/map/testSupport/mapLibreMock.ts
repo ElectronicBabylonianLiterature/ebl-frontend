@@ -31,6 +31,7 @@ export const mockRemoveSource = jest.fn()
 export const mockSetLayoutProperty = jest.fn()
 export const mockSetPaintProperty = jest.fn()
 export const mockIsStyleLoaded = jest.fn(() => true)
+export const mockSetStyle = jest.fn()
 export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
 export const mockOnce = jest.fn()
 export const mockAddControl = jest.fn()
@@ -61,6 +62,7 @@ export const mockMapInstance = {
   setPaintProperty: mockSetPaintProperty,
   isStyleLoaded: mockIsStyleLoaded,
   getStyle: mockGetStyle,
+  setStyle: mockSetStyle,
   once: mockOnce,
   addControl: mockAddControl,
   remove: mockRemove,

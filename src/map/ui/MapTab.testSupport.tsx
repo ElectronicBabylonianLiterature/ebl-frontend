@@ -42,7 +42,7 @@ export function makeRejectingFragmentService(
   } as unknown as ProvenanceSource
 }
 
-const DEFAULT_FINDSPOT_SERVICE = {
+export const DEFAULT_FINDSPOT_SERVICE = {
   fetchMapData: () => Promise.resolve([]),
 } as unknown as FindspotService
 
