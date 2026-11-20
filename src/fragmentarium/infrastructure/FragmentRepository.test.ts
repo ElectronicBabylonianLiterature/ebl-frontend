@@ -40,7 +40,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}`, false, undefined],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -53,6 +53,7 @@ const testData: TestData<FragmentRepository>[] = [
         lines: [0],
       })}`,
       false,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -61,7 +62,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, null],
     apiClient.fetchJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}`, false, undefined],
     Promise.resolve(fragmentDto),
   ),
   new TestData(

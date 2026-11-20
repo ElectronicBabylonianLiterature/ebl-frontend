@@ -1,9 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
-
 import {
   makeFragmentService,
   makeProvenance,
@@ -12,108 +11,85 @@ import {
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
 import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
-import useMapLayoutEffects from 'map/ui/useMapLayoutEffects'
 
 jest.mock('maplibre-gl')
-jest.mock('map/ui/useMapLayoutEffects')
 
-const mockUseMapLayoutEffects = useMapLayoutEffects as jest.Mock
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   path.resolve(__dirname, '../../../public/map-data/findspots/all.geojson'),
   'utf8',
 )
 
-function lastActivePanel(): unknown {
-  const calls = mockUseMapLayoutEffects.mock.calls
-  return calls[calls.length - 1]?.[3]
-}
-describe('MapTab presentation mode', () => {
+describe('MapTab research workspace', () => {
   beforeEach(() => {
     resetMapMocks()
     fetchMock.resetMocks()
     fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
-    mockUseMapLayoutEffects.mockClear()
   })
 
-  it('clears panel layout while the drawer is hidden', async () => {
+  it('keeps the active tool beside the map in the research sidebar', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Map layers' }),
-    )
-    await waitFor(() => expect(lastActivePanel()).toBe('layers'))
-
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-
-    await waitFor(() => expect(lastActivePanel()).toBeNull())
-  })
-
-  it('restores focus after button and keyboard exits', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
-
-    const enter = await screen.findByRole('button', {
-      name: 'Presentation mode',
+    const sidebar = await screen.findByRole('complementary', {
+      name: 'Site research',
     })
-    await userEvent.click(enter)
-    expect(
-      screen.getByRole('button', { name: 'Exit presentation mode' }),
-    ).toHaveFocus()
-
     await userEvent.click(
-      screen.getByRole('button', { name: 'Exit presentation mode' }),
+      within(sidebar).getByRole('button', { name: 'Measure' }),
     )
-    expect(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    ).toHaveFocus()
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-    fireEvent.keyDown(window, { key: 'Escape' })
     expect(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    ).toHaveFocus()
+      within(sidebar).getByRole('region', { name: 'Measure' }),
+    ).toBeVisible()
+    expect(
+      within(
+        screen.getByRole('region', { name: 'Interactive findspot map' }),
+      ).queryByRole('region', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
   })
 
-  it('keeps an accurate accessible map description while presenting', async () => {
+  it('restores focus after closing a tool with its button or Escape', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
+    const measure = await screen.findByRole('button', { name: 'Measure' })
+    await userEvent.click(measure)
+    const close = screen.getByRole('button', { name: 'Close Measure' })
+    expect(close).toHaveFocus()
+    await userEvent.click(close)
+    expect(measure).toHaveFocus()
+    await userEvent.click(measure)
+    await userEvent.keyboard('{Escape}')
+    expect(
+      screen.queryByRole('region', { name: 'Measure' }),
+    ).not.toBeInTheDocument()
+    expect(measure).toHaveFocus()
+  })
 
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Presentation mode' }),
-    )
-
-    const region = screen.getByRole('region', {
+  it('describes the map and the available sidebar searches accurately', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    const region = await screen.findByRole('region', {
       name: 'Interactive findspot map',
     })
-    const descriptionId = region.getAttribute('aria-describedby')
-    expect(descriptionId).toBe('findspot-map-description')
+    expect(region).toHaveAccessibleDescription(
+      'Explore mapped sites and excavation areas. Site details and Library searches are available beside or below the map.',
+    )
     expect(
-      screen.getByText('Interactive findspot map in presentation mode.'),
-    ).toHaveAttribute('id', descriptionId)
-    expect(
-      screen.getByText('Interactive findspot map in presentation mode.'),
-    ).toHaveClass('visually-hidden')
+      screen.getByRole('complementary', { name: 'Site research' }),
+    ).toBeVisible()
   })
 
-  it('keeps the active visualization legend while presenting', async () => {
+  it('keeps the active visualization legend available while a tool is open', async () => {
     renderMapTab(
       makeFragmentService([makeProvenance()]),
       '/tools/map?mv=1&areas=1&viz=evidence',
     )
-
-    expect(await screen.findByRole('button', { name: 'Legend' })).toBeVisible()
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-
-    expect(screen.getByRole('button', { name: 'Legend' })).toBeVisible()
+    const legend = await screen.findByRole('button', { name: 'Legend' })
+    await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
+    await userEvent.click(legend)
+    expect(
+      screen.getByRole('region', { name: 'Map legend details' }),
+    ).toBeVisible()
+    expect(screen.getByRole('region', { name: 'Measure' })).toBeVisible()
   })
 
-  it('clears a temporary measurement while presenting', async () => {
+  it('clears a temporary measurement when its tool is closed', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-
     await userEvent.click(
       await screen.findByRole('button', { name: 'Measure' }),
     )
@@ -128,14 +104,8 @@ describe('MapTab presentation mode', () => {
         'status',
       ),
     ).toHaveTextContent('Add 1 more point.')
-
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Exit presentation mode' }),
-    )
-
+    await userEvent.click(screen.getByRole('button', { name: 'Close Measure' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
     expect(
       within(screen.getByRole('region', { name: 'Measure' })).getByRole(
         'status',
@@ -143,23 +113,24 @@ describe('MapTab presentation mode', () => {
     ).toHaveTextContent('Select points on the map to measure a distance.')
   })
 
-  it('uses presentation-safe copy for a map background failure', async () => {
+  it('keeps site research available after a map background failure', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Presentation mode' }),
-    )
-
-    act(() => {
+    await screen.findByRole('button', { name: 'Measure' })
+    await act(async () => {
       triggerMapEvent('error', {
         error: { url: MAP_STYLE_URL, message: 'Not Found' },
       })
     })
-
     expect(
-      screen.getByText('The interactive map could not be loaded.'),
-    ).toBeInTheDocument()
+      screen.getByText(
+        'The map background is unavailable. You can still browse sites and use Library links.',
+      ),
+    ).toBeVisible()
     expect(
-      screen.queryByText(/Findspot links remain available below/),
+      screen.getByRole('complementary', { name: 'Site research' }),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('button', { name: 'Measure' }),
     ).not.toBeInTheDocument()
   })
 })

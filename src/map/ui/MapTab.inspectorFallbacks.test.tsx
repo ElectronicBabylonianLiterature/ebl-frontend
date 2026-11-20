@@ -34,6 +34,7 @@ test.each([
     mockIndex.mockReturnValue({
       index: new Map([[siteId, [polygon]]]),
       isLoaded: true,
+      retry: jest.fn(),
       error: null,
     })
     const sites = new Map<MapSiteId, SiteFragmentMapDataState>()
@@ -58,11 +59,12 @@ test.each([
     await userEvent.click(
       await screen.findByRole('button', { name: 'Selected area' }),
     )
-    expect(screen.getByText(siteName)).toBeVisible()
-    expect(screen.queryByText('Mapped area')).not.toBeInTheDocument()
-    const status = within(
+    const inspector = within(
       screen.getByRole('region', { name: 'Selected area' }),
-    ).getByRole('status')
+    )
+    expect(inspector.getByText(siteName)).toBeVisible()
+    expect(inspector.queryByText('Mapped area')).not.toBeInTheDocument()
+    const status = inspector.getByRole('status')
     if (hasSiteData)
       expect(status).toHaveTextContent(
         '0 accessible tablets across 0 findspots.',

@@ -25,7 +25,7 @@ describe('MapTab findspot suggestions', () => {
   it('suggests the diacritic spelling for a plain-ASCII query', async () => {
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'assur')
 
     expect(
@@ -39,7 +39,7 @@ describe('MapTab findspot suggestions', () => {
   it('applies the exact site name when a suggestion is chosen', async () => {
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'assur')
     await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
 
@@ -57,7 +57,7 @@ describe('MapTab findspot suggestions', () => {
   it('keeps the chosen site name visible in the filter box', async () => {
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'assur')
     await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
 
@@ -71,7 +71,7 @@ describe('MapTab findspot suggestions', () => {
   it('clears a chosen site with the keyboard and restores the full list', async () => {
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'assur')
     await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
     await screen.findByText('Aššur', {
@@ -94,7 +94,7 @@ describe('MapTab findspot suggestions', () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await waitFor(() => expect(mockFitBounds).toHaveBeenCalled())
     const fitCallsBeforePick = mockFitBounds.mock.calls.length
 

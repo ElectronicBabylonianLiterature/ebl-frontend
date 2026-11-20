@@ -23,7 +23,6 @@ export type MockErrorEvent = {
   layer?: { id?: string }
   tile?: unknown
 }
-
 export interface MockEventHandler {
   (event?: MockMapEvent | MockErrorEvent): void
   originalHandler?: MockEventHandler

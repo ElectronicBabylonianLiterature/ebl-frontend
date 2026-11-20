@@ -34,6 +34,7 @@ describe('useFindspotMap cluster expansion', () => {
     renderHarness(<HookHarness provenances={[makeProvenance()]} />)
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockGetClusterExpansionZoom.mockResolvedValue(9)
 
@@ -52,6 +53,7 @@ describe('useFindspotMap cluster expansion', () => {
     let rejectZoom!: (error: Error) => void
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockGetClusterExpansionZoom.mockReturnValue(
       new Promise((_resolve, reject) => {
@@ -116,6 +118,7 @@ describe('useFindspotMap cluster expansion', () => {
     let rejectZoom!: (error: Error) => void
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockGetClusterExpansionZoom.mockReturnValue(
       new Promise((_resolve, reject) => {
@@ -141,6 +144,7 @@ describe('useFindspotMap cluster expansion', () => {
     let resolveZoom!: (zoom: number) => void
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockGetClusterExpansionZoom.mockReturnValue(
       new Promise((resolve) => {
@@ -170,6 +174,7 @@ describe('useFindspotMap cluster expansion', () => {
     let resolveZoom!: (zoom: number) => void
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockGetClusterExpansionZoom.mockReturnValue(
       new Promise((resolve) => {

@@ -22,7 +22,7 @@ function Harness(): JSX.Element {
 
 test('synchronizes an external filter after a capped local no-op', () => {
   render(<Harness />)
-  const input = screen.getByLabelText('Filter findspots by name')
+  const input = screen.getByLabelText('Search sites')
 
   fireEvent.change(input, {
     target: { value: 'a'.repeat(MAX_FILTER_LENGTH + 1) },

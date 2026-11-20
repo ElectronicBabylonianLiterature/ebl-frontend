@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { MapPanelController } from 'map/ui/useMapPanel'
+import type { MapToolsController } from 'map/ui/useMapTools'
 
 interface MapPanelAvailability {
   readonly selectedPolygonId: string | null
@@ -8,7 +8,7 @@ interface MapPanelAvailability {
 }
 
 export default function useMapPanelAvailability(
-  { active, close }: Pick<MapPanelController, 'active' | 'close'>,
+  { active, close }: Pick<MapToolsController, 'active' | 'close'>,
   {
     selectedPolygonId,
     canShowExcavationAreas,

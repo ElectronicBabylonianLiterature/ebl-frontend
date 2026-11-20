@@ -97,3 +97,24 @@ describe('thumbnail navigation parity with the hydrated card', () => {
     ).toBeInTheDocument()
   })
 })
+
+test('links authenticated binary thumbnails by default', async () => {
+  jest.spyOn(URL, 'createObjectURL').mockReturnValue('blob:summary')
+  const revokeObjectUrl = jest.spyOn(URL, 'revokeObjectURL')
+  const { unmount } = render(
+    <SummaryThumbnail
+      fragmentNumber={fragmentNumber}
+      thumbnailPath={null}
+      image={new Blob(['image'], { type: 'image/jpeg' })}
+    />,
+  )
+  expect(
+    await screen.findByAltText(`Preview of ${fragmentNumber}`),
+  ).toHaveAttribute('src', 'blob:summary')
+  expect(screen.getByRole('link')).toHaveAttribute(
+    'href',
+    `/library/${fragmentNumber}`,
+  )
+  unmount()
+  expect(revokeObjectUrl).toHaveBeenCalledWith('blob:summary')
+})

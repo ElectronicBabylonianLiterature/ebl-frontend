@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapSelectionPill from 'map/ui/MapSelectionPill'
+import { Button } from 'react-bootstrap'
 import MapToolbar, { type MapPanelDefinition } from 'map/ui/MapToolbar'
 
 function panel(
@@ -24,7 +24,7 @@ describe('MapToolbar', () => {
       <MapToolbar
         {...props}
         extraAction={
-          <MapSelectionPill label="Show selected area" onShow={showSelection} />
+          <Button onClick={showSelection}>Show selected area</Button>
         }
       />,
     )

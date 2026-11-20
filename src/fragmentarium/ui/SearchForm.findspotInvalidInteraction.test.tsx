@@ -24,6 +24,7 @@ it('keeps an invalid findspot constraint visible and blocks search until explici
   expect(number).not.toHaveClass('is-invalid')
   await userEvent.type(number, 'K 1')
   expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled()
+  await userEvent.click(screen.getByRole('button', { name: /Advanced Search/ }))
   expect(navigate).not.toHaveBeenCalled()
   await userEvent.click(
     screen.getByRole('button', { name: 'Clear findspot filter' }),

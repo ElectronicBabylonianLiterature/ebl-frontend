@@ -44,6 +44,7 @@ describe('MapTab interactions', () => {
     mockGetClusterExpansionZoom.mockResolvedValue(9)
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
 
     act(() => {
@@ -69,7 +70,7 @@ describe('MapTab interactions', () => {
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -94,7 +95,7 @@ describe('MapTab interactions', () => {
     )
     expect(popup.getByText(`${parent} · ${abbreviation}`)).toBeInTheDocument()
     expect(popup.getByText('32.54°N, 44.42°E')).toBeInTheDocument()
-    expect(popup.getByText('Single point')).toBeInTheDocument()
+    expect(popup.getByText('Site location')).toBeInTheDocument()
     expect(popup.getByRole('link', { name: 'View tablets' })).toHaveAttribute(
       'href',
       buildFragmentSearchLink(name),
@@ -119,7 +120,7 @@ describe('MapTab interactions', () => {
       geometry: geometry ?? { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -144,7 +145,7 @@ describe('MapTab interactions', () => {
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -166,7 +167,7 @@ describe('MapTab interactions', () => {
 
   it('sets pointer cursor over cluster and unclustered layers', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     const clusterIdProperty = 'cluster_id'
     mockQueryRenderedFeatures.mockReturnValue([
@@ -195,7 +196,7 @@ describe('MapTab interactions', () => {
 
   it('resets cursor away from interactive layers', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
     mockCanvas.style.cursor = 'pointer'
 
     mockQueryRenderedFeatures.mockReturnValue([])
@@ -215,7 +216,7 @@ describe('MapTab interactions', () => {
 
   it('registers and cleans up map event handlers on unmount', async () => {
     const { unmount } = renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     expect(mockOn).toHaveBeenCalledWith('mousemove', expect.any(Function))
     expect(mockOn).toHaveBeenCalledWith(

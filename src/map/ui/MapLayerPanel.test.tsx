@@ -62,12 +62,12 @@ it('opens the inspector only when View area is activated', async () => {
   expect(state.experience.setSelection).not.toHaveBeenCalled()
 })
 
-it('disables unavailable excavation layers', async () => {
+it('keeps the layer preference editable when excavation layers are unavailable', async () => {
   const state = { ...panelState(), canShowExcavationAreas: false }
   render(<MapLayerPanel state={state} />)
 
   const checkbox = screen.getByRole('checkbox', { name: 'Excavation areas' })
-  expect(checkbox).toBeDisabled()
+  expect(checkbox).toBeEnabled()
   await userEvent.click(checkbox)
-  expect(state.experience.setShowExcavationAreas).not.toHaveBeenCalled()
+  expect(state.experience.setShowExcavationAreas).toHaveBeenCalledWith(false)
 })

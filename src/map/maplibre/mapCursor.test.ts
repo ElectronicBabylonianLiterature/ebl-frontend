@@ -37,7 +37,13 @@ describe('map cursor helpers', () => {
     expect(mockCanvas).toHaveStyle({ cursor: 'pointer' })
     expect(mockQueryRenderedFeatures).toHaveBeenCalledWith(
       { x: 1, y: 2 },
-      { layers: ['ebl-clusters', 'ebl-unclustered-points'] },
+      {
+        layers: [
+          'ebl-clusters',
+          'ebl-unclustered-points',
+          'excavation-area-fill',
+        ],
+      },
     )
   })
 
@@ -60,4 +66,23 @@ describe('map cursor helpers', () => {
 
     expect(mockCanvas).toHaveStyle({ cursor: '' })
   })
+})
+
+it('keeps marker hover usable before excavation layers are loaded', () => {
+  resetMapMocks()
+  markLayersAdded('ebl-unclustered-points')
+  mockQueryRenderedFeatures.mockReturnValue([{}])
+  setPointerCursor(mockMapInstance as never, { point: { x: 1, y: 2 } } as never)
+  expect(mockCanvas).toHaveStyle({ cursor: 'pointer' })
+  expect(mockQueryRenderedFeatures).toHaveBeenCalledWith(
+    { x: 1, y: 2 },
+    { layers: ['ebl-unclustered-points'] },
+  )
+})
+
+it('does not query absent layers while a style loads', () => {
+  resetMapMocks()
+  setPointerCursor(mockMapInstance as never, { point: { x: 1, y: 2 } } as never)
+  expect(mockQueryRenderedFeatures).not.toHaveBeenCalled()
+  expect(mockCanvas).toHaveStyle({ cursor: '' })
 })

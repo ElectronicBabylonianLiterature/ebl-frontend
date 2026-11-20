@@ -6,15 +6,32 @@ import { useHistory } from 'router/compat'
 import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { resetPointerCursor } from 'map/maplibre/mapCursor'
 import { initializeFindspotMap } from 'map/maplibre/mapFindspotLifecycle'
+import useMapCameraOwnership, {
+  type MapCameraOwnership,
+} from 'map/maplibre/useMapCameraOwnership'
+
+interface FindspotMapOptions {
+  readonly onMapBackgroundErrorChange?: (hasError: boolean) => void
+  readonly camera?: MapCameraOwnership
+  readonly onFindspotSelect?: (id: string) => void
+  readonly onExcavationSelect?: (polygonId: string) => void
+  readonly isInteractionEnabled?: boolean
+}
 
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
-  onMapBackgroundErrorChange?: (hasError: boolean) => void,
-  cameraResetVersion = 0,
-  isInteractionEnabled = true,
+  {
+    onMapBackgroundErrorChange,
+    camera: sharedCamera,
+    onFindspotSelect,
+    onExcavationSelect,
+    isInteractionEnabled = true,
+  }: FindspotMapOptions = {},
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
+  const defaultCamera = useMapCameraOwnership(provenances)
+  const camera = sharedCamera ?? defaultCamera
   const history = useHistory()
   const errorReporter = useContext(ErrorReporterContext)
   const latestProvenancesRef = useRef(provenances)
@@ -25,40 +42,35 @@ export default function useFindspotMap(
     interactionVersionRef.current += 1
     latestInteractionEnabledRef.current = isInteractionEnabled
   }
-  const latestCameraResetVersionRef = useRef(cameraResetVersion)
-  const previousCameraResetVersionRef = useRef(cameraResetVersion)
-  const cameraResetProvenancesRef = useRef(provenances)
-  latestCameraResetVersionRef.current = cameraResetVersion
-  if (previousCameraResetVersionRef.current !== cameraResetVersion) {
-    previousCameraResetVersionRef.current = cameraResetVersion
-    cameraResetProvenancesRef.current = provenances
-  }
+  const latestSelectionRef = useRef({ onFindspotSelect, onExcavationSelect })
+  latestSelectionRef.current = { onFindspotSelect, onExcavationSelect }
   const latestServicesRef = useRef({ history, errorReporter })
   latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
 
   useEffect(() => {
     if (!containerRef.current || !isReady) return
-
     return initializeFindspotMap(containerRef.current, mapRef, {
+      camera,
       getState: () => ({
         provenances: latestProvenancesRef.current,
         isInteractionEnabled: latestInteractionEnabledRef.current,
         interactionVersion: interactionVersionRef.current,
-        cameraResetVersion: latestCameraResetVersionRef.current,
-        cameraResetProvenances: cameraResetProvenancesRef.current,
       }),
+      onFindspotSelect: (id) =>
+        latestSelectionRef.current.onFindspotSelect?.(id),
+      onExcavationSelect: (id) =>
+        latestSelectionRef.current.onExcavationSelect?.(id),
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
       onBackgroundErrorChange: onMapBackgroundErrorChange,
     })
-  }, [containerRef, isReady, onMapBackgroundErrorChange])
+  }, [camera, containerRef, isReady, onMapBackgroundErrorChange])
 
   useEffect(() => {
-    if (!isInteractionEnabled && mapRef.current) {
+    if (!isInteractionEnabled && mapRef.current)
       resetPointerCursor(mapRef.current)
-    }
   }, [isInteractionEnabled])
 
   return mapRef

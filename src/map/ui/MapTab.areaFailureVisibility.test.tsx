@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import fs from 'fs'
@@ -6,6 +6,7 @@ import path from 'path'
 import {
   makeFragmentService,
   makeProvenance,
+  mockSetLayoutProperty,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
@@ -15,109 +16,38 @@ import { EXCAVATION_AREAS_SOURCE_ID } from 'map/maplibre/mapExcavationLayers'
 jest.mock('maplibre-gl')
 
 const WARNING = 'Excavation areas are unavailable.'
-const originalMatchMedia = window.matchMedia
+const ASSET = fs.readFileSync(
+  path.resolve(__dirname, '../../../public/map-data/findspots/all.geojson'),
+  'utf8',
+)
 
-afterEach(() => {
-  window.matchMedia = originalMatchMedia
-})
-
-describe('excavation failure visibility with closed controls', () => {
-  beforeEach(() => {
-    resetMapMocks()
-    fetchMock.resetMocks()
-  })
-
-  it('places an invalid requested asset warning before the map', async () => {
-    fetchMock.mockResponseOnce('{"type":"FeatureCollection","features":[]}')
-    renderMapTab(
-      makeFragmentService([makeProvenance()]),
-      '/tools/map?mv=1&areas=1',
-    )
-
-    const warning = await screen.findByText(WARNING)
-    expect(
-      screen.queryByRole('region', { name: 'Map layers' }),
-    ).not.toBeInTheDocument()
-    expect(
-      warning.compareDocumentPosition(
-        screen.getByRole('region', { name: 'Interactive findspot map' }),
-      ) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
-  })
-
-  it('shows source failures after closing the layer drawer', async () => {
-    fetchMock.mockResponseOnce(
-      fs.readFileSync(
-        path.resolve(
-          __dirname,
-          '../../../public/map-data/findspots/all.geojson',
-        ),
-        'utf8',
-      ),
-    )
-    renderMapTab(
-      makeFragmentService([makeProvenance()]),
-      '/tools/map?mv=1&areas=1',
-    )
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Map layers' }),
-    )
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Close Map layers' }),
-    )
-
-    act(() => {
-      triggerMapEvent('error', {
-        sourceId: EXCAVATION_AREAS_SOURCE_ID,
-        error: { message: 'unavailable' },
-      })
-    })
-
-    expect(await screen.findByText(WARNING)).toBeInTheDocument()
-  })
-
-  it('keeps an unused failed asset quiet until controls are opened', async () => {
-    fetchMock.mockRejectOnce(new Error('unavailable'))
-    renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
-    expect(screen.queryByText(WARNING)).not.toBeInTheDocument()
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-    expect(screen.queryByText(WARNING)).not.toBeInTheDocument()
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Exit presentation mode' }),
-    )
-    await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
-    expect(await screen.findByText(WARNING)).toBeInTheDocument()
-  })
-})
-
-it('keeps a requested source failure visible with the narrow drawer collapsed', async () => {
-  window.matchMedia = jest.fn().mockReturnValue({
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-  })
+beforeEach(() => {
   resetMapMocks()
   fetchMock.resetMocks()
-  fetchMock.mockResponseOnce(
-    fs.readFileSync(
-      path.resolve(__dirname, '../../../public/map-data/findspots/all.geojson'),
-      'utf8',
-    ),
-  )
-  renderMapTab(
-    makeFragmentService([makeProvenance()]),
-    '/tools/map?mv=1&areas=1',
-  )
+})
+
+it('announces invalid default assets before the map without opening controls', async () => {
+  fetchMock.mockResponseOnce('{"type":"FeatureCollection","features":[]}')
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  const warning = await screen.findByText(WARNING)
+  expect(screen.getByRole('alert')).toBeVisible()
+  expect(
+    warning.compareDocumentPosition(
+      screen.getByRole('region', { name: 'Interactive findspot map' }),
+    ) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy()
+  expect(screen.getByLabelText('Excavation areas')).toBeChecked()
+  expect(screen.getByRole('link', { name: 'Babylon' })).toBeVisible()
+})
+
+it('keeps source failures visible while location details are closed', async () => {
+  fetchMock.mockResponseOnce(ASSET)
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await waitFor(() => expect(mockSetLayoutProperty).toHaveBeenCalled())
+  await userEvent.click(screen.getByRole('button', { name: 'Inspect Babylon' }))
   await userEvent.click(
-    await screen.findByRole('button', { name: 'Map layers' }),
+    screen.getByRole('button', { name: 'Close location details' }),
   )
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Collapse Map layers' }),
-  )
-  expect(screen.queryByLabelText('Excavation areas')).not.toBeInTheDocument()
   act(() => {
     triggerMapEvent('error', {
       sourceId: EXCAVATION_AREAS_SOURCE_ID,
@@ -126,6 +56,46 @@ it('keeps a requested source failure visible with the narrow drawer collapsed', 
   })
   expect(await screen.findByText(WARNING)).toBeVisible()
   expect(
-    screen.getByRole('button', { name: 'Expand Map layers' }),
-  ).toHaveAttribute('aria-expanded', 'false')
+    screen.getByRole('button', { name: 'Retry excavation areas' }),
+  ).toBeVisible()
+})
+
+it('recovers a failed asset with Retry and restores default boundary visibility', async () => {
+  fetchMock.mockRejectOnce(new Error('unavailable')).mockResponseOnce(ASSET)
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await screen.findByText(WARNING)
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Retry excavation areas' }),
+  )
+  await waitFor(() => {
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'excavation-area-fill',
+      'visibility',
+      'visible',
+    )
+  })
+  expect(screen.queryByText(WARNING)).not.toBeInTheDocument()
+  expect(fetchMock).toHaveBeenCalledTimes(2)
+  expect(screen.getByLabelText('Excavation areas')).toBeChecked()
+})
+
+it('retains a disabled layer preference when retrying a failed asset', async () => {
+  fetchMock.mockRejectOnce(new Error('unavailable')).mockResponseOnce(ASSET)
+  renderMapTab(
+    makeFragmentService([makeProvenance()]),
+    '/tools/map?mv=1&areas=0',
+  )
+  await screen.findByText(WARNING)
+  expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Retry excavation areas' }),
+  )
+  await waitFor(() =>
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'excavation-area-fill',
+      'visibility',
+      'none',
+    ),
+  )
+  expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
 })
