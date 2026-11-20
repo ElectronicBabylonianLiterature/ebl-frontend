@@ -1,107 +1,16 @@
-import React from 'react'
-import { act, render, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
-import type { InitialEntry } from 'history'
-import { MAX_FILTER_LENGTH, parseMapUrlState } from 'map/domain/mapUrlState'
-import useMapUrlState from 'map/ui/useMapUrlState'
-
-const FILTER_TEST_ID = 'harness-filter'
-const AREAS_TEST_ID = 'harness-areas'
-const SEARCH_TEST_ID = 'harness-search'
-const HASH_TEST_ID = 'harness-hash'
-const STATE_TEST_ID = 'harness-state'
-const SELECTION_TEST_ID = 'harness-selection'
-const OVERLONG_FILTER = 'a'.repeat(MAX_FILTER_LENGTH + 50)
-const CAPPED_FILTER = 'a'.repeat(MAX_FILTER_LENGTH)
-
-function CurrentLocation(): JSX.Element {
-  const location = useLocation()
-  return (
-    <div>
-      <div data-testid={SEARCH_TEST_ID}>{location.search}</div>
-      <div data-testid={HASH_TEST_ID}>{location.hash}</div>
-      <div data-testid={STATE_TEST_ID}>{JSON.stringify(location.state)}</div>
-    </div>
-  )
-}
-
-function Harness(): JSX.Element {
-  const { state, update } = useMapUrlState()
-  const navigate = useNavigate()
-
-  return (
-    <div>
-      <div data-testid={FILTER_TEST_ID}>{state.filter}</div>
-      <div data-testid={AREAS_TEST_ID}>{String(state.showExcavationAreas)}</div>
-      <div data-testid={SELECTION_TEST_ID}>{state.selection?.polygonId}</div>
-      <button
-        onClick={() =>
-          update({
-            selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
-          })
-        }
-      >
-        select-area
-      </button>
-      <button onClick={() => update({ selection: null })}>clear-area</button>
-      <button onClick={() => update({ filter: 'Babylon' })}>set-babylon</button>
-      <button onClick={() => update({ showExcavationAreas: true })}>
-        show-areas
-      </button>
-      <button onClick={() => update({ showExcavationAreas: false })}>
-        hide-areas
-      </button>
-      <button onClick={() => update({ filter: OVERLONG_FILTER })}>
-        set-overlong
-      </button>
-      <button onClick={() => update({ filter: '' })}>clear</button>
-      <button onClick={() => navigate('/tools/map?mv=1&findspot=External')}>
-        external-nav
-      </button>
-      <button
-        onClick={() => {
-          update({ filter: 'Local' })
-          navigate('/tools/map?mv=1&findspot=External')
-        }}
-      >
-        local-and-external
-      </button>
-    </div>
-  )
-}
-
-function renderHarness(initialEntry: InitialEntry = '/tools/map'): void {
-  render(
-    <MemoryRouter initialEntries={[initialEntry]}>
-      <Harness />
-      <CurrentLocation />
-    </MemoryRouter>,
-  )
-}
+import { act, screen, waitFor } from '@testing-library/react'
+import { parseMapUrlState } from 'map/domain/mapUrlState'
+import {
+  AREAS_TEST_ID,
+  CAPPED_FILTER,
+  FILTER_TEST_ID,
+  HASH_TEST_ID,
+  SEARCH_TEST_ID,
+  STATE_TEST_ID,
+  renderHarness,
+} from 'map/ui/useMapUrlState.testSupport'
 
 describe('useMapUrlState', () => {
-  it('writes and clears area-only selections while preserving explicit visibility and unrelated state', () => {
-    renderHarness('/tools/map?source=archive&areas=0#location')
-    act(() => screen.getByText('select-area').click())
-    expect(screen.getByTestId(SELECTION_TEST_ID)).toHaveTextContent(
-      'assur-area-a',
-    )
-    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
-      'selected=area%3Aassur-area-a',
-    )
-    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('areas=0')
-    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
-      'source=archive',
-    )
-    act(() => screen.getByText('clear-area').click())
-    expect(screen.getByTestId(SELECTION_TEST_ID)).toBeEmptyDOMElement()
-    expect(screen.getByTestId(SEARCH_TEST_ID)).not.toHaveTextContent(
-      'selected=',
-    )
-    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('areas=0')
-    expect(screen.getByTestId(HASH_TEST_ID)).toHaveTextContent('#location')
-  })
-
   it('parses the filter already present in the URL on mount', () => {
     renderHarness('/tools/map?mv=1&findspot=Babylon')
 
@@ -227,6 +136,17 @@ describe('useMapUrlState', () => {
     await waitFor(() => {
       expect(screen.getByTestId(FILTER_TEST_ID)).toHaveTextContent('External')
     })
+  })
+
+  it('lets external navigation to the current query override a pending local write', () => {
+    renderHarness('/tools/map?mv=1&findspot=Initial')
+
+    act(() => screen.getByText('local-and-current').click())
+
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      '?mv=1&findspot=Initial',
+    )
+    expect(screen.getByTestId(FILTER_TEST_ID)).toHaveTextContent('Initial')
   })
 
   it('preserves the hash and router state when writing a filter', async () => {

@@ -147,7 +147,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent,
   ): void => {
     event.preventDefault()
-    this.navigateWithState(this.state)
+    if (this.state.isValid) this.navigateWithState(this.state)
   }
 
   private clearFindspotConstraint = (): void => {
