@@ -26,7 +26,7 @@ function renderLines(fragment: Fragment): void {
         <RenderFragmentLines
           fragment={fragment}
           linesToShow={5}
-          totalLines={1}
+          totalMatchingLines={1}
           lemmaIds={[SUMMARY_LEMMA_ID]}
         />
       </DictionaryContext.Provider>

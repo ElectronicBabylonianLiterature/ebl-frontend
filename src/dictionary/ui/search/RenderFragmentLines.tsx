@@ -6,24 +6,43 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import 'dictionary/ui/search/FragmentLemmaLines.sass'
+import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 
 export default function RenderFragmentLines({
   fragment,
   lemmaIds,
   linesToShow,
+  totalMatchingLines,
   totalLines,
+  matchingLineIndexes,
+  remainderNoun = 'matching line',
 }: {
   fragment: Fragment
   lemmaIds?: readonly string[]
   linesToShow: number
-  totalLines?: number
+  totalMatchingLines?: number | null
+  totalLines?: number | null
+  matchingLineIndexes?: readonly number[]
+  remainderNoun?: 'line' | 'matching line'
 }): JSX.Element {
   const matchingLines = fragment.text.lines.filter(
     (line) => line.type === 'TextLine',
   ) as TextLine[]
   const visibleLines = matchingLines.slice(0, linesToShow)
-  const authoritativeTotal = totalLines ?? matchingLines.length
-  const remainingLines = Math.max(authoritativeTotal - visibleLines.length, 0)
+  const knownTotal = totalMatchingLines ?? totalLines
+  const remainingLines =
+    typeof knownTotal === 'number' &&
+    Number.isSafeInteger(knownTotal) &&
+    knownTotal >= 0
+      ? Math.max(knownTotal - visibleLines.length, 0)
+      : null
+  const mayHaveMoreLines =
+    remainingLines === null &&
+    (matchingLines.length > visibleLines.length ||
+      takeUniqueMatchingLineIndexes(
+        matchingLineIndexes ?? [],
+        visibleLines.length + 1,
+      ).length > visibleLines.length)
 
   return (
     <table>
@@ -52,10 +71,15 @@ export default function RenderFragmentLines({
             </tr>
           )
         })}
-        {remainingLines > 0 && (
+        {((remainingLines !== null && remainingLines > 0) ||
+          mayHaveMoreLines) && (
           <tr>
             <td></td>
-            <td>And {remainingLines} more</td>
+            <td>
+              {remainingLines === null
+                ? `More ${remainderNoun}s may be available`
+                : `And ${remainingLines} more ${remainderNoun}${remainingLines === 1 ? '' : 's'}`}
+            </td>
           </tr>
         )}
       </tbody>

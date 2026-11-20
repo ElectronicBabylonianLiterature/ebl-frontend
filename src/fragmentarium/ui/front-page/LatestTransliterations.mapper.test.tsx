@@ -178,5 +178,9 @@ test('library renders mapper-prefetched latest fragments without detail calls', 
 
   expect(await screen.findByText('K.1')).toBeVisible()
   expect(screen.getByText(/Mapper Tester \(Transliteration/)).toBeVisible()
+  expect(screen.getByText('And 1 more line')).toBeVisible()
+  expect(
+    screen.queryByText(/More matching lines may be available/),
+  ).not.toBeInTheDocument()
   expect(fragmentService.find).not.toHaveBeenCalled()
 })

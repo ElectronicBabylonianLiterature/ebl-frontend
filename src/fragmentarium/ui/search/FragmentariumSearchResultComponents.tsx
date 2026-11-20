@@ -8,7 +8,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import { Genres } from 'fragmentarium/domain/Genres'
+import FragmentGenresDisplay from 'fragmentarium/ui/search/FragmentGenresDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
@@ -24,20 +24,7 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
-
-function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
-  return (
-    <ul>
-      {genres.genres.map((genreItem, index) => {
-        return (
-          <ul key={index}>
-            <small>{genreItem.toString()}</small>
-          </ul>
-        )
-      })}
-    </ul>
-  )
-}
+import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 
 export type FragmentLinesService = Pick<
   FragmentService,
@@ -122,7 +109,7 @@ function FragmentLinesContent({
           <ProjectList projects={fragment.projects} />
         </ResponsiveCol>
         <ResponsiveCol className={'text-secondary fragment-result__genre'}>
-          <GenresDisplay genres={fragment.genres} />
+          <FragmentGenresDisplay genres={fragment.genres} />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__record'}>
           {includeLatestRecord && <TransliterationRecord fragment={fragment} />}
@@ -145,7 +132,10 @@ function FragmentLinesContent({
           <RenderFragmentLines
             fragment={fragment}
             linesToShow={linesToShow}
-            totalLines={queryItem.matchCount}
+            totalMatchingLines={queryItem.totalMatchingLines}
+            totalLines={includeLatestRecord ? queryItem.matchCount : undefined}
+            remainderNoun={includeLatestRecord ? 'line' : 'matching line'}
+            matchingLineIndexes={queryItem.matchingLines}
             lemmaIds={queryLemmas}
           />
         </ResponsiveCol>
@@ -184,7 +174,7 @@ const HydratedFragmentLines = withData<
     const excludeLines = _.isEmpty(queryItem.matchingLines)
     return fragmentService.find(
       queryItem.museumNumber,
-      _.take(queryItem.matchingLines, linesToShow),
+      takeUniqueMatchingLineIndexes(queryItem.matchingLines, linesToShow),
       excludeLines,
     )
   },
