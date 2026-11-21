@@ -14,11 +14,18 @@ import {
 } from 'corpus/application/dtos'
 
 import { createChapterUrl } from 'corpus/application/chapterUrls'
-import TextReadService from 'corpus/application/TextReadService'
+import ChapterOutlineService from 'corpus/application/ChapterOutlineService'
+import {
+  ChapterEndpoint,
+  ChapterRequestBody,
+  LinesUpdateDto,
+} from 'corpus/application/edit-lite/ChapterEditSource'
+import { createChapterUpdateUrl } from 'corpus/application/edit-lite/chapterRequests'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 
 export { createChapterUrl } from 'corpus/application/chapterUrls'
 
-export default class TextService extends TextReadService {
+export default class TextService extends ChapterOutlineService {
   updateAlignment(
     id: ChapterId,
     alignment: ChapterAlignment,
@@ -55,6 +62,28 @@ export default class TextService extends TextReadService {
 
   importChapter(id: ChapterId, atf: string): Promise<Chapter> {
     return this.postChapterUpdate(id, 'import', { atf })
+  }
+
+  updateEditedLines(
+    id: ChapterId,
+    update: LinesUpdateDto,
+    revision?: string,
+  ): Promise<ChapterOutline> {
+    return this.updateChapterOutline(id, 'lines', update, revision)
+  }
+
+  updateChapterOutline(
+    id: ChapterId,
+    endpoint: ChapterEndpoint,
+    body: ChapterRequestBody,
+    revision?: string,
+  ): Promise<ChapterOutline> {
+    return this.apiClient.postJson<ChapterOutline>(
+      createChapterUpdateUrl(id, endpoint, revision),
+      body,
+      true,
+      () => this.invalidateChapterDisplayCache(id),
+    )
   }
 
   private postChapterUpdate(

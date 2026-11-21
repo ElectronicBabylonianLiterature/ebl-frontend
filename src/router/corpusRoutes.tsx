@@ -3,6 +3,7 @@ import { Route } from 'router/compat'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import ChapterEditView from 'corpus/ui/ChapterEditView'
+import ChapterEditLiteView from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -63,6 +64,20 @@ export default function CorpusRoutes({
           fragmentService={fragmentService}
           wordService={wordService}
           id={parseChapterId(match.params)}
+        />
+      )}
+    />,
+    <Route
+      key="ChapterEditLiteView"
+      path="/corpus/:genre/:category/:index/:stage/:chapter/edit-lite"
+      exact
+      render={({ match, location }): ReactNode => (
+        <ChapterEditLiteView
+          textService={textService}
+          bibliographyService={bibliographyService}
+          fragmentService={fragmentService}
+          id={parseChapterId(match.params)}
+          search={location.search}
         />
       )}
     />,

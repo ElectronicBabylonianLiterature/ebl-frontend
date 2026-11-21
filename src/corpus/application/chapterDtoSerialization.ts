@@ -40,7 +40,7 @@ function toManuscriptDto(manuscript: Manuscript) {
   } as const
 }
 
-function toLineDto(line: Line) {
+export function toLineDto(line: Line) {
   return {
     ..._.omit(line, 'status'),
     variants: line.variants.map((variant) => ({
