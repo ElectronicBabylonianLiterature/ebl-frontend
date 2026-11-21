@@ -35,6 +35,11 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     (source) => source.deleteLine(4),
   ],
   [
+    'moveLine',
+    { type: 'moveLine', from: 4, to: 1 },
+    (source) => source.moveLine(4, 1),
+  ],
+  [
     'importLines',
     { type: 'importLines', atf: '1. kur' },
     (source) => source.importLines('1. kur'),
@@ -167,22 +172,39 @@ it('says in plain words that saving is not permitted', () => {
   )
 })
 
-it('runs a line save and a deletion one after the other', async () => {
-  const original = createLine({ number: '5' })
-  const firstPost = deferred<ChapterOutline>()
-  await source.loadOutline()
-  textService.findChapterLines.mockResolvedValue([original])
-  textService.updateEditedLines.mockReturnValueOnce(firstPost.promise)
+it.each<[string, Apply, ChapterChange]>([
+  [
+    'a deletion',
+    (source) => source.deleteLine(1),
+    { type: 'deleteLine', index: 1 },
+  ],
+  [
+    'a move',
+    (source) => source.moveLine(1, 0),
+    { type: 'moveLine', from: 1, to: 0 },
+  ],
+])(
+  'runs a line save and %s one after the other',
+  async (_name, apply, change) => {
+    const { endpoint, body } = toChapterUpdate(change)
+    const original = createLine({ number: '5' })
+    const firstPost = deferred<ChapterOutline>()
+    await source.loadOutline()
+    textService.findChapterLines.mockResolvedValue([original])
+    textService.updateEditedLines.mockReturnValueOnce(firstPost.promise)
 
-  const save = source.saveLine(0, original, { ...original, number: '5a' })
-  const deletion = source.deleteLine(1)
-  await settle()
+    const save = source.saveLine(0, original, { ...original, number: '5a' })
+    const later = apply(source)
+    await settle()
 
-  expect(textService.updateChapterOutline).not.toHaveBeenCalled()
+    expect(textService.updateChapterOutline).not.toHaveBeenCalled()
 
-  firstPost.resolve(laterOutline)
+    firstPost.resolve(laterOutline)
 
-  await expect(save).resolves.toBe(laterOutline)
-  await expect(deletion).resolves.toBe(savedOutline)
-  expect(postedRevisions()).toEqual(['revision-3'])
-})
+    await expect(save).resolves.toBe(laterOutline)
+    await expect(later).resolves.toBe(savedOutline)
+    expect(textService.updateChapterOutline.mock.calls).toEqual([
+      [editChapterId, endpoint, body, 'revision-3'],
+    ])
+  },
+)

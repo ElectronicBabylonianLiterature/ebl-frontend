@@ -143,6 +143,7 @@ export function createManuscriptsContext(
       saveLine: jest.fn(),
       addLine: jest.fn(),
       deleteLine: jest.fn(),
+      moveLine: jest.fn(),
       importLines: jest.fn(),
       saveManuscripts: jest.fn(),
       reportUnsavedManuscripts: jest.fn(),

@@ -5,6 +5,7 @@ import {
   EditLiteAction,
   EditLiteState,
   LineState,
+  LineStatus,
 } from 'corpus/ui/edit-lite/editLiteState'
 import {
   failedLine,
@@ -15,6 +16,8 @@ import {
   readyLine,
 } from 'corpus/ui/edit-lite/lineStates'
 import {
+  LineStateEntry,
+  moveLine,
   removeLine,
   replaceOutline,
   withLines,
@@ -41,15 +44,52 @@ function updateLine(
     : withLine(state, index, update(lineState))
 }
 
+function startLine(
+  state: EditLiteState,
+  index: number,
+  status: LineStatus,
+): EditLiteState {
+  return updateLine(state, index, (lineState) => ({
+    ...lineState,
+    status,
+    error: null,
+  }))
+}
+
+function settleLoadingLines(
+  state: EditLiteState,
+  entries: readonly LineStateEntry[],
+): EditLiteState {
+  const awaitedEntries = entries.filter(
+    ([index]) => state.lines[index]?.status === 'loading',
+  )
+  return awaitedEntries.length === 0 ? state : withLines(state, awaitedEntries)
+}
+
+function isEditedLine(
+  lineState: LineState,
+  original: Line | null | undefined,
+): boolean {
+  return (
+    lineState.original !== null &&
+    (original === undefined || original === lineState.original)
+  )
+}
+
 function changeLine(
   state: EditLiteState,
   index: number,
   draft: Line,
+  original: Line | null | undefined,
 ): EditLiteState {
   const lineState = findLineState(state, index)
-  return lineState === undefined || lineState.original === null
-    ? state
-    : withLine(state, index, { ...lineState, draft })
+  return lineState !== undefined && isEditedLine(lineState, original)
+    ? withLine(state, index, { ...lineState, draft })
+    : state
+}
+
+function withoutLine(state: EditLiteState, index: number): EditLiteState {
+  return { ...state, lines: _.omit(state.lines, index) }
 }
 
 function resetLine(state: EditLiteState, index: number): EditLiteState {
@@ -63,22 +103,20 @@ function resetLine(state: EditLiteState, index: number): EditLiteState {
   if (lineState.original !== null) {
     return withLines(state, [[index, readyLine(lineState.original)]])
   }
-  return lineState.status === 'failed'
-    ? { ...state, lines: _.omit(state.lines, index) }
-    : state
+  return lineState.status === 'failed' ? withoutLine(state, index) : state
 }
 
-function storeSavedNewLine(
+function settleSavedLine(
   state: EditLiteState,
-  savedOutline: ChapterOutline,
+  index: number,
   line: Line | null,
 ): EditLiteState {
-  const savedState = replaceOutline({ ...state, newLine: null }, savedOutline)
+  if (state.lines[index]?.status !== 'saving') {
+    return state
+  }
   return line === null
-    ? savedState
-    : withLines(savedState, [
-        [savedState.outline.lines.length - 1, readyLine(line)],
-      ])
+    ? withoutLine(state, index)
+    : withLines(state, [[index, readyLine(line)]])
 }
 
 function failLine(lineState: LineState, error: string): LineState {
@@ -118,7 +156,7 @@ const actionHandlers: ActionHandlers = {
       action.indices.map((index) => [index, loadingLine]),
     ),
   linesLoaded: (state, action) =>
-    withLines(
+    settleLoadingLines(
       state,
       action.lines.map((line, position) => [
         action.offset + position,
@@ -126,22 +164,16 @@ const actionHandlers: ActionHandlers = {
       ]),
     ),
   linesFailed: (state, action) =>
-    withLines(
+    settleLoadingLines(
       state,
       action.indices.map((index) => [index, failedLine(action.error)]),
     ),
-  lineChanged: (state, action) => changeLine(state, action.index, action.draft),
+  lineChanged: (state, action) =>
+    changeLine(state, action.index, action.draft, action.original),
   lineReset: (state, action) => resetLine(state, action.index),
-  saveStarted: (state, action) =>
-    updateLine(state, action.index, (lineState) => ({
-      ...lineState,
-      status: 'saving',
-      error: null,
-    })),
+  saveStarted: (state, action) => startLine(state, action.index, 'saving'),
   saveSucceeded: (state, action) =>
-    withLines(replaceOutline(state, action.outline), [
-      [action.index, readyLine(action.line)],
-    ]),
+    settleSavedLine(state, action.index, action.line),
   saveFailed: (state, action) =>
     updateLine(state, action.index, (lineState) =>
       failLine(lineState, action.error),
@@ -150,19 +182,17 @@ const actionHandlers: ActionHandlers = {
     state.newLine === null ? { ...state, newLine: loadingLine } : state,
   lineAdded: (state, action) => ({ ...state, newLine: readyLine(action.line) }),
   newLineSaved: (state, action) =>
-    storeSavedNewLine(state, action.outline, action.line),
+    replaceOutline({ ...state, newLine: null }, action.outline),
   newLineSaveFailed: (state, action) =>
     state.newLine === null
       ? state
       : { ...state, newLine: failLine(state.newLine, action.error) },
-  deleteStarted: (state, action) =>
-    updateLine(state, action.index, (lineState) => ({
-      ...lineState,
-      status: 'deleting',
-      error: null,
-    })),
+  deleteStarted: (state, action) => startLine(state, action.index, 'deleting'),
   lineDeleted: (state, action) =>
     removeLine(state, action.index, action.outline),
+  moveStarted: (state, action) => startLine(state, action.index, 'moving'),
+  lineMoved: (state, action) =>
+    moveLine(state, action.from, action.to, action.outline),
   outlineReplaced: (state, action) => replaceOutline(state, action.outline),
   manuscriptsSaved: (state, action) => ({
     ...replaceOutline(state, action.outline),

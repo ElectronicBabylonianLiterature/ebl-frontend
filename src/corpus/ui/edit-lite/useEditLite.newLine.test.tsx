@@ -135,18 +135,23 @@ test('saveLine posts the new line and makes it the last line of the chapter', as
 
   view.run((actions) => actions.saveLine(3))
   await act(async () => saved.resolve())
-  const savedLine = await view.waitForLine(3, 'ready')
 
   expect(view.source.addLine).toHaveBeenCalledTimes(1)
   expect(view.source.saveLine).not.toHaveBeenCalled()
-  expect(view.source.loadLines.mock.calls).toEqual([[3, 1]])
+  expect(view.source.loadLines).not.toHaveBeenCalled()
   expect(view.state().newLine).toBeNull()
+  expect(view.state().lines[3]).toBeUndefined()
   expect(view.state().outline.lines).toHaveLength(4)
   expect(view.state().outline.lines[3]).toMatchObject({
     index: 3,
     number: '4',
     translation: '#tr.en: A new line',
   })
+
+  await view.load(3, 1)
+  const savedLine = view.state().lines[3]
+
+  expect(view.source.loadLines.mock.calls).toEqual([[3, 1]])
   expect(savedLine.original).toEqual({ ...draft, status: EditStatus.CLEAN })
   expect(savedLine.draft).toBe(savedLine.original)
 })
@@ -173,15 +178,15 @@ test.each<[string, Error | string, string]>([
     expect(view.source.loadLines).not.toHaveBeenCalled()
 
     view.run((actions) => actions.saveLine(3))
-    await view.waitForLine(3, 'ready')
+    await waitFor(() => expect(view.state().newLine).toBeNull())
 
     expect(view.source.addLine).toHaveBeenCalledTimes(2)
+    expect(view.state().outline.lines).toHaveLength(4)
   },
 )
 
-test('saveLine does not add the line twice when the saved line cannot be reloaded', async () => {
+test('saveLine does not add the line twice when the saved line is not loaded yet', async () => {
   const view = await renderWithNewLine()
-  view.source.loadLines.mockRejectedValueOnce(new Error('Network error'))
   view.run((actions) => actions.saveLine(3))
   await waitFor(() => expect(view.state().newLine).toBeNull())
 
@@ -192,5 +197,6 @@ test('saveLine does not add the line twice when the saved line cannot be reloade
   await view.load(3, 1)
 
   expect(view.source.addLine).toHaveBeenCalledTimes(1)
+  expect(view.source.saveLine).not.toHaveBeenCalled()
   expect(view.state().lines[3].original?.number).toBe('4')
 })

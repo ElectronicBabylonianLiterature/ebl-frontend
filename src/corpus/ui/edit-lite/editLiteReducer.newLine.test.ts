@@ -2,47 +2,44 @@ import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
+  buildLinesLoadedActions,
+  reduceEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
-import {
-  createEditLiteState,
-  editLiteReducer,
-} from 'corpus/ui/edit-lite/editLiteReducer'
-import {
-  EditLiteAction,
-  EditLiteState,
-} from 'corpus/ui/edit-lite/editLiteState'
+import { createEditLiteState } from 'corpus/ui/edit-lite/editLiteReducer'
+import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
+import { findMissingIndices } from 'corpus/ui/edit-lite/lineLoading'
 import { loadingLine, readyLine } from 'corpus/ui/edit-lite/lineStates'
 
 const lines: readonly Line[] = buildEditLiteLines()
 const newLine: Line = setLineNumber(lines[2], '4')
 const newLineDraft: Line = setLineNumber(newLine, '4a')
 const draft: Line = setLineNumber(lines[1], '2a')
-const loadedState: EditLiteState = reduce(
+const loadedState: EditLiteState = reduceEditLite(
   createEditLiteState(buildEditLiteOutline(lines)),
-  { type: 'linesLoaded', offset: 0, lines },
+  ...buildLinesLoadedActions(0, lines),
   { type: 'lineChanged', index: 1, draft },
 )
-const addedState: EditLiteState = reduce(loadedState, {
+const addedState: EditLiteState = reduceEditLite(loadedState, {
   type: 'lineAdded',
   line: newLine,
 })
-const savedOutline = buildEditLiteOutline([...lines, newLineDraft])
-
-function reduce(
-  state: EditLiteState,
-  ...actions: readonly EditLiteAction[]
-): EditLiteState {
-  return actions.reduce(editLiteReducer, state)
-}
+const savedOutline = buildEditLiteOutline(
+  [...lines, newLineDraft],
+  'revision-2',
+)
 
 test('lineAddStarted shows a placeholder until the line is ready', () => {
-  const startedState = reduce(loadedState, { type: 'lineAddStarted' })
+  const startedState = reduceEditLite(loadedState, { type: 'lineAddStarted' })
 
   expect(startedState.newLine).toBe(loadingLine)
   expect(startedState.lines).toBe(loadedState.lines)
-  expect(reduce(startedState, { type: 'lineAddStarted' })).toBe(startedState)
-  expect(reduce(addedState, { type: 'lineAddStarted' })).toBe(addedState)
+  expect(reduceEditLite(startedState, { type: 'lineAddStarted' })).toBe(
+    startedState,
+  )
+  expect(reduceEditLite(addedState, { type: 'lineAddStarted' })).toBe(
+    addedState,
+  )
 })
 
 test('lineAdded stores the new line apart from the loaded lines', () => {
@@ -52,7 +49,7 @@ test('lineAdded stores the new line apart from the loaded lines', () => {
 })
 
 test('the new line is changed at the position after the last line', () => {
-  const changedState = reduce(addedState, {
+  const changedState = reduceEditLite(addedState, {
     type: 'lineChanged',
     index: 3,
     draft: newLineDraft,
@@ -64,21 +61,33 @@ test('the new line is changed at the position after the last line', () => {
   })
   expect(changedState.lines).toBe(addedState.lines)
   expect(
-    reduce(loadedState, { type: 'lineChanged', index: 3, draft: newLineDraft }),
+    reduceEditLite(loadedState, {
+      type: 'lineChanged',
+      index: 3,
+      draft: newLineDraft,
+    }),
   ).toBe(loadedState)
 })
 
 test('resetting the new line discards it', () => {
-  const discardedState = reduce(addedState, { type: 'lineReset', index: 3 })
+  const discardedState = reduceEditLite(addedState, {
+    type: 'lineReset',
+    index: 3,
+  })
 
   expect(discardedState.newLine).toBeNull()
   expect(discardedState.lines[1].draft).toBe(draft)
-  expect(reduce(loadedState, { type: 'lineReset', index: 3 })).toBe(loadedState)
+  expect(reduceEditLite(loadedState, { type: 'lineReset', index: 3 })).toBe(
+    loadedState,
+  )
 })
 
 test('saveStarted and newLineSaveFailed track the save of the new line', () => {
-  const savingState = reduce(addedState, { type: 'saveStarted', index: 3 })
-  const failedState = reduce(savingState, {
+  const savingState = reduceEditLite(addedState, {
+    type: 'saveStarted',
+    index: 3,
+  })
+  const failedState = reduceEditLite(savingState, {
     type: 'newLineSaveFailed',
     error: 'Invalid line',
   })
@@ -91,37 +100,30 @@ test('saveStarted and newLineSaveFailed track the save of the new line', () => {
     error: 'Invalid line',
   })
   expect(
-    reduce(loadedState, { type: 'newLineSaveFailed', error: 'Invalid line' }),
+    reduceEditLite(loadedState, {
+      type: 'newLineSaveFailed',
+      error: 'Invalid line',
+    }),
   ).toBe(loadedState)
 })
 
-test('newLineSaved turns the new line into the last line of the outline', () => {
-  const savedState = reduce(
+test('newLineSaved turns the new line into the last line of the outline and leaves it to be loaded', () => {
+  const savedState = reduceEditLite(
     addedState,
     { type: 'saveStarted', index: 3 },
-    { type: 'newLineSaved', outline: savedOutline, line: newLineDraft },
+    { type: 'newLineSaved', outline: savedOutline },
   )
 
   expect(savedState.newLine).toBeNull()
+  expect(savedState.outline.revision).toBe('revision-2')
   expect(savedState.outline.lines.map((line) => line.number)).toEqual([
     '1',
     '2',
     '3',
     '4a',
   ])
-  expect(savedState.lines[3]).toEqual(readyLine(newLineDraft))
+  expect(Object.keys(savedState.lines)).toEqual(['0', '1', '2'])
+  expect(findMissingIndices(savedState, 0, 4)).toEqual([3])
   expect(savedState.lines[1]).toBe(addedState.lines[1])
   expect(savedState.outline.lines[0]).toBe(addedState.outline.lines[0])
-})
-
-test('newLineSaved leaves the saved line to be loaded when it could not be reloaded', () => {
-  const savedState = reduce(addedState, {
-    type: 'newLineSaved',
-    outline: savedOutline,
-    line: null,
-  })
-
-  expect(savedState.newLine).toBeNull()
-  expect(savedState.outline.lines).toHaveLength(4)
-  expect(Object.keys(savedState.lines)).toEqual(['0', '1', '2'])
 })

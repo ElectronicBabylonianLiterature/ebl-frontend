@@ -17,15 +17,27 @@ function nextNumber(number: string): string {
   }
 }
 
+function nextFreeNumber(
+  number: string,
+  takenNumbers: readonly string[],
+): string {
+  let proposal = nextNumber(number)
+  while (proposal !== '' && takenNumbers.includes(proposal)) {
+    proposal = nextNumber(proposal)
+  }
+  return proposal
+}
+
 const defaultReconstruction = '%n '
 
 export function createDefaultLineFactory(
   lastLine: Line | null = null,
+  takenNumbers: readonly string[] = [],
 ): () => Line {
   return lastLine
     ? () =>
         createLine({
-          number: nextNumber(lastLine.number),
+          number: nextFreeNumber(lastLine.number, takenNumbers),
           variants: lastLine.variants.map((variant) =>
             createVariant({
               reconstruction: defaultReconstruction,

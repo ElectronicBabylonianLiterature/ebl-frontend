@@ -1,13 +1,16 @@
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import { Line } from 'corpus/domain/line'
-import { LineState } from 'corpus/ui/edit-lite/editLiteState'
+import { EditLiteState, LineState } from 'corpus/ui/edit-lite/editLiteState'
 import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
-import { loadLine, reloadSavedLine } from 'corpus/ui/edit-lite/lineLoading'
+import { loadLine } from 'corpus/ui/edit-lite/lineLoading'
 import {
   findLineActivity,
   findLineState,
   findNewLineIndex,
+  isLayoutChanging,
+  isLineLoaded,
 } from 'corpus/ui/edit-lite/lineStates'
+import { hasSameLineCount } from 'corpus/ui/edit-lite/outlineChanges'
 
 interface SavableLine {
   readonly original: Line
@@ -31,11 +34,13 @@ async function saveExistingLine(
   store.dispatch({ type: 'saveStarted', index })
   try {
     const outline = await source.saveLine(index, original, draft)
-    const line = await reloadSavedLine(source, index)
-    store.dispatch({ type: 'saveSucceeded', index, outline, line })
+    store.dispatch({ type: 'outlineReplaced', outline })
   } catch (error) {
     store.dispatch({ type: 'saveFailed', index, error: errorMessage(error) })
+    return
   }
+  const line = await loadLine(source, index)
+  store.dispatch({ type: 'saveSucceeded', index, line })
 }
 
 async function saveNewLine(
@@ -43,12 +48,10 @@ async function saveNewLine(
   index: number,
   draft: Line,
 ): Promise<void> {
-  const source = store.getSource()
   store.dispatch({ type: 'saveStarted', index })
   try {
-    const outline = await source.addLine(draft)
-    const line = await loadLine(source, outline.lines.length - 1)
-    store.dispatch({ type: 'newLineSaved', outline, line })
+    const outline = await store.getSource().addLine(draft)
+    store.dispatch({ type: 'newLineSaved', outline })
   } catch (error) {
     store.dispatch({ type: 'newLineSaveFailed', error: errorMessage(error) })
   }
@@ -57,7 +60,7 @@ async function saveNewLine(
 export function saveLine(store: EditLiteStore, index: number): void {
   const state = store.getState()
   const savableLine = findSavableLine(findLineState(state, index))
-  if (savableLine === null || findLineActivity(state) === 'deleting') {
+  if (savableLine === null || isLayoutChanging(findLineActivity(state))) {
     return
   }
   if (index === findNewLineIndex(state)) {
@@ -70,6 +73,7 @@ export function saveLine(store: EditLiteStore, index: number): void {
 export async function deleteLine(
   store: EditLiteStore,
   index: number,
+  onDeleted: () => void,
 ): Promise<void> {
   const state = store.getState()
   if (!(index in state.lines) || findLineActivity(state) !== 'idle') {
@@ -81,16 +85,77 @@ export async function deleteLine(
     store.dispatch({ type: 'lineDeleted', index, outline })
   } catch (error) {
     store.dispatch({ type: 'saveFailed', index, error: errorMessage(error) })
+    return
+  }
+  onDeleted()
+}
+
+function isStoredPosition(state: EditLiteState, index: number): boolean {
+  return (
+    Number.isInteger(index) && index >= 0 && index < state.outline.lines.length
+  )
+}
+
+function isMoveBetweenStoredPositions(
+  state: EditLiteState,
+  from: number,
+  to: number,
+): boolean {
+  return (
+    from !== to &&
+    [from, to].every((position) => isStoredPosition(state, position))
+  )
+}
+
+function canMoveLine(state: EditLiteState, from: number, to: number): boolean {
+  return (
+    findLineActivity(state) === 'idle' &&
+    isMoveBetweenStoredPositions(state, from, to) &&
+    isLineLoaded(state.lines[from])
+  )
+}
+
+export async function moveLine(
+  store: EditLiteStore,
+  from: number,
+  to: number,
+  onMoved: () => void,
+): Promise<void> {
+  if (!canMoveLine(store.getState(), from, to)) {
+    return
+  }
+  store.dispatch({ type: 'moveStarted', index: from })
+  let isRekeyed: boolean
+  try {
+    const outline = await store.getSource().moveLine(from, to)
+    isRekeyed = hasSameLineCount(store.getState(), outline)
+    store.dispatch({ type: 'lineMoved', from, to, outline })
+  } catch (error) {
+    store.dispatch({
+      type: 'saveFailed',
+      index: from,
+      error: errorMessage(error),
+    })
+    return
+  }
+  if (isRekeyed) {
+    onMoved()
   }
 }
 
-async function createDefaultLine(
+function createDefaultLine(state: EditLiteState, lastLine: Line | null): Line {
+  return createDefaultLineFactory(
+    lastLine,
+    state.outline.lines.map((line) => line.number),
+  )()
+}
+
+async function loadDefaultLine(
   store: EditLiteStore,
   lastIndex: number,
 ): Promise<Line> {
-  return createDefaultLineFactory(
-    await loadLine(store.getSource(), lastIndex),
-  )()
+  const lastLine = await loadLine(store.getSource(), lastIndex)
+  return createDefaultLine(store.getState(), lastLine)
 }
 
 export function addLine(store: EditLiteStore): void {
@@ -103,11 +168,11 @@ export function addLine(store: EditLiteStore): void {
   if (lastIndex < 0 || lastDraft !== null) {
     store.dispatch({
       type: 'lineAdded',
-      line: createDefaultLineFactory(lastDraft)(),
+      line: createDefaultLine(state, lastDraft),
     })
   } else {
     store.dispatch({ type: 'lineAddStarted' })
-    void createDefaultLine(store, lastIndex).then((line) =>
+    void loadDefaultLine(store, lastIndex).then((line) =>
       store.dispatch({ type: 'lineAdded', line }),
     )
   }

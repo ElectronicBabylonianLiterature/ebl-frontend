@@ -87,6 +87,20 @@ test('the fake source stores saved lines', async () => {
   ])
 })
 
+test('the fake source moves a stored line without renumbering', async () => {
+  const source = createFakeChapterEditSource({ lines })
+  const outline = await source.moveLine(0, 2)
+
+  expect(outline.lines.map((line) => line.number)).toEqual(['2', '3', '1'])
+  expect(outline.lines.map((line) => line.index)).toEqual([0, 1, 2])
+  await expect(source.loadLines(0, 3)).resolves.toEqual([
+    lines[1],
+    lines[2],
+    lines[0],
+  ])
+  await expect(source.loadOutline()).resolves.toEqual(outline)
+})
+
 test.each([
   [{ kind: 'legacy' } as const, 'legacy'],
   [{ canSave: false } as const, 'api'],
@@ -98,6 +112,10 @@ test.each([
   await expect(source.saveLine(0, lines[0], lines[0])).rejects.toThrow(
     'Saving is not available.',
   )
+  await expect(source.moveLine(0, 1)).rejects.toThrow(
+    'Saving is not available.',
+  )
+  await expect(source.loadLines(0, 2)).resolves.toEqual(lines.slice(0, 2))
 })
 
 test('renderWithEditLite provides the context and the state', async () => {

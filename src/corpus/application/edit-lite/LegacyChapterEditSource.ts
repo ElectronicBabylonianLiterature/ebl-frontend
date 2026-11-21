@@ -73,6 +73,10 @@ export class LegacyChapterEditSource implements ChapterEditSource {
     return this.refuseToSave()
   }
 
+  moveLine(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
   importLines(): Promise<ChapterOutline> {
     return this.refuseToSave()
   }

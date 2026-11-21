@@ -8,13 +8,17 @@ interface Handlers {
   readonly onCancel: jest.Mock<void, []>
 }
 
-function renderModal(show = true): Handlers {
+function renderModal(
+  show = true,
+  confirmVariant?: 'danger' | 'primary',
+): Handlers {
   const handlers: Handlers = { onConfirm: jest.fn(), onCancel: jest.fn() }
   render(
     <ConfirmModal
       show={show}
       title="Delete line"
       confirmLabel="Delete it"
+      confirmVariant={confirmVariant}
       {...handlers}
     >
       Delete line 7 from the chapter?
@@ -40,6 +44,18 @@ test('asks the question in a dialog named by its title', () => {
     within(dialog).getByRole('button', { name: 'Delete it' }),
   ).toBeVisible()
   expect(within(dialog).getByRole('button', { name: 'Cancel' })).toBeVisible()
+})
+
+test.each<['danger' | 'primary' | undefined, string]>([
+  [undefined, 'btn-danger'],
+  ['danger', 'btn-danger'],
+  ['primary', 'btn-primary'],
+])('the confirm button of variant %p looks like %s', (variant, className) => {
+  renderModal(true, variant)
+
+  expect(screen.getByRole('button', { name: 'Delete it' })).toHaveClass(
+    className,
+  )
 })
 
 test('confirming reports the confirmation only', async () => {

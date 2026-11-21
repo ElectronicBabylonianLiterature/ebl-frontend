@@ -6,8 +6,6 @@ import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
 
 export const lineNotReturnedMessage =
   'The line was not returned by the data source.'
-export const lineNotReloadedMessage =
-  'The line was saved, but it could not be reloaded. Reload the page to continue editing it.'
 
 export function toContiguousRanges(indices: readonly number[]): number[][] {
   return _.sortBy(_.uniq(indices)).reduce<number[][]>((ranges, index) => {
@@ -83,15 +81,4 @@ export async function loadLine(
     .loadLines(index, 1)
     .catch((): readonly Line[] => [])
   return line ?? null
-}
-
-export async function reloadSavedLine(
-  source: ChapterEditSource,
-  index: number,
-): Promise<Line> {
-  const line = await loadLine(source, index)
-  if (line === null) {
-    throw new Error(lineNotReloadedMessage)
-  }
-  return line
 }

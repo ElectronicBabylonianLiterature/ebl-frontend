@@ -8,14 +8,13 @@ import {
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
-import useEditLite, {
-  EditLite,
-  lineNotReloadedMessage,
-} from 'corpus/ui/edit-lite/useEditLite'
+import useEditLite, { EditLite } from 'corpus/ui/edit-lite/useEditLite'
+import { createDeferred } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 const lines: readonly Line[] = buildEditLiteLines()
 const outline = buildEditLiteOutline(lines)
 const draft: Line = setLineNumber(lines[1], '2a')
+const savedLine: Line = { ...draft, status: EditStatus.CLEAN }
 
 interface EditLiteView {
   readonly source: FakeChapterEditSource
@@ -60,7 +59,6 @@ test('saveLine saves the draft, reloads the line and updates the outline', async
   })
 
   await waitForStatus(view, 'ready')
-  const savedLine: Line = { ...draft, status: EditStatus.CLEAN }
 
   expect(view.source.saveLine).toHaveBeenCalledTimes(1)
   expect(view.source.saveLine).toHaveBeenCalledWith(1, lines[1], draft)
@@ -98,6 +96,31 @@ test.each<[string, Error | string, string]>([
   },
 )
 
+test('the outline of a save is applied before the saved line is reloaded', async () => {
+  const view = await renderWithDraft()
+  const reloaded = createDeferred<readonly Line[]>()
+  view.source.loadLines.mockReturnValueOnce(reloaded.promise)
+  saveLine(view)
+  await waitFor(() =>
+    expect(currentState(view).outline.lines[1].number).toBe('2a'),
+  )
+
+  expect(view.source.loadLines.mock.calls).toEqual([[1, 1]])
+  expect(currentState(view).lines[1]).toEqual({
+    status: 'saving',
+    original: lines[1],
+    draft,
+    error: null,
+  })
+
+  const outlineBeforeReload = currentState(view).outline
+  await act(async () => reloaded.resolve([savedLine]))
+
+  expect(currentState(view).lines[1].original).toBe(savedLine)
+  expect(currentState(view).lines[1].status).toBe('ready')
+  expect(currentState(view).outline).toBe(outlineBeforeReload)
+})
+
 test.each<[string, (source: FakeChapterEditSource) => void]>([
   [
     'is not returned',
@@ -111,15 +134,32 @@ test.each<[string, (source: FakeChapterEditSource) => void]>([
       source.loadLines.mockRejectedValueOnce(new Error('Network error'))
     },
   ],
-])('saveLine reports when the saved line %s', async (_name, breakReload) => {
-  const view = await renderWithDraft()
-  breakReload(view.source)
-  saveLine(view)
-  await waitForStatus(view, 'failed')
+])(
+  'a saved line that %s is forgotten and loaded when it is asked for again',
+  async (_name, breakReload) => {
+    const view = await renderWithDraft()
+    breakReload(view.source)
+    saveLine(view)
+    await waitFor(() => expect(currentState(view).lines[1]).toBeUndefined())
 
-  expect(currentState(view).lines[1].error).toBe(lineNotReloadedMessage)
-  expect(currentState(view).lines[1].draft).toBe(draft)
-})
+    expect(currentState(view).outline.lines[1].number).toBe('2a')
+    expect(view.source.saveLine).toHaveBeenCalledTimes(1)
+
+    act(() => view.result.current.context.actions.ensureLines(1, 1))
+    await waitForStatus(view, 'ready')
+
+    expect(view.source.loadLines.mock.calls).toEqual([
+      [1, 1],
+      [1, 1],
+    ])
+    expect(currentState(view).lines[1]).toEqual({
+      status: 'ready',
+      original: savedLine,
+      draft: savedLine,
+      error: null,
+    })
+  },
+)
 
 test('a failed save can be repeated', async () => {
   const view = await renderWithDraft()

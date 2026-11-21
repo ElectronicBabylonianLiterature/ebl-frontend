@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
+import _ from 'lodash'
 import { Alert, Button } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
 import { Line } from 'corpus/domain/line'
@@ -6,7 +7,7 @@ import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { LineState } from 'corpus/ui/edit-lite/editLiteState'
 import LineEditPanel from 'corpus/ui/edit-lite/LineEditPanel'
 import LineEditToolbar from 'corpus/ui/edit-lite/LineEditToolbar'
-import { LineActivity } from 'corpus/ui/edit-lite/lineStates'
+import { findProgressLabel, LineActivity } from 'corpus/ui/edit-lite/lineStates'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
   readonly lineState: LineState | undefined
   readonly isNew?: boolean
   readonly activity?: LineActivity
+  readonly onDeleted?: (index: number) => void
 }
 
 interface LoadedLineProps extends Required<Props> {
@@ -21,19 +23,19 @@ interface LoadedLineProps extends Required<Props> {
   readonly draft: Line
 }
 
-const busyStatuses: readonly string[] = ['saving', 'deleting']
-
 function LoadedLine({
   index,
   lineState,
   draft,
   isNew,
   activity,
+  onDeleted,
 }: LoadedLineProps): JSX.Element {
   const { actions, canWrite } = useEditLiteContext()
+  const original = lineState.original
   const handleChange = useCallback(
-    (line: Line): void => actions.changeLine(index, line),
-    [actions, index],
+    (line: Line): void => actions.changeLine(index, line, original),
+    [actions, index, original],
   )
 
   return (
@@ -46,7 +48,7 @@ function LoadedLine({
       <LineEditPanel
         line={draft}
         onChange={handleChange}
-        disabled={busyStatuses.includes(lineState.status)}
+        disabled={findProgressLabel(lineState.status) !== null}
       />
       {canWrite && (
         <LineEditToolbar
@@ -55,6 +57,7 @@ function LoadedLine({
           draft={draft}
           isNew={isNew}
           activity={activity}
+          onDeleted={onDeleted}
         />
       )}
     </>
@@ -66,6 +69,7 @@ function LineContent({
   lineState,
   isNew,
   activity,
+  onDeleted,
 }: Required<Props>): JSX.Element {
   const { actions } = useEditLiteContext()
 
@@ -77,6 +81,7 @@ function LineContent({
         draft={lineState.draft}
         isNew={isNew}
         activity={activity}
+        onDeleted={onDeleted}
       />
     )
   }
@@ -101,6 +106,7 @@ function LineEditContainer({
   lineState,
   isNew = false,
   activity = 'idle',
+  onDeleted = _.noop,
 }: Props): JSX.Element {
   const { actions } = useEditLiteContext()
 
@@ -121,6 +127,7 @@ function LineEditContainer({
         lineState={lineState}
         isNew={isNew}
         activity={activity}
+        onDeleted={onDeleted}
       />
     </div>
   )

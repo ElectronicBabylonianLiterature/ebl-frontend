@@ -20,6 +20,7 @@ import {
   openManuscript,
 } from 'corpus/ui/edit-lite/EditLiteManuscripts.testSupport'
 import {
+  deleteSelectedLine,
   loadedEditor,
   options,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
@@ -47,21 +48,11 @@ function button(name: string): HTMLElement {
   return screen.getByRole('button', { name })
 }
 
-async function confirmDeletion(): Promise<void> {
-  await userEvent.click(button('Delete line'))
-  await userEvent.click(
-    within(screen.getByRole('dialog', { name: 'Delete line' })).getByRole(
-      'button',
-      { name: 'Delete line' },
-    ),
-  )
-}
-
 test('a deletion of a chapter that was changed meanwhile asks to reload', async () => {
   const fakeApi = createFakeApi(conflict)
   await renderLoadedEditLiteRoute({ fakeApi })
   const editor = within(await loadedEditor('1'))
-  await confirmDeletion()
+  await deleteSelectedLine()
 
   expect(await editor.findByRole('alert')).toHaveTextContent(
     chapterChangedMessage,

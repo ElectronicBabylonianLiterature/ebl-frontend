@@ -21,6 +21,7 @@ import {
   editLiteManuscripts,
   editLiteRevision,
 } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
+import { moveItem } from 'corpus/ui/edit-lite/lineMove'
 
 export type FakeChapterEditSource = jest.Mocked<ChapterEditSource>
 
@@ -38,7 +39,7 @@ interface FakeChapter {
   uncertainFragments: readonly string[]
 }
 
-function toSavedLine(line: Line): Line {
+export function toSavedLine(line: Line): Line {
   return { ...line, status: EditStatus.CLEAN }
 }
 
@@ -131,6 +132,9 @@ export function createFakeChapterEditSource(
       save({
         lines: chapter.lines.filter((_line, lineIndex) => lineIndex !== index),
       }),
+    ),
+    moveLine: jest.fn((from: number, to: number) =>
+      save({ lines: moveItem(chapter.lines, from, to) }),
     ),
     importLines: jest.fn((atf: string) =>
       save({ lines: importFakeLines(chapter.lines, atf) }),

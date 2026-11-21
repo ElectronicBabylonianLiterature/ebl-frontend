@@ -3,6 +3,10 @@ import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
+  buildLineSavedActions,
+  buildLinesFailedActions,
+  buildLinesLoadedActions,
+  reduceEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
   createEditLiteState,
@@ -15,11 +19,10 @@ import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 const lines: readonly Line[] = buildEditLiteLines()
 const outline: ChapterOutline = buildEditLiteOutline(lines)
 const initialState: EditLiteState = createEditLiteState(outline)
-const loadedState: EditLiteState = editLiteReducer(initialState, {
-  type: 'linesLoaded',
-  offset: 0,
-  lines: lines.slice(0, 2),
-})
+const loadedState: EditLiteState = reduceEditLite(
+  initialState,
+  ...buildLinesLoadedActions(0, lines.slice(0, 2)),
+)
 const changedLine: Line = setLineNumber(lines[0], '1a')
 const changedState: EditLiteState = editLiteReducer(loadedState, {
   type: 'lineChanged',
@@ -62,11 +65,10 @@ test('linesRequested marks the indices as loading', () => {
 })
 
 test('linesLoaded stores the lines from the offset on', () => {
-  const state = editLiteReducer(initialState, {
-    type: 'linesLoaded',
-    offset: 1,
-    lines: lines.slice(1),
-  })
+  const state = reduceEditLite(
+    initialState,
+    ...buildLinesLoadedActions(1, lines.slice(1)),
+  )
 
   expect(state.lines).toEqual({
     1: readyLine(lines[1]),
@@ -76,11 +78,10 @@ test('linesLoaded stores the lines from the offset on', () => {
 })
 
 test('linesFailed stores the error for every index', () => {
-  const state = editLiteReducer(initialState, {
-    type: 'linesFailed',
-    indices: [0, 1],
-    error: 'Network error',
-  })
+  const state = reduceEditLite(
+    initialState,
+    ...buildLinesFailedActions([0, 1], 'Network error'),
+  )
   const failedLine: LineState = {
     status: 'failed',
     original: null,
@@ -132,11 +133,10 @@ test('lineReset clears a failed save', () => {
 })
 
 test('lineReset forgets a line that failed to load', () => {
-  const failedState = editLiteReducer(loadedState, {
-    type: 'linesFailed',
-    indices: [2],
-    error: 'Network error',
-  })
+  const failedState = reduceEditLite(
+    loadedState,
+    ...buildLinesFailedActions([2], 'Network error'),
+  )
 
   expect(
     editLiteReducer(failedState, { type: 'lineReset', index: 2 }).lines,
@@ -192,15 +192,17 @@ test.each([
   expect(editLiteReducer(loadedState, action)).toBe(loadedState)
 })
 
-test('saveSucceeded stores the saved line and the new outline', () => {
+test('a save stores the new outline and then the reloaded line', () => {
   const savedLines = [changedLine, ...lines.slice(1)]
   const savedOutline = buildEditLiteOutline(savedLines)
-  const state = editLiteReducer(changedState, {
-    type: 'saveSucceeded',
-    index: 0,
-    outline: { ...savedOutline, manuscripts: [...savedOutline.manuscripts] },
-    line: changedLine,
-  })
+  const state = reduceEditLite(
+    changedState,
+    ...buildLineSavedActions(
+      0,
+      { ...savedOutline, manuscripts: [...savedOutline.manuscripts] },
+      changedLine,
+    ),
+  )
 
   expect(state.outline).toEqual(savedOutline)
   expect(state.lines[0]).toEqual(readyLine(changedLine))
@@ -211,13 +213,11 @@ test('saveSucceeded stores the saved line and the new outline', () => {
   expect(state.outline.lines[2]).toBe(outline.lines[2])
 })
 
-test('saveSucceeded reuses the line outlines when nothing changed', () => {
-  const state = editLiteReducer(loadedState, {
-    type: 'saveSucceeded',
-    index: 0,
-    outline: buildEditLiteOutline(lines),
-    line: lines[0],
-  })
+test('a save reuses the line outlines when nothing changed', () => {
+  const state = reduceEditLite(
+    loadedState,
+    ...buildLineSavedActions(0, buildEditLiteOutline(lines), lines[0]),
+  )
 
   expect(state.outline.lines).toBe(outline.lines)
 })

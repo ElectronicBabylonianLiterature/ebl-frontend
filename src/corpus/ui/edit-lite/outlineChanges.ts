@@ -6,11 +6,21 @@ import {
   LineState,
   LineStatus,
 } from 'corpus/ui/edit-lite/editLiteState'
-import { hasLineChanged } from 'corpus/ui/edit-lite/lineStates'
+import {
+  deleteIndex,
+  moveIndex,
+  moveLineOutlines,
+} from 'corpus/ui/edit-lite/lineMove'
+import { hasLineChanged, isLineLoaded } from 'corpus/ui/edit-lite/lineStates'
 
 export type LineStateEntry = readonly [number, LineState]
 
-const pendingStatuses: readonly LineStatus[] = ['loading', 'saving', 'deleting']
+const pendingStatuses: readonly LineStatus[] = [
+  'loading',
+  'saving',
+  'deleting',
+  'moving',
+]
 
 function reuseEqualItems<Item>(
   previous: readonly Item[],
@@ -65,16 +75,34 @@ function reconcileLines(
     })
 }
 
+function listLoadedIndices(
+  lines: Readonly<Record<number, LineState>>,
+): number[] {
+  return Object.keys(lines)
+    .map(Number)
+    .filter((index) => isLineLoaded(lines[index]))
+}
+
 function shiftLines(
   lines: Readonly<Record<number, LineState>>,
   deletedIndex: number,
 ): readonly LineStateEntry[] {
-  return Object.keys(lines)
-    .map(Number)
-    .filter(
-      (index) => index !== deletedIndex && lines[index].status !== 'loading',
-    )
-    .map((index) => [index > deletedIndex ? index - 1 : index, lines[index]])
+  return listLoadedIndices(lines)
+    .filter((index) => index !== deletedIndex)
+    .map((index) => [deleteIndex(index, deletedIndex), lines[index]])
+}
+
+function moveLines(
+  lines: Readonly<Record<number, LineState>>,
+  from: number,
+  to: number,
+): readonly LineStateEntry[] {
+  return listLoadedIndices(lines).map((index) => [
+    moveIndex(index, from, to),
+    index === from
+      ? { ...lines[index], status: 'ready', error: null }
+      : lines[index],
+  ])
 }
 
 export function withLines(
@@ -108,6 +136,43 @@ export function removeLine(
     ...state,
     outline: mergeOutline(state.outline, nextOutline),
     lines: Object.fromEntries(shiftLines(state.lines, index)),
+    layoutVersion: state.layoutVersion + 1,
+  }
+}
+
+export function hasSameLineCount(
+  state: EditLiteState,
+  nextOutline: ChapterOutline,
+): boolean {
+  return nextOutline.lines.length === state.outline.lines.length
+}
+
+function rekeyMovedLines(
+  state: EditLiteState,
+  from: number,
+  to: number,
+): EditLiteState {
+  return {
+    ...state,
+    outline: {
+      ...state.outline,
+      lines: moveLineOutlines(state.outline.lines, from, to),
+    },
+    lines: Object.fromEntries(moveLines(state.lines, from, to)),
+  }
+}
+
+export function moveLine(
+  state: EditLiteState,
+  from: number,
+  to: number,
+  nextOutline: ChapterOutline,
+): EditLiteState {
+  const movedState: EditLiteState = hasSameLineCount(state, nextOutline)
+    ? rekeyMovedLines(state, from, to)
+    : { ...state, lines: {} }
+  return {
+    ...replaceOutline(movedState, nextOutline),
     layoutVersion: state.layoutVersion + 1,
   }
 }

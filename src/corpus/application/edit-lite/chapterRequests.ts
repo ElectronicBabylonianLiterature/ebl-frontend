@@ -41,6 +41,10 @@ const updateFactories: UpdateFactories = {
     endpoint: 'lines',
     body: toDeletedLineDto(change.index),
   }),
+  moveLine: (change) => ({
+    endpoint: 'lines/move',
+    body: { from: change.from, to: change.to },
+  }),
   importLines: (change) => ({ endpoint: 'import', body: { atf: change.atf } }),
   saveManuscripts: (change) => ({
     endpoint: 'manuscripts',

@@ -27,6 +27,7 @@ import {
 } from 'corpus/ui/edit-lite/EditLiteManuscripts.testSupport'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import {
+  deleteSelectedLine,
   loadedEditor,
   options,
   selectedOptions,
@@ -73,10 +74,10 @@ test('a new line is posted and becomes the last line of the chapter', async () =
   await userEvent.click(button('Save line'))
 
   expect(await screen.findByRole('region', { name: 'Line 4a' })).toBe(editor)
+  expect(await within(editor).findByLabelText('Number')).toHaveValue('4a')
   expect(options()).toHaveLength(4)
   expect(selectedOptions()).toEqual([options()[3]])
   expect(screen.queryByText('new')).not.toBeInTheDocument()
-  expect(within(editor).getByLabelText('Number')).toHaveValue('4a')
   expect(button('Save line')).toBeDisabled()
   expect(screen.getByTestId('edit-lite-line-count')).toHaveTextContent('4')
   expect(fakeApi.client.postJson).toHaveBeenCalledTimes(1)
@@ -102,13 +103,7 @@ test('a line is deleted and the draft of a later line stays on its line', async 
   await userEvent.type(within(thirdLine).getByLabelText('Number'), 'x')
   await userEvent.click(options()[1])
   await loadedEditor('2')
-  await userEvent.click(button('Delete line'))
-  await userEvent.click(
-    within(screen.getByRole('dialog', { name: 'Delete line' })).getByRole(
-      'button',
-      { name: 'Delete line' },
-    ),
-  )
+  await deleteSelectedLine()
   const editor = await loadedEditor('3')
 
   expect(options()).toHaveLength(2)

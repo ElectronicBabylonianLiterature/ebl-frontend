@@ -2,30 +2,30 @@ import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
+  buildLinesFailedActions,
+  buildLinesLoadedActions,
+  reduceEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
   createEditLiteState,
-  editLiteReducer,
   isLineDirty,
 } from 'corpus/ui/edit-lite/editLiteReducer'
-import {
-  EditLiteAction,
-  EditLiteState,
-} from 'corpus/ui/edit-lite/editLiteState'
+import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
-import { readyLine } from 'corpus/ui/edit-lite/lineStates'
+import { findMissingIndices } from 'corpus/ui/edit-lite/lineLoading'
+import { failedLine, readyLine } from 'corpus/ui/edit-lite/lineStates'
 
 const lines: readonly Line[] = buildEditLiteLines(6)
 const firstDraft: Line = setLineNumber(lines[0], '1a')
 const fourthDraft: Line = setLineNumber(lines[3], '4a')
 const newLine: Line = setLineNumber(lines[5], '7')
-const loadedState: EditLiteState = reduce(
+const loadedState: EditLiteState = reduceEditLite(
   createEditLiteState(buildEditLiteOutline(lines)),
-  { type: 'linesLoaded', offset: 0, lines: lines.slice(0, 4) },
+  ...buildLinesLoadedActions(0, lines.slice(0, 4)),
   { type: 'lineChanged', index: 0, draft: firstDraft },
   { type: 'lineChanged', index: 3, draft: fourthDraft },
   { type: 'linesRequested', indices: [4] },
-  { type: 'linesFailed', indices: [5], error: 'Network error' },
+  ...buildLinesFailedActions([5], 'Network error'),
   { type: 'lineAdded', line: newLine },
 )
 const outlineWithoutSecond = buildEditLiteOutline(
@@ -33,15 +33,8 @@ const outlineWithoutSecond = buildEditLiteOutline(
   'revision-2',
 )
 
-function reduce(
-  state: EditLiteState,
-  ...actions: readonly EditLiteAction[]
-): EditLiteState {
-  return actions.reduce(editLiteReducer, state)
-}
-
 function deleteSecondLine(state: EditLiteState): EditLiteState {
-  return reduce(
+  return reduceEditLite(
     state,
     { type: 'deleteStarted', index: 1 },
     { type: 'lineDeleted', index: 1, outline: outlineWithoutSecond },
@@ -49,12 +42,15 @@ function deleteSecondLine(state: EditLiteState): EditLiteState {
 }
 
 test('deleteStarted marks the line as being deleted', () => {
-  const failedState = reduce(loadedState, {
+  const failedState = reduceEditLite(loadedState, {
     type: 'saveFailed',
     index: 1,
     error: 'Conflict',
   })
-  const deletingState = reduce(failedState, { type: 'deleteStarted', index: 1 })
+  const deletingState = reduceEditLite(failedState, {
+    type: 'deleteStarted',
+    index: 1,
+  })
 
   expect(deletingState.lines[1]).toEqual({
     status: 'deleting',
@@ -62,13 +58,13 @@ test('deleteStarted marks the line as being deleted', () => {
     draft: lines[1],
     error: null,
   })
-  expect(reduce(loadedState, { type: 'deleteStarted', index: 9 })).toBe(
+  expect(reduceEditLite(loadedState, { type: 'deleteStarted', index: 9 })).toBe(
     loadedState,
   )
 })
 
 test('a failed deletion keeps the line and shows the error', () => {
-  const failedState = reduce(
+  const failedState = reduceEditLite(
     loadedState,
     { type: 'deleteStarted', index: 1 },
     { type: 'saveFailed', index: 1, error: 'The chapter was changed.' },
@@ -115,14 +111,32 @@ test('lineDeleted moves the entries after the deleted line down by one', () => {
   expect(state.lines[2].draft).toBe(fourthDraft)
   expect(isLineDirty(state.lines[2])).toBe(true)
   expect(state.lines[2].status).toBe('ready')
-  expect(state.lines[4]).toBe(loadedState.lines[5])
 })
 
-test('lineDeleted forgets the deleted line and the lines still being loaded', () => {
+test('lineDeleted forgets the deleted line and the entries that hold no line', () => {
   const state = deleteSecondLine(loadedState)
 
-  expect(Object.keys(state.lines)).toEqual(['0', '1', '2', '4'])
-  expect(state.lines[3]).toBeUndefined()
+  expect(loadedState.lines[4].status).toBe('loading')
+  expect(loadedState.lines[5]).toEqual(failedLine('Network error'))
+  expect(Object.keys(state.lines)).toEqual(['0', '1', '2'])
+  expect(findMissingIndices(state, 0, 5)).toEqual([3, 4])
+})
+
+test('lineDeleted keeps a line whose save failed with its draft and its error', () => {
+  const failedState = reduceEditLite(loadedState, {
+    type: 'saveFailed',
+    index: 3,
+    error: 'Conflict',
+  })
+  const state = deleteSecondLine(failedState)
+
+  expect(state.lines[2]).toBe(failedState.lines[3])
+  expect(state.lines[2]).toEqual({
+    status: 'failed',
+    original: lines[3],
+    draft: fourthDraft,
+    error: 'Conflict',
+  })
 })
 
 test('lineDeleted keeps the unsaved new line and starts a new layout', () => {
@@ -135,7 +149,7 @@ test('lineDeleted keeps the unsaved new line and starts a new layout', () => {
 })
 
 test('deleting the last line leaves the other entries where they are', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'lineDeleted',
     index: 5,
     outline: buildEditLiteOutline(lines.slice(0, 5)),

@@ -15,10 +15,7 @@ import {
   EditLiteState,
 } from 'corpus/ui/edit-lite/editLiteState'
 
-export {
-  lineNotReloadedMessage,
-  lineNotReturnedMessage,
-} from 'corpus/ui/edit-lite/lineLoading'
+export { lineNotReturnedMessage } from 'corpus/ui/edit-lite/lineLoading'
 
 export interface EditLite {
   readonly state: EditLiteState

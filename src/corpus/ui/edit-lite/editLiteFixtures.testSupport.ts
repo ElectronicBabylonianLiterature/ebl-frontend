@@ -11,6 +11,8 @@ import {
   Line,
   ManuscriptLine,
 } from 'corpus/domain/line'
+import { EditLiteAction } from 'corpus/ui/edit-lite/editLiteState'
+import { createChapterUrl } from 'test-support/FakeApiExpectation'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export const editLiteChapterId: ChapterId = {
@@ -112,4 +114,53 @@ export function buildEditLiteOutline(
     lines: lines.map(toLineOutline),
     revision,
   }
+}
+
+export function buildLineUrl(index: number, revision: string): string {
+  return `${createChapterUrl(editLiteChapterId)}/lines?offset=${index}&limit=1&revision=${revision}`
+}
+
+export function buildMoveUrl(revision: string): string {
+  return `${createChapterUrl(editLiteChapterId)}/lines/move?view=outline&revision=${revision}`
+}
+
+export function listLineNumbers(
+  lines: readonly { readonly number: string }[],
+): string[] {
+  return lines.map((line) => line.number)
+}
+
+export function buildLinesLoadedActions(
+  offset: number,
+  lines: readonly Line[],
+): EditLiteAction[] {
+  return [
+    {
+      type: 'linesRequested',
+      indices: lines.map((_line, position) => offset + position),
+    },
+    { type: 'linesLoaded', offset, lines },
+  ]
+}
+
+export function buildLinesFailedActions(
+  indices: readonly number[],
+  error: string,
+): EditLiteAction[] {
+  return [
+    { type: 'linesRequested', indices },
+    { type: 'linesFailed', indices, error },
+  ]
+}
+
+export function buildLineSavedActions(
+  index: number,
+  outline: ChapterOutline,
+  line: Line | null,
+): EditLiteAction[] {
+  return [
+    { type: 'saveStarted', index },
+    { type: 'outlineReplaced', outline },
+    { type: 'saveSucceeded', index, line },
+  ]
 }

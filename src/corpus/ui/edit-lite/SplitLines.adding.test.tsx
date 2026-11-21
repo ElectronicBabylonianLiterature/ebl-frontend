@@ -7,6 +7,7 @@ import {
   editors,
   listbox,
   loadedEditor,
+  loadedNewLineEditor,
   options,
   renderSplit,
   selectedOptions,
@@ -20,16 +21,10 @@ afterEach(() => {
   jest.restoreAllMocks()
 })
 
-async function newLineEditor(): Promise<HTMLElement> {
-  const editor = screen.getByRole('region', { name: 'New line' })
-  await within(editor).findByLabelText('Number')
-  return editor
-}
-
 async function addLine(): Promise<HTMLElement> {
   await loadedEditor('1')
   await userEvent.click(button('Add line'))
-  return newLineEditor()
+  return loadedNewLineEditor()
 }
 
 test('Add line appends a line marked new, selects it and opens its editor', async () => {
@@ -83,20 +78,22 @@ test('the new line can be left and selected again like any line', async () => {
   await loadedEditor('1')
   await userEvent.keyboard('{End}')
 
-  expect(within(await newLineEditor()).getByLabelText('Number')).toHaveValue(
-    '4b',
-  )
+  expect(
+    within(await loadedNewLineEditor()).getByLabelText('Number'),
+  ).toHaveValue('4b')
   expect(selectedOptions()).toEqual([options()[3]])
 })
 
 test('discarding the new line returns to the last line', async () => {
   const { getState } = renderSplit()
   const editor = await addLine()
+  const numberInput = within(editor).getByLabelText('Number')
   await userEvent.click(
     within(editor).getByRole('button', { name: 'Discard new line' }),
   )
   await loadedEditor('3')
 
+  expect(numberInput).not.toBeInTheDocument()
   expect(options()).toHaveLength(3)
   expect(selectedOptions()).toEqual([options()[2]])
   expect(button('Add line')).toBeEnabled()
@@ -122,14 +119,16 @@ test('a saved new line becomes the last line and stays selected', async () => {
 
   await userEvent.click(button('Add line'))
 
-  expect(within(await newLineEditor()).getByLabelText('Number')).toHaveValue('')
+  expect(
+    within(await loadedNewLineEditor()).getByLabelText('Number'),
+  ).toHaveValue('')
   expect(options()).toHaveLength(5)
 })
 
 test('an empty chapter can get its first line', async () => {
   const { source } = renderSplit(0, { lines: [] })
   await userEvent.click(button('Add line'))
-  const editor = await newLineEditor()
+  const editor = await loadedNewLineEditor()
 
   expect(
     screen.queryByText('This chapter has no lines.'),

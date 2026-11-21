@@ -13,8 +13,12 @@ import DryRunModal, {
 } from 'corpus/ui/edit-lite/DryRunModal'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { isLineDirty } from 'corpus/ui/edit-lite/editLiteReducer'
-import { LineState, LineStatus } from 'corpus/ui/edit-lite/editLiteState'
-import { LineActivity } from 'corpus/ui/edit-lite/lineStates'
+import { LineState } from 'corpus/ui/edit-lite/editLiteState'
+import {
+  findProgressLabel,
+  isLayoutChanging,
+  LineActivity,
+} from 'corpus/ui/edit-lite/lineStates'
 import { findLineProblem } from 'corpus/ui/edit-lite/lineValidation'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 
@@ -24,6 +28,7 @@ interface Props {
   readonly draft: Line
   readonly isNew: boolean
   readonly activity: LineActivity
+  readonly onDeleted: (index: number) => void
 }
 
 interface Preview {
@@ -34,10 +39,16 @@ interface Preview {
 export const lineDryRunNotice =
   'Read-only data source: saving is a dry run that only shows the request.'
 export const deleteDryRunNotice = createDryRunNotice('deleting the line')
+export const discardedChangesNote =
+  'The unsaved changes of this line are discarded with it.'
 
-const progressLabels: Partial<Record<LineStatus, string>> = {
-  saving: 'Saving...',
-  deleting: 'Deleting...',
+function describeDeletion(storedLine: Line, isUnsaved: boolean): string {
+  return [
+    `Delete line ${storedLine.number} from the chapter?`,
+    'Its variants and manuscript lines are removed with it.',
+    ...(isUnsaved ? [discardedChangesNote] : []),
+    'This cannot be undone.',
+  ].join(' ')
 }
 
 export default function LineEditToolbar({
@@ -46,13 +57,14 @@ export default function LineEditToolbar({
   draft,
   isNew,
   activity,
+  onDeleted,
 }: Props): JSX.Element {
   const { actions, canSave, describeChange, manuscripts } = useEditLiteContext()
   const [preview, setPreview] = useState<Preview | null>(null)
   const [isConfirmingDelete, setIsConfirmingDelete] = useState<boolean>(false)
   const problem = findLineProblem(draft, manuscripts)
-  const progressLabel = progressLabels[lineState.status]
-  const isBusy = progressLabel !== undefined
+  const progressLabel = findProgressLabel(lineState.status)
+  const isBusy = progressLabel !== null
   const isUnsaved = isNew || isLineDirty(lineState)
   const canReset = isUnsaved || lineState.status === 'failed'
   const saveChange: ChapterChange = isNew
@@ -64,7 +76,7 @@ export default function LineEditToolbar({
   const deleteLine = (): void => {
     setIsConfirmingDelete(false)
     if (canSave) {
-      actions.deleteLine(index)
+      actions.deleteLine(index, (): void => onDeleted(index))
     } else {
       openPreview({ type: 'deleteLine', index }, deleteDryRunNotice)
     }
@@ -82,7 +94,10 @@ export default function LineEditToolbar({
           size="sm"
           variant="primary"
           disabled={
-            !isUnsaved || isBusy || problem !== null || activity === 'deleting'
+            !isUnsaved ||
+            isBusy ||
+            problem !== null ||
+            isLayoutChanging(activity)
           }
           onClick={canSave ? (): void => actions.saveLine(index) : previewSave}
         >
@@ -121,8 +136,7 @@ export default function LineEditToolbar({
         onConfirm={deleteLine}
         onCancel={(): void => setIsConfirmingDelete(false)}
       >
-        Delete line {draft.number} from the chapter? Its variants and manuscript
-        lines are removed with it. This cannot be undone.
+        {describeDeletion(lineState.original ?? draft, isUnsaved)}
       </ConfirmModal>
       <DryRunModal
         request={preview?.request ?? null}

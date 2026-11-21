@@ -15,11 +15,12 @@ export interface ImportedLines {
 
 export interface EditLiteActions {
   ensureLines(offset: number, limit: number): void
-  changeLine(index: number, draft: Line): void
+  changeLine(index: number, draft: Line, original?: Line | null): void
   resetLine(index: number): void
   saveLine(index: number): void
   addLine(): void
-  deleteLine(index: number): void
+  deleteLine(index: number, onDeleted: () => void): void
+  moveLine(from: number, to: number, onMoved: () => void): void
   importLines(atf: string): Promise<ImportedLines>
   saveManuscripts(
     manuscripts: readonly Manuscript[],

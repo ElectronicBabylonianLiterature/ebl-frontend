@@ -12,12 +12,14 @@ interface Props {
   readonly line: LineOutline
   readonly isDirty?: boolean
   readonly isNew?: boolean
+  readonly isFailed?: boolean
 }
 
 function LineSummaryRow({
   line,
   isDirty = false,
   isNew = false,
+  isFailed = false,
 }: Props): JSX.Element {
   return (
     <span className="edit-lite-summary">
@@ -45,6 +47,11 @@ function LineSummaryRow({
         {isDirty && (
           <span className="edit-lite-badge edit-lite-badge--edited">
             edited
+          </span>
+        )}
+        {isFailed && (
+          <span className="edit-lite-badge edit-lite-badge--failed">
+            failed
           </span>
         )}
       </span>

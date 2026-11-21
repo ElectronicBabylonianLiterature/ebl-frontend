@@ -1,30 +1,24 @@
-import React, {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useId, useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import _ from 'lodash'
 import { LineOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
 import { createLine } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'
-import { findInitialIndex } from 'corpus/ui/edit-lite/lineIndex'
+import LineMoveControls from 'corpus/ui/edit-lite/LineMoveControls'
 import {
   countLines,
   findLineActivity,
   findLineState,
+  isLineLoaded,
 } from 'corpus/ui/edit-lite/lineStates'
 import {
   findKeyTarget,
   revealOption,
 } from 'corpus/ui/edit-lite/splitNavigation'
 import SplitOption from 'corpus/ui/edit-lite/SplitOption'
+import useSplitSelection from 'corpus/ui/edit-lite/useSplitSelection'
 import 'corpus/ui/edit-lite/SplitLines.sass'
 
 export { revealOption } from 'corpus/ui/edit-lite/splitNavigation'
@@ -64,29 +58,27 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
   const hasNewLine = state.newLine !== null
   const lastIndex = countLines(state) - 1
   const listRef = useRef<HTMLUListElement>(null)
-  const [requestedIndex, setRequestedIndex] = useState<number>(
-    () => findInitialIndex(initialLine, lines.length) ?? 0,
-  )
-  const selectedIndex = Math.min(requestedIndex, lastIndex)
+  const {
+    index: selectedIndex,
+    editorKey,
+    select,
+    selectNewLine,
+    followMove,
+    followDelete,
+  } = useSplitSelection(state, initialLine)
   const isNewSelected = hasNewLine && selectedIndex === lines.length
+  const lineState = findLineState(state, selectedIndex)
+  const activity = findLineActivity(state)
   const newLine = useMemo<LineOutline>(
     () => toLineOutline(newLineDraft ?? emptyLine, lines.length),
     [newLineDraft, lines.length],
   )
-  const select = useCallback(
-    (index: number): void => setRequestedIndex(_.clamp(index, 0, lastIndex)),
-    [lastIndex],
-  )
-
-  if (requestedIndex > lastIndex) {
-    setRequestedIndex(lastIndex)
-  }
 
   useEffect(() => {
     const firstNeighbour = Math.max(selectedIndex - 1, 0)
     const lastNeighbour = Math.min(selectedIndex + 1, lastIndex)
     actions.ensureLines(firstNeighbour, lastNeighbour - firstNeighbour + 1)
-  }, [actions, selectedIndex, lastIndex])
+  }, [actions, selectedIndex, lastIndex, state.layoutVersion])
 
   useEffect(() => {
     revealOption(listRef.current, selectedIndex)
@@ -103,7 +95,7 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
   }
   const addLine = (): void => {
     actions.addLine()
-    setRequestedIndex(lines.length)
+    selectNewLine()
   }
 
   return (
@@ -132,7 +124,7 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
             key="new"
             id={`${id}-option-${newLine.index}`}
             line={newLine}
-            lineState={undefined}
+            lineState={findLineState(state, newLine.index)}
             isSelected={isNewSelected}
             isNew
             onSelect={select}
@@ -166,14 +158,24 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
           <span className="edit-lite-split__position">
             {selectedIndex + 1} of {lastIndex + 1}
           </span>
+          {!isNewSelected && (
+            <LineMoveControls
+              lines={lines}
+              index={selectedIndex}
+              isLoaded={isLineLoaded(lineState)}
+              activity={activity}
+              onMoved={followMove}
+            />
+          )}
           <AddLineButton disabled={hasNewLine} onAdd={addLine} />
         </div>
         <LineEditContainer
-          key={selectedIndex}
+          key={editorKey}
           index={selectedIndex}
-          lineState={findLineState(state, selectedIndex)}
+          lineState={lineState}
           isNew={isNewSelected}
-          activity={findLineActivity(state)}
+          activity={activity}
+          onDeleted={followDelete}
         />
       </section>
     </div>

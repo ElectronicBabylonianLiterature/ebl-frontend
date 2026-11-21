@@ -1,8 +1,24 @@
 import { areLinesEqual } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
-import { EditLiteState, LineState } from 'corpus/ui/edit-lite/editLiteState'
+import {
+  EditLiteState,
+  LineState,
+  LineStatus,
+} from 'corpus/ui/edit-lite/editLiteState'
 
-export type LineActivity = 'idle' | 'saving' | 'deleting'
+export type LineActivity = 'idle' | 'saving' | 'deleting' | 'moving'
+
+const busyActivities: readonly Exclude<LineActivity, 'idle'>[] = [
+  'moving',
+  'deleting',
+  'saving',
+]
+
+const progressLabels: Readonly<Partial<Record<LineStatus, string>>> = {
+  saving: 'Saving...',
+  deleting: 'Deleting...',
+  moving: 'Moving...',
+}
 
 export const loadingLine: LineState = {
   status: 'loading',
@@ -30,6 +46,14 @@ export function hasLineChanged(lineState: LineState | undefined): boolean {
   )
 }
 
+export function isLineLoaded(lineState: LineState | undefined): boolean {
+  return (lineState?.draft ?? null) !== null
+}
+
+export function hasLineFailed(lineState: LineState | undefined): boolean {
+  return lineState?.status === 'failed' && isLineLoaded(lineState)
+}
+
 export function findNewLineIndex(state: EditLiteState): number {
   return state.outline.lines.length
 }
@@ -55,13 +79,18 @@ function listLineStates(state: EditLiteState): readonly LineState[] {
 }
 
 export function findLineActivity(state: EditLiteState): LineActivity {
-  const statuses = new Set(
+  const statuses = new Set<LineStatus>(
     listLineStates(state).map((lineState) => lineState.status),
   )
-  if (statuses.has('deleting')) {
-    return 'deleting'
-  }
-  return statuses.has('saving') ? 'saving' : 'idle'
+  return busyActivities.find((activity) => statuses.has(activity)) ?? 'idle'
+}
+
+export function isLayoutChanging(activity: LineActivity): boolean {
+  return activity === 'deleting' || activity === 'moving'
+}
+
+export function findProgressLabel(status: LineStatus): string | null {
+  return progressLabels[status] ?? null
 }
 
 export function hasUnsavedChanges(state: EditLiteState): boolean {

@@ -5,6 +5,7 @@ interface Props {
   readonly show: boolean
   readonly title: string
   readonly confirmLabel: string
+  readonly confirmVariant?: 'danger' | 'primary'
   readonly children: React.ReactNode
   readonly onConfirm: () => void
   readonly onCancel: () => void
@@ -14,6 +15,7 @@ export default function ConfirmModal({
   show,
   title,
   confirmLabel,
+  confirmVariant = 'danger',
   children,
   onConfirm,
   onCancel,
@@ -35,7 +37,7 @@ export default function ConfirmModal({
         <Button size="sm" variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button size="sm" variant="danger" onClick={onConfirm}>
+        <Button size="sm" variant={confirmVariant} onClick={onConfirm}>
           {confirmLabel}
         </Button>
       </Modal.Footer>

@@ -4,11 +4,10 @@ import { createLine, Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
+  buildLinesLoadedActions,
+  reduceEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
-import {
-  createEditLiteState,
-  editLiteReducer,
-} from 'corpus/ui/edit-lite/editLiteReducer'
+import { createEditLiteState } from 'corpus/ui/edit-lite/editLiteReducer'
 import {
   EditLiteAction,
   EditLiteState,
@@ -23,12 +22,12 @@ const importedLines: readonly Line[] = [
   createLine({ number: '4' }),
   createLine({ number: '5' }),
 ]
-const loadedState: EditLiteState = reduce(
+const loadedState: EditLiteState = reduceEditLite(
   createEditLiteState({
     ...buildEditLiteOutline(lines),
     uncertainFragments: ['K.1'],
   }),
-  { type: 'linesLoaded', offset: 0, lines },
+  ...buildLinesLoadedActions(0, lines),
   { type: 'lineChanged', index: 1, draft },
   { type: 'lineAdded', line: newLine },
   { type: 'manuscriptsEdited', hasUnsaved: true },
@@ -46,15 +45,8 @@ const manuscriptsOutline: ChapterOutline = {
   ],
 }
 
-function reduce(
-  state: EditLiteState,
-  ...actions: readonly EditLiteAction[]
-): EditLiteState {
-  return actions.reduce(editLiteReducer, state)
-}
-
 test('outlineReplaced appends the imported lines and keeps what was loaded', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'outlineReplaced',
     outline: importedOutline,
   })
@@ -78,11 +70,11 @@ test('outlineReplaced appends the imported lines and keeps what was loaded', () 
 })
 
 test('outlineReplaced keeps the unsaved new line behind the imported lines', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'outlineReplaced',
     outline: importedOutline,
   })
-  const changedState = reduce(state, {
+  const changedState = reduceEditLite(state, {
     type: 'lineChanged',
     index: 5,
     draft: setLineNumber(newLine, '6'),
@@ -96,7 +88,7 @@ test('outlineReplaced keeps the unsaved new line behind the imported lines', () 
 })
 
 test('outlineReplaced flags the draft of a line that the new outline changed', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'outlineReplaced',
     outline: buildEditLiteOutline([
       lines[0],
@@ -114,22 +106,28 @@ test('outlineReplaced flags the draft of a line that the new outline changed', (
   })
 })
 
-test('outlineReplaced leaves a line alone while it is being deleted', () => {
-  const deletingState = reduce(loadedState, { type: 'deleteStarted', index: 2 })
-  const state = reduce(deletingState, {
-    type: 'outlineReplaced',
-    outline: buildEditLiteOutline([
-      lines[0],
-      lines[1],
-      setLineNumber(lines[2], '3b'),
-    ]),
-  })
+test.each<[string, EditLiteAction]>([
+  ['deleted', { type: 'deleteStarted', index: 2 }],
+  ['moved', { type: 'moveStarted', index: 2 }],
+])(
+  'outlineReplaced leaves a line alone while it is being %s',
+  (_name, start) => {
+    const busyState = reduceEditLite(loadedState, start)
+    const state = reduceEditLite(busyState, {
+      type: 'outlineReplaced',
+      outline: buildEditLiteOutline([
+        lines[0],
+        lines[1],
+        setLineNumber(lines[2], '3b'),
+      ]),
+    })
 
-  expect(state.lines[2]).toBe(deletingState.lines[2])
-})
+    expect(state.lines[2]).toBe(busyState.lines[2])
+  },
+)
 
 test('manuscriptsSaved takes over the sigla and the uncertain fragments', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'manuscriptsSaved',
     outline: manuscriptsOutline,
   })
@@ -142,7 +140,7 @@ test('manuscriptsSaved takes over the sigla and the uncertain fragments', () => 
 })
 
 test('manuscriptsSaved keeps the lines and counts the save', () => {
-  const state = reduce(loadedState, {
+  const state = reduceEditLite(loadedState, {
     type: 'manuscriptsSaved',
     outline: manuscriptsOutline,
   })
@@ -153,13 +151,15 @@ test('manuscriptsSaved keeps the lines and counts the save', () => {
   expect(state.manuscriptsVersion).toBe(1)
   expect(state.hasUnsavedManuscripts).toBe(false)
   expect(
-    reduce(state, { type: 'manuscriptsSaved', outline: manuscriptsOutline })
-      .manuscriptsVersion,
+    reduceEditLite(state, {
+      type: 'manuscriptsSaved',
+      outline: manuscriptsOutline,
+    }).manuscriptsVersion,
   ).toBe(2)
 })
 
 test('manuscriptsEdited remembers whether the manuscripts have unsaved edits', () => {
-  const cleanState = reduce(loadedState, {
+  const cleanState = reduceEditLite(loadedState, {
     type: 'manuscriptsEdited',
     hasUnsaved: false,
   })
@@ -167,6 +167,9 @@ test('manuscriptsEdited remembers whether the manuscripts have unsaved edits', (
   expect(cleanState.hasUnsavedManuscripts).toBe(false)
   expect(cleanState.lines).toBe(loadedState.lines)
   expect(
-    reduce(loadedState, { type: 'manuscriptsEdited', hasUnsaved: true }),
+    reduceEditLite(loadedState, {
+      type: 'manuscriptsEdited',
+      hasUnsaved: true,
+    }),
   ).toBe(loadedState)
 })

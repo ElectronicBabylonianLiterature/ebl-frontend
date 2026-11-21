@@ -1,25 +1,52 @@
 import _ from 'lodash'
-import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import {
   ChapterEndpoint,
   LinesUpdateDto,
 } from 'corpus/application/edit-lite/ChapterEditSource'
-import {
-  ChapterOutline,
-  LinesPageDto,
-} from 'corpus/application/edit-lite/chapterOutline'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
+import EditLiteFakeChapter, {
+  toChapterId,
+  toLinesPage,
+} from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
 import FakeApi from 'test-support/FakeApi'
 import { createChapterUrl, Dto } from 'test-support/FakeApiExpectation'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
-function toChapterId(outline: ChapterOutline): ChapterId {
-  return { textId: outline.textId, stage: outline.stage, name: outline.name }
+export interface ChapterRequests {
+  readonly get: (path: string) => Promise<unknown>
+  readonly post: (path: string, body: unknown) => Promise<unknown>
+}
+
+export function createChapterRequests(
+  chapterId: ChapterId,
+  findFakeApi: () => FakeApi,
+): ChapterRequests {
+  const chapterUrl = createChapterUrl(chapterId)
+  return {
+    get: (path) =>
+      findFakeApi().client.fetchJson(`${chapterUrl}/${path}`, false),
+    post: (path, body) =>
+      findFakeApi().client.postJson(`${chapterUrl}/${path}`, body),
+  }
 }
 
 function linesUrl(outline: ChapterOutline): string {
   return `${createChapterUrl(toChapterId(outline))}/lines`
+}
+
+function respondFirst(
+  request: jest.Mock,
+  respond: (path: string, body: unknown) => Promise<unknown> | null,
+): void {
+  const respondAsExpected = request.getMockImplementation() as (
+    ...parameters: unknown[]
+  ) => Promise<unknown>
+  request.mockImplementation(
+    (path: string, ...parameters: unknown[]) =>
+      respond(path, parameters[0]) ?? respondAsExpected(path, ...parameters),
+  )
 }
 
 export default class EditLiteFakeApi extends FakeApi {
@@ -36,16 +63,9 @@ export default class EditLiteFakeApi extends FakeApi {
     limit: number,
     lines: readonly Line[],
   ): this {
-    const page: LinesPageDto = {
-      total: lines.length,
-      offset,
-      limit,
-      lines: lines.slice(offset, offset + limit).map(toLineDto),
-      revision: outline.revision,
-    }
     return this.allowGet(
       `${linesUrl(outline)}?offset=${offset}&limit=${limit}&revision=${outline.revision}`,
-      page,
+      toLinesPage(lines, offset, limit, outline.revision),
     )
   }
 
@@ -78,6 +98,16 @@ export default class EditLiteFakeApi extends FakeApi {
     savedOutline: ChapterOutline,
   ): this {
     return this.expectOutlineUpdate(outline, 'lines', update, savedOutline)
+  }
+
+  serveChapter(chapter: EditLiteFakeChapter): this {
+    respondFirst(this.client.fetchJson, (path) =>
+      chapter.respond('GET', path, null),
+    )
+    respondFirst(this.client.postJson, (path, body) =>
+      chapter.respond('POST', path, body),
+    )
+    return this
   }
 
   expectImportLines(

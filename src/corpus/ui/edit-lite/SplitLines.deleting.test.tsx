@@ -5,12 +5,18 @@ import {
   buildEditLiteLines,
   createFakeChapterEditSource,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
+import { discardedChangesNote } from 'corpus/ui/edit-lite/LineEditToolbar'
 import {
   button,
+  confirmDeletion,
+  deleteDialog,
+  deleteSelectedLine,
   loadedEditor,
   options,
   renderSplit,
   selectedOptions,
+  typeIntoNumber,
+  waitForOrder,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
@@ -19,21 +25,6 @@ jest.mock('editor/Editor', () =>
 )
 
 const lines: readonly Line[] = buildEditLiteLines(5)
-
-async function deleteSelectedLine(): Promise<void> {
-  await userEvent.click(button('Delete line'))
-  await userEvent.click(
-    within(screen.getByRole('dialog', { name: 'Delete line' })).getByRole(
-      'button',
-      { name: 'Delete line' },
-    ),
-  )
-}
-
-async function typeIntoNumber(lineNumber: string, text: string): Promise<void> {
-  const editor = await loadedEditor(lineNumber)
-  await userEvent.type(within(editor).getByLabelText('Number'), text)
-}
 
 test('deleting a line selects the line that follows it', async () => {
   const { source } = renderSplit(1, { lines })
@@ -64,6 +55,25 @@ test('deleting the last line selects the line before it', async () => {
   expect(selectedOptions()).toEqual([options()[3]])
   expect(within(editor).getByText('4 of 4')).toBeVisible()
   expect(button('Next')).toBeDisabled()
+})
+
+test('the dialog names the stored line when another number was typed and not saved', async () => {
+  const { source } = renderSplit(2, { lines })
+  const numberInput = within(await loadedEditor('3')).getByLabelText('Number')
+  await userEvent.clear(numberInput)
+  await userEvent.type(numberInput, '5')
+  await userEvent.click(button('Delete line'))
+
+  expect(screen.getByRole('heading', { name: 'Line 3' })).toBeVisible()
+  expect(options()[2]).toHaveTextContent(/^3.*edited$/)
+  expect(deleteDialog()).toHaveTextContent(
+    `Delete line 3 from the chapter? Its variants and manuscript lines are removed with it. ${discardedChangesNote} This cannot be undone.`,
+  )
+
+  await confirmDeletion()
+  await waitForOrder(['1', '2', '4', '5'])
+
+  expect(source.deleteLine.mock.calls).toEqual([[2]])
 })
 
 test('the drafts of the other lines stay on their lines', async () => {

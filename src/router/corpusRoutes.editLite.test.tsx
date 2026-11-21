@@ -30,7 +30,12 @@ import {
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import {
+  missingRevisionNote,
+  moveDryRunNotice,
+} from 'corpus/ui/edit-lite/LineMoveControls'
+import {
   loadedEditor,
+  optionNumbers,
   options,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import AppDriver from 'test-support/AppDriver'
@@ -118,6 +123,31 @@ test('a legacy source previews the request instead of saving', async () => {
     edited: [{ index: 0, line: { number: '1a' } }],
   })
   expect(countRequests(fakeApi, outlineUrl)).toBe(0)
+  expect(fakeApi.client.postJson).not.toHaveBeenCalled()
+})
+
+test('a legacy source previews a move and says that the revision is missing', async () => {
+  const fakeApi = createLegacyFakeApi()
+  await renderLoadedEditLiteRoute({ fakeApi, search: '?source=legacy' })
+  await loadedEditor('1')
+
+  await userEvent.click(screen.getByRole('button', { name: 'Move down' }))
+  const preview = within(
+    screen.getByRole('dialog', { name: 'Request preview' }),
+  )
+
+  expect(
+    preview.getByText(`POST ${chapterUrl}/lines/move?view=outline`),
+  ).toBeVisible()
+  expect(
+    JSON.parse(preview.getByLabelText('Request body').textContent ?? ''),
+  ).toEqual({ from: 0, to: 1 })
+  expect(preview.getByText(moveDryRunNotice)).toBeVisible()
+  expect(moveDryRunNotice).toContain(missingRevisionNote)
+  expect(missingRevisionNote).toBe(
+    'The real request also carries the chapter revision, which the read-only snapshot does not have.',
+  )
+  expect(optionNumbers()).toEqual(['1', '2'])
   expect(fakeApi.client.postJson).not.toHaveBeenCalled()
 })
 

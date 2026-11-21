@@ -23,16 +23,22 @@ export interface LinesUpdateDto {
   readonly edited: readonly LineEditDto[]
 }
 
+export interface LineMoveDto {
+  readonly from: number
+  readonly to: number
+}
+
 export interface LinesImportDto {
   readonly atf: string
 }
 
 export type ManuscriptsUpdateDto = ReturnType<typeof toManuscriptsDto>
 
-export type ChapterEndpoint = 'lines' | 'import' | 'manuscripts'
+export type ChapterEndpoint = 'lines' | 'lines/move' | 'import' | 'manuscripts'
 
 export type ChapterRequestBody =
   | LinesUpdateDto
+  | LineMoveDto
   | LinesImportDto
   | ManuscriptsUpdateDto
 
@@ -44,6 +50,7 @@ export type ChapterChange =
     }
   | { readonly type: 'addLine'; readonly line: Line }
   | { readonly type: 'deleteLine'; readonly index: number }
+  | { readonly type: 'moveLine'; readonly from: number; readonly to: number }
   | { readonly type: 'importLines'; readonly atf: string }
   | {
       readonly type: 'saveManuscripts'
@@ -72,6 +79,7 @@ export interface ChapterEditSource {
   saveLine(index: number, original: Line, draft: Line): Promise<ChapterOutline>
   addLine(line: Line): Promise<ChapterOutline>
   deleteLine(index: number): Promise<ChapterOutline>
+  moveLine(from: number, to: number): Promise<ChapterOutline>
   importLines(atf: string): Promise<ChapterOutline>
   saveManuscripts(
     manuscripts: readonly Manuscript[],

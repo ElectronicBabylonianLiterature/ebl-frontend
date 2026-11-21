@@ -7,6 +7,7 @@ import {
   loadedEditor,
   pressKeys,
   renderSplit,
+  waitForOrder,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 
 jest.mock('editor/Editor', () =>
@@ -120,6 +121,20 @@ test('the next button scrolls the list without moving the page', async () => {
   await loadedEditor('3')
 
   expect(listbox().scrollTop).toBe(20)
+  expect(scrollIntoView).not.toHaveBeenCalled()
+})
+
+test('a moved line is kept in view inside the list', async () => {
+  await renderLoadedSplit(1)
+  await userEvent.click(button('Move down'))
+  await waitForOrder(['1', '3', '2', '4', '5', '6', '7', '8'])
+
+  expect(listbox().scrollTop).toBe(20)
+
+  await userEvent.click(button('Move down'))
+  await waitForOrder(['1', '3', '4', '2', '5', '6', '7', '8'])
+
+  expect(listbox().scrollTop).toBe(60)
   expect(scrollIntoView).not.toHaveBeenCalled()
 })
 

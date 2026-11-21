@@ -22,6 +22,7 @@ import {
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
+import EditLiteFakeChapter from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
 import { loadedEditor } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { Switch } from 'router/compat'
 import CorpusRoutes from 'router/corpusRoutes'
@@ -36,6 +37,11 @@ export interface EditLiteRouteOptions {
   readonly session?: Session
   readonly fakeApi?: EditLiteFakeApi
   readonly links?: readonly string[]
+}
+
+export interface ServedEditLiteRoute {
+  readonly chapter: EditLiteFakeChapter
+  readonly fakeApi: EditLiteFakeApi
 }
 
 export { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
@@ -173,6 +179,16 @@ export async function renderLoadedEditLiteRoute(
   const view = renderEditLiteRoute(options)
   await waitForLoadedEditLite()
   return view
+}
+
+export async function openServedEditLiteRoute(
+  lines: readonly Line[],
+  search: string,
+): Promise<ServedEditLiteRoute> {
+  const chapter = new EditLiteFakeChapter(buildEditLiteOutline(lines), lines)
+  const fakeApi = createEditLiteFakeApi().serveChapter(chapter)
+  await renderLoadedEditLiteRoute({ fakeApi, search })
+  return { chapter, fakeApi }
 }
 
 export async function editFirstLine(): Promise<void> {

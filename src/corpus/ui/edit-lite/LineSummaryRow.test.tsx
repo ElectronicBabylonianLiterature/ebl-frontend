@@ -21,6 +21,7 @@ test('shows the number, reconstruction, translation and manuscripts', () => {
   expect(screen.getByText('2 manuscripts')).toBeVisible()
   expect(screen.queryByText(/variant/)).not.toBeInTheDocument()
   expect(screen.queryByText('edited')).not.toBeInTheDocument()
+  expect(screen.queryByText('failed')).not.toBeInTheDocument()
 })
 
 test('shows the number of variants when there are several', () => {
@@ -72,6 +73,17 @@ test('re-renders only the row whose line changed', () => {
 
   expect(summarize.mock.calls).toEqual([[changedLine], [changedLine]])
   expect(screen.getByText('1a')).toBeVisible()
+  expect(screen.getByText('edited')).toBeVisible()
+})
+
+test('shows a failed badge next to the edited badge when a change failed', () => {
+  render(<LineSummaryRow line={firstLine} isDirty isFailed />)
+
+  expect(screen.getByText('failed')).toBeVisible()
+  expect(screen.getByText('failed')).toHaveClass(
+    'edit-lite-badge',
+    'edit-lite-badge--failed',
+  )
   expect(screen.getByText('edited')).toBeVisible()
 })
 

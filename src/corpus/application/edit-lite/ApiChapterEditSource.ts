@@ -125,6 +125,10 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return this.apply({ type: 'deleteLine', index })
   }
 
+  moveLine(from: number, to: number): Promise<ChapterOutline> {
+    return this.apply({ type: 'moveLine', from, to })
+  }
+
   importLines(atf: string): Promise<ChapterOutline> {
     return this.apply({ type: 'importLines', atf })
   }

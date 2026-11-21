@@ -22,6 +22,7 @@ const { apiClient, fragmentServiceMock, textService } =
 
 const updates: readonly [ChapterEndpoint, ChapterRequestBody][] = [
   ['lines', toDeletedLineDto(2)],
+  ['lines/move', { from: 3, to: 0 }],
   ['import', { atf: '1. kur' }],
   [
     'manuscripts',

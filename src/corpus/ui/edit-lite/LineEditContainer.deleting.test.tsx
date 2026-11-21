@@ -1,3 +1,4 @@
+import React from 'react'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { toDeletedLineDto } from 'corpus/application/edit-lite/lineEdits'
@@ -5,13 +6,22 @@ import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
   createFakeChapterEditSource,
+  renderWithEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
+import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'
 import {
   button,
   renderEditedContainer,
   renderLoadedContainer,
 } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
-import { deleteDryRunNotice } from 'corpus/ui/edit-lite/LineEditToolbar'
+import {
+  deleteDryRunNotice,
+  discardedChangesNote,
+} from 'corpus/ui/edit-lite/LineEditToolbar'
+import {
+  deleteDialog,
+  deleteSelectedLine,
+} from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 jest.mock('editor/Editor', () =>
@@ -20,10 +30,6 @@ jest.mock('editor/Editor', () =>
 
 const lines: readonly Line[] = buildEditLiteLines()
 
-function confirmation(): HTMLElement {
-  return screen.getByRole('dialog', { name: 'Delete line' })
-}
-
 async function expectLoadedLine(lineNumber: string): Promise<void> {
   await waitFor(() =>
     expect(screen.getByLabelText('Number')).toHaveValue(lineNumber),
@@ -31,27 +37,50 @@ async function expectLoadedLine(lineNumber: string): Promise<void> {
   expect(screen.getByLabelText('Number')).toBeEnabled()
 }
 
-async function confirmDeletion(): Promise<void> {
-  await userEvent.click(button('Delete line'))
-  await userEvent.click(
-    within(confirmation()).getByRole('button', { name: 'Delete line' }),
-  )
-}
-
 test('Delete line asks before anything is sent', async () => {
   const { source } = await renderLoadedContainer({ lines })
   await userEvent.click(button('Delete line'))
 
-  expect(confirmation()).toHaveTextContent('Delete line 1 from the chapter?')
-  expect(confirmation()).toHaveTextContent('This cannot be undone.')
+  expect(deleteDialog()).toHaveTextContent('Delete line 1 from the chapter?')
+  expect(deleteDialog()).toHaveTextContent('This cannot be undone.')
+  expect(deleteDialog()).not.toHaveTextContent(discardedChangesNote)
   expect(source.deleteLine).not.toHaveBeenCalled()
+})
+
+test('the dialog names the stored line and says that unsaved changes go with it', async () => {
+  await renderEditedContainer({ lines })
+  await userEvent.click(button('Delete line'))
+
+  expect(screen.getByLabelText('Number')).toHaveValue('1a')
+  expect(deleteDialog()).toHaveTextContent('Delete line 1 from the chapter?')
+  expect(deleteDialog()).toHaveTextContent(discardedChangesNote)
+  expect(discardedChangesNote).toContain('unsaved changes')
+})
+
+test('a line that has no stored version is named as the editor shows it', async () => {
+  renderWithEditLite(
+    <LineEditContainer
+      index={0}
+      lineState={{
+        status: 'ready',
+        original: null,
+        draft: lines[1],
+        error: null,
+      }}
+    />,
+    { lines },
+  )
+  await userEvent.click(button('Delete line'))
+
+  expect(deleteDialog()).toHaveTextContent('Delete line 2 from the chapter?')
+  expect(deleteDialog()).not.toHaveTextContent(discardedChangesNote)
 })
 
 test('cancelling keeps the line and its draft', async () => {
   const { source, getState } = await renderEditedContainer({ lines })
   await userEvent.click(button('Delete line'))
   await userEvent.click(
-    within(confirmation()).getByRole('button', { name: 'Cancel' }),
+    within(deleteDialog()).getByRole('button', { name: 'Cancel' }),
   )
 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -64,7 +93,7 @@ test('confirming deletes the line and shows the progress', async () => {
   const source = createFakeChapterEditSource({ lines })
   const held = holdNextCall(source.deleteLine)
   const { getState } = await renderLoadedContainer({ source })
-  await confirmDeletion()
+  await deleteSelectedLine()
 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(source.deleteLine.mock.calls).toEqual([[0]])
@@ -90,7 +119,7 @@ test('a failed deletion shows the error next to the line and can be repeated', a
     new Error('The chapter was changed by someone else.'),
   )
   const { getState } = await renderLoadedContainer({ source })
-  await confirmDeletion()
+  await deleteSelectedLine()
 
   expect(await screen.findByRole('alert')).toHaveTextContent(
     'The chapter was changed by someone else.',
@@ -98,7 +127,7 @@ test('a failed deletion shows the error next to the line and can be repeated', a
   expect(getState().outline.lines).toHaveLength(3)
   expect(button('Delete line')).toBeEnabled()
 
-  await confirmDeletion()
+  await deleteSelectedLine()
 
   await expectLoadedLine('2')
   expect(source.deleteLine).toHaveBeenCalledTimes(2)
@@ -107,7 +136,7 @@ test('a failed deletion shows the error next to the line and can be repeated', a
 
 test('a read-only source previews the deletion instead of sending it', async () => {
   const { source } = await renderLoadedContainer({ kind: 'legacy', lines })
-  await confirmDeletion()
+  await deleteSelectedLine()
   const dialog = within(screen.getByRole('dialog', { name: 'Request preview' }))
 
   expect(dialog.getByText(deleteDryRunNotice)).toBeVisible()

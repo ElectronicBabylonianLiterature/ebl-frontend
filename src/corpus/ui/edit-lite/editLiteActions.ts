@@ -10,7 +10,17 @@ import {
   loadRange,
   toContiguousRanges,
 } from 'corpus/ui/edit-lite/lineLoading'
-import { addLine, deleteLine, saveLine } from 'corpus/ui/edit-lite/lineSaving'
+import {
+  addLine,
+  deleteLine,
+  moveLine,
+  saveLine,
+} from 'corpus/ui/edit-lite/lineSaving'
+
+interface LinesRequest {
+  readonly layoutVersion: number
+  readonly indices: readonly number[]
+}
 
 function rejectWithMessage(error: unknown): never {
   throw new Error(errorMessage(error))
@@ -42,11 +52,14 @@ async function saveManuscripts(
 }
 
 export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
-  let pendingIndices: number[] = []
+  let pendingRequests: LinesRequest[] = []
 
   function loadPendingLines(): void {
-    const indices = pendingIndices
-    pendingIndices = []
+    const { layoutVersion } = store.getState()
+    const indices = pendingRequests
+      .filter((request) => request.layoutVersion === layoutVersion)
+      .flatMap((request) => request.indices)
+    pendingRequests = []
     toContiguousRanges(indices).forEach((range) => {
       void loadRange(store, range)
     })
@@ -54,18 +67,22 @@ export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
 
   return {
     ensureLines(offset: number, limit: number): void {
-      const missingIndices = findMissingIndices(store.getState(), offset, limit)
+      const state = store.getState()
+      const missingIndices = findMissingIndices(state, offset, limit)
       if (missingIndices.length === 0) {
         return
       }
       store.dispatch({ type: 'linesRequested', indices: missingIndices })
-      if (pendingIndices.length === 0) {
+      if (pendingRequests.length === 0) {
         void Promise.resolve().then(loadPendingLines)
       }
-      pendingIndices.push(...missingIndices)
+      pendingRequests.push({
+        layoutVersion: state.layoutVersion,
+        indices: missingIndices,
+      })
     },
-    changeLine(index: number, draft: Line): void {
-      store.dispatch({ type: 'lineChanged', index, draft })
+    changeLine(index: number, draft: Line, original?: Line | null): void {
+      store.dispatch({ type: 'lineChanged', index, draft, original })
     },
     resetLine(index: number): void {
       store.dispatch({ type: 'lineReset', index })
@@ -76,8 +93,11 @@ export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
     addLine(): void {
       addLine(store)
     },
-    deleteLine(index: number): void {
-      void deleteLine(store, index)
+    deleteLine(index: number, onDeleted: () => void): void {
+      void deleteLine(store, index, onDeleted)
+    },
+    moveLine(from: number, to: number, onMoved: () => void): void {
+      void moveLine(store, from, to, onMoved)
     },
     importLines(atf: string): Promise<ImportedLines> {
       return importLines(store, atf)

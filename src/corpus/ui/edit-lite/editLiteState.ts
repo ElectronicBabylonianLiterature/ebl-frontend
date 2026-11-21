@@ -1,7 +1,13 @@
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
 
-export type LineStatus = 'loading' | 'ready' | 'saving' | 'deleting' | 'failed'
+export type LineStatus =
+  | 'loading'
+  | 'ready'
+  | 'saving'
+  | 'deleting'
+  | 'moving'
+  | 'failed'
 
 export interface LineState {
   readonly status: LineStatus
@@ -42,18 +48,25 @@ export type EditLiteAction =
       readonly lines: readonly Line[]
     }
   | (FailureAction<'linesFailed'> & { readonly indices: readonly number[] })
-  | (IndexedAction<'lineChanged'> & { readonly draft: Line })
+  | (IndexedAction<'lineChanged'> & {
+      readonly draft: Line
+      readonly original?: Line | null
+    })
   | IndexedAction<'lineReset'>
   | IndexedAction<'saveStarted'>
-  | (IndexedAction<'saveSucceeded'> &
-      OutlineAction<'saveSucceeded'> & { readonly line: Line })
+  | (IndexedAction<'saveSucceeded'> & { readonly line: Line | null })
   | (IndexedAction<'saveFailed'> & FailureAction<'saveFailed'>)
   | { readonly type: 'lineAddStarted' }
   | { readonly type: 'lineAdded'; readonly line: Line }
-  | (OutlineAction<'newLineSaved'> & { readonly line: Line | null })
+  | OutlineAction<'newLineSaved'>
   | FailureAction<'newLineSaveFailed'>
   | IndexedAction<'deleteStarted'>
   | (IndexedAction<'lineDeleted'> & OutlineAction<'lineDeleted'>)
+  | IndexedAction<'moveStarted'>
+  | (OutlineAction<'lineMoved'> & {
+      readonly from: number
+      readonly to: number
+    })
   | OutlineAction<'outlineReplaced'>
   | OutlineAction<'manuscriptsSaved'>
   | { readonly type: 'manuscriptsEdited'; readonly hasUnsaved: boolean }

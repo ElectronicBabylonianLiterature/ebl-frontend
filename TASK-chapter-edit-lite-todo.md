@@ -29,19 +29,29 @@ This repository holds the page; the new endpoints are in ebl-api.
   - [x] Manuscripts tab saves; add and delete manuscripts; uncertain fragments
   - [x] Unsaved-changes warning
   - [x] Read-only without write permission
+- [x] Step 4: move a line
+  - [x] "Move up", "Move down" and "Move to..." in the split view
+  - [x] Line numbers are not renumbered
+  - [x] Unsaved edits and the selection follow their lines after a move
+        and after a delete
+  - [x] A failed save, move or delete is marked "failed" in the list
+  - [x] "Add line" never proposes a number that already exists
 
 ## Open
 
 - [x] Pick one version: C, split view
-- [ ] Permission to commit and push
+- [x] Permission to commit and push: asked for each step
+- [ ] Focus is lost after deleting the selected line (keyboard users tab
+      back in)
+
+## Rule for every step
+
+- At the end of each step the user gets a few screenshots of the feature.
 
 ## Later tasks
 
-- [ ] Remove the three versions that are not chosen and the switcher
-- [ ] Add and delete for lines, variants and manuscript lines
-- [ ] Import tab and real saving in the Manuscripts tab
-- [ ] Alignment and lemmatization per open line
-- [ ] Replace the classic edit page and remove the legacy source
+- [ ] Alignment and lemmatization per open line (steps 5 and 6)
+- [ ] Replace the classic edit page and remove the legacy source (step 8)
 
 ## Next phase (decided after the mock-ups)
 
@@ -66,7 +76,7 @@ Chosen version: C, split view. Model: Fable 5.2.
    - Needs an API operation that moves the stored line (not delete and
      re-add), the revision check from step 1, and a control in the split
      view (move up or down, or move after line N).
-   - To decide: whether line numbers are renumbered when a line moves.
+   - Decided: line numbers are not renumbered. Done.
 5. Alignment and lemmatization per line, with per-line save endpoints and
    batched word lookups.
 6. New rule, keep existing alignments per manuscript line: if a
@@ -78,11 +88,24 @@ Chosen version: C, split view. Model: Fable 5.2.
      get automatic suggestions.
    - To decide: whether a re-align button per manuscript line is wanted.
 7. Faster saving on the server: rewrite only the changed line.
+   - A move takes 11 to 12 s on a chapter the size of Enūma eliš I.
+   - Compact changelog entries for deletes and inserts. Until then such
+     a save near the start of a very large chapter is refused with 422,
+     because its changelog entry would not fit MongoDB's 16 MB limit.
 8. Replace the classic page at `/edit`; remove the old components and the
    legacy data source. The `craco.config.js` coverage list edit needs
    approval.
 
 Estimate: about 22 to 37 hours of work in total.
+
+## Separate pull requests (not part of this one)
+
+- Intertext with paragraph marks crashes the chapter view: small frontend
+  fix against master. Waiting for the go-ahead.
+- Bracket validation in the corpus parser: manuscript lines accept
+  unbalanced brackets. Audit of the existing texts first. Goes with it: a
+  line save with an invalid enclosure in the reconstruction answers 500.
+- Several intertexts per line: after step 8.
 
 ## Where to use Fable 5.2 with Ultracode
 

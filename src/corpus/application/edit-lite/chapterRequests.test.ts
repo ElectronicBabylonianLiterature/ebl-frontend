@@ -26,6 +26,7 @@ const changes: readonly [ChapterChange, string, unknown][] = [
   [{ type: 'saveLine', index: 3, line }, 'lines', toLineEditsDto(3, line)],
   [{ type: 'addLine', line }, 'lines', toNewLineDto(line)],
   [{ type: 'deleteLine', index: 5 }, 'lines', toDeletedLineDto(5)],
+  [{ type: 'moveLine', from: 4, to: 1 }, 'lines/move', { from: 4, to: 1 }],
   [{ type: 'importLines', atf }, 'import', { atf }],
   [
     { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
@@ -56,7 +57,7 @@ describe('createChapterEndpointUrl', () => {
 })
 
 describe('createChapterUpdateUrl', () => {
-  it.each(['lines', 'import', 'manuscripts'] as const)(
+  it.each(['lines', 'lines/move', 'import', 'manuscripts'] as const)(
     'asks the %s endpoint for the outline of the given revision',
     (endpoint) => {
       expect(
@@ -113,5 +114,18 @@ it('sends the index of a deleted line under deleted only', () => {
     new: [],
     deleted: [5],
     edited: [],
+  })
+})
+
+it.each([
+  [0, 2],
+  [3, 0],
+])('sends a move from %i to %i as the two positions only', (from, to) => {
+  expect(
+    describeChapterChange(editChapterId, { type: 'moveLine', from, to }, 'r7'),
+  ).toEqual({
+    method: 'POST',
+    url: `${chapterUrl}/lines/move?view=outline&revision=r7`,
+    body: { from, to },
   })
 })

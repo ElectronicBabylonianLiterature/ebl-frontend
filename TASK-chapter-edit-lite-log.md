@@ -129,3 +129,44 @@ about 1.8 s.
 - Browser run against a local ebl-api with seeded data: 54 checks passed
   (save, add, delete with a draft elsewhere, import, manuscripts, 409,
   unsaved warning, read-only).
+
+## Step 4: move a line
+
+- The line editor has "Move up", "Move down" and "Move to..." (a dialog
+  with "At the beginning" and "After line N"). Line numbers are not
+  renumbered; the dialog says so. The select exists only while the dialog
+  is open.
+- A move is one request to `POST {chapter}/lines/move` with the chapter
+  revision. While it runs no line can be saved, deleted or moved.
+- Line state is keyed by position. After an accepted move the loaded
+  lines, the unsaved edits and the selection are re-keyed in one step and
+  then reconciled with the outline the server returned. If the number of
+  lines differs, every line entry is dropped and loaded again.
+- The outline returned by a write is applied in the same step as the
+  write's answer, so the outline is never older than the revision the
+  page sends.
+- After a delete the selection stays on the selected line. Before, it
+  stayed on the position, so the next keystroke could land in the
+  following line.
+- The delete dialog names the stored line number and says that unsaved
+  changes go with the line. "Add line" skips numbers that exist. A line
+  whose save, move or delete failed has a "failed" badge in the list.
+- Read-only source: a move shows the request preview and says that the
+  real request also carries the revision.
+- Reviews, each finding re-checked: state logic (1 medium, 1 low),
+  controls (1 medium, 4 low), frontend against the real API (44 moves on
+  three chapters, no mismatch; the fake chapter of the tests was made as
+  strict as the endpoint), rules and test strength (no defect in the
+  code; one important and eight small test gaps). All fixed.
+- Browser run against a local ebl-api, seeded chapter with alignment and
+  lemmas: 27 checks passed (controls, "Move to...", an unsaved edit
+  following its line and saved to it, every full line object identical
+  after the moves, a refused move, a 409 after another editor's change,
+  read-only modes).
+- Limits: after deleting the selected line the focus falls to the page
+  body. After a save whose reload fails the line shows "Loading line..."
+  and is fetched again. "Add line" compares only with stored numbers.
+- Gates: `yarn lint` and `yarn tsc` clean; `yarn test:ci` 778 suites,
+  6964 tests passed, zero console output; coverage 98.75 % statements,
+  96.67 % branches, both edit-lite folders at 100 %; qlty no findings; no
+  file over 250 lines.

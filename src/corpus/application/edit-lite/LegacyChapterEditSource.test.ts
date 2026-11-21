@@ -40,6 +40,11 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     (source) => source.deleteLine(1),
   ],
   [
+    'moveLine',
+    { type: 'moveLine', from: 1, to: 0 },
+    (source) => source.moveLine(1, 0),
+  ],
+  [
     'importLines',
     { type: 'importLines', atf: '1. kur' },
     (source) => source.importLines('1. kur'),
