@@ -3,6 +3,7 @@ import { Alert, Button } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Spinner from 'common/ui/Spinner'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
 import useMapSourceData from 'map/maplibre/useMapSourceData'
 import useProvenances, { ProvenanceSource } from 'map/ui/useProvenances'
@@ -13,6 +14,8 @@ import useMapExperience from 'map/ui/useMapExperience'
 import useMapContainerResize from 'map/ui/useMapContainerResize'
 import useMapCameraOwnership from 'map/maplibre/useMapCameraOwnership'
 import useMapResearchSelection from 'map/ui/useMapResearchSelection'
+import useMapLinkedAreaSelection from 'map/ui/useMapLinkedAreaSelection'
+import useMapLinkedTablets from 'map/ui/useMapLinkedTablets'
 import { findExcavationPolygon } from 'map/domain/excavationPolygonIndex'
 import { resetMapCamera } from 'map/maplibre/mapCamera'
 import { focusFindspot } from 'map/maplibre/focusFindspot'
@@ -24,6 +27,7 @@ import MapStage from 'map/ui/MapStage'
 import MapExperienceHeader from 'map/ui/MapExperienceHeader'
 import MapLayerControls from 'map/ui/MapLayerControls'
 import MapSelectionInspector from 'map/ui/MapSelectionInspector'
+import MapAreaLinkedTablets from 'map/ui/MapAreaLinkedTablets'
 import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
@@ -33,26 +37,33 @@ import 'map/ui/MapTab.sass'
 
 interface Props {
   fragmentService: ProvenanceSource
+  findspotService: FindspotService
 }
 
 function LoadedMapTab({
   provenances,
+  findspotService,
 }: {
   provenances: readonly ProvenanceRecord[]
+  findspotService: FindspotService
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const searchContainer = useRef<HTMLDivElement>(null)
   const experience = useMapExperience()
-  const research = useMapResearchSelection(searchContainer, experience.filter)
+  const researchState = useMapResearchSelection(
+    searchContainer,
+    experience.filter,
+  )
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const [areasRetryVersion, setAreasRetryVersion] = useState(0)
+  const polygons = useExcavationPolygonIndex()
   const {
     index: polygonIndex,
     isLoaded: isPolygonIndexLoaded,
     error: polygonIndexError,
     retry,
-  } = useExcavationPolygonIndex()
+  } = polygons
   const canShowExcavationAreas =
     isPolygonIndexLoaded &&
     polygonIndexError === null &&
@@ -68,6 +79,21 @@ function LoadedMapTab({
     [filteredProvenances],
   )
   const camera = useMapCameraOwnership(filteredProvenances)
+  const areaSelection = useMapLinkedAreaSelection({
+    experience,
+    research: researchState,
+    polygonIndex,
+    isLoaded: isPolygonIndexLoaded,
+    error: polygonIndexError,
+    onSelectFromUrl: camera.claim,
+  })
+  const research = { ...researchState, ...areaSelection }
+  const linkedData = useMapLinkedTablets({
+    findspotService,
+    polygons,
+    isVisible: experience.showExcavationAreas,
+    selectedAreaId: research.selectedAreaId,
+  })
   const mapRef = useFindspotMap(mapContainer, filteredProvenances, {
     onMapBackgroundErrorChange: setMapBackgroundError,
     camera,
@@ -146,6 +172,9 @@ function LoadedMapTab({
             research={research}
             provenances={provenances}
             polygonIndex={polygonIndex}
+            renderAreaDetails={(polygon) => (
+              <MapAreaLinkedTablets polygon={polygon} data={linkedData} />
+            )}
           />
           <MapExcavationBrowser
             polygonIndex={polygonIndex}
@@ -194,10 +223,15 @@ function LoadedMapTab({
   )
 }
 
-export default function MapTab({ fragmentService }: Props): JSX.Element {
+export default function MapTab({
+  fragmentService,
+  findspotService,
+}: Props): JSX.Element {
   const { provenances, error } = useProvenances(fragmentService)
   if (error)
     return <Alert variant="danger">Failed to load map data: {error}</Alert>
   if (provenances === null) return <Spinner>Loading map data...</Spinner>
-  return <LoadedMapTab provenances={provenances} />
+  return (
+    <LoadedMapTab provenances={provenances} findspotService={findspotService} />
+  )
 }

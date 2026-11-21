@@ -12,6 +12,7 @@ import {
   makeProvenance,
   mockErrorReporter,
   resetMapMocks,
+  DEFAULT_FINDSPOT_SERVICE,
 } from 'map/ui/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
@@ -49,7 +50,10 @@ function renderHistory(
   render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
       <MemoryRouter initialEntries={entries}>
-        <MapTab fragmentService={service} />
+        <MapTab
+          fragmentService={service}
+          findspotService={DEFAULT_FINDSPOT_SERVICE}
+        />
         <HistoryControls />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,

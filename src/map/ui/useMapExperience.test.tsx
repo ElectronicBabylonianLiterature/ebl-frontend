@@ -15,3 +15,24 @@ it('keeps research filters and excavation visibility in the shared URL state', (
   expect(result.current.showExcavationAreas).toBe(false)
   expect(result.current.filter).toBe('Uruk')
 })
+
+it('preserves linked area selection for unchanged filters and layer changes, then clears it with a new filter', () => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <MemoryRouter>{children}</MemoryRouter>
+  )
+  const { result } = renderHook(useMapExperience, { wrapper })
+  const selection = {
+    type: 'excavation-area' as const,
+    polygonId: 'assur-area-a',
+  }
+  act(() => result.current.setSelection(selection))
+  act(() => result.current.setFilter(''))
+  act(() => result.current.setShowExcavationAreas(false))
+  expect(result.current.selection).toEqual(selection)
+
+  act(() => result.current.setFilter('Uruk'))
+
+  expect(result.current.selection).toBeNull()
+  expect(result.current.filter).toBe('Uruk')
+  expect(result.current.showExcavationAreas).toBe(false)
+})

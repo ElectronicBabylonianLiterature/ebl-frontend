@@ -9,7 +9,7 @@ import Word from 'dictionary/domain/Word'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelectionForm from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { HelpCol, LemmaSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 interface LemmaSearchFormGroupProps {
   lemmas: string | null

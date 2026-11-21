@@ -5,6 +5,7 @@ import {
   mergeMapUrlStateIntoSearch,
   normalizeMapUrlState,
   parseMapUrlState,
+  serializeMapUrlState,
 } from 'map/domain/mapUrlState'
 
 export interface MapUrlStateController {
@@ -28,9 +29,8 @@ export default function useMapUrlState(): MapUrlStateController {
     (patch: Partial<MapUrlState>) => {
       const next = normalizeMapUrlState({ ...latestStateRef.current, ...patch })
       if (
-        next.version === latestStateRef.current.version &&
-        next.filter === latestStateRef.current.filter &&
-        next.showExcavationAreas === latestStateRef.current.showExcavationAreas
+        serializeMapUrlState(next) ===
+        serializeMapUrlState(latestStateRef.current)
       ) {
         return
       }
@@ -38,7 +38,6 @@ export default function useMapUrlState(): MapUrlStateController {
       setState(next)
       const currentLocation = latestLocationRef.current
       const search = mergeMapUrlStateIntoSearch(currentLocation.search, next)
-      if (search === currentLocation.search.replace(/^\?/, '')) return
       lastWrittenSearchRef.current = search
       navigate(
         {
@@ -62,7 +61,7 @@ export default function useMapUrlState(): MapUrlStateController {
     const next = parseMapUrlState(search)
     latestStateRef.current = next
     setState(next)
-  }, [location.search])
+  }, [location.key, location.search])
 
   return { state, update }
 }
