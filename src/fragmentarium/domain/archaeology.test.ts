@@ -103,6 +103,8 @@ const archaeology = archaeologyFactory.build(
   },
 )
 
+afterEach(() => jest.restoreAllMocks())
+
 test('fromPlanDto', () => {
   expect(fromPlanDto(planDto)).toEqual(plan)
 })
@@ -223,12 +225,19 @@ test.each([
         notes: '',
       },
     },
-    'a house (Residential), II (06/05/1920).',
+    'a house (Residential), II (05.06.1920).',
     'de-DE',
   ],
 ])(
   'Correctly builds findspot info %s',
   (_info, overrideParams, expected, locale) => {
+    const dateTimeFormat = Intl.DateTimeFormat
+    jest
+      .spyOn(Intl, 'DateTimeFormat')
+      .mockImplementation(
+        (locales, options) =>
+          new dateTimeFormat(locales === 'default' ? locale : locales, options),
+      )
     const findspot = findspotFactory.build({
       ...defaultParams,
       ...overrideParams,

@@ -42,7 +42,12 @@ describe.each(updates)('updateChapterOutline of %s', (endpoint, body) => {
       textService.updateChapterOutline(chapterId, endpoint, body, 'revision 7'),
     ).resolves.toBe(apiOutline)
     expect(apiClient.postJson.mock.calls).toEqual([
-      [`${chapterUrl}/${endpoint}?view=outline&revision=revision%207`, body],
+      [
+        `${chapterUrl}/${endpoint}?view=outline&revision=revision%207`,
+        body,
+        true,
+        expect.any(Function),
+      ],
     ])
   })
 
@@ -59,7 +64,12 @@ describe.each(updates)('updateChapterOutline of %s', (endpoint, body) => {
       )
 
       expect(apiClient.postJson.mock.calls).toEqual([
-        [`${chapterUrl}/${endpoint}?view=outline`, body],
+        [
+          `${chapterUrl}/${endpoint}?view=outline`,
+          body,
+          true,
+          expect.any(Function),
+        ],
       ])
     },
   )

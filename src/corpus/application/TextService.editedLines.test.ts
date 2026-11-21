@@ -55,6 +55,8 @@ describe('updateEditedLines', () => {
             },
           ],
         },
+        true,
+        expect.any(Function),
       ],
     ])
   })
@@ -66,7 +68,12 @@ describe('updateEditedLines', () => {
       textService.updateEditedLines(chapterId, update, 'revision 7/a'),
     ).resolves.toBe(apiOutline)
     expect(apiClient.postJson.mock.calls).toEqual([
-      [`${chapterUrl}/lines?view=outline&revision=revision%207%2Fa`, update],
+      [
+        `${chapterUrl}/lines?view=outline&revision=revision%207%2Fa`,
+        update,
+        true,
+        expect.any(Function),
+      ],
     ])
   })
 
@@ -78,7 +85,12 @@ describe('updateEditedLines', () => {
       await textService.updateEditedLines(chapterId, update, revision)
 
       expect(apiClient.postJson.mock.calls).toEqual([
-        [`${chapterUrl}/lines?view=outline`, update],
+        [
+          `${chapterUrl}/lines?view=outline`,
+          update,
+          true,
+          expect.any(Function),
+        ],
       ])
     },
   )

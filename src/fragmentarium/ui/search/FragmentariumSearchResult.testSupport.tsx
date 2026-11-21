@@ -44,10 +44,12 @@ export function buildQueryResult({
   items = 50,
   hasNextPage = true,
   matchCountTotal = null,
+  totalDocuments,
 }: {
   items?: number
   hasNextPage?: boolean | null
   matchCountTotal?: number | null
+  totalDocuments?: number | null
 } = {}): QueryResult {
   return {
     items: Array.from({ length: items }, (_, index) => ({
@@ -56,6 +58,7 @@ export function buildQueryResult({
       matchCount: 0,
     })),
     matchCountTotal,
+    totalDocuments,
     hasNextPage,
   }
 }

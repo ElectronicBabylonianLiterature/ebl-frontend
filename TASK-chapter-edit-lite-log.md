@@ -170,3 +170,9 @@ about 1.8 s.
   6964 tests passed, zero console output; coverage 98.75 % statements,
   96.67 % branches, both edit-lite folders at 100 %; qlty no findings; no
   file over 250 lines.
+- Merged master after CI failed on the pull request's merge with it:
+  master now passes a success callback to chapter saves and caches
+  chapter displays. The lite editor's saves invalidate that cache too.
+  Gates on the merged tree: `yarn lint`, `yarn tsc`, qlty clean;
+  `yarn test:ci` 890 suites, 7664 tests passed, zero console output;
+  coverage 98.75 % statements, 96.92 % branches.

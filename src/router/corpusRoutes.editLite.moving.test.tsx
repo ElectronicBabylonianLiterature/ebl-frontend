@@ -23,7 +23,10 @@ import {
   waitForOrder,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { ApiError } from 'http/ApiClient'
-import { createChapterUrl } from 'test-support/FakeApiExpectation'
+import {
+  createChapterUrl,
+  leadingArguments,
+} from 'test-support/FakeApiExpectation'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
@@ -61,7 +64,7 @@ test('a line is moved across an edited line and the draft is saved to its own li
     lines[0],
     lines[4],
   ])
-  expect(fakeApi.client.postJson.mock.calls).toEqual([
+  expect(leadingArguments(fakeApi.client.postJson, 2)).toEqual([
     [buildMoveUrl('revision-1'), { from: 0, to: 3 }],
     [
       `${chapterUrl}/lines?view=outline&revision=revision-2`,
@@ -108,9 +111,9 @@ test.each<[string, (served: ServedEditLiteRoute) => Promise<void>, string]>([
     expect(selectedOptions()).toEqual([options()[1]])
     expect(editor.getByLabelText('Number')).toHaveValue('2x')
     expect(served.chapter.lines).toBe(storedLines)
-    expect(served.fakeApi.client.postJson).toHaveBeenLastCalledWith(
+    expect(leadingArguments(served.fakeApi.client.postJson, 2).pop()).toEqual([
       buildMoveUrl('revision-1'),
       { from: 1, to: 0 },
-    )
+    ])
   },
 )

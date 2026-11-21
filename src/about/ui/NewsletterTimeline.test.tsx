@@ -11,9 +11,9 @@ beforeEach(() => {
 })
 
 const newsletters = [
-  { content: 'Content 3', date: new Date('2025-03-01'), number: 3 },
-  { content: 'Content 2', date: new Date('2024-06-01'), number: 2 },
-  { content: 'Content 1', date: new Date('2024-01-01'), number: 1 },
+  { content: 'Content 3', date: new Date(2025, 2, 1), number: 3 },
+  { content: 'Content 2', date: new Date(2024, 5, 1), number: 2 },
+  { content: 'Content 1', date: new Date(2024, 0, 1), number: 1 },
 ] as const
 
 test('renders all newsletter items', () => {

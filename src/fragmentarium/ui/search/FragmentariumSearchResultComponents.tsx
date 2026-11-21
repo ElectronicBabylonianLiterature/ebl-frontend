@@ -1,26 +1,23 @@
+import FragmentCardThumbnail from 'fragmentarium/ui/search/FragmentCardThumbnail'
 import React from 'react'
 import _ from 'lodash'
-import FragmentService, {
-  ThumbnailBlob,
-} from 'fragmentarium/application/FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
-import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
-import { Genres } from 'fragmentarium/domain/Genres'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import FragmentGenresDisplay from 'fragmentarium/ui/search/FragmentGenresDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
-import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
-import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import {
   getLatestTransliterationRecord,
   hasRenderReadyFragment,
@@ -28,44 +25,10 @@ import {
 } from 'query/queryItemRenderReady'
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
-function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
-  return (
-    <ul>
-      {genres.genres.map((genreItem, index) => {
-        return (
-          <ul key={index}>
-            <small>{genreItem.toString()}</small>
-          </ul>
-        )
-      })}
-    </ul>
-  )
-}
-
 export type FragmentLinesService = Pick<
   FragmentService,
   'find' | 'findThumbnail'
 >
-
-const FragmentThumbnail = withData<
-  { fragment: Fragment },
-  { fragmentService: FragmentLinesService },
-  ThumbnailBlob
->(
-  ({ data, fragment }) => {
-    return data.blob ? (
-      <ThumbnailImage
-        photo={data.blob}
-        alt={`Preview of ${fragment.number}`}
-        url={createFragmentUrl(fragment.number)}
-      />
-    ) : (
-      <></>
-    )
-  },
-  ({ fragment, fragmentService }) =>
-    fragmentService.findThumbnail(fragment, 'small'),
-)
 
 function TransliterationRecord({
   fragment,
@@ -111,7 +74,6 @@ function FragmentLinesContent({
   const script = fragment.script.period.abbreviation
     ? ` (${fragment.script.period.abbreviation})`
     : ''
-  const usesSummaryThumbnail = 'thumbnailPath' in queryItem
 
   return (
     <Container>
@@ -146,7 +108,7 @@ function FragmentLinesContent({
           <ProjectList projects={fragment.projects} />
         </ResponsiveCol>
         <ResponsiveCol className={'text-secondary fragment-result__genre'}>
-          <GenresDisplay genres={fragment.genres} />
+          <FragmentGenresDisplay genres={fragment.genres} />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__record'}>
           {includeLatestRecord && <TransliterationRecord fragment={fragment} />}
@@ -176,19 +138,13 @@ function FragmentLinesContent({
         <ResponsiveCol className={'fragment-result__preview'}>
           <ErrorBoundary>
             <div ref={thumbnailContainerRef}>
-              {fragment.hasPhoto && isNearViewport && (
+              {fragment.hasAnyImage && isNearViewport && (
                 <>
-                  {usesSummaryThumbnail ? (
-                    <SummaryThumbnail
-                      fragmentNumber={fragment.number}
-                      thumbnailPath={queryItem.thumbnailPath ?? null}
-                    />
-                  ) : (
-                    <FragmentThumbnail
-                      fragmentService={fragmentService}
-                      fragment={fragment}
-                    />
-                  )}
+                  <FragmentCardThumbnail
+                    fragment={fragment}
+                    fragmentService={fragmentService}
+                    queryItem={queryItem}
+                  />
                 </>
               )}
             </div>

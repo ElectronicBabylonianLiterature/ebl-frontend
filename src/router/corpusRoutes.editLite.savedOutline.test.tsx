@@ -24,6 +24,7 @@ import {
   answerOnce,
   holdAnswerTo,
 } from 'corpus/ui/edit-lite/useEditLite.testSupport'
+import { leadingArguments } from 'test-support/FakeApiExpectation'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
@@ -124,8 +125,8 @@ test('a move after two saves whose reloads finished out of order is followed and
 
   expect(within(draftEditor).getByLabelText('Number')).toHaveValue('4x')
   expect(listLineNumbers(chapter.lines)).toEqual(['1a', '2b', '3', '4', '6'])
-  expect(fakeApi.client.postJson).toHaveBeenLastCalledWith(
+  expect(leadingArguments(fakeApi.client.postJson, 2).pop()).toEqual([
     expect.stringContaining('/lines?view=outline&revision=revision-4'),
     expect.objectContaining({ deleted: [3] }),
-  )
+  ])
 })

@@ -17,7 +17,10 @@ import {
   ServedEditLiteHook,
 } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 import { ApiError } from 'http/ApiClient'
-import { createChapterUrl } from 'test-support/FakeApiExpectation'
+import {
+  createChapterUrl,
+  leadingArguments,
+} from 'test-support/FakeApiExpectation'
 
 type Editing = ServedEditLiteHook
 
@@ -80,7 +83,7 @@ test.each<[string, number, number, number, string[]]>([
 
     await saveDraft(editing, position)
 
-    expect(fakeApi.client.postJson.mock.calls).toEqual([
+    expect(leadingArguments(fakeApi.client.postJson, 2)).toEqual([
       [buildMoveUrl('revision-1'), { from, to }],
       [saveUrl('revision-2'), toLineEditsDto(position, draft)],
     ])
@@ -104,7 +107,7 @@ test('every request after a move carries the revision of the answer before it', 
   await moveAndWait(editing.view, 5, 0)
   await saveDraft(editing, 3)
 
-  expect(fakeApi.client.postJson.mock.calls).toEqual([
+  expect(leadingArguments(fakeApi.client.postJson, 2)).toEqual([
     [buildMoveUrl('revision-1'), { from: 0, to: 4 }],
     [buildMoveUrl('revision-2'), { from: 5, to: 0 }],
     [saveUrl('revision-3'), toLineEditsDto(3, draft)],
@@ -135,10 +138,10 @@ test('a move of a chapter that someone else changed is refused and moves nothing
     draft,
     error: chapterChangedMessage,
   })
-  expect(fakeApi.client.postJson).toHaveBeenLastCalledWith(
+  expect(leadingArguments(fakeApi.client.postJson, 2).pop()).toEqual([
     buildMoveUrl('revision-1'),
     { from: draftPosition, to: 0 },
-  )
+  ])
   expect(listLineNumbers(chapter.lines)).toEqual(['2', '1', '3', '4', '5', '6'])
   expect(chapter.revision).toBe('revision-2')
   expect(view.state().outline).toBe(view.outline)
@@ -168,7 +171,7 @@ test('the reason the server gives for refusing a move is shown and the move can 
   await moveAndWait(editing.view, draftPosition, 0)
   await saveDraft(editing, 0)
 
-  expect(fakeApi.client.postJson.mock.calls).toEqual([
+  expect(leadingArguments(fakeApi.client.postJson, 2)).toEqual([
     [buildMoveUrl('revision-1'), { from: draftPosition, to: 0 }],
     [buildMoveUrl('revision-1'), { from: draftPosition, to: 0 }],
     [saveUrl('revision-2'), toLineEditsDto(0, draft)],
