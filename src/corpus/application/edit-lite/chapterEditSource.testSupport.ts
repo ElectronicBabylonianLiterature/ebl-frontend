@@ -190,6 +190,8 @@ export function createTextServiceMock(): jest.Mocked<ChapterEditTextService> {
   return {
     findChapterOutline: jest.fn(),
     findChapterLines: jest.fn(),
+    findLineSuggestions: jest.fn(),
+    searchDictionaryLemma: jest.fn(),
     findChapterAtfSnapshot: jest.fn(),
     updateEditedLines: jest.fn(),
     updateChapterOutline: jest.fn(),

@@ -5,6 +5,7 @@ import {
   ChapterRequest,
   LinesUpdateDto,
 } from 'corpus/application/edit-lite/ChapterEditSource'
+import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
 import {
@@ -13,7 +14,9 @@ import {
 } from 'corpus/application/edit-lite/legacySnapshot'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import type TextService from 'corpus/application/TextService'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
+import Word from 'dictionary/domain/Word'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export type LegacyChapterEditTextService = Pick<
@@ -53,6 +56,18 @@ export class LegacyChapterEditSource implements ChapterEditSource {
     )
   }
 
+  loadAnnotatedLine(): Promise<Line> {
+    return Promise.reject(new Error(annotationsNotAvailableMessage))
+  }
+
+  loadLemmatization(): Promise<readonly LineLemmatization[]> {
+    return Promise.reject(new Error(annotationsNotAvailableMessage))
+  }
+
+  searchLemma(): Promise<readonly Word[]> {
+    return Promise.resolve([])
+  }
+
   describeSave(index: number, draft: Line): LinesUpdateDto {
     return toLineEditsDto(index, draft)
   }
@@ -82,6 +97,14 @@ export class LegacyChapterEditSource implements ChapterEditSource {
   }
 
   saveManuscripts(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  saveAlignment(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  saveLemmatization(): Promise<ChapterOutline> {
     return this.refuseToSave()
   }
 

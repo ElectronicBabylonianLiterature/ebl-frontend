@@ -1,4 +1,8 @@
 import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
+import {
+  lineAlignmentDto,
+  lineLemmatizationDto,
+} from 'corpus/application/edit-lite/annotationFixtures.testSupport'
 import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import {
   ChapterEndpoint,
@@ -28,6 +32,8 @@ const updates: readonly [ChapterEndpoint, ChapterRequestBody][] = [
     'manuscripts',
     toManuscriptsDto([new Manuscript({ id: 1, notes: 'a note' })], ['K.1']),
   ],
+  ['lines/4/alignment', lineAlignmentDto],
+  ['lines/4/lemmatization', lineLemmatizationDto],
 ]
 
 beforeEach(() => {

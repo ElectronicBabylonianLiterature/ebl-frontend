@@ -1,6 +1,6 @@
 import { immerable } from 'immer'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import { Line, ManuscriptLine } from 'corpus/domain/line'
+import { createLineAlignment, Line, ManuscriptLine } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import { TextId } from 'transliteration/domain/text-id'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -53,11 +53,7 @@ export class Chapter implements ChapterProps {
   }
 
   get alignment(): ChapterAlignment {
-    return new ChapterAlignment(
-      this.lines.map((line) =>
-        line.variants.map((variant) => variant.alignment),
-      ),
-    )
+    return new ChapterAlignment(this.lines.map(createLineAlignment))
   }
 
   getSiglum(manuscriptLine: ManuscriptLine): string {

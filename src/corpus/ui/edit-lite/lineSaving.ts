@@ -1,7 +1,10 @@
+import { ChapterEditSource } from 'corpus/application/edit-lite/ChapterEditSource'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import { Line } from 'corpus/domain/line'
 import { EditLiteState, LineState } from 'corpus/ui/edit-lite/editLiteState'
 import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
+import { hasAnnotationDraft } from 'corpus/ui/edit-lite/lineAnnotations'
 import { loadLine } from 'corpus/ui/edit-lite/lineLoading'
 import {
   findLineActivity,
@@ -20,20 +23,22 @@ interface SavableLine {
 function findSavableLine(lineState: LineState | undefined): SavableLine | null {
   const original = lineState?.original ?? null
   const draft = lineState?.draft ?? null
-  return original === null || draft === null || lineState?.status === 'saving'
+  const isRefused =
+    lineState?.status === 'saving' || hasAnnotationDraft(lineState)
+  return original === null || draft === null || isRefused
     ? null
     : { original, draft }
 }
 
-async function saveExistingLine(
+export async function saveStoredLine(
   store: EditLiteStore,
   index: number,
-  { original, draft }: SavableLine,
+  save: (source: ChapterEditSource) => Promise<ChapterOutline>,
 ): Promise<void> {
   const source = store.getSource()
   store.dispatch({ type: 'saveStarted', index })
   try {
-    const outline = await source.saveLine(index, original, draft)
+    const outline = await save(source)
     store.dispatch({ type: 'outlineReplaced', outline })
   } catch (error) {
     store.dispatch({ type: 'saveFailed', index, error: errorMessage(error) })
@@ -63,10 +68,13 @@ export function saveLine(store: EditLiteStore, index: number): void {
   if (savableLine === null || isLayoutChanging(findLineActivity(state))) {
     return
   }
+  const { original, draft } = savableLine
   if (index === findNewLineIndex(state)) {
-    void saveNewLine(store, index, savableLine.draft)
+    void saveNewLine(store, index, draft)
   } else {
-    void saveExistingLine(store, index, savableLine)
+    void saveStoredLine(store, index, (source) =>
+      source.saveLine(index, original, draft),
+    )
   }
 }
 

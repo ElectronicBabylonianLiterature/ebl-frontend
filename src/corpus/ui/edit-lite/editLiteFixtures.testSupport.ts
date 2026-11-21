@@ -120,6 +120,18 @@ export function buildLineUrl(index: number, revision: string): string {
   return `${createChapterUrl(editLiteChapterId)}/lines?offset=${index}&limit=1&revision=${revision}`
 }
 
+export function buildAnnotatedLineUrl(index: number, revision: string): string {
+  return `${buildLineUrl(index, revision)}&tokens=true`
+}
+
+export function buildAnnotationUrl(
+  annotation: 'alignment' | 'lemmatization',
+  index: number,
+  revision: string,
+): string {
+  return `${createChapterUrl(editLiteChapterId)}/lines/${index}/${annotation}?view=outline&revision=${revision}`
+}
+
 export function buildMoveUrl(revision: string): string {
   return `${createChapterUrl(editLiteChapterId)}/lines/move?view=outline&revision=${revision}`
 }

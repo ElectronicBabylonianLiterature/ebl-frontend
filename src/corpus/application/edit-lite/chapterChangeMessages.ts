@@ -13,3 +13,9 @@ export const chapterChangedMessage = reloadMessage(
 export function numberedLineChangedMessage(lineNumber: string): string {
   return reloadMessage(`Line ${lineNumber} has changed on the server`)
 }
+
+export const lineNotReturnedMessage =
+  'The line was not returned by the data source.'
+
+export const annotationsNotAvailableMessage =
+  'Alignment and lemmatization are not available: this chapter was loaded as a read-only ATF snapshot without tokens.'

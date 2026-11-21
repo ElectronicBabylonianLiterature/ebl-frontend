@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { ManuscriptLine, LineVariant } from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/chapter'
 import { Col, Row } from 'react-bootstrap'
+import Word from 'fragmentarium/ui/lemmatization/Word'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
 import {
   UniqueLemma,
@@ -17,28 +18,33 @@ interface LineLemmatizerProps<T> {
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
-function WordLemmatizers({
+export function WordLemmatizers({
   tokens,
   fragmentService,
   onChange,
+  disabled = false,
 }: {
   tokens: readonly LemmatizationToken[]
-  fragmentService: FragmentService
+  fragmentService: Pick<FragmentService, 'searchLemma'>
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
+  disabled?: boolean
 }): JSX.Element {
+  const renderWord = (token: LemmatizationToken, index: number): JSX.Element =>
+    disabled ? (
+      <Word token={token} />
+    ) : (
+      <WordLemmatizer
+        fragmentService={fragmentService}
+        token={token}
+        onChange={onChange(index)}
+      />
+    )
+
   return (
     <>
       {tokens.map((token, index) => (
         <Fragment key={index}>
-          {token.lemmatizable ? (
-            <WordLemmatizer
-              fragmentService={fragmentService}
-              token={token}
-              onChange={onChange(index)}
-            />
-          ) : (
-            token.value
-          )}{' '}
+          {token.lemmatizable ? renderWord(token, index) : token.value}{' '}
         </Fragment>
       ))}
     </>

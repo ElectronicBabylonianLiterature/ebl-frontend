@@ -54,6 +54,7 @@ export default function useEditLite(
       manuscripts,
       actions,
       describeChange: (change) => source.describeChange(change),
+      searchLemma: (query) => source.searchLemma(query),
     }),
     [source, canWrite, manuscripts, actions],
   )

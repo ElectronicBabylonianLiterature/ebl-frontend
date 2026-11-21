@@ -11,6 +11,7 @@ import {
   moveIndex,
   moveLineOutlines,
 } from 'corpus/ui/edit-lite/lineMove'
+import { withStaleAnnotation } from 'corpus/ui/edit-lite/lineAnnotations'
 import { hasLineChanged, isLineLoaded } from 'corpus/ui/edit-lite/lineStates'
 
 export type LineStateEntry = readonly [number, LineState]
@@ -56,7 +57,11 @@ function reconcileLine(
     return lineState
   }
   return hasLineChanged(lineState)
-    ? { ...lineState, status: 'failed', error: lineChangedOnServerMessage }
+    ? {
+        ...withStaleAnnotation(lineState),
+        status: 'failed',
+        error: lineChangedOnServerMessage,
+      }
     : null
 }
 

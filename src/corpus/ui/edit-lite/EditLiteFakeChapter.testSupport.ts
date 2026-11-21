@@ -1,17 +1,23 @@
 import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { fromLineDto } from 'corpus/application/dtos'
-import {
-  LineMoveDto,
-  LinesUpdateDto,
-} from 'corpus/application/edit-lite/ChapterEditSource'
+import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   ChapterOutline,
   LinesPageDto,
 } from 'corpus/application/edit-lite/chapterOutline'
 import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
 import { Line } from 'corpus/domain/line'
+import {
+  createAligner,
+  createLemmatizer,
+  keepTokens,
+  toAnnotatedLineDto,
+} from 'corpus/ui/edit-lite/EditLiteFakeAnnotations.testSupport'
+import {
+  parseMoveBody,
+  rejectRequest,
+} from 'corpus/ui/edit-lite/editLiteFakeRequests.testSupport'
 import { moveItem } from 'corpus/ui/edit-lite/lineMove'
-import { ApiError } from 'http/ApiClient'
 import { createChapterUrl } from 'test-support/FakeApiExpectation'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
@@ -22,47 +28,40 @@ export function toLinesPage(
   offset: number,
   limit: number,
   revision: string,
+  toDto: (line: Line) => Record<string, unknown> = toLineDto,
 ): LinesPageDto {
   return {
     total: lines.length,
     offset,
     limit,
-    lines: lines.slice(offset, offset + limit).map(toLineDto),
+    lines: lines.slice(offset, offset + limit).map(toDto),
     revision,
   }
 }
 
 type Route = (query: URLSearchParams, body: unknown) => unknown
+type Annotation = 'alignment' | 'lemmatization'
+
+export { invalidRequestMessage } from 'corpus/ui/edit-lite/editLiteFakeRequests.testSupport'
 
 export const staleRevisionMessage =
   'The chapter has been changed since the given revision.'
-export const invalidRequestMessage = 'Request data failed validation'
 export const missingRevisionMessage = 'A revision is required to move a line.'
 export const emptyRevisionMessage =
   "revision must be a non-empty string, got '' instead"
 export const samePositionMessage = 'The line is already at that position.'
 
+const annotationRoute = /^lines\/(\d+)\/(alignment|lemmatization)$/
+const annotators: Readonly<
+  Record<Annotation, (body: unknown) => (line: Line) => Line>
+> = { alignment: createAligner, lemmatization: createLemmatizer }
+
 export function toChapterId(outline: ChapterOutline): ChapterId {
   return { textId: outline.textId, stage: outline.stage, name: outline.name }
 }
 
-function reject(message: string, status: number): never {
-  throw new ApiError(message, { description: message }, status)
-}
-
-function isPosition(value: unknown): boolean {
-  return Number.isInteger(value) && Number(value) >= 0
-}
-
-function parseMove(body: unknown): LineMoveDto {
-  const { from, to, ...unknownFields } = Object(body) as Record<string, unknown>
-  const isValid =
-    isPosition(from) &&
-    isPosition(to) &&
-    Object.keys(unknownFields).length === 0
-  return isValid
-    ? { from: Number(from), to: Number(to) }
-    : reject(invalidRequestMessage, 400)
+export function describeMissingRevision(annotation: Annotation): string {
+  return `A revision is required to save the ${annotation} of a line.`
 }
 
 export function positionOutOfRangeMessage(
@@ -124,18 +123,40 @@ export default class EditLiteFakeChapter {
       pathname.startsWith(this.url) &&
       (method === 'GET' || searchParams.get('view') === 'outline')
     const route = isServed
-      ? this.routes.get(`${method} ${pathname.slice(this.url.length)}`)
+      ? this.findRoute(method, pathname.slice(this.url.length))
       : undefined
     return route === undefined
       ? null
       : new Promise((resolve) => resolve(route(searchParams, body)))
   }
 
+  private findRoute(
+    method: FakeChapterMethod,
+    path: string,
+  ): Route | undefined {
+    const [, position, annotation] = annotationRoute.exec(path) ?? []
+    return method === 'POST' && annotation !== undefined
+      ? (query, body): ChapterOutline =>
+          this.annotateLine(
+            Number(position),
+            annotation as Annotation,
+            query,
+            body,
+          )
+      : this.routes.get(`${method} ${path}`)
+  }
+
   private findLines(query: URLSearchParams): LinesPageDto {
     const offset = Number(query.get('offset'))
     const limit = Number(query.get('limit'))
     this.checkRevision(query)
-    return toLinesPage(this.storedLines, offset, limit, this.revision)
+    return toLinesPage(
+      this.storedLines,
+      offset,
+      limit,
+      this.revision,
+      query.get('tokens') === 'true' ? toAnnotatedLineDto : toLineDto,
+    )
   }
 
   private updateLines(
@@ -143,7 +164,10 @@ export default class EditLiteFakeChapter {
     update: LinesUpdateDto,
   ): ChapterOutline {
     const editedLines = new Map<number, Line>(
-      update.edited.map(({ index, line }) => [index, fromLineDto(line)]),
+      update.edited.map(({ index, line }) => [
+        index,
+        keepTokens(this.storedLines[index], fromLineDto(line)),
+      ]),
     )
     this.checkRevision(query)
     return this.store([
@@ -155,29 +179,52 @@ export default class EditLiteFakeChapter {
   }
 
   private moveLine(query: URLSearchParams, body: unknown): ChapterOutline {
-    const { from, to } = parseMove(body)
+    const { from, to } = parseMoveBody(body)
     const lineCount = this.storedLines.length
     const outOfRange = [from, to].find((position) => position >= lineCount)
-    if (!query.has('revision')) {
-      reject(missingRevisionMessage, 422)
-    }
-    this.checkRevision(query)
+    this.requireRevision(query, missingRevisionMessage)
     if (outOfRange !== undefined) {
-      reject(positionOutOfRangeMessage(outOfRange, lineCount), 422)
+      rejectRequest(positionOutOfRangeMessage(outOfRange, lineCount), 422)
     }
     if (from === to) {
-      reject(samePositionMessage, 422)
+      rejectRequest(samePositionMessage, 422)
     }
     return this.store(moveItem(this.storedLines, from, to))
+  }
+
+  private annotateLine(
+    position: number,
+    annotation: Annotation,
+    query: URLSearchParams,
+    body: unknown,
+  ): ChapterOutline {
+    const annotate = annotators[annotation](body)
+    const lineCount = this.storedLines.length
+    this.requireRevision(query, describeMissingRevision(annotation))
+    if (position >= lineCount) {
+      rejectRequest(positionOutOfRangeMessage(position, lineCount), 422)
+    }
+    return this.store(
+      this.storedLines.map((line, index) =>
+        index === position ? annotate(line) : line,
+      ),
+    )
+  }
+
+  private requireRevision(query: URLSearchParams, message: string): void {
+    if (!query.has('revision')) {
+      rejectRequest(message, 422)
+    }
+    this.checkRevision(query)
   }
 
   private checkRevision(query: URLSearchParams): void {
     const revision = query.get('revision')
     if (revision === '') {
-      reject(emptyRevisionMessage, 422)
+      rejectRequest(emptyRevisionMessage, 422)
     }
     if (revision !== null && revision !== this.revision) {
-      reject(staleRevisionMessage, 409)
+      rejectRequest(staleRevisionMessage, 409)
     }
   }
 

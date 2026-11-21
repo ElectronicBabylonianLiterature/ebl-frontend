@@ -24,7 +24,7 @@ const conflict = new ApiError('Conflict', {}, 409)
 let textService: jest.Mocked<ChapterEditTextService>
 let source: ApiChapterEditSource
 
-function requestedLineRevisions(): (string | undefined)[] {
+function requestedLineRevisions(): unknown[] {
   return textService.findChapterLines.mock.calls.map(
     ([, , , , revision]) => revision,
   )

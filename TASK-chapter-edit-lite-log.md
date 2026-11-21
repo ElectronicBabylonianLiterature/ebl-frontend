@@ -176,3 +176,31 @@ about 1.8 s.
   Gates on the merged tree: `yarn lint`, `yarn tsc`, qlty clean;
   `yarn test:ci` 890 suites, 7664 tests passed, zero console output;
   coverage 98.75 % statements, 96.92 % branches.
+
+## Step 5: alignment and lemmatization per line (work in progress)
+
+Paused on 21 November; pushed unfinished so the work is not lost.
+
+- Built: the editor of a stored line has three tabs, "Text", "Alignment"
+  and "Lemmatization". The two new views load that one line with tokens
+  when opened (`lines?...&tokens=true`), reuse the classic word controls and
+  save only that line (`POST {chapter}/lines/{number}/alignment` and
+  `.../lemmatization`, with the revision). Lemma data comes from one
+  `POST /lemmas/batch` and one `GET /words?lemmas=` per opened line.
+- Rules: one kind of unsaved change per line (the other two tabs are
+  disabled until Save or Reset); a draft lives in the line's entry of the
+  state and follows the line after a move or delete; the suggestion rules
+  are the classic ones (step 6 changes them); a suggestion on screen is
+  saved as a value.
+- The builder's own gates passed (lint, tsc, qlty, `yarn test:ci` 917
+  suites and 7955 tests, zero console output, coverage 98.79 % statements
+  and 97.03 % branches, both edit-lite folders at 100 %; 29 mutations
+  killed). NOT yet verified by the lead.
+- To do: read the diff; rerun the gates; align the statuses and messages of
+  the fake API with the real endpoints; browser check against a local
+  ebl-api (the classic word dialogs inside the split view have not been
+  seen in a browser); screenshots for the user.
+- Noted by the builder: "Delete line" is only in the Text view, so a line
+  with an alignment or lemmatization draft must be saved or reset before it
+  can be deleted; a view opened while another write is running can get a
+  409 with a Retry; `GET /words?lemmas=` is one request however many ids.

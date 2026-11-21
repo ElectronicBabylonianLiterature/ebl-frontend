@@ -10,6 +10,7 @@ import {
   mockEditSource,
   openManuscriptsTab,
   openTab,
+  pageTabNames,
   renderEditLiteRoute,
   renderLoadedEditLiteRoute,
   secondEditLiteChapterId,
@@ -70,11 +71,7 @@ test('does not load the manuscripts before their tab is opened', async () => {
   mockEditSource()
   await renderLoadedEditLiteRoute({ fakeApi })
 
-  expect(screen.getAllByRole('tab').map((item) => item.textContent)).toEqual([
-    'Lines',
-    'Manuscripts',
-    'Import',
-  ])
+  expect(pageTabNames()).toEqual(['Lines', 'Manuscripts', 'Import'])
   expect(countManuscriptRequests(fakeApi)).toBe(0)
   expect(
     screen.queryByRole('list', { name: 'Manuscripts', hidden: true }),

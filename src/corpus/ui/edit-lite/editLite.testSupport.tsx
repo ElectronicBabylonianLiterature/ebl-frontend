@@ -28,6 +28,8 @@ import {
 import useEditLite, { EditLite } from 'corpus/ui/edit-lite/useEditLite'
 
 export {
+  buildAnnotatedLineUrl,
+  buildAnnotationUrl,
   buildEditLiteLines,
   buildEditLiteOutline,
   buildLineSavedActions,

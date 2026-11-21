@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import _ from 'lodash'
 import { LineVariant } from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/chapter'
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -11,6 +10,8 @@ import TextService from 'corpus/application/TextService'
 import {
   ChapterLemmatization,
   LineLemmatization,
+  setManuscriptLemma,
+  setReconstructionLemma,
 } from 'corpus/domain/lemmatization'
 import {
   ManuscriptsLemmatizer,
@@ -36,40 +37,13 @@ function LineVariantLemmatizater({
 
   const handleReconstructionChange =
     (index: number) => (uniqueLemma: UniqueLemma) =>
-      onChange([
-        produce(reconstructionLemmatization, (draft) => {
-          draft[index] = castDraft(draft[index].setUniqueLemma(uniqueLemma))
-        }),
-        produce(manuscriptsLemmatization, (draft) => {
-          return draft.map((manuscript, manuscriptIndex) =>
-            manuscript.map((lemmatizationToken, tokenIndex) => {
-              const token =
-                line.manuscripts[manuscriptIndex].atfTokens[tokenIndex]
-              return token.lemmatizable &&
-                token.alignment === index &&
-                (_.isEmpty(lemmatizationToken.uniqueLemma) ||
-                  lemmatizationToken.suggested)
-                ? castDraft(
-                    lemmatizationToken.setUniqueLemma(uniqueLemma, true),
-                  )
-                : lemmatizationToken
-            }),
-          )
-        }),
-      ])
+      onChange(setReconstructionLemma(data, line, index, uniqueLemma))
 
   const handleManuscriptChange =
     (manuscriptIndex: number) =>
     (index: number) =>
     (uniqueLemma: UniqueLemma) =>
-      onChange([
-        reconstructionLemmatization,
-        produce(manuscriptsLemmatization, (draft) => {
-          draft[manuscriptIndex][index] = castDraft(
-            draft[manuscriptIndex][index].setUniqueLemma(uniqueLemma),
-          )
-        }),
-      ])
+      onChange(setManuscriptLemma(data, manuscriptIndex, index, uniqueLemma))
 
   return (
     <>

@@ -1,4 +1,10 @@
 import {
+  annotatedLine,
+  lineAlignment,
+  lineLemmatization,
+} from 'corpus/application/edit-lite/annotationFixtures.testSupport'
+import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
+import {
   createTextServiceMock,
   editChapterId,
   legacyLines,
@@ -53,6 +59,16 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     'saveManuscripts',
     { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
     (source) => source.saveManuscripts(manuscripts, ['K.1']),
+  ],
+  [
+    'saveAlignment',
+    { type: 'saveAlignment', index: 1, alignment: lineAlignment },
+    (source) => source.saveAlignment(1, lineAlignment),
+  ],
+  [
+    'saveLemmatization',
+    { type: 'saveLemmatization', index: 1, lemmatization: lineLemmatization },
+    (source) => source.saveLemmatization(1, lineLemmatization),
   ],
 ]
 
@@ -183,4 +199,23 @@ describe.each(operations)('%s', (_name, change, apply) => {
       body,
     })
   })
+})
+
+it.each<[string, (source: ChapterEditSource) => Promise<unknown>]>([
+  ['the tokens of a line', (source) => source.loadAnnotatedLine(0)],
+  ['the lemmas of a line', (source) => source.loadLemmatization(annotatedLine)],
+])('says that %s are not in the snapshot', async (_name, load) => {
+  await expect(load(source)).rejects.toThrow(
+    new Error(annotationsNotAvailableMessage),
+  )
+  expect(annotationsNotAvailableMessage).toBe(
+    'Alignment and lemmatization are not available: this chapter was loaded as a read-only ATF snapshot without tokens.',
+  )
+  expect(textService.findChapterAtfSnapshot).not.toHaveBeenCalled()
+  expect(textService.findChapterLines).not.toHaveBeenCalled()
+})
+
+it('finds no lemmas without asking the dictionary', async () => {
+  await expect(source.searchLemma('kur')).resolves.toEqual([])
+  expect(textService.searchDictionaryLemma).not.toHaveBeenCalled()
 })

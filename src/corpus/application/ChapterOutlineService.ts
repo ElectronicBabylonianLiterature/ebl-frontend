@@ -6,9 +6,20 @@ import {
 } from 'corpus/application/edit-lite/chapterOutline'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import { createChapterEndpointUrl } from 'corpus/application/edit-lite/chapterRequests'
+import {
+  createLineLemmatization,
+  LemmaSuggestionsDto,
+} from 'corpus/application/edit-lite/lineLemmatization'
 import TextReadService from 'corpus/application/TextReadService'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
+import Word from 'dictionary/domain/Word'
 import { ChapterId } from 'transliteration/domain/chapter-id'
+
+export interface ChapterLinesOptions {
+  readonly revision?: string
+  readonly tokens?: boolean
+}
 
 export class ChapterOutlineService extends TextReadService {
   findChapterOutline(
@@ -27,15 +38,40 @@ export class ChapterOutlineService extends TextReadService {
     offset: number,
     limit: number,
     signal?: AbortSignal,
-    revision?: string,
+    revisionOrOptions?: string | ChapterLinesOptions,
   ): Promise<readonly Line[]> {
+    const { revision, tokens }: ChapterLinesOptions =
+      typeof revisionOrOptions === 'object'
+        ? revisionOrOptions
+        : { revision: revisionOrOptions }
     return this.apiClient
       .fetchJson<LinesPageDto>(
-        createChapterEndpointUrl(id, 'lines', { offset, limit, revision }),
+        createChapterEndpointUrl(id, 'lines', {
+          offset,
+          limit,
+          revision,
+          tokens: tokens ? 'true' : undefined,
+        }),
         false,
         signal,
       )
       .then((page) => page.lines.map(fromLineDto))
+  }
+
+  findLineSuggestions(line: Line): Promise<LineLemmatization[]> {
+    return createLineLemmatization(line, {
+      findSuggestions: (words) =>
+        this.apiClient.postJson<LemmaSuggestionsDto[]>(
+          '/lemmas/batch',
+          { words },
+          false,
+        ),
+      findWords: (ids) => this.wordService.findAll(ids),
+    })
+  }
+
+  searchDictionaryLemma(query: string): Promise<readonly Word[]> {
+    return this.wordService.searchLemma(query)
   }
 
   findChapterAtfSnapshot(

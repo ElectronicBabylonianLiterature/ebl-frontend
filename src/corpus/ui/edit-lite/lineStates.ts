@@ -4,7 +4,9 @@ import {
   EditLiteState,
   LineState,
   LineStatus,
+  LineView,
 } from 'corpus/ui/edit-lite/editLiteState'
+import { findAnnotationDraft } from 'corpus/ui/edit-lite/lineAnnotations'
 
 export type LineActivity = 'idle' | 'saving' | 'deleting' | 'moving'
 
@@ -35,7 +37,7 @@ export function failedLine(error: string): LineState {
   return { status: 'failed', original: null, draft: null, error }
 }
 
-export function hasLineChanged(lineState: LineState | undefined): boolean {
+export function hasTextChanged(lineState: LineState | undefined): boolean {
   const original = lineState?.original ?? null
   const draft = lineState?.draft ?? null
   return (
@@ -44,6 +46,18 @@ export function hasLineChanged(lineState: LineState | undefined): boolean {
     draft !== original &&
     !areLinesEqual(original, draft)
   )
+}
+
+export function hasLineChanged(lineState: LineState | undefined): boolean {
+  return hasTextChanged(lineState) || findAnnotationDraft(lineState) !== null
+}
+
+export function findUnsavedView(lineState: LineState): LineView | null {
+  const annotationDraft = findAnnotationDraft(lineState)
+  if (annotationDraft !== null) {
+    return annotationDraft.view
+  }
+  return hasTextChanged(lineState) ? 'text' : null
 }
 
 export function isLineLoaded(lineState: LineState | undefined): boolean {

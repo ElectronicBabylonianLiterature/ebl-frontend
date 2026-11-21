@@ -1,29 +1,17 @@
-import { produce, castDraft, Draft } from 'immer'
 import React, { useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import {
   AlignmentToken,
   ChapterAlignment,
   ManuscriptAlignment,
+  setAlignmentToken,
+  setOmittedWords,
 } from 'corpus/domain/alignment'
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/chapter'
 import Reconstruction from 'corpus/ui/Reconstruction'
+import ManuscriptWordAligners from 'corpus/ui/alignment/ManuscriptWordAligners'
 import OmittedWordsSelect from 'corpus/ui/alignment/OmittedWordsSelect'
-import WordAligner from 'corpus/ui/alignment/WordAligner'
-import { isAnyWord } from 'transliteration/domain/type-guards'
-
-const setAlignment = produce(
-  (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
-    draft.alignment[index] = castDraft(token)
-  },
-)
-
-const setOmittedWords = produce(
-  (draft: Draft<ManuscriptAlignment>, value: number[]) => {
-    draft.omittedWords = value
-  },
-)
 
 function ManuscriptAligner(props: {
   chapter: Chapter
@@ -32,8 +20,8 @@ function ManuscriptAligner(props: {
   alignment: ManuscriptAlignment
   onChange: (alignment: ManuscriptAlignment) => void
 }) {
-  const handleChange = (index: number) => (token: AlignmentToken) => {
-    props.onChange(setAlignment(props.alignment, index, token))
+  const handleChange = (index: number, token: AlignmentToken) => {
+    props.onChange(setAlignmentToken(props.alignment, index, token))
   }
 
   const handleOmittedChange = (value: number[]) => {
@@ -47,19 +35,12 @@ function ManuscriptAligner(props: {
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
       <Col md={7}>
-        {props.manuscriptLine.atfTokens.map((token, index) => (
-          <span key={index}>
-            {isAnyWord(token) && token.alignable ? (
-              <WordAligner
-                token={props.alignment.alignment[index]}
-                reconstructionTokens={props.line.reconstructionTokens}
-                onChange={handleChange(index)}
-              />
-            ) : (
-              token.value
-            )}{' '}
-          </span>
-        ))}
+        <ManuscriptWordAligners
+          manuscriptLine={props.manuscriptLine}
+          alignment={props.alignment}
+          reconstructionTokens={props.line.reconstructionTokens}
+          onChange={handleChange}
+        />
       </Col>
       <Col md={3}>
         <OmittedWordsSelect

@@ -29,6 +29,31 @@ export interface ManuscriptAlignment {
   readonly omittedWords: readonly number[]
 }
 
+export type LineAlignment = readonly ManuscriptAlignment[][]
+
+export const setAlignmentToken = produce(
+  (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
+    draft.alignment[index] = castDraft(token)
+  },
+)
+
+export const setOmittedWords = produce(
+  (draft: Draft<ManuscriptAlignment>, value: number[]) => {
+    draft.omittedWords = value
+  },
+)
+
+export function setManuscriptAlignment(
+  lineAlignment: LineAlignment,
+  variantIndex: number,
+  manuscriptIndex: number,
+  alignment: ManuscriptAlignment,
+): LineAlignment {
+  return produce(lineAlignment, (draft: Draft<LineAlignment>) => {
+    draft[variantIndex][manuscriptIndex] = castDraft(alignment)
+  })
+}
+
 export class ChapterAlignment {
   readonly [immerable] = true
   readonly lines: readonly ManuscriptAlignment[][][]

@@ -1,4 +1,6 @@
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
+import { LineAlignment } from 'corpus/domain/alignment'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 
 export type LineStatus =
@@ -9,11 +11,39 @@ export type LineStatus =
   | 'moving'
   | 'failed'
 
+export type AnnotationView = 'alignment' | 'lemmatization'
+
+export type LineView = 'text' | AnnotationView
+
+export type Loadable<Value> =
+  | { readonly status: 'loading'; readonly value: null; readonly error: null }
+  | { readonly status: 'ready'; readonly value: Value; readonly error: null }
+  | {
+      readonly status: 'failed'
+      readonly value: null
+      readonly error: string
+    }
+
+export type AnnotationDraft =
+  | { readonly view: 'alignment'; readonly alignment: LineAlignment }
+  | {
+      readonly view: 'lemmatization'
+      readonly lemmatization: readonly LineLemmatization[]
+    }
+
+export interface LineAnnotation {
+  readonly tokens: Loadable<Line>
+  readonly lemmas: Loadable<readonly LineLemmatization[]> | null
+  readonly draft: AnnotationDraft | null
+  readonly isStale: boolean
+}
+
 export interface LineState {
   readonly status: LineStatus
   readonly original: Line | null
   readonly draft: Line | null
   readonly error: string | null
+  readonly annotation?: LineAnnotation
 }
 
 export interface EditLiteState {
@@ -66,6 +96,22 @@ export type EditLiteAction =
   | (OutlineAction<'lineMoved'> & {
       readonly from: number
       readonly to: number
+    })
+  | IndexedAction<'annotationRequested'>
+  | {
+      readonly type: 'annotationSettled'
+      readonly original: Line
+      readonly tokens: Loadable<Line>
+    }
+  | IndexedAction<'lemmasRequested'>
+  | {
+      readonly type: 'lemmasSettled'
+      readonly line: Line
+      readonly lemmas: Loadable<readonly LineLemmatization[]>
+    }
+  | (IndexedAction<'annotationChanged'> & {
+      readonly line: Line
+      readonly draft: AnnotationDraft
     })
   | OutlineAction<'outlineReplaced'>
   | OutlineAction<'manuscriptsSaved'>

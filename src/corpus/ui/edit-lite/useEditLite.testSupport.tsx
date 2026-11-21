@@ -11,6 +11,7 @@ import {
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import EditLiteFakeChapter from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
+import EditLiteFakeDictionary from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
 import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import { EditLiteState, LineState } from 'corpus/ui/edit-lite/editLiteState'
 import useEditLite, { EditLite } from 'corpus/ui/edit-lite/useEditLite'
@@ -150,9 +151,12 @@ export function renderEditLiteHook(
 
 export async function openServedEditLiteHook(
   lines: readonly Line[],
+  dictionary: EditLiteFakeDictionary = new EditLiteFakeDictionary([]),
 ): Promise<ServedEditLiteHook> {
   const chapter = new EditLiteFakeChapter(buildEditLiteOutline(lines), lines)
-  const fakeApi = new EditLiteFakeApi().serveChapter(chapter)
+  const fakeApi = new EditLiteFakeApi()
+    .serveChapter(chapter)
+    .serveDictionary(dictionary)
   const source = new ApiChapterEditSource(
     getServices(fakeApi.client).textService,
     editLiteChapterId,

@@ -1,11 +1,11 @@
 import _ from 'lodash'
+import { lineNotReturnedMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterEditSource } from 'corpus/application/edit-lite/ChapterEditSource'
 import { Line } from 'corpus/domain/line'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
 
-export const lineNotReturnedMessage =
-  'The line was not returned by the data source.'
+export { lineNotReturnedMessage }
 
 export function toContiguousRanges(indices: readonly number[]): number[][] {
   return _.sortBy(_.uniq(indices)).reduce<number[][]>((ranges, index) => {

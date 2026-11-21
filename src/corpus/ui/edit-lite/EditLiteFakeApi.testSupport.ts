@@ -10,6 +10,7 @@ import EditLiteFakeChapter, {
   toChapterId,
   toLinesPage,
 } from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
+import EditLiteFakeDictionary from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
 import FakeApi from 'test-support/FakeApi'
 import { createChapterUrl, Dto } from 'test-support/FakeApiExpectation'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -30,6 +31,14 @@ export function createChapterRequests(
     post: (path, body) =>
       findFakeApi().client.postJson(`${chapterUrl}/${path}`, body),
   }
+}
+
+interface Responder {
+  respond(
+    method: 'GET' | 'POST',
+    path: string,
+    body: unknown,
+  ): Promise<unknown> | null
 }
 
 function linesUrl(outline: ChapterOutline): string {
@@ -101,13 +110,11 @@ export default class EditLiteFakeApi extends FakeApi {
   }
 
   serveChapter(chapter: EditLiteFakeChapter): this {
-    respondFirst(this.client.fetchJson, (path) =>
-      chapter.respond('GET', path, null),
-    )
-    respondFirst(this.client.postJson, (path, body) =>
-      chapter.respond('POST', path, body),
-    )
-    return this
+    return this.serve(chapter)
+  }
+
+  serveDictionary(dictionary: EditLiteFakeDictionary): this {
+    return this.serve(dictionary)
   }
 
   expectImportLines(
@@ -129,6 +136,16 @@ export default class EditLiteFakeApi extends FakeApi {
       update,
       savedOutline,
     )
+  }
+
+  private serve(responder: Responder): this {
+    respondFirst(this.client.fetchJson, (path) =>
+      responder.respond('GET', path, null),
+    )
+    respondFirst(this.client.postJson, (path, body) =>
+      responder.respond('POST', path, body),
+    )
+    return this
   }
 
   private expectOutlineUpdate(

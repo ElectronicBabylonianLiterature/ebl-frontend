@@ -147,11 +147,15 @@ export function createManuscriptsContext(
       importLines: jest.fn(),
       saveManuscripts: jest.fn(),
       reportUnsavedManuscripts: jest.fn(),
+      openAnnotation: jest.fn(),
+      changeAnnotation: jest.fn(),
+      saveAnnotation: jest.fn(),
     },
     describeChange: jest.fn(
       (change: ChapterChange): ChapterRequest =>
         describeChapterChange(id, change),
     ),
+    searchLemma: jest.fn(),
   }
 }
 

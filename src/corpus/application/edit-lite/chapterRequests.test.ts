@@ -1,4 +1,10 @@
 import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
+import {
+  lineAlignment,
+  lineAlignmentDto,
+  lineLemmatization,
+  lineLemmatizationDto,
+} from 'corpus/application/edit-lite/annotationFixtures.testSupport'
 import { ChapterChange } from 'corpus/application/edit-lite/ChapterEditSource'
 import { editChapterId } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import {
@@ -12,6 +18,7 @@ import {
   toLineEditsDto,
   toNewLineDto,
 } from 'corpus/application/edit-lite/lineEdits'
+import { LineAlignment } from 'corpus/domain/alignment'
 import { createLine, EditStatus, Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 
@@ -32,6 +39,16 @@ const changes: readonly [ChapterChange, string, unknown][] = [
     { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
     'manuscripts',
     toManuscriptsDto(manuscripts, ['K.1']),
+  ],
+  [
+    { type: 'saveAlignment', index: 2, alignment: lineAlignment },
+    'lines/2/alignment',
+    lineAlignmentDto,
+  ],
+  [
+    { type: 'saveLemmatization', index: 0, lemmatization: lineLemmatization },
+    'lines/0/lemmatization',
+    lineLemmatizationDto,
   ],
 ]
 
@@ -57,7 +74,14 @@ describe('createChapterEndpointUrl', () => {
 })
 
 describe('createChapterUpdateUrl', () => {
-  it.each(['lines', 'lines/move', 'import', 'manuscripts'] as const)(
+  it.each([
+    'lines',
+    'lines/move',
+    'import',
+    'manuscripts',
+    'lines/12/alignment',
+    'lines/0/lemmatization',
+  ] as const)(
     'asks the %s endpoint for the outline of the given revision',
     (endpoint) => {
       expect(
@@ -127,5 +151,49 @@ it.each([
     method: 'POST',
     url: `${chapterUrl}/lines/move?view=outline&revision=r7`,
     body: { from, to },
+  })
+})
+
+it('sends a suggested alignment as a value', () => {
+  const suggestedAlignment: LineAlignment = [
+    [
+      {
+        alignment: [
+          {
+            value: 'kur',
+            alignment: 1,
+            variant: null,
+            isAlignable: true,
+            suggested: true,
+          },
+        ],
+        omittedWords: [],
+      },
+    ],
+  ]
+
+  expect(
+    toChapterUpdate({
+      type: 'saveAlignment',
+      index: 0,
+      alignment: suggestedAlignment,
+    }).body,
+  ).toEqual({
+    alignment: [
+      [
+        {
+          alignment: [
+            {
+              value: 'kur',
+              alignment: 1,
+              variant: '',
+              type: '',
+              language: '',
+            },
+          ],
+          omittedWords: [],
+        },
+      ],
+    ],
   })
 })

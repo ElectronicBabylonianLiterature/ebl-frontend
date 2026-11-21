@@ -9,6 +9,7 @@ import {
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   chapterChangedMessage,
+  lineNotReturnedMessage,
   numberedLineChangedMessage,
 } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
@@ -21,8 +22,11 @@ import {
   toLineEditsDto,
 } from 'corpus/application/edit-lite/lineEdits'
 import type TextService from 'corpus/application/TextService'
+import { LineAlignment } from 'corpus/domain/alignment'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
+import Word from 'dictionary/domain/Word'
 import { ApiError } from 'http/ApiClient'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
@@ -30,6 +34,8 @@ export type ApiChapterEditTextService = Pick<
   TextService,
   | 'findChapterOutline'
   | 'findChapterLines'
+  | 'findLineSuggestions'
+  | 'searchDictionaryLemma'
   | 'updateEditedLines'
   | 'updateChapterOutline'
 >
@@ -101,6 +107,27 @@ export class ApiChapterEditSource implements ChapterEditSource {
     ).then((pages) => pages.flat())
   }
 
+  async loadAnnotatedLine(index: number): Promise<Line> {
+    const [line] = await this.textService
+      .findChapterLines(this.id, index, 1, undefined, {
+        revision: this.revision,
+        tokens: true,
+      })
+      .catch(rejectRevisionConflict)
+    if (line === undefined) {
+      throw new Error(lineNotReturnedMessage)
+    }
+    return line
+  }
+
+  loadLemmatization(line: Line): Promise<readonly LineLemmatization[]> {
+    return this.textService.findLineSuggestions(line)
+  }
+
+  searchLemma(query: string): Promise<readonly Word[]> {
+    return this.textService.searchDictionaryLemma(query)
+  }
+
   describeSave(index: number, draft: Line): LinesUpdateDto {
     return toLineEditsDto(index, draft)
   }
@@ -142,6 +169,20 @@ export class ApiChapterEditSource implements ChapterEditSource {
       manuscripts,
       uncertainFragments,
     })
+  }
+
+  saveAlignment(
+    index: number,
+    alignment: LineAlignment,
+  ): Promise<ChapterOutline> {
+    return this.apply({ type: 'saveAlignment', index, alignment })
+  }
+
+  saveLemmatization(
+    index: number,
+    lemmatization: readonly LineLemmatization[],
+  ): Promise<ChapterOutline> {
+    return this.apply({ type: 'saveLemmatization', index, lemmatization })
   }
 
   private apply(change: ChapterChange): Promise<ChapterOutline> {

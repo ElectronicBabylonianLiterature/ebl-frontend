@@ -14,6 +14,7 @@ import {
   mockEditSource,
   openManuscriptsTab,
   openTab,
+  pageTabNames,
   renderLoadedEditLiteRoute,
   tab,
   tabPanel,
@@ -175,10 +176,7 @@ test('a reader gets a read-only page in both source modes', async () => {
   expect(notice()).toHaveTextContent(readOnlyNotice)
   expect(notice()).not.toHaveTextContent(legacyNotice)
   expect(readOnlyNotice).toContain('permission to edit texts')
-  expect(screen.getAllByRole('tab').map((item) => item.textContent)).toEqual([
-    'Lines',
-    'Manuscripts',
-  ])
+  expect(pageTabNames()).toEqual(['Lines', 'Manuscripts'])
   expect(editor.getByLabelText('Number')).toBeDisabled()
   expect(editor.getByText('NinNA1a')).toBeVisible()
   expect(

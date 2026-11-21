@@ -1,5 +1,9 @@
 import { stringify } from 'common/utils/queryString'
-import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
+import {
+  toLineAlignmentDto,
+  toLineLemmatizationDto,
+  toManuscriptsDto,
+} from 'corpus/application/chapterDtoSerialization'
 import { createChapterUrl } from 'corpus/application/chapterUrls'
 import {
   ChapterChange,
@@ -49,6 +53,14 @@ const updateFactories: UpdateFactories = {
   saveManuscripts: (change) => ({
     endpoint: 'manuscripts',
     body: toManuscriptsDto(change.manuscripts, change.uncertainFragments),
+  }),
+  saveAlignment: (change) => ({
+    endpoint: `lines/${change.index}/alignment`,
+    body: { alignment: toLineAlignmentDto(change.alignment) },
+  }),
+  saveLemmatization: (change) => ({
+    endpoint: `lines/${change.index}/lemmatization`,
+    body: { lemmatization: toLineLemmatizationDto(change.lemmatization) },
   }),
 }
 

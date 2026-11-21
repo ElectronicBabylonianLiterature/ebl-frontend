@@ -8,6 +8,11 @@ import {
   LineStatus,
 } from 'corpus/ui/edit-lite/editLiteState'
 import {
+  annotationHandlers,
+  resetLoadedLine,
+} from 'corpus/ui/edit-lite/annotationReducer'
+import { hasAnnotationDraft } from 'corpus/ui/edit-lite/lineAnnotations'
+import {
   failedLine,
   findLineState,
   findNewLineIndex,
@@ -83,7 +88,9 @@ function changeLine(
   original: Line | null | undefined,
 ): EditLiteState {
   const lineState = findLineState(state, index)
-  return lineState !== undefined && isEditedLine(lineState, original)
+  return lineState !== undefined &&
+    isEditedLine(lineState, original) &&
+    !hasAnnotationDraft(lineState)
     ? withLine(state, index, { ...lineState, draft })
     : state
 }
@@ -101,7 +108,10 @@ function resetLine(state: EditLiteState, index: number): EditLiteState {
     return state
   }
   if (lineState.original !== null) {
-    return withLines(state, [[index, readyLine(lineState.original)]])
+    const resetState = resetLoadedLine(lineState, lineState.original)
+    return resetState === null
+      ? withoutLine(state, index)
+      : withLines(state, [[index, resetState]])
   }
   return lineState.status === 'failed' ? withoutLine(state, index) : state
 }
@@ -150,6 +160,7 @@ type ActionHandlers = {
 }
 
 const actionHandlers: ActionHandlers = {
+  ...annotationHandlers,
   linesRequested: (state, action) =>
     withLines(
       state,

@@ -20,6 +20,8 @@ const saves: readonly [ChapterEndpoint, ChapterRequestBody][] = [
   ['lines/move', { from: 0, to: 1 }],
   ['import', { atf: '1. kur' }],
   ['manuscripts', { manuscripts: [], uncertainFragments: [] }],
+  ['lines/3/alignment', { alignment: [] }],
+  ['lines/3/lemmatization', { lemmatization: [] }],
 ]
 
 test.each(saves)(

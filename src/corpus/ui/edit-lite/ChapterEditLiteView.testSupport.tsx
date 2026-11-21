@@ -23,6 +23,7 @@ import {
 import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import EditLiteFakeChapter from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
+import EditLiteFakeDictionary from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
 import { loadedEditor } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import { Switch } from 'router/compat'
 import CorpusRoutes from 'router/corpusRoutes'
@@ -184,9 +185,12 @@ export async function renderLoadedEditLiteRoute(
 export async function openServedEditLiteRoute(
   lines: readonly Line[],
   search: string,
+  dictionary: EditLiteFakeDictionary = new EditLiteFakeDictionary([]),
 ): Promise<ServedEditLiteRoute> {
   const chapter = new EditLiteFakeChapter(buildEditLiteOutline(lines), lines)
-  const fakeApi = createEditLiteFakeApi().serveChapter(chapter)
+  const fakeApi = createEditLiteFakeApi()
+    .serveChapter(chapter)
+    .serveDictionary(dictionary)
   await renderLoadedEditLiteRoute({ fakeApi, search })
   return { chapter, fakeApi }
 }
@@ -194,6 +198,12 @@ export async function openServedEditLiteRoute(
 export async function editFirstLine(): Promise<void> {
   const editor = await loadedEditor('1')
   await userEvent.type(within(editor).getByLabelText('Number'), 'a')
+}
+
+export function pageTabNames(): (string | null)[] {
+  return within(screen.getAllByRole('tablist')[0])
+    .getAllByRole('tab')
+    .map((item) => item.textContent)
 }
 
 export function tab(name: string): HTMLElement {

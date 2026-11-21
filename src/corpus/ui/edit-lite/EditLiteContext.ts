@@ -7,6 +7,11 @@ import {
 import { ManuscriptSummary } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
+import {
+  AnnotationDraft,
+  AnnotationView,
+} from 'corpus/ui/edit-lite/editLiteState'
+import Word from 'dictionary/domain/Word'
 
 export interface ImportedLines {
   readonly firstIndex: number
@@ -27,6 +32,9 @@ export interface EditLiteActions {
     uncertainFragments: readonly string[],
   ): Promise<void>
   reportUnsavedManuscripts(hasUnsaved: boolean): void
+  openAnnotation(index: number, view: AnnotationView): void
+  changeAnnotation(index: number, draft: AnnotationDraft, line: Line): void
+  saveAnnotation(index: number, view: AnnotationView): void
 }
 
 export interface EditLiteContextValue {
@@ -36,6 +44,7 @@ export interface EditLiteContextValue {
   readonly manuscripts: readonly ManuscriptSummary[]
   readonly actions: EditLiteActions
   describeChange(change: ChapterChange): ChapterRequest
+  searchLemma(query: string): Promise<readonly Word[]>
 }
 
 const EditLiteContext = createContext<EditLiteContextValue | null>(null)

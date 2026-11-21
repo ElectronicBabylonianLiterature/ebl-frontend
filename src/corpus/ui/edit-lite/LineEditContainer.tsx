@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import _ from 'lodash'
-import { Alert, Button } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
 import { Line } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { LineState } from 'corpus/ui/edit-lite/editLiteState'
-import LineEditPanel from 'corpus/ui/edit-lite/LineEditPanel'
-import LineEditToolbar from 'corpus/ui/edit-lite/LineEditToolbar'
-import { findProgressLabel, LineActivity } from 'corpus/ui/edit-lite/lineStates'
+import { LineActivity } from 'corpus/ui/edit-lite/lineStates'
+import LineTextView from 'corpus/ui/edit-lite/LineTextView'
+import LineViews from 'corpus/ui/edit-lite/LineViews'
+import LoadFailure from 'corpus/ui/edit-lite/LoadFailure'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 
 interface Props {
@@ -31,13 +32,7 @@ function LoadedLine({
   activity,
   onDeleted,
 }: LoadedLineProps): JSX.Element {
-  const { actions, canWrite } = useEditLiteContext()
-  const original = lineState.original
-  const handleChange = useCallback(
-    (line: Line): void => actions.changeLine(index, line, original),
-    [actions, index, original],
-  )
-
+  const View = isNew ? LineTextView : LineViews
   return (
     <>
       {lineState.status === 'failed' && (
@@ -45,21 +40,14 @@ function LoadedLine({
           {lineState.error}
         </Alert>
       )}
-      <LineEditPanel
-        line={draft}
-        onChange={handleChange}
-        disabled={findProgressLabel(lineState.status) !== null}
+      <View
+        index={index}
+        lineState={lineState}
+        draft={draft}
+        isNew={isNew}
+        activity={activity}
+        onDeleted={onDeleted}
       />
-      {canWrite && (
-        <LineEditToolbar
-          index={index}
-          lineState={lineState}
-          draft={draft}
-          isNew={isNew}
-          activity={activity}
-          onDeleted={onDeleted}
-        />
-      )}
     </>
   )
 }
@@ -86,16 +74,10 @@ function LineContent({
     )
   }
   return lineState?.status === 'failed' ? (
-    <Alert className="edit-lite-line__alert" variant="danger">
-      {lineState.error}{' '}
-      <Button
-        size="sm"
-        variant="outline-danger"
-        onClick={(): void => actions.resetLine(index)}
-      >
-        Retry
-      </Button>
-    </Alert>
+    <LoadFailure
+      error={lineState.error}
+      onRetry={(): void => actions.resetLine(index)}
+    />
   ) : (
     <Spinner>Loading line...</Spinner>
   )

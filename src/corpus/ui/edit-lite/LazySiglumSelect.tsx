@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ManuscriptSummary } from 'corpus/application/edit-lite/chapterOutline'
+import {
+  findSiglum,
+  findSiglumLabel,
+  unknownSiglum,
+} from 'corpus/ui/edit-lite/manuscriptSigla'
 import 'corpus/ui/edit-lite/edit-lite.sass'
 
 interface Props {
@@ -8,18 +13,6 @@ interface Props {
   readonly onChange: (manuscriptId: number) => void
   readonly disabled?: boolean
   readonly readOnly?: boolean
-}
-
-const unknownSiglum = '<unknown>'
-
-function findSiglum(
-  manuscripts: readonly ManuscriptSummary[],
-  manuscriptId: number,
-): string | null {
-  return (
-    manuscripts.find((manuscript) => manuscript.id === manuscriptId)?.siglum ??
-    null
-  )
 }
 
 function LazySiglumSelect({
@@ -33,7 +26,7 @@ function LazySiglumSelect({
   const selectRef = useRef<HTMLSelectElement>(null)
   const siglum = findSiglum(manuscripts, value)
 
-  const label = siglum ?? unknownSiglum
+  const label = findSiglumLabel(manuscripts, value)
 
   if (isActive && (disabled || readOnly)) {
     setIsActive(false)

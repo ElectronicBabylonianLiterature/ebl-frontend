@@ -37,6 +37,12 @@ This repository holds the page; the new endpoints are in ebl-api.
   - [x] A failed save, move or delete is marked "failed" in the list
   - [x] "Add line" never proposes a number that already exists
 
+## In progress
+
+- [ ] Step 5: alignment and lemmatization per line. Built in both
+      repositories and pushed as work in progress; verification, browser
+      check and screenshots are still to do (see the log).
+
 ## Open
 
 - [x] Pick one version: C, split view

@@ -1,4 +1,9 @@
 import {
+  toLineAlignmentDto,
+  toLineLemmatizationDto,
+} from 'corpus/application/chapterDtoSerialization'
+import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
+import {
   ChapterChange,
   ChapterEditSource,
   ChapterEditSourceKind,
@@ -11,8 +16,16 @@ import {
 } from 'corpus/application/edit-lite/chapterOutline'
 import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
+import {
+  createLineLemmatization,
+  LemmaSuggestionsDto,
+  LineLemmaSource,
+} from 'corpus/application/edit-lite/lineLemmatization'
+import { LineAlignment } from 'corpus/domain/alignment'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { createLine, createVariant, EditStatus, Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
+import Word from 'dictionary/domain/Word'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import {
   buildEditLiteLines,
@@ -21,6 +34,16 @@ import {
   editLiteManuscripts,
   editLiteRevision,
 } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
+import {
+  createAligner,
+  createLemmatizer,
+} from 'corpus/ui/edit-lite/EditLiteFakeAnnotations.testSupport'
+import EditLiteFakeDictionary, {
+  buildWordsPath,
+  FakeLemmaSuggestion,
+  lemmaBatchPath,
+} from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
+import { annotateLine } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
 import { moveItem } from 'corpus/ui/edit-lite/lineMove'
 
 export type FakeChapterEditSource = jest.Mocked<ChapterEditSource>
@@ -31,6 +54,8 @@ export interface FakeChapterEditSourceOptions {
   readonly lines?: readonly Line[]
   readonly diagnostics?: readonly string[]
   readonly id?: ChapterId
+  readonly words?: readonly Word[]
+  readonly suggestions?: readonly FakeLemmaSuggestion[]
 }
 
 interface FakeChapter {
@@ -94,6 +119,27 @@ export function createFakeChapterEditSource(
     Object.assign(chapter, change)
     return Promise.resolve(buildOutline())
   }
+  const annotate = (
+    index: number,
+    annotator: (line: Line) => Line,
+  ): Promise<ChapterOutline> =>
+    save({
+      lines: chapter.lines.map((line, lineIndex) =>
+        lineIndex === index ? annotator(line) : line,
+      ),
+    })
+  const dictionary = new EditLiteFakeDictionary(
+    options.words ?? [],
+    options.suggestions,
+  )
+  const lemmaSource: LineLemmaSource = {
+    findSuggestions: (words) =>
+      dictionary.respond('POST', lemmaBatchPath, { words }) as Promise<
+        LemmaSuggestionsDto[]
+      >,
+    findWords: (ids) =>
+      dictionary.respond('GET', buildWordsPath(ids), null) as Promise<Word[]>,
+  }
 
   return {
     kind,
@@ -105,6 +151,22 @@ export function createFakeChapterEditSource(
     loadLines: jest.fn(
       (offset: number, limit: number): Promise<readonly Line[]> =>
         Promise.resolve(chapter.lines.slice(offset, offset + limit)),
+    ),
+    loadAnnotatedLine: jest.fn(
+      (index: number): Promise<Line> =>
+        kind === 'legacy'
+          ? Promise.reject(new Error(annotationsNotAvailableMessage))
+          : Promise.resolve(annotateLine(chapter.lines[index])),
+    ),
+    loadLemmatization: jest.fn(
+      (line: Line): Promise<readonly LineLemmatization[]> =>
+        createLineLemmatization(line, lemmaSource),
+    ),
+    searchLemma: jest.fn(
+      (query: string): Promise<readonly Word[]> =>
+        dictionary.respond('GET', `/words?lemma=${query}`, null) as Promise<
+          Word[]
+        >,
     ),
     describeSave: jest.fn(
       (index: number, draft: Line): LinesUpdateDto =>
@@ -138,6 +200,21 @@ export function createFakeChapterEditSource(
     ),
     importLines: jest.fn((atf: string) =>
       save({ lines: importFakeLines(chapter.lines, atf) }),
+    ),
+    saveAlignment: jest.fn((index: number, alignment: LineAlignment) =>
+      annotate(
+        index,
+        createAligner({ alignment: toLineAlignmentDto(alignment) }),
+      ),
+    ),
+    saveLemmatization: jest.fn(
+      (index: number, lemmatization: readonly LineLemmatization[]) =>
+        annotate(
+          index,
+          createLemmatizer({
+            lemmatization: toLineLemmatizationDto(lemmatization),
+          }),
+        ),
     ),
     saveManuscripts: jest.fn(
       (

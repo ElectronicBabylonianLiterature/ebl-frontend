@@ -1,3 +1,7 @@
+import {
+  lineAlignment,
+  lineLemmatization,
+} from 'corpus/application/edit-lite/annotationFixtures.testSupport'
 import ApiChapterEditSource, {
   savingNotPermittedMessage,
 } from 'corpus/application/edit-lite/ApiChapterEditSource'
@@ -48,6 +52,16 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     'saveManuscripts',
     { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
     (source) => source.saveManuscripts(manuscripts, ['K.1']),
+  ],
+  [
+    'saveAlignment',
+    { type: 'saveAlignment', index: 3, alignment: lineAlignment },
+    (source) => source.saveAlignment(3, lineAlignment),
+  ],
+  [
+    'saveLemmatization',
+    { type: 'saveLemmatization', index: 3, lemmatization: lineLemmatization },
+    (source) => source.saveLemmatization(3, lineLemmatization),
   ],
 ]
 

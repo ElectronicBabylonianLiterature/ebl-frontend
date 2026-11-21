@@ -1,8 +1,15 @@
 import _ from 'lodash'
 import serializeReference from 'bibliography/application/serializeReference'
 import Reference from 'bibliography/domain/Reference'
-import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  AlignmentToken,
+  ChapterAlignment,
+  LineAlignment,
+} from 'corpus/domain/alignment'
+import {
+  ChapterLemmatization,
+  LineLemmatization,
+} from 'corpus/domain/lemmatization'
 import { EditStatus, Line } from 'corpus/domain/line'
 import { Manuscript, OldSiglum } from 'corpus/domain/manuscript'
 
@@ -71,31 +78,33 @@ function toAlignmentTokenDto(token: AlignmentToken) {
       } as const)
 }
 
+export function toLineAlignmentDto(line: LineAlignment) {
+  return line.map((variant) =>
+    variant.map((manuscript) => ({
+      alignment: manuscript.alignment.map(toAlignmentTokenDto),
+      omittedWords: manuscript.omittedWords,
+    })),
+  )
+}
+
 export function toAlignmentDto(
   alignment: ChapterAlignment,
 ): Record<string, unknown> {
   return {
-    alignment: alignment.lines.map((line) =>
-      line.map((variant) =>
-        variant.map((manuscript) => ({
-          alignment: manuscript.alignment.map(toAlignmentTokenDto),
-          omittedWords: manuscript.omittedWords,
-        })),
-      ),
-    ),
+    alignment: alignment.lines.map(toLineAlignmentDto),
   } as const
+}
+
+export function toLineLemmatizationDto(line: readonly LineLemmatization[]) {
+  return line.map((variant) => ({
+    reconstruction: variant[0].map((token) => token.toDto()),
+    manuscripts: variant[1].map((line) => line.map((token) => token.toDto())),
+  }))
 }
 
 export function toLemmatizationDto(lemmatization: ChapterLemmatization) {
   return {
-    lemmatization: lemmatization.map((line) =>
-      line.map((variant) => ({
-        reconstruction: variant[0].map((token) => token.toDto()),
-        manuscripts: variant[1].map((line) =>
-          line.map((token) => token.toDto()),
-        ),
-      })),
-    ),
+    lemmatization: lemmatization.map(toLineLemmatizationDto),
   } as const
 }
 

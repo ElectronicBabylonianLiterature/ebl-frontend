@@ -1,9 +1,17 @@
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import {
+  openAnnotation,
+  saveAnnotation,
+} from 'corpus/ui/edit-lite/annotationActions'
+import {
   EditLiteActions,
   ImportedLines,
 } from 'corpus/ui/edit-lite/EditLiteContext'
+import {
+  AnnotationDraft,
+  AnnotationView,
+} from 'corpus/ui/edit-lite/editLiteState'
 import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
 import {
   findMissingIndices,
@@ -110,6 +118,15 @@ export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
     },
     reportUnsavedManuscripts(hasUnsaved: boolean): void {
       store.dispatch({ type: 'manuscriptsEdited', hasUnsaved })
+    },
+    openAnnotation(index: number, view: AnnotationView): void {
+      openAnnotation(store, index, view)
+    },
+    changeAnnotation(index: number, draft: AnnotationDraft, line: Line): void {
+      store.dispatch({ type: 'annotationChanged', index, line, draft })
+    },
+    saveAnnotation(index: number, view: AnnotationView): void {
+      saveAnnotation(store, index, view)
     },
   }
 }
