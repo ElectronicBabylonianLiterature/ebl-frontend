@@ -36,12 +36,10 @@ This repository holds the page; the new endpoints are in ebl-api.
         and after a delete
   - [x] A failed save, move or delete is marked "failed" in the list
   - [x] "Add line" never proposes a number that already exists
-
-## In progress
-
-- [ ] Step 5: alignment and lemmatization per line. Built in both
-      repositories and pushed as work in progress; verification, browser
-      check and screenshots are still to do (see the log).
+- [x] Step 5: alignment and lemmatization per line
+  - [x] Tabs "Text", "Alignment", "Lemmatization" in the line editor
+  - [x] One line with tokens on demand; saves of one line with the revision
+  - [x] Lemma suggestions for a line in one request
 
 ## Open
 
@@ -56,7 +54,7 @@ This repository holds the page; the new endpoints are in ebl-api.
 
 ## Later tasks
 
-- [ ] Alignment and lemmatization per open line (steps 5 and 6)
+- [ ] Keep existing alignments per manuscript line (step 6)
 - [ ] Replace the classic edit page and remove the legacy source (step 8)
 
 ## Next phase (decided after the mock-ups)
@@ -112,6 +110,8 @@ Estimate: about 22 to 37 hours of work in total.
   unbalanced brackets. Audit of the existing texts first. Goes with it: a
   line save with an invalid enclosure in the reconstruction answers 500.
 - Several intertexts per line: after step 8.
+- Lemma suggestions: database indexes on token values, or a precomputed
+  table of words and their lemmas. Needs timings from production.
 
 ## Where to use Fable 5.2 with Ultracode
 

@@ -46,7 +46,7 @@ export { invalidRequestMessage } from 'corpus/ui/edit-lite/editLiteFakeRequests.
 
 export const staleRevisionMessage =
   'The chapter has been changed since the given revision.'
-export const missingRevisionMessage = 'A revision is required to move a line.'
+export const missingRevisionMessage = 'revision is required'
 export const emptyRevisionMessage =
   "revision must be a non-empty string, got '' instead"
 export const samePositionMessage = 'The line is already at that position.'
@@ -60,15 +60,11 @@ export function toChapterId(outline: ChapterOutline): ChapterId {
   return { textId: outline.textId, stage: outline.stage, name: outline.name }
 }
 
-export function describeMissingRevision(annotation: Annotation): string {
-  return `A revision is required to save the ${annotation} of a line.`
-}
-
 export function positionOutOfRangeMessage(
   position: number,
   lineCount: number,
 ): string {
-  return `Position ${position} is out of range: the chapter has ${lineCount} lines.`
+  return `Invalid line: ${position} is not a line position (number of lines: ${lineCount}).`
 }
 
 export default class EditLiteFakeChapter {
@@ -200,7 +196,7 @@ export default class EditLiteFakeChapter {
   ): ChapterOutline {
     const annotate = annotators[annotation](body)
     const lineCount = this.storedLines.length
-    this.requireRevision(query, describeMissingRevision(annotation))
+    this.requireRevision(query, missingRevisionMessage)
     if (position >= lineCount) {
       rejectRequest(positionOutOfRangeMessage(position, lineCount), 422)
     }

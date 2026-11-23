@@ -177,30 +177,42 @@ about 1.8 s.
   `yarn test:ci` 890 suites, 7664 tests passed, zero console output;
   coverage 98.75 % statements, 96.92 % branches.
 
-## Step 5: alignment and lemmatization per line (work in progress)
+## Step 5: alignment and lemmatization per line
 
-Paused on 21 November; pushed unfinished so the work is not lost.
-
-- Built: the editor of a stored line has three tabs, "Text", "Alignment"
-  and "Lemmatization". The two new views load that one line with tokens
-  when opened (`lines?...&tokens=true`), reuse the classic word controls and
+- The editor of a stored line has three tabs: "Text", "Alignment" and
+  "Lemmatization". A new, unsaved line has only its text. Only the open
+  view is mounted, and nothing is requested for a view until it is opened.
+- Opening Alignment or Lemmatization loads that one line with tokens
+  (`lines?...&tokens=true`). Both views reuse the classic word controls and
   save only that line (`POST {chapter}/lines/{number}/alignment` and
-  `.../lemmatization`, with the revision). Lemma data comes from one
-  `POST /lemmas/batch` and one `GET /words?lemmas=` per opened line.
-- Rules: one kind of unsaved change per line (the other two tabs are
-  disabled until Save or Reset); a draft lives in the line's entry of the
-  state and follows the line after a move or delete; the suggestion rules
-  are the classic ones (step 6 changes them); a suggestion on screen is
-  saved as a value.
-- The builder's own gates passed (lint, tsc, qlty, `yarn test:ci` 917
-  suites and 7955 tests, zero console output, coverage 98.79 % statements
-  and 97.03 % branches, both edit-lite folders at 100 %; 29 mutations
-  killed). NOT yet verified by the lead.
-- To do: read the diff; rerun the gates; align the statuses and messages of
-  the fake API with the real endpoints; browser check against a local
-  ebl-api (the classic word dialogs inside the split view have not been
-  seen in a browser); screenshots for the user.
-- Noted by the builder: "Delete line" is only in the Text view, so a line
-  with an alignment or lemmatization draft must be saved or reset before it
-  can be deleted; a view opened while another write is running can get a
-  409 with a Retry; `GET /words?lemmas=` is one request however many ids.
+  `.../lemmatization`, with the chapter revision).
+- Lemma data: one `POST /lemmas/batch` for the words of the line that need
+  suggestions and one `GET /words?lemmas=` for its lemma ids. The classic
+  editor sends one request per word of the chapter.
+- One kind of unsaved change per line: while one view has changes the other
+  two tabs are disabled until Save or Reset.
+- A draft lives in the line's entry of the state. It follows the line after
+  a move or delete, shows the "edited" badge and counts for the
+  unsaved-changes warning. A draft on a line that changed on the server is
+  marked stale and cannot be saved.
+- Unchanged from the classic editor: the suggestion rules (step 6 changes
+  them), a suggestion on screen is saved as a value, and a lemma set on a
+  reconstruction word goes to the manuscript words aligned to it.
+- Without write permission both views are read-only. The read-only snapshot
+  source has no tokens and says so.
+- Classic components changed without changing their behaviour:
+  `ChapterAligner`, `OmittedWordsSelect`, `ChapterLemmatization`,
+  `LineLemmatizers`; shared logic moved to `corpus/domain`.
+- Gates: `yarn lint`, `yarn tsc`, qlty clean; `yarn test:ci` 917 suites,
+  7955 tests passed, zero console output; coverage 98.79 % statements,
+  97.03 % branches, both edit-lite folders at 100 %; no file over 250
+  lines. The builder killed 29 of 29 mutations.
+- Browser run against a local ebl-api: 22 checks passed (tabs, one request
+  with tokens, align a word and save, only that line changes, one batch
+  request and none per word, lemma chosen and propagated, an alignment
+  draft following its line across a move and saved to it, read-only modes).
+- Limits: "Delete line" is only in the Text view, so a line with an
+  alignment or lemmatization draft must be saved or reset first. A view
+  opened while another write is running can get a 409 with a Retry. The
+  classic word dialogs open at the top of the page, as in the classic
+  editor. `GET /words?lemmas=` is one request however many ids.

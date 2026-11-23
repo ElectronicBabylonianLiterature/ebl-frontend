@@ -32,7 +32,7 @@ export function countMismatchMessage(
   expected: number,
   actual: number,
 ): string {
-  return `Invalid number of ${kind}: expected ${expected}, got ${actual}.`
+  return `Invalid number of ${kind}. Got ${actual}, expected ${expected}.`
 }
 
 export function valueMismatchMessage(expected: string, actual: string): string {

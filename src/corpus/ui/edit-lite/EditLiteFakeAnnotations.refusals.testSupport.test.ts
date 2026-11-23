@@ -9,7 +9,7 @@ import {
   valueMismatchMessage,
 } from 'corpus/ui/edit-lite/EditLiteFakeAnnotations.testSupport'
 import {
-  describeMissingRevision,
+  missingRevisionMessage,
   emptyRevisionMessage,
   invalidRequestMessage,
   positionOutOfRangeMessage,
@@ -45,7 +45,7 @@ beforeEach(() => {
 
 describe.each<Annotation>(['alignment', 'lemmatization'])('a %s', (name) => {
   test.each<[string, string, number, string]>([
-    ['without a revision', '', 422, describeMissingRevision(name)],
+    ['without a revision', '', 422, missingRevisionMessage],
     ['with an empty revision', '&revision=', 422, emptyRevisionMessage],
     ['at an old revision', '&revision=revision-0', 409, staleRevisionMessage],
   ])('%s is refused', async (_name, query, status, message) => {
