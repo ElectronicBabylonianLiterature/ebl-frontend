@@ -178,6 +178,8 @@ const fullyCoveredPaths = [
   'src/sumerian-dictionary/ui/SumerianDictionarySearch.tsx',
   'src/sumerian-dictionary/ui/SumerianDictionarySearchForm.tsx',
   'src/sumerian-dictionary/ui/SumerianDictionarySearchPage.tsx',
+  'src/sumerian-dictionary/ui/SumerianWordCitations.tsx',
+  'src/sumerian-dictionary/ui/SumerianWordCompounds.tsx',
   'src/sumerian-dictionary/ui/SumerianWordDisplay.tsx',
   'src/sumerian-dictionary/ui/SumerianWordFormLists.tsx',
   'src/sumerian-dictionary/ui/SumerianWordForms.tsx',
