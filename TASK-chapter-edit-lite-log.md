@@ -260,3 +260,14 @@ about 1.8 s.
   8082 tests passed, zero console output; coverage 98.83 % statements,
   97.14 % branches, both edit-lite folders at 100 %; no file over 250
   lines. The builder killed 42 of 42 mutations.
+
+## Step 7: faster saving on the server
+
+- Nothing changed in this repository: step 7 is in ebl-api only, and the
+  endpoints, requests and responses are the same.
+- On Enūma eliš I the saves the keyboard flow sends when a line is left
+  (alignment, lemmatization) went from about 47 s to under 1 s; text edits,
+  add, delete, move and "Update all instances" from 28 to 55 s down to 15 to
+  19 s (they still load the whole chapter on the server).
+- Browser runs against the faster server: editing, add, delete, import and
+  manuscripts 31 of 31; moving lines 27 of 27; keyboard flow 24 of 24.
