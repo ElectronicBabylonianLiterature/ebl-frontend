@@ -108,15 +108,15 @@ it('sets the page title once the word has loaded', async () => {
   )
 })
 
-it('lists only the sections with content, numbered in order', async () => {
+it('lists only the sections with content, grouped by source', async () => {
   const word = sumerianWordFactory.build({
     epsd2Senses: [{ num: '1.', meaning: 'king', lang: 'en' }],
     citations: [{ work: 'ELA', passage: '', etcsl: '', compositionId: '' }],
   })
   await renderWordAndWait(word)
   expect(sectionHeadings()).toEqual([
-    'I. Meanings',
-    'II. Citations',
-    'III. Sources',
+    'Attinger’s Glossaire',
+    'ePSD2',
+    'Sources',
   ])
 })

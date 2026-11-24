@@ -12,6 +12,7 @@ import {
 } from 'sumerian-dictionary/ui/SumerianDictionaryOverview'
 import { SumerianRestrictedNotice } from 'sumerian-dictionary/ui/SumerianDictionaryAccess'
 import { parseSumerianSearch } from 'sumerian-dictionary/ui/sumerianDictionaryPage'
+import 'signs/ui/display/CuneiformFonts.css'
 import 'sumerian-dictionary/ui/SumerianDictionary.sass'
 
 function SumerianDictionaryIntroduction(): JSX.Element {

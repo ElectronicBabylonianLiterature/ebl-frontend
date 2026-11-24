@@ -1,67 +1,7 @@
 import React from 'react'
-import ExternalLink from 'common/ui/ExternalLink'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
-import { WordLink } from 'sumerian-dictionary/domain/SumerianWordParts'
 import { crossReferenceRelationLabels } from 'sumerian-dictionary/domain/sumerianDictionaryLabels'
-import { getEtcslUrl } from 'sumerian-dictionary/domain/sumerianWordHelpers'
-import { SumerianSubsectionDefinition } from 'sumerian-dictionary/ui/sumerianWordSections'
-import {
-  SumerianSubsection,
-  SumerianWordLink,
-  SumerianWordLinks,
-} from 'sumerian-dictionary/ui/SumerianWordParts'
-
-export function SumerianWordCompounds({
-  word,
-  parts,
-}: {
-  word: SumerianWord
-  parts: readonly SumerianSubsectionDefinition[]
-}): JSX.Element {
-  const linksById: Record<string, readonly WordLink[]> = {
-    'compounds-lexical': word.compounds,
-    'compounds-names': word.nameCompounds,
-  }
-  return (
-    <>
-      {parts.map((part) => (
-        <SumerianSubsection key={part.id} part={part} word={word}>
-          <SumerianWordLinks links={linksById[part.id]} />
-        </SumerianSubsection>
-      ))}
-    </>
-  )
-}
-
-export function SumerianWordCitations({
-  word,
-}: {
-  word: SumerianWord
-}): JSX.Element {
-  return (
-    <ol className="SumerianDictionary__citations">
-      {word.citations.map((citation, index) => (
-        <li key={index}>
-          <i>{citation.work}</i>
-          {citation.passage && (
-            <span className="SumerianDictionary__passage">
-              {' '}
-              {citation.passage}
-            </span>
-          )}
-          {citation.etcsl && (
-            <>
-              {' · '}
-              <ExternalLink href={getEtcslUrl(citation.etcsl)}>
-                ETCSL {citation.etcsl}
-              </ExternalLink>
-            </>
-          )}
-        </li>
-      ))}
-    </ol>
-  )
-}
+import { SumerianWordLink } from 'sumerian-dictionary/ui/SumerianWordParts'
 
 export function SumerianWordSeeAlso({
   word,

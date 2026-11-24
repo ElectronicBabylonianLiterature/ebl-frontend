@@ -2,14 +2,8 @@ import React from 'react'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
 import { getKeyRenderingSpellings } from 'sumerian-dictionary/domain/sumerianRendering'
 import SumerianCuneiform from 'sumerian-dictionary/ui/SumerianCuneiform'
-import { SumerianSubsectionDefinition } from 'sumerian-dictionary/ui/sumerianWordSections'
-import { SumerianSubsection } from 'sumerian-dictionary/ui/SumerianWordParts'
-import {
-  AttestedSpellings,
-  RedirectedForms,
-} from 'sumerian-dictionary/ui/SumerianWordFormLists'
 
-function CitationForms({ word }: { word: SumerianWord }): JSX.Element {
+export function CitationForms({ word }: { word: SumerianWord }): JSX.Element {
   return (
     <ul className="SumerianDictionary__links">
       {getKeyRenderingSpellings(word.renderings).map((spelling) => (
@@ -26,7 +20,11 @@ function CitationForms({ word }: { word: SumerianWord }): JSX.Element {
   )
 }
 
-function VariantSpellings({ word }: { word: SumerianWord }): JSX.Element {
+export function VariantSpellings({
+  word,
+}: {
+  word: SumerianWord
+}): JSX.Element {
   return (
     <ul className="SumerianDictionary__variants">
       {word.attingerForms.map((form, index) => (
@@ -52,7 +50,7 @@ function VariantSpellings({ word }: { word: SumerianWord }): JSX.Element {
   )
 }
 
-function EmesalForms({ word }: { word: SumerianWord }): JSX.Element {
+export function EmesalForms({ word }: { word: SumerianWord }): JSX.Element {
   return (
     <ul className="SumerianDictionary__links">
       {word.emesal.map((emesal, index) => (
@@ -64,37 +62,5 @@ function EmesalForms({ word }: { word: SumerianWord }): JSX.Element {
         </li>
       ))}
     </ul>
-  )
-}
-
-const formContent: Record<
-  string,
-  (props: { word: SumerianWord }) => JSX.Element
-> = {
-  'forms-key': CitationForms,
-  'forms-aliases': RedirectedForms,
-  'forms-attinger': VariantSpellings,
-  'forms-emesal': EmesalForms,
-  'forms-epsd2': AttestedSpellings,
-}
-
-export default function SumerianWordForms({
-  word,
-  parts,
-}: {
-  word: SumerianWord
-  parts: readonly SumerianSubsectionDefinition[]
-}): JSX.Element {
-  return (
-    <>
-      {parts.map((part) => {
-        const Content = formContent[part.id]
-        return (
-          <SumerianSubsection key={part.id} part={part} word={word}>
-            <Content word={word} />
-          </SumerianSubsection>
-        )
-      })}
-    </>
   )
 }

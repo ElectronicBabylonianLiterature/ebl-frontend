@@ -1,12 +1,11 @@
 @use 'src/design-tokens' as *
-@use 'src/fonts' as *
 @use 'src/common/ui/entry-page/entry-link-pill' as *
 
 .SumerianDictionary__cuneiform,
 .SumerianDictionary__heading-cuneiform,
 .SumerianDictionary__result-cuneiform,
 .SumerianDictionary__sign-glyph
-    @include ebl-font
+    font-family: 'Old-Babylonian (Literature)', Assurbanipal, Junicode, serif
 
 .SumerianDictionary__cuneiform
     color: $ebl-color-text-neutral

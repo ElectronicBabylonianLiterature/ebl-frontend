@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
 import { installMockIntersectionObserver } from 'test-support/intersectionObserverMock'
 import {
   region,
@@ -48,13 +48,48 @@ it('shows Attinger meanings before ePSD2 meanings, each labelled', async () => {
     epsd2Senses: [{ num: '1.', meaning: 'king', lang: 'en' }],
   })
   await renderWordAndWait(word)
-  expect(region(/^Attinger, Glossaire/)).toHaveTextContent(
-    'Attinger, Glossaire sumérien–françaisFrenchroi',
-  )
-  expect(region(/^ePSD2/)).toHaveTextContent('ePSD2Englishking')
+  const attinger = region(/^Attinger’s Glossaire/)
+  const epsd2 = region(/^ePSD2/)
   expect(
-    region(/^Attinger, Glossaire/).compareDocumentPosition(region(/^ePSD2/)),
-  ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    within(attinger).getByRole('region', { name: /^Meanings/ }),
+  ).toHaveTextContent('MeaningsFrenchroi')
+  expect(
+    within(epsd2).getByRole('region', { name: /^Meanings/ }),
+  ).toHaveTextContent('MeaningsEnglishking')
+  expect(attinger.compareDocumentPosition(epsd2)).toBe(
+    Node.DOCUMENT_POSITION_FOLLOWING,
+  )
+})
+
+it('names Attinger’s edition and entry at the head of his section', async () => {
+  const word = sumerianWordFactory.build({
+    attingerSenses: [{ meaning: 'roi', lang: 'fr', entryId: 'att-1' }],
+  })
+  await renderWordAndWait(word)
+  expect(region(/^Attinger’s Glossaire/)).toHaveTextContent(
+    'P. Attinger, Glossaire sumérien–français, 3rd edition (manuscript). ' +
+      'Everything in this section is Attinger’s.',
+  )
+})
+
+it('adds the Attinger entry to the edition line when the word has one', async () => {
+  const word = sumerianWordFactory.build({
+    sources: {
+      attinger: {
+        entryId: 'att-02133',
+        node: 'n',
+        letter: 'D',
+        depth: 0,
+        partOfSpeech: 'V',
+        headword: { text: 'diri-g', display: 'diri-g', marks: [] },
+      },
+      epsd2: null,
+    },
+  })
+  await renderWordAndWait(word)
+  expect(region(/^Attinger’s Glossaire/)).toHaveTextContent(
+    '3rd edition (manuscript) · entry att-02133. Everything',
+  )
 })
 
 it('leaves out the Akkadian equivalents from Borger', async () => {
@@ -79,19 +114,26 @@ it('keeps lexical and proper-noun compounds apart', async () => {
     nameCompounds: [enlil],
   })
   await renderWordAndWait(word)
+  const compounds = region(/^Compounds/)
   expect(
-    within(region(/^Compounds/)).getByRole('link', {
-      name: 'gub I stand',
-    }),
-  ).toHaveAttribute('href', '/tools/sumerian-dictionary/o0029228')
-  expect(region(/^Compounds/)).toHaveTextContent('Compounds1')
+    within(compounds)
+      .getAllByRole('columnheader')
+      .map((header) => header.textContent),
+  ).toEqual(['Form', 'Meaning'])
+  const [, row] = within(compounds).getAllByRole('row')
+  expect(within(row).getByRole('link', { name: 'gub I' })).toHaveAttribute(
+    'href',
+    '/tools/sumerian-dictionary/o0029228',
+  )
+  expect(row).toHaveTextContent('gub Istand')
+  expect(compounds).toHaveTextContent('Compounds1')
   expect(
     within(region(/^In proper nouns/)).getByRole('link', { name: /en-lil₂/ }),
   ).toBeInTheDocument()
   expect(region(/^In proper nouns/)).toHaveTextContent('In proper nouns1')
 })
 
-it('lists citations with an ETCSL link where there is one', async () => {
+it('opens each cited work for its ETCSL edition, or says there is none', async () => {
   const word = sumerianWordFactory.build({
     citations: [
       { work: 'ELA', passage: '12', etcsl: '1.8.2.3', compositionId: 'c-1' },
@@ -99,14 +141,17 @@ it('lists citations with an ETCSL link where there is one', async () => {
     ],
   })
   await renderWordAndWait(word)
-  const items = within(region(/Citations$/)).getAllByRole('listitem')
-  expect(items[0]).toHaveTextContent('ELA 12 · ETCSL 1.8.2.3')
-  expect(within(items[0]).getByRole('link')).toHaveAttribute(
+  const items = within(region(/^Citations/)).getAllByRole('listitem')
+  expect(items.map((item) => item.textContent)).toEqual(['ELA 12', 'InBil.'])
+  fireEvent.click(within(items[0]).getByRole('button', { name: 'ELA' }))
+  expect(
+    await screen.findByRole('link', { name: 'ETCSL 1.8.2.3' }),
+  ).toHaveAttribute(
     'href',
     'https://etcsl.orinst.ox.ac.uk/cgi-bin/etcsl.cgi?text=c.1.8.2.3',
   )
-  expect(items[1]).toHaveTextContent('InBil.')
-  expect(within(items[1]).queryByRole('link')).not.toBeInTheDocument()
+  fireEvent.click(within(items[1]).getByRole('button', { name: 'InBil.' }))
+  expect(await screen.findByText('No ETCSL edition')).toBeInTheDocument()
 })
 
 it('groups cross-reference targets, shows ambiguity and unresolved pointers', async () => {
@@ -123,7 +168,7 @@ it('groups cross-reference targets, shows ambiguity and unresolved pointers', as
     ],
   })
   await renderWordAndWait(word)
-  const items = within(region(/See Also$/)).getAllByRole('listitem')
+  const items = within(region(/^See also/)).getAllByRole('listitem')
   expect(within(items[0]).getAllByRole('group')).toHaveLength(2)
   expect(
     within(items[0]).getByRole('group', { name: 'Words' }),

@@ -22,7 +22,7 @@ async function signsSectionOf(
   signs: readonly SignEntry[],
 ): Promise<HTMLElement> {
   await renderWordAndWait(sumerianWordFactory.build({ signs }))
-  return region(/Signs$/)
+  return region(/^Signs/)
 }
 
 it('links a sign eBL identifies to its sign page', async () => {
@@ -46,6 +46,9 @@ it('links a sign eBL identifies to its sign page', async () => {
   expect(
     within(section).getByText(/Each sign as eBL's sign list identifies/),
   ).toBeInTheDocument()
+  expect(within(section).getByRole('heading', { level: 2 })).toHaveTextContent(
+    /^Signsfrom the eBL sign list$/,
+  )
 })
 
 it('does not link an OGSL fallback sign and says why', async () => {

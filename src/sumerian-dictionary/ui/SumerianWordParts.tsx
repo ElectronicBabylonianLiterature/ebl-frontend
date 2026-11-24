@@ -36,33 +36,24 @@ export function SumerianSubsection({
   )
 }
 
-export function SumerianWordLink({ link }: { link: WordLink }): JSX.Element {
+export function SumerianWordLink({
+  link,
+  showGuideWord = true,
+}: {
+  link: WordLink
+  showGuideWord?: boolean
+}): JSX.Element {
+  const details = [link.homonym, showGuideWord ? link.guideWord : '']
   return (
     <Link to={getSumerianWordPageUrl(link.id)}>
       <CitationFormText citationForm={link.citationForm} />
-      {[link.homonym, link.guideWord].filter(Boolean).map((detail, index) => (
+      {details.filter(Boolean).map((detail, index) => (
         <React.Fragment key={index}>
           {' '}
           <small>{detail}</small>
         </React.Fragment>
       ))}
     </Link>
-  )
-}
-
-export function SumerianWordLinks({
-  links,
-}: {
-  links: readonly WordLink[]
-}): JSX.Element {
-  return (
-    <ul className="SumerianDictionary__links">
-      {links.map((link) => (
-        <li key={link.id}>
-          <SumerianWordLink link={link} />
-        </li>
-      ))}
-    </ul>
   )
 }
 

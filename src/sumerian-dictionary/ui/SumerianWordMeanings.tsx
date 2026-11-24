@@ -1,7 +1,5 @@
 import React from 'react'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
-import { SumerianSubsectionDefinition } from 'sumerian-dictionary/ui/sumerianWordSections'
-import { SumerianSubsection } from 'sumerian-dictionary/ui/SumerianWordParts'
 
 function SenseList({ meanings }: { meanings: readonly string[] }): JSX.Element {
   return (
@@ -13,24 +11,16 @@ function SenseList({ meanings }: { meanings: readonly string[] }): JSX.Element {
   )
 }
 
-export default function SumerianWordMeanings({
+export function AttingerMeanings({
   word,
-  parts,
 }: {
   word: SumerianWord
-  parts: readonly SumerianSubsectionDefinition[]
 }): JSX.Element {
-  const meaningsById: Record<string, readonly string[]> = {
-    'meanings-attinger': word.attingerSenses.map((sense) => sense.meaning),
-    'meanings-epsd2': word.epsd2Senses.map((sense) => sense.meaning),
-  }
   return (
-    <>
-      {parts.map((part) => (
-        <SumerianSubsection key={part.id} part={part} word={word}>
-          <SenseList meanings={meaningsById[part.id]} />
-        </SumerianSubsection>
-      ))}
-    </>
+    <SenseList meanings={word.attingerSenses.map((sense) => sense.meaning)} />
   )
+}
+
+export function Epsd2Meanings({ word }: { word: SumerianWord }): JSX.Element {
+  return <SenseList meanings={word.epsd2Senses.map((sense) => sense.meaning)} />
 }

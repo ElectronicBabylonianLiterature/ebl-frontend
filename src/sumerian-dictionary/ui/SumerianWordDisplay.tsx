@@ -23,6 +23,7 @@ import {
   sumerianWordTopId,
 } from 'sumerian-dictionary/ui/sumerianWordSections'
 import { HeadTags } from 'router/head'
+import 'signs/ui/display/CuneiformFonts.css'
 import 'sumerian-dictionary/ui/SumerianDictionary.sass'
 
 const sectionCrumbs = [
@@ -74,7 +75,16 @@ function AuthorizedSumerianWord({
           <EntrySection
             key={section.id}
             id={section.id}
-            heading={section.heading}
+            heading={
+              <>
+                {section.heading}
+                {section.note && (
+                  <small className="SumerianDictionary__section-note">
+                    {section.note}
+                  </small>
+                )}
+              </>
+            }
             open={openSections[section.id]}
             onToggle={toggleSection}
           >

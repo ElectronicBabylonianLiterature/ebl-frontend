@@ -45,7 +45,7 @@ it('shows the citation forms with their cuneiform and a known-wrong warning', as
   await renderWordAndWait(word)
   const forms = region(/^Citation forms/)
   expect(within(forms).getByRole('heading')).toHaveTextContent(
-    'Citation formsAttinger',
+    /^Citation forms$/,
   )
   expect(within(forms).getByRole('listitem')).toHaveTextContent('lugal𒈗')
   expect(
@@ -126,7 +126,7 @@ it('shows Emesal forms', async () => {
     emesal: [{ form: 'u₃-mu-un', source: 'attinger' }],
   })
   await renderWordAndWait(word)
-  expect(region(/^Emesal/)).toHaveTextContent('EmesalAttingeru₃-mu-un')
+  expect(region(/^Emesal/)).toHaveTextContent('Emesalu₃-mu-un')
 })
 
 it('shows ePSD2 spellings most frequent first, ten at a time', async () => {
@@ -165,9 +165,10 @@ it('shows ePSD2 spellings most frequent first, ten at a time', async () => {
   ).toBeInTheDocument()
 })
 
-it('lists the forms sub-parts in the navigation when there are several', async () => {
+it('lists a source’s sub-parts in the navigation only when it has several', async () => {
   const word = sumerianWordFactory.build({
     emesal: [{ form: 'u₃-mu-un', source: 'attinger' }],
+    epsd2Senses: [{ num: '1.', meaning: 'king', lang: 'en' }],
     epsd2Forms: [{ spelling: 'lugal', count: 1, percent: 0 }],
   })
   await renderWordAndWait(word)
@@ -178,8 +179,9 @@ it('lists the forms sub-parts in the navigation when there are several', async (
       .map((link) => link.textContent),
   ).toEqual([
     expect.any(String),
-    'Forms',
-    'Emesal',
+    'Attinger’s Glossaire',
+    'ePSD2',
+    'Meanings',
     'Attested spellings',
     'Sources',
   ])

@@ -22,6 +22,7 @@ const word = sumerianWordFactory.build({
   pos: 'N',
   attingerSenses: [{ meaning: 'roi', lang: 'fr', entryId: 'att-1' }],
   epsd2Senses: [{ num: '1.', meaning: 'king', lang: 'en' }],
+  epsd2Forms: [{ spelling: 'lugal', count: 3, percent: 100 }],
   attestation: { count: 9, periods: ['Ur III', 'Old Babylonian', 'Ur III'] },
   sources: {
     attinger: {
@@ -69,9 +70,10 @@ it('heads the navigation with the title, guide word and part of speech', async (
       .map((link) => link.getAttribute('href')),
   ).toEqual([
     '#entry-top',
-    '#meanings',
-    '#meanings-attinger',
-    '#meanings-epsd2',
+    '#attinger',
+    '#epsd2',
+    '#epsd2-meanings',
+    '#epsd2-spellings',
     '#sources',
   ])
 })
@@ -93,24 +95,25 @@ it('shows the sources with alignment, curation and de-duplicated periods', async
 
 it('writes the section to the URL hash when a menu link is clicked', async () => {
   await renderWordAndWait(word)
-  fireEvent.click(within(navigation()).getByRole('link', { name: 'ePSD2' }))
+  const spellings = within(navigation()).getByRole('link', {
+    name: 'Attested spellings',
+  })
+  fireEvent.click(spellings)
   await waitFor(() =>
     expect(screen.getByTestId('location')).toHaveTextContent(
-      '/#meanings-epsd2',
+      '/#epsd2-spellings',
     ),
   )
-  expect(
-    within(navigation()).getByRole('link', { name: 'ePSD2' }),
-  ).toHaveAttribute('aria-current', 'true')
+  expect(spellings).toHaveAttribute('aria-current', 'true')
 })
 
 it('collapses a section from its heading and keeps the menu in sync', async () => {
-  await renderWordAndWait(word, { initialEntry: '/#meanings-epsd2' })
-  const toggle = screen.getByRole('button', { name: 'I. Meanings' })
+  await renderWordAndWait(word, { initialEntry: '/#epsd2-spellings' })
+  const toggle = screen.getByRole('button', { name: 'ePSD2' })
   expect(toggle).toHaveAttribute('aria-expanded', 'true')
   fireEvent.click(toggle)
   expect(toggle).toHaveAttribute('aria-expanded', 'false')
   expect(
-    within(navigation()).getByRole('button', { name: 'Expand Meanings' }),
+    within(navigation()).getByRole('button', { name: 'Expand ePSD2' }),
   ).toHaveAttribute('aria-expanded', 'false')
 })

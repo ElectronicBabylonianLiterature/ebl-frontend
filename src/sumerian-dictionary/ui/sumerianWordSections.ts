@@ -1,21 +1,26 @@
-import { romanize } from 'romans'
 import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
 import { getKeyRenderingSpellings } from 'sumerian-dictionary/domain/sumerianRendering'
 
 export const sumerianWordTopId = 'entry-top'
 
-export type SumerianSectionId =
-  | 'meanings'
-  | 'forms'
-  | 'signs'
-  | 'compounds'
-  | 'citations'
-  | 'see-also'
-  | 'sources'
+export type SumerianSectionId = 'attinger' | 'epsd2' | 'signs' | 'sources'
+
+export type SumerianSubsectionId =
+  | 'attinger-meanings'
+  | 'attinger-citation-forms'
+  | 'attinger-aliases'
+  | 'attinger-variants'
+  | 'attinger-emesal'
+  | 'attinger-compounds'
+  | 'attinger-name-compounds'
+  | 'attinger-citations'
+  | 'attinger-see-also'
+  | 'epsd2-meanings'
+  | 'epsd2-spellings'
 
 export interface SumerianSubsectionDefinition {
-  readonly id: string
+  readonly id: SumerianSubsectionId
   readonly label: string
   readonly heading: string
   readonly note: (word: SumerianWord) => string
@@ -25,6 +30,7 @@ export interface SumerianSubsectionDefinition {
 interface SumerianSectionDefinition {
   readonly id: SumerianSectionId
   readonly label: string
+  readonly note: string
   readonly isPresent: (word: SumerianWord) => boolean
   readonly subsections: readonly SumerianSubsectionDefinition[]
 }
@@ -32,85 +38,94 @@ interface SumerianSectionDefinition {
 export interface SumerianWordSection extends EntryNavSection {
   readonly id: SumerianSectionId
   readonly heading: string
+  readonly note: string
   readonly parts: readonly SumerianSubsectionDefinition[]
 }
 
 function subsection(
-  id: string,
+  id: SumerianSubsectionId,
   label: string,
-  heading: string,
-  note: string | ((word: SumerianWord) => string),
   isPresent: (word: SumerianWord) => boolean,
+  note: (word: SumerianWord) => string = (): string => '',
 ): SumerianSubsectionDefinition {
-  return {
-    id,
-    label,
-    heading,
-    note: typeof note === 'string' ? (): string => note : note,
-    isPresent,
-  }
+  return { id, label, heading: label, note, isPresent }
+}
+
+function countNote(
+  items: (word: SumerianWord) => readonly unknown[],
+): (word: SumerianWord) => string {
+  return (word) => `${items(word).length}`
 }
 
 const sectionDefinitions: readonly SumerianSectionDefinition[] = [
   {
-    id: 'meanings',
-    label: 'Meanings',
-    isPresent: () => false,
+    id: 'attinger',
+    label: 'Attinger’s Glossaire',
+    note: '',
+    isPresent: (word) => word.sources.attinger !== null,
     subsections: [
       subsection(
-        'meanings-attinger',
-        'Attinger',
-        'Attinger, Glossaire sumérien–français',
-        'French',
+        'attinger-meanings',
+        'Meanings',
         (word) => word.attingerSenses.length > 0,
+        (): string => 'French',
       ),
       subsection(
-        'meanings-epsd2',
-        'ePSD2',
-        'ePSD2',
-        'English',
-        (word) => word.epsd2Senses.length > 0,
+        'attinger-citation-forms',
+        'Citation forms',
+        (word) => getKeyRenderingSpellings(word.renderings).length > 0,
+      ),
+      subsection(
+        'attinger-aliases',
+        'Redirected forms',
+        (word) => word.aliases.length > 0,
+      ),
+      subsection(
+        'attinger-variants',
+        'Variant spellings',
+        (word) => word.attingerForms.length > 0,
+      ),
+      subsection('attinger-emesal', 'Emesal', (word) => word.emesal.length > 0),
+      subsection(
+        'attinger-compounds',
+        'Compounds',
+        (word) => word.compounds.length > 0,
+        countNote((word) => word.compounds),
+      ),
+      subsection(
+        'attinger-name-compounds',
+        'In proper nouns',
+        (word) => word.nameCompounds.length > 0,
+        countNote((word) => word.nameCompounds),
+      ),
+      subsection(
+        'attinger-citations',
+        'Citations',
+        (word) => word.citations.length > 0,
+        countNote((word) => word.citations),
+      ),
+      subsection(
+        'attinger-see-also',
+        'See also',
+        (word) => word.crossReferences.length > 0,
       ),
     ],
   },
   {
-    id: 'forms',
-    label: 'Forms',
-    isPresent: () => false,
+    id: 'epsd2',
+    label: 'ePSD2',
+    note: '',
+    isPresent: (word) => word.sources.epsd2 !== null,
     subsections: [
       subsection(
-        'forms-key',
-        'Citation forms',
-        'Citation forms',
-        'Attinger',
-        (word) => getKeyRenderingSpellings(word.renderings).length > 0,
+        'epsd2-meanings',
+        'Meanings',
+        (word) => word.epsd2Senses.length > 0,
+        (): string => 'English',
       ),
       subsection(
-        'forms-aliases',
-        'Redirected forms',
-        'Redirected forms',
-        'Attinger',
-        (word) => word.aliases.length > 0,
-      ),
-      subsection(
-        'forms-attinger',
-        'Variant spellings',
-        'Variant spellings',
-        'Attinger',
-        (word) => word.attingerForms.length > 0,
-      ),
-      subsection(
-        'forms-emesal',
-        'Emesal',
-        'Emesal',
-        'Attinger',
-        (word) => word.emesal.length > 0,
-      ),
-      subsection(
-        'forms-epsd2',
+        'epsd2-spellings',
         'Attested spellings',
-        'Attested spellings',
-        'ePSD2',
         (word) => word.epsd2Forms.length > 0,
       ),
     ],
@@ -118,45 +133,14 @@ const sectionDefinitions: readonly SumerianSectionDefinition[] = [
   {
     id: 'signs',
     label: 'Signs',
+    note: 'from the eBL sign list',
     isPresent: (word) => word.signs.length > 0,
-    subsections: [],
-  },
-  {
-    id: 'compounds',
-    label: 'Compounds',
-    isPresent: () => false,
-    subsections: [
-      subsection(
-        'compounds-lexical',
-        'Words',
-        'Compounds',
-        (word) => `${word.compounds.length}`,
-        (word) => word.compounds.length > 0,
-      ),
-      subsection(
-        'compounds-names',
-        'Proper nouns',
-        'In proper nouns',
-        (word) => `${word.nameCompounds.length}`,
-        (word) => word.nameCompounds.length > 0,
-      ),
-    ],
-  },
-  {
-    id: 'citations',
-    label: 'Citations',
-    isPresent: (word) => word.citations.length > 0,
-    subsections: [],
-  },
-  {
-    id: 'see-also',
-    label: 'See Also',
-    isPresent: (word) => word.crossReferences.length > 0,
     subsections: [],
   },
   {
     id: 'sources',
     label: 'Sources',
+    note: '',
     isPresent: () => true,
     subsections: [],
   },
@@ -173,10 +157,11 @@ export function buildSumerianWordSections(
     .filter(
       ({ definition, parts }) => parts.length > 0 || definition.isPresent(word),
     )
-    .map(({ definition, parts }, index) => ({
+    .map(({ definition, parts }) => ({
       id: definition.id,
       label: definition.label,
-      heading: `${romanize(index + 1)}. ${definition.label}`,
+      heading: definition.label,
+      note: definition.note,
       parts,
       subsections: parts.length > 1 ? parts : [],
     }))
