@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Select from 'react-select'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { matchesFindspot } from 'map/domain/findspotFilter'
+import { normalizeMapFilter } from 'map/domain/mapUrlState'
 
 interface Props {
   provenances: readonly ProvenanceRecord[]
@@ -19,7 +20,17 @@ export default function FindspotFilterInput({
   filter,
   onFilterChange,
 }: Props): JSX.Element {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(filter)
+  const internallyRequestedFilterRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (internallyRequestedFilterRef.current === filter) {
+      internallyRequestedFilterRef.current = null
+      return
+    }
+    internallyRequestedFilterRef.current = null
+    setInputValue(filter)
+  }, [filter])
 
   const options = useMemo<FindspotOption[]>(
     () =>
@@ -38,31 +49,42 @@ export default function FindspotFilterInput({
     selectedOption ?? (filter ? { value: filter, label: filter } : null)
 
   return (
-    <Select<FindspotOption>
-      value={value}
-      controlShouldRenderValue={selectedOption !== null}
-      inputValue={inputValue}
-      onInputChange={(nextInput, meta) => {
-        if (meta.action === 'input-change') {
-          setInputValue(nextInput)
-          onFilterChange(nextInput)
+    <>
+      <label htmlFor="findspot-filter-input">Search sites</label>
+      <Select<FindspotOption>
+        inputId="findspot-filter-input"
+        value={value}
+        controlShouldRenderValue={selectedOption !== null}
+        inputValue={inputValue}
+        onInputChange={(nextInput, meta) => {
+          if (meta.action === 'input-change') {
+            const nextFilter = normalizeMapFilter(nextInput)
+            if (nextFilter !== filter) {
+              internallyRequestedFilterRef.current = nextFilter
+            }
+            setInputValue(nextFilter)
+            onFilterChange(nextFilter)
+          }
+        }}
+        onChange={(option) => {
+          const nextFilter = option ? option.value : ''
+          if (nextFilter !== filter) {
+            internallyRequestedFilterRef.current = nextFilter
+          }
+          setInputValue('')
+          onFilterChange(nextFilter)
+        }}
+        options={options}
+        filterOption={(option, rawInput) =>
+          matchesFindspot(option.label, rawInput)
         }
-      }}
-      onChange={(option) => {
-        setInputValue('')
-        onFilterChange(option ? option.value : '')
-      }}
-      options={options}
-      filterOption={(option, rawInput) =>
-        matchesFindspot(option.label, rawInput)
-      }
-      placeholder="Filter by site name..."
-      aria-label="Filter findspots by name"
-      classNamePrefix="findspot-filter"
-      isClearable
-      menuPortalTarget={document.body}
-      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-      noOptionsMessage={() => 'No site names match your filter.'}
-    />
+        placeholder="Search archaeological sites…"
+        classNamePrefix="findspot-filter"
+        isClearable
+        menuPortalTarget={document.body}
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        noOptionsMessage={() => 'No site names match your filter.'}
+      />
+    </>
   )
 }

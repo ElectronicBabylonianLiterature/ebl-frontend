@@ -12,6 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - yarn
 - Node 24
+- Python 3.11+ (`python3` on PATH) for map-generator tests; CI and the dev container include it.
 - Chrome (for Lighthouse)
 
 The following services are needed to run application:

@@ -1,3 +1,5 @@
+export const defaultCacheScope = 'default'
+
 export type CacheEntry<CacheValue> = {
   readonly expiresAt: number
   readonly value: CacheValue

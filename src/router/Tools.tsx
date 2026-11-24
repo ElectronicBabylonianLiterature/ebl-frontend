@@ -77,34 +77,55 @@ export default function Tools({
 
   const currentTab = getCurrentTab(selectedTab)
   const displayTitle = getDisplayTitle(selectedTab)
+  const visibleTabs = tabConfig.filter((tab) => isTabVisible(tab.id, session))
 
   return (
     <AppContent
       crumbs={getToolsBreadcrumbs(displayTitle, selectedTab)}
       title="Tools"
     >
-      <Container className="tools-container">
+      <Container
+        className={`tools-container${selectedTab === 'map' ? ' tools-container--map' : ''}`}
+      >
         <Row>
           <Col xs={12} md={3} className="tools-sidebar">
+            {selectedTab === 'map' ? (
+              <label className="tools-map-navigation">
+                Choose a tool
+                <select
+                  className="form-select"
+                  value={selectedTab}
+                  onChange={(event) => {
+                    const tab = event.currentTarget.value as TabId
+                    handleSelect(tab)
+                    history.push(`/tools/${tab}`)
+                  }}
+                >
+                  {visibleTabs.map((tab) => (
+                    <option key={tab.id} value={tab.id}>
+                      {tab.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
             <Nav className="flex-column tools-nav">
-              {tabConfig
-                .filter((tab) => isTabVisible(tab.id, session))
-                .map((tab) => (
-                  <Nav.Link
-                    key={tab.id}
-                    as={Link}
-                    to={`/tools/${tab.id}`}
-                    className={`tools-nav__item ${
-                      selectedTab === tab.id ? 'active' : ''
-                    }`}
-                    onClick={() => handleSelect(tab.id)}
-                  >
-                    <span className="tools-nav__icon" aria-hidden="true">
-                      {tab.icon}
-                    </span>
-                    <span className="tools-nav__title">{tab.title}</span>
-                  </Nav.Link>
-                ))}
+              {visibleTabs.map((tab) => (
+                <Nav.Link
+                  key={tab.id}
+                  as={Link}
+                  to={`/tools/${tab.id}`}
+                  className={`tools-nav__item ${
+                    selectedTab === tab.id ? 'active' : ''
+                  }`}
+                  onClick={() => handleSelect(tab.id)}
+                >
+                  <span className="tools-nav__icon" aria-hidden="true">
+                    {tab.icon}
+                  </span>
+                  <span className="tools-nav__title">{tab.title}</span>
+                </Nav.Link>
+              ))}
             </Nav>
           </Col>
 
