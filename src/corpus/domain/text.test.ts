@@ -1,5 +1,3 @@
-import { chapter } from 'test-support/test-corpus-text'
-import { ChapterAlignment } from 'corpus/domain/alignment'
 import { createLine, createManuscriptLine } from 'corpus/domain/line'
 import { createChapter, createText } from 'corpus/domain/text'
 import { textIdToString } from 'transliteration/domain/text-id'
@@ -68,47 +66,6 @@ describe('Text', () => {
 
 describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
-
-  test('alignment', () => {
-    expect(chapter.alignment).toEqual(
-      new ChapterAlignment([
-        [
-          [
-            {
-              alignment: [
-                {
-                  value: 'kur',
-                  alignment: null,
-                  variant: null,
-                  isAlignable: true,
-                  suggested: false,
-                },
-                {
-                  value: 'ra',
-                  alignment: 1,
-                  variant: {
-                    value: 'ra',
-                    type: 'Word',
-                    language: 'AKKADIAN',
-                  },
-                  isAlignable: true,
-                  suggested: false,
-                },
-                {
-                  value: '...',
-                  alignment: null,
-                  variant: null,
-                  isAlignable: false,
-                  suggested: false,
-                },
-              ],
-              omittedWords: [],
-            },
-          ],
-        ],
-      ]),
-    )
-  })
 })
 
 describe('Manuscript', () => {

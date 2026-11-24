@@ -79,7 +79,6 @@ test('a new line is posted and becomes the last line of the chapter', async () =
   expect(selectedOptions()).toEqual([options()[3]])
   expect(screen.queryByText('new')).not.toBeInTheDocument()
   expect(button('Save line')).toBeDisabled()
-  expect(screen.getByTestId('edit-lite-line-count')).toHaveTextContent('4')
   expect(fakeApi.client.postJson).toHaveBeenCalledTimes(1)
   fakeApi.verifyExpectations()
 })

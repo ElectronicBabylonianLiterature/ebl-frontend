@@ -1,6 +1,5 @@
 import { immerable } from 'immer'
-import { ChapterAlignment } from 'corpus/domain/alignment'
-import { createLineAlignment, Line, ManuscriptLine } from 'corpus/domain/line'
+import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import { TextId } from 'transliteration/domain/text-id'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -49,21 +48,6 @@ export class Chapter implements ChapterProps {
       textId: this.textId,
       stage: this.stage,
       name: this.name,
-    }
-  }
-
-  get alignment(): ChapterAlignment {
-    return new ChapterAlignment(this.lines.map(createLineAlignment))
-  }
-
-  getSiglum(manuscriptLine: ManuscriptLine): string {
-    const manuscript = this.manuscripts.find(
-      (candidate) => candidate.id === manuscriptLine.manuscriptId,
-    )
-    if (manuscript) {
-      return manuscript.siglum
-    } else {
-      return `<unknown ID: ${manuscriptLine.manuscriptId}>`
     }
   }
 }

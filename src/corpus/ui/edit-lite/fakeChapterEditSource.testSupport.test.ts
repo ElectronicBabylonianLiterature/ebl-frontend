@@ -1,4 +1,3 @@
-import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { createLineAlignment, Line } from 'corpus/domain/line'
 import { setAlignmentToken, setOmittedWords } from 'corpus/domain/alignment'
 import { setReconstructionLemma } from 'corpus/domain/lemmatization'
@@ -33,14 +32,6 @@ test('the fake source serves a line with its tokens', async () => {
     annotateLine(lines[1]),
   )
   await expect(source.loadLines(1, 1)).resolves.toEqual([lines[1]])
-})
-
-test('the fake legacy source has no tokens', async () => {
-  const source = createFakeChapterEditSource({ lines, kind: 'legacy' })
-
-  await expect(source.loadAnnotatedLine(0)).rejects.toThrow(
-    new Error(annotationsNotAvailableMessage),
-  )
 })
 
 test('the fake source stores an alignment on its line only', async () => {
@@ -121,24 +112,6 @@ test('the fake source searches its dictionary', async () => {
     createFakeChapterEditSource({ lines }).searchLemma('el'),
   ).resolves.toEqual([])
 })
-
-test.each([[{ kind: 'legacy' } as const], [{ canSave: false } as const]])(
-  'the fake source %o does not store annotations',
-  async (options) => {
-    const source = createFakeChapterEditSource({ lines, ...options })
-    const annotatedLine = annotateLine(lines[0])
-
-    await expect(
-      source.saveAlignment(0, createLineAlignment(annotatedLine)),
-    ).rejects.toThrow('Saving is not available.')
-    await expect(
-      source.saveLemmatization(
-        0,
-        await source.loadLemmatization(annotatedLine),
-      ),
-    ).rejects.toThrow('Saving is not available.')
-  },
-)
 
 test('the fake source counts and lemmatizes the instances of a word and creates proper nouns', async () => {
   const source = createFakeChapterEditSource({ lines, ...dictionary })

@@ -1,10 +1,12 @@
 import { chapterId } from 'corpus/application/TextService.testSupport'
-import { chapterDto } from 'test-support/test-corpus-text'
+import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
+import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { deferred, settle } from 'test-support/concurrencyLimiterHelpers'
 import {
   createChapterCacheTestContext,
   createHttpSuccessPostJsonMock,
   freshDisplayDto,
+  noLineChanges,
   staleDisplayDto,
 } from 'corpus/application/TextService.cacheInvalidation.testSupport'
 
@@ -20,7 +22,7 @@ test('an old pending read cannot repopulate the cache after a save', async () =>
   const oldRead = service.findChapterDisplay(chapterId)
   await settle()
 
-  await service.updateLines(chapterId, [])
+  await service.updateEditedLines(chapterId, noLineChanges)
   oldResponse.resolve(staleDisplayDto)
   await oldRead
   apiClient.fetchJson.mockResolvedValue(freshDisplayDto)
@@ -40,7 +42,7 @@ test('an old pending read cannot replace a newer display or its request', async 
     .mockReturnValueOnce(freshResponse.promise)
   const oldRead = service.findChapterDisplay(chapterId)
   await settle()
-  await service.updateLines(chapterId, [])
+  await service.updateEditedLines(chapterId, noLineChanges)
   const freshRead = service.findChapterDisplay(chapterId)
   await settle()
 
@@ -59,38 +61,20 @@ test('an old pending read cannot replace a newer display or its request', async 
 
 test('invalidates a read started while the save is pending', async () => {
   const { apiClient, service } = createChapterCacheTestContext()
-  const saveResponse = deferred<typeof chapterDto>()
+  const saveResponse = deferred<ChapterOutline>()
   apiClient.postJson.mockImplementationOnce(
     createHttpSuccessPostJsonMock(saveResponse.promise),
   )
-  const save = service.updateLines(chapterId, [])
+  const save = service.updateEditedLines(chapterId, noLineChanges)
   await service.findChapterDisplay(chapterId)
 
-  saveResponse.resolve(chapterDto)
+  saveResponse.resolve(apiOutline)
   await save
   apiClient.fetchJson.mockResolvedValue(freshDisplayDto)
 
   await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
     atf: 'saved display',
   })
-  expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
-})
-
-test('invalidates when POST succeeds before provenance loading finishes', async () => {
-  const { apiClient, fragmentServiceMock, service } =
-    createChapterCacheTestContext()
-  await service.findChapterDisplay(chapterId)
-  const provenances = deferred<never[]>()
-  fragmentServiceMock.fetchProvenances.mockReturnValueOnce(provenances.promise)
-  const save = service.updateLines(chapterId, [])
-  await settle()
-  apiClient.fetchJson.mockResolvedValue(freshDisplayDto)
-
-  await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
-    atf: 'saved display',
-  })
-  provenances.resolve([])
-  await save
   expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
 })
 
@@ -100,17 +84,17 @@ test('scope changes during a save cannot preserve old display data', async () =>
     () => scope.current,
   )
   const oldResponse = deferred<typeof staleDisplayDto>()
-  const saveResponse = deferred<typeof chapterDto>()
+  const saveResponse = deferred<ChapterOutline>()
   apiClient.fetchJson.mockReturnValueOnce(oldResponse.promise)
   apiClient.postJson.mockImplementationOnce(
     createHttpSuccessPostJsonMock(saveResponse.promise),
   )
   const oldRead = service.findChapterDisplay(chapterId)
-  const save = service.updateLines(chapterId, [])
+  const save = service.updateEditedLines(chapterId, noLineChanges)
   await settle()
 
   scope.current = 'user-b'
-  saveResponse.resolve(chapterDto)
+  saveResponse.resolve(apiOutline)
   await save
   oldResponse.resolve(staleDisplayDto)
   await oldRead

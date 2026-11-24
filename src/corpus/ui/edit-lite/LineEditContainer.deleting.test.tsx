@@ -1,7 +1,6 @@
 import React from 'react'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { toDeletedLineDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
@@ -14,10 +13,7 @@ import {
   renderEditedContainer,
   renderLoadedContainer,
 } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
-import {
-  deleteDryRunNotice,
-  discardedChangesNote,
-} from 'corpus/ui/edit-lite/LineEditToolbar'
+import { discardedChangesNote } from 'corpus/ui/edit-lite/LineEditToolbar'
 import {
   deleteDialog,
   deleteSelectedLine,
@@ -132,32 +128,4 @@ test('a failed deletion shows the error next to the line and can be repeated', a
   await expectLoadedLine('2')
   expect(source.deleteLine).toHaveBeenCalledTimes(2)
   expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-})
-
-test('a read-only source previews the deletion instead of sending it', async () => {
-  const { source } = await renderLoadedContainer({ kind: 'legacy', lines })
-  await deleteSelectedLine()
-  const dialog = within(screen.getByRole('dialog', { name: 'Request preview' }))
-
-  expect(dialog.getByText(deleteDryRunNotice)).toBeVisible()
-  expect(deleteDryRunNotice).toContain('nothing was sent')
-  expect(
-    dialog.getByText(
-      'POST /texts/L/1/2/chapters/Standard%20Babylonian/I/lines?view=outline&revision=revision-1',
-    ),
-  ).toBeVisible()
-  expect(dialog.getByLabelText('Request body')).toHaveTextContent(
-    JSON.stringify(toDeletedLineDto(0), null, 2),
-    { normalizeWhitespace: false },
-  )
-  expect(source.describeChange).toHaveBeenCalledWith({
-    type: 'deleteLine',
-    index: 0,
-  })
-  expect(source.deleteLine).not.toHaveBeenCalled()
-
-  await userEvent.click(dialog.getByText('Close', { selector: '.btn' }))
-
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  expect(screen.getByLabelText('Number')).toHaveValue('1')
 })

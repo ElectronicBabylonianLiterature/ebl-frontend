@@ -6,10 +6,7 @@ import {
   createVariant,
   Line,
 } from 'corpus/domain/line'
-import {
-  buildEditLiteLines,
-  createFakeChapterEditSource,
-} from 'corpus/ui/edit-lite/editLite.testSupport'
+import { buildEditLiteLines } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
   button,
   listAlignments,
@@ -40,7 +37,7 @@ test('on the last word Enter and Tab save what was accepted and leave no word ac
   await userEvent.click(wordButton(manuscriptRow(2), 'e-li-iš'))
   await userEvent.keyboard('{Enter}')
   await waitFor(() => expect(source.saveAlignment).toHaveBeenCalledTimes(1))
-  await waitFor(() => expect(button('Preview request')).toBeEnabled())
+  await waitFor(() => expect(button('Reset')).toBeInTheDocument())
 
   expect(queryActivePopover()).not.toBeInTheDocument()
   expect(listAlignments(await source.loadAnnotatedLine(0))).toEqual([
@@ -50,17 +47,6 @@ test('on the last word Enter and Tab save what was accepted and leave no word ac
   expect(wordLabel(manuscriptRow(2), 'e-li-iš')).not.toHaveClass(
     'Word--suggestion',
   )
-})
-
-test('a source that cannot save keeps the accepted values on the line', async () => {
-  const source = createFakeChapterEditSource({ lines, canSave: false })
-  const { getState } = await renderLoadedView('Alignment', { source, lines })
-  await userEvent.click(wordButton(manuscriptRow(2), 'e-li-iš'))
-  await userEvent.keyboard('{Enter}')
-
-  expect(queryActivePopover()).not.toBeInTheDocument()
-  expect(source.saveAlignment).not.toHaveBeenCalled()
-  expect(getState().lines[0].annotation?.draft).not.toBeNull()
 })
 
 test('a line without alignable words has no active word', async () => {

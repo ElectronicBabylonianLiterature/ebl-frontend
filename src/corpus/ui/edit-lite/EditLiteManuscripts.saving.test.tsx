@@ -3,8 +3,6 @@ import userEvent from '@testing-library/user-event'
 import { produce } from 'immer'
 import TextService from 'corpus/application/TextService'
 import { Manuscript } from 'corpus/domain/manuscript'
-import { manuscriptsNotice } from 'corpus/ui/edit-lite/EditLiteManuscripts'
-import { manuscriptsPreviewNotice } from 'corpus/ui/edit-lite/EditLiteManuscriptPreview'
 import {
   buildManuscripts,
   createManuscriptsContext,
@@ -46,9 +44,7 @@ function saveButton(): HTMLElement {
 }
 
 function createSavingContext(): ManuscriptsContext {
-  const context = createManuscriptsContext({ kind: 'api', canSave: true })
-  context.actions.saveManuscripts.mockResolvedValue(undefined)
-  return context
+  return createManuscriptsContext()
 }
 
 async function renderEdited(context: ManuscriptsContext): Promise<void> {
@@ -72,7 +68,6 @@ test('there is nothing to save before something was edited', async () => {
   await renderLoadedManuscripts(services, { context })
 
   expect(saveButton()).toBeDisabled()
-  expect(screen.queryByText(manuscriptsNotice)).not.toBeInTheDocument()
   expect(context.actions.reportUnsavedManuscripts.mock.calls).toEqual([[false]])
 })
 
@@ -118,27 +113,6 @@ test('a rejected save shows the reason next to the manuscripts and keeps the edi
 
   expect(context.actions.saveManuscripts).toHaveBeenCalledTimes(2)
   expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-})
-
-test('a read-only source previews the save instead of sending it', async () => {
-  const context = createManuscriptsContext()
-  await renderEdited(context)
-
-  expect(screen.getByText(manuscriptsNotice)).toBeVisible()
-
-  await userEvent.click(saveButton())
-  const dialog = within(screen.getByRole('dialog', { name: 'Request preview' }))
-
-  expect(dialog.getByText(manuscriptsPreviewNotice)).toBeVisible()
-  expect(
-    dialog.getByText(
-      'POST /texts/L/1/2/chapters/Standard%20Babylonian/I/manuscripts?view=outline',
-    ),
-  ).toBeVisible()
-  expect(dialog.getByLabelText('Request body')).toHaveTextContent(
-    '"notes": "first note!"',
-  )
-  expect(context.actions.saveManuscripts).not.toHaveBeenCalled()
 })
 
 test('reports whether the manuscripts have unsaved edits', async () => {

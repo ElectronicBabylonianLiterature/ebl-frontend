@@ -2,6 +2,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import {
   freshDisplayDto,
+  noLineChanges,
   staleDisplayDto,
 } from 'corpus/application/TextService.cacheInvalidation.testSupport'
 import { chapterId } from 'corpus/application/TextService.testSupport'
@@ -40,7 +41,9 @@ test('HTTP-successful save with invalid JSON invalidates a warm display', async 
   })
 
   fetchMock.mockResponseOnce('{', { status: 200 })
-  await expect(service.updateLines(chapterId, [])).rejects.toThrow()
+  await expect(
+    service.updateEditedLines(chapterId, noLineChanges),
+  ).rejects.toThrow()
   fetchMock.mockResponseOnce(JSON.stringify(freshDisplayDto))
 
   await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
@@ -57,7 +60,9 @@ test('HTTP-rejected save retains a warm display', async () => {
   fetchMock.mockResponseOnce(JSON.stringify({ description: 'Rejected' }), {
     status: 400,
   })
-  await expect(service.updateLines(chapterId, [])).rejects.toThrow('Rejected')
+  await expect(
+    service.updateEditedLines(chapterId, noLineChanges),
+  ).rejects.toThrow('Rejected')
 
   await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
     atf: 'old display',
@@ -71,7 +76,9 @@ test('network-failed save retains a warm display', async () => {
   await service.findChapterDisplay(chapterId)
 
   fetchMock.mockRejectOnce(new Error('offline'))
-  await expect(service.updateLines(chapterId, [])).rejects.toThrow('offline')
+  await expect(
+    service.updateEditedLines(chapterId, noLineChanges),
+  ).rejects.toThrow('offline')
 
   await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
     atf: 'old display',

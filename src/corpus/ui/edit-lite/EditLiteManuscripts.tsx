@@ -10,8 +10,6 @@ import { sortProvenances } from 'fragmentarium/domain/Provenance'
 import withData from 'http/withData'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
-export { manuscriptsNotice } from 'corpus/ui/edit-lite/EditLiteManuscriptsEditor'
-
 interface Props {
   readonly id: ChapterId
   readonly uncertainFragments: readonly string[]

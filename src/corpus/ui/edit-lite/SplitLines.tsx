@@ -1,7 +1,9 @@
 import React, { useEffect, useId, useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import { LineOutline } from 'corpus/application/edit-lite/chapterOutline'
-import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
+import {
+  LineOutline,
+  toLineOutline,
+} from 'corpus/application/edit-lite/chapterOutline'
 import { createLine } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'

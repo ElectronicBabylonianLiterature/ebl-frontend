@@ -5,7 +5,8 @@ import {
   createTextServiceTestContext,
   TextServiceTestContext,
 } from 'corpus/application/TextService.testSupport'
-import { chapterDto } from 'test-support/test-corpus-text'
+import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
+import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
 
 export const staleDisplayDto = {
   ...chapterDisplayDto,
@@ -14,6 +15,12 @@ export const staleDisplayDto = {
 }
 
 export const freshDisplayDto = { ...staleDisplayDto, atf: 'saved display' }
+
+export const noLineChanges: LinesUpdateDto = {
+  new: [],
+  deleted: [],
+  edited: [],
+}
 
 type ChapterCacheTestContext = TextServiceTestContext & {
   readonly service: TextService
@@ -36,7 +43,7 @@ export function createChapterCacheTestContext(
   context.fragmentServiceMock.fetchProvenances.mockResolvedValue([])
   context.apiClient.fetchJson.mockResolvedValue(staleDisplayDto)
   context.apiClient.postJson.mockImplementation(
-    createHttpSuccessPostJsonMock(Promise.resolve(chapterDto)),
+    createHttpSuccessPostJsonMock(Promise.resolve(apiOutline)),
   )
   return { ...context, service: context.createService(getCacheScope) }
 }

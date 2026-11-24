@@ -4,12 +4,10 @@ import _ from 'lodash'
 import { Alert, Button } from 'react-bootstrap'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Spinner from 'common/ui/Spinner'
-import { ChapterRequest } from 'corpus/application/edit-lite/ChapterEditSource'
 import { Manuscript } from 'corpus/domain/manuscript'
 import { Provenance } from 'corpus/domain/provenance'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import EditLiteManuscriptList from 'corpus/ui/edit-lite/EditLiteManuscriptList'
-import EditLiteManuscriptPreview from 'corpus/ui/edit-lite/EditLiteManuscriptPreview'
 import EditLiteUncertainFragments from 'corpus/ui/edit-lite/EditLiteUncertainFragments'
 import {
   addManuscript,
@@ -36,22 +34,18 @@ interface Props {
   readonly data: ManuscriptsData
 }
 
-export const manuscriptsNotice =
-  'Edits are kept on this page only: nothing is sent to the server.'
-
 export default function EditLiteManuscriptsEditor({
   uncertainFragments,
   searchBibliography,
   data,
 }: Props): JSX.Element {
-  const { actions, canSave, canWrite, describeChange } = useEditLiteContext()
+  const { actions, canWrite } = useEditLiteContext()
   const [manuscripts, setManuscripts] = useState<readonly Manuscript[]>(
     data.manuscripts,
   )
   const [fragments, setFragments] =
     useState<readonly string[]>(uncertainFragments)
   const [openIndices, setOpenIndices] = useState<readonly number[]>([])
-  const [preview, setPreview] = useState<ChapterRequest | null>(null)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const stableSearchBibliography = useStableCallback(searchBibliography)
@@ -91,12 +85,6 @@ export default function EditLiteManuscriptsEditor({
     setOpenIndices([...openIndices, manuscripts.length])
     setManuscripts(addManuscript(manuscripts))
   }
-  const describe = (): ChapterRequest =>
-    describeChange({
-      type: 'saveManuscripts',
-      manuscripts,
-      uncertainFragments: fragments,
-    })
   const save = (): void => {
     setIsSaving(true)
     setError(null)
@@ -131,25 +119,13 @@ export default function EditLiteManuscriptsEditor({
               size="sm"
               variant="primary"
               disabled={isSaving || !hasUnsaved}
-              onClick={canSave ? save : (): void => setPreview(describe())}
+              onClick={save}
             >
               Save manuscripts
-            </Button>
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              onClick={(): void => setPreview(describe())}
-            >
-              Preview request
             </Button>
           </>
         )}
         {isSaving && <Spinner>Saving...</Spinner>}
-        {canWrite && !canSave && (
-          <span className="edit-lite-manuscript-list__notice">
-            {manuscriptsNotice}
-          </span>
-        )}
       </div>
       <EditLiteManuscriptList
         manuscripts={manuscripts}
@@ -168,10 +144,6 @@ export default function EditLiteManuscriptsEditor({
         onChange={setFragments}
         readOnly={!canWrite}
         disabled={isSaving}
-      />
-      <EditLiteManuscriptPreview
-        request={preview}
-        onHide={(): void => setPreview(null)}
       />
     </section>
   )

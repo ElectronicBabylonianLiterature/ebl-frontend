@@ -1,12 +1,8 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  annotationsNotAvailableMessage,
-  chapterChangedMessage,
-} from 'corpus/application/edit-lite/chapterChangeMessages'
+import { chapterChangedMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { Line } from 'corpus/domain/line'
 import { staleAnnotationNote } from 'corpus/ui/edit-lite/AnnotationFrame'
-import { dryRunNotice } from 'corpus/ui/edit-lite/DryRunModal'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
@@ -22,7 +18,6 @@ import {
   renderContainer,
   renderLoadedContainer,
 } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
-import { lineDryRunNotice } from 'corpus/ui/edit-lite/LineEditToolbar'
 import {
   button,
   listDisabledViews,
@@ -127,42 +122,6 @@ test('without permission to write the alignment is shown read-only', async () =>
   )
   expect(panel.getByText('e-nu-ma')).toHaveClass('Word--suggestion')
   expect(source.loadAnnotatedLine).toHaveBeenCalledTimes(1)
-})
-
-test('the read-only snapshot says that it has no tokens and offers no retry', async () => {
-  const source = createFakeChapterEditSource({ lines, kind: 'legacy' })
-  await renderLoadedContainer({ source, lines })
-  await openLineView('Alignment')
-
-  expect(await screen.findByRole('alert')).toHaveTextContent(
-    annotationsNotAvailableMessage,
-  )
-  expect(
-    screen.queryByRole('button', { name: 'Retry' }),
-  ).not.toBeInTheDocument()
-  expect(
-    screen.queryByRole('button', { name: 'Save alignment' }),
-  ).not.toBeInTheDocument()
-
-  await openLineView('Lemmatization')
-
-  expect(alert()).toHaveTextContent(annotationsNotAvailableMessage)
-  expect(source.loadAnnotatedLine).toHaveBeenCalledTimes(1)
-  expect(source.loadLemmatization).not.toHaveBeenCalled()
-})
-
-test('a source that cannot save shows the request instead of saving', async () => {
-  const source = createFakeChapterEditSource({ lines, canSave: false })
-  await renderLoadedView('Alignment', { source, lines })
-  await omitWord(manuscriptRow(1), 'eliš')
-  await userEvent.click(button('Save alignment'))
-  const preview = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  )
-
-  expect(preview.getByText(dryRunNotice)).toBeVisible()
-  expect(screen.getByText(lineDryRunNotice)).toBeVisible()
-  expect(source.saveAlignment).not.toHaveBeenCalled()
 })
 
 test('changes made on a line that changed on the server can only be reset', async () => {

@@ -48,12 +48,9 @@ export default function useEditLite(
   const manuscripts = state.outline.manuscripts
   const context = useMemo<EditLiteContextValue>(
     () => ({
-      kind: source.kind,
-      canSave: source.canSave && canWrite,
       canWrite,
       manuscripts,
       actions,
-      describeChange: (change) => source.describeChange(change),
       searchLemma: (query) => source.searchLemma(query),
       createProperNoun: (lemma, namedEntityTag) =>
         source.createProperNoun(lemma, namedEntityTag),

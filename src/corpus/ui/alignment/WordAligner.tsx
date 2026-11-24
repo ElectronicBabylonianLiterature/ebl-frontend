@@ -1,20 +1,12 @@
 import React, { useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import Word from 'corpus/ui/alignment/Word'
 
 import 'corpus/ui/alignment/WordAligner.css'
 
 import { Token } from 'transliteration/domain/token'
 import { alignToken, AlignmentToken } from 'corpus/domain/alignment'
-import ModalButton from 'common/ui/ModalButton'
 import { isAnyWord } from 'transliteration/domain/type-guards'
-
-interface AlignerProps {
-  readonly token: AlignmentToken
-  readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly onChange: (token: AlignmentToken) => void
-}
 
 interface AlignmentInput {
   readonly fields: JSX.Element
@@ -78,49 +70,4 @@ export function useAlignmentInput(
     createToken: () =>
       alignToken(token, reconstructionTokens, alignment ?? null, variant),
   }
-}
-
-function AlignmentForm(props: AlignerProps) {
-  const { fields, createToken } = useAlignmentInput(
-    props.token,
-    props.reconstructionTokens,
-  )
-
-  return (
-    <Form className="WordAligner__form">
-      {fields}
-      <Button onClick={() => props.onChange(createToken())}>
-        Set alignment
-      </Button>
-    </Form>
-  )
-}
-
-export default function WordAligner({
-  token,
-  reconstructionTokens,
-  onChange,
-}: AlignerProps): JSX.Element {
-  const [show, setShow] = useState(false)
-
-  const handleChange = (value: AlignmentToken): void => {
-    onChange(value)
-    setShow(false)
-  }
-
-  const toggle = (
-    <Word token={token} reconstructionTokens={reconstructionTokens} />
-  )
-
-  const menu = (
-    <AlignmentForm
-      token={token}
-      reconstructionTokens={reconstructionTokens}
-      onChange={handleChange}
-    />
-  )
-
-  return (
-    <ModalButton onToggle={setShow} show={show} toggle={toggle} dialog={menu} />
-  )
 }

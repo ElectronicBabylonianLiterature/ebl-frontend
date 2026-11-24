@@ -1,4 +1,4 @@
-import { produce, castDraft, Draft, immerable } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { Token } from 'transliteration/domain/token'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
@@ -85,35 +85,6 @@ export function alignToken(
         isAlignable: true,
         suggested: false,
       }
-}
-
-export class ChapterAlignment {
-  readonly [immerable] = true
-  readonly lines: readonly ManuscriptAlignment[][][]
-
-  constructor(lines: readonly ManuscriptAlignment[][][]) {
-    this.lines = lines
-  }
-
-  getAlignment(
-    lineIndex: number,
-    variantIndex: number,
-    manuscriptIndex: number,
-  ): ManuscriptAlignment {
-    return this.lines[lineIndex][variantIndex][manuscriptIndex]
-  }
-
-  setAlignment(
-    lineIndex: number,
-    variantIndex: number,
-    manuscriptIndex: number,
-    alignment: ManuscriptAlignment,
-  ): ChapterAlignment {
-    return produce(this, (draft: Draft<ChapterAlignment>) => {
-      draft.lines[lineIndex][variantIndex][manuscriptIndex] =
-        castDraft(alignment)
-    })
-  }
 }
 
 export function createAlignmentToken(token: Token): AlignmentToken {

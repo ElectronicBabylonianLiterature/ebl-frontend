@@ -7,7 +7,7 @@ import MarkupService from 'markup/application/MarkupService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextView from 'corpus/ui/TextView'
 import ChapterView from 'corpus/ui/ChapterView'
-import ChapterEditView from 'corpus/ui/ChapterEditView'
+import ChapterEditLiteView from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import ChapterSiglumsAndTransliterations from 'corpus/ui/ChapterSiglumsAndTransliterations'
 import ManuscriptsTable from 'corpus/ui/ManuscriptsTable'
 import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
@@ -66,17 +66,17 @@ const getters: [string, () => JSX.Element, PendingReadInstaller][] = [
     (read) => textService.find.mockImplementation(read),
   ],
   [
-    'ChapterEditView → findChapter',
+    'ChapterEditLiteView → findChapterOutline',
     () => (
-      <ChapterEditView
+      <ChapterEditLiteView
         id={chapterId}
         textService={textService}
         bibliographyService={bibliographyService}
         fragmentService={fragmentService}
-        wordService={wordService}
+        search=""
       />
     ),
-    (read) => textService.findChapter.mockImplementation(read),
+    (read) => textService.findChapterOutline.mockImplementation(read),
   ],
   [
     'ChapterSiglumsAndTransliterations → findColophons',
@@ -122,7 +122,7 @@ beforeEach(() => {
   jest.clearAllMocks()
   const never = new Promise<never>(() => undefined)
   textService.find.mockReturnValue(never)
-  textService.findChapter.mockReturnValue(never)
+  textService.findChapterOutline.mockReturnValue(never)
   textService.findChapterDisplay.mockReturnValue(never)
 })
 

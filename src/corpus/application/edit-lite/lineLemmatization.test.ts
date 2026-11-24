@@ -7,17 +7,17 @@ import {
   maximumWordsPerSuggestionRequest,
   wordNotFoundMessage,
 } from 'corpus/application/edit-lite/lineLemmatization'
-import CorpusLemmatizationFactory from 'corpus/application/CorpusLemmatizationFactory'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
   createManuscriptLine,
   createVariant,
   Line,
 } from 'corpus/domain/line'
-import { createChapter } from 'corpus/domain/text'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 import Lemma from 'transliteration/domain/Lemma'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import { Token } from 'transliteration/domain/token'
 
 function buildWord(id: string): Word {
@@ -123,45 +123,50 @@ function createSource(): jest.Mocked<LineLemmaSource> {
   }
 }
 
-function createClassicFactory(): CorpusLemmatizationFactory {
-  return new CorpusLemmatizationFactory(
-    {
-      findSuggestions: (word: string, isNormalized: boolean) =>
-        Promise.resolve(
-          findSuggestions([{ word, isNormalized }])[0].lemmas.map((lemma) =>
-            lemma.map((dictionaryWord) => new Lemma(dictionaryWord)),
-          ),
-        ),
-    },
-    {
-      find: (id: string) =>
-        Promise.resolve(words.find((word) => word._id === id) as Word),
-    },
+function lemmatizedWord(
+  value: string,
+  uniqueLemma: readonly Word[],
+  suggestions: readonly (readonly Word[])[],
+  suggested = false,
+): LemmatizationToken {
+  return new LemmatizationToken(
+    value,
+    true,
+    uniqueLemma.map((word) => new Lemma(word)),
+    suggestions.map((suggestion) => suggestion.map((word) => new Lemma(word))),
+    suggested,
   )
 }
 
-it('gives what the classic factory gives for the line', async () => {
-  const [expected] = await createClassicFactory().createLemmatization(
-    createChapter({ lines: [line] }),
-  )
+const expectedLemmatization: readonly LineLemmatization[] = [
+  [
+    [
+      new LemmatizationToken('%n', false),
+      lemmatizedWord('šarru#', [], [[sharru], [otherSharru]]),
+      lemmatizedWord('bēlu#', [belu, aklu], [[belu, aklu]], true),
+      lemmatizedWord('ina#', [], []),
+      lemmatizedWord('aklu#', [aklu], []),
+      lemmatizedWord('šarru#', [], [[sharru], [otherSharru]]),
+    ],
+    [
+      [
+        lemmatizedWord('šar-ru#', [sharru, otherSharru], []),
+        lemmatizedWord('be-lu#', [], []),
+        new LemmatizationToken('...', false),
+      ],
+      [],
+    ],
+  ],
+  [
+    [lemmatizedWord('šarru#', [otherSharru], [[otherSharru]], true)],
+    [[lemmatizedWord('ak-lu#', [aklu], [])]],
+  ],
+]
 
+it('lemmatizes the line with its stored lemmas and the suggestions', async () => {
   const lemmatization = await createLineLemmatization(line, createSource())
 
-  expect(lemmatization).toEqual(expected)
-  expect(lemmatization[0][0][2]).toMatchObject({
-    value: 'bēlu#',
-    uniqueLemma: [new Lemma(belu), new Lemma(aklu)],
-    suggested: true,
-  })
-  expect(lemmatization[0][0][1]).toMatchObject({
-    uniqueLemma: [],
-    suggestions: [[new Lemma(sharru)], [new Lemma(otherSharru)]],
-    suggested: false,
-  })
-  expect(lemmatization[0][1][0][1]).toMatchObject({
-    uniqueLemma: [],
-    suggestions: [],
-  })
+  expect(lemmatization).toEqual(expectedLemmatization)
 })
 
 it('asks once for the distinct words that need suggestions and once for all lemmas', async () => {

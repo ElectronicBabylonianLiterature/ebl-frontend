@@ -3,9 +3,6 @@ import SerialQueue from 'common/utils/SerialQueue'
 import {
   ChapterChange,
   ChapterEditSource,
-  ChapterEditSourceKind,
-  ChapterRequest,
-  LinesUpdateDto,
   WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
@@ -14,10 +11,7 @@ import {
   numberedLineChangedMessage,
 } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
-import {
-  describeChapterChange,
-  toChapterUpdate,
-} from 'corpus/application/edit-lite/chapterRequests'
+import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
 import {
   areLinesEqual,
   toLineEditsDto,
@@ -59,8 +53,6 @@ function rejectRevisionConflict(error: unknown): never {
 }
 
 export class ApiChapterEditSource implements ChapterEditSource {
-  readonly kind: ChapterEditSourceKind = 'api'
-  readonly diagnostics: readonly string[] = []
   private readonly lineRequestLimiter = new ConcurrencyLimiter(
     maximumConcurrentLineRequests,
   )
@@ -70,7 +62,7 @@ export class ApiChapterEditSource implements ChapterEditSource {
   constructor(
     private readonly textService: ApiChapterEditTextService,
     private readonly id: ChapterId,
-    readonly canSave: boolean,
+    private readonly canWrite: boolean,
   ) {}
 
   loadOutline(signal?: AbortSignal): Promise<ChapterOutline> {
@@ -123,14 +115,6 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return this.textService
       .countWordInstances(this.id, word, this.revision)
       .catch(rejectRevisionConflict)
-  }
-
-  describeSave(index: number, draft: Line): LinesUpdateDto {
-    return toLineEditsDto(index, draft)
-  }
-
-  describeChange(change: ChapterChange): ChapterRequest {
-    return describeChapterChange(this.id, change, this.revision)
   }
 
   saveLine(
@@ -201,7 +185,7 @@ export class ApiChapterEditSource implements ChapterEditSource {
   private enqueue(
     save: () => Promise<ChapterOutline>,
   ): Promise<ChapterOutline> {
-    return this.canSave
+    return this.canWrite
       ? this.saveQueue.enqueue(save)
       : Promise.reject(new Error(savingNotPermittedMessage))
   }
@@ -216,11 +200,7 @@ export class ApiChapterEditSource implements ChapterEditSource {
       throw new Error(numberedLineChangedMessage(original.number))
     }
     return this.textService
-      .updateEditedLines(
-        this.id,
-        this.describeSave(index, draft),
-        this.revision,
-      )
+      .updateEditedLines(this.id, toLineEditsDto(index, draft), this.revision)
       .then((outline) => this.keepRevision(outline), rejectRevisionConflict)
   }
 

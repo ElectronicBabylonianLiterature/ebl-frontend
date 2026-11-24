@@ -1,27 +1,22 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { guestSession } from 'auth/Session'
-import {
-  editProvenanceRecords,
-  snapshotDto,
-} from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
+import { readOnlyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
-  legacyNotice,
-  readOnlyNotice,
-} from 'corpus/ui/edit-lite/ChapterEditLiteView'
-import {
+  chapterEditPath,
   countRequests,
   createEditLiteFakeApi,
   editFirstLine,
   editLiteChapterId,
   editLiteHeading,
-  editLitePath,
-  editLiteTextDto,
+  editLiteRedirectPath,
+  pageTabNames,
   renderEditLiteRoute,
   renderLoadedEditLiteRoute,
+  waitForLoadedEditLite,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import {
   buildEditLiteLines,
@@ -30,13 +25,9 @@ import {
 import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import {
-  missingRevisionNote,
-  moveDryRunNotice,
-} from 'corpus/ui/edit-lite/LineMoveControls'
-import {
   loadedEditor,
-  optionNumbers,
   options,
+  selectedOptions,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
 import AppDriver from 'test-support/AppDriver'
 import { createChapterUrl } from 'test-support/FakeApiExpectation'
@@ -46,7 +37,6 @@ jest.mock('editor/Editor', () =>
 )
 
 const chapterUrl = createChapterUrl(editLiteChapterId)
-const outlineUrl = `${chapterUrl}/outline`
 const snapshotUrl = `${chapterUrl}/display?lines=0&variants=0`
 const savedLineUrl = `${chapterUrl}/lines?offset=0&limit=1&revision=revision-2`
 const lines: readonly Line[] = buildEditLiteLines()
@@ -59,108 +49,82 @@ function createApiFakeApi(): EditLiteFakeApi {
     .allowChapterLines(outline, 0, 2, lines)
 }
 
-function createLegacyFakeApi(): EditLiteFakeApi {
-  const fakeApi = new EditLiteFakeApi().expectChapterAtfSnapshot(
-    editLiteChapterId,
-    snapshotDto,
+function countClassicRequests(fakeApi: EditLiteFakeApi): number {
+  return (
+    countRequests(fakeApi, chapterUrl) + countRequests(fakeApi, snapshotUrl)
   )
-  fakeApi
-    .allowProvenances(editProvenanceRecords.map((record) => ({ ...record })))
-    .expectText(editLiteTextDto)
-  return fakeApi
 }
 
-function sourceKind(): HTMLElement {
-  return screen.getByTestId('edit-lite-source-kind')
-}
-
-test('the application renders the split view from the new endpoints', async () => {
+test('the application renders the new editor at the edit route', async () => {
   const fakeApi = createApiFakeApi()
   const appDriver = new AppDriver(fakeApi.client)
     .withSession()
-    .withPath(editLitePath)
+    .withPath(chapterEditPath)
     .render()
 
-  await appDriver.waitForText('lite preview')
+  await appDriver.waitForText(editLiteHeading)
   const editor = await loadedEditor('1')
 
   expect(
     screen.getByRole('heading', { name: editLiteHeading }),
   ).toBeInTheDocument()
-  appDriver.breadcrumbs.expectCrumbs(['Corpus', 'Edit (lite preview)'])
+  appDriver.breadcrumbs.expectCrumbs(['Corpus', 'Edit'])
+  expect(pageTabNames()).toEqual(['Lines', 'Manuscripts', 'Import'])
   expect(options()).toHaveLength(lines.length)
   expect(within(editor).getByLabelText('Number')).toHaveValue('1')
-  expect(sourceKind()).toHaveTextContent('api')
-  expect(
-    screen.queryByText(legacyNotice, { exact: false }),
-  ).not.toBeInTheDocument()
+  expect(countClassicRequests(fakeApi)).toBe(0)
   fakeApi.verifyExpectations()
 })
 
-test('the route falls back to the existing endpoints', async () => {
-  const fakeApi = createLegacyFakeApi()
-  await renderLoadedEditLiteRoute({ fakeApi })
-
-  expect(sourceKind()).toHaveTextContent('legacy')
-  expect(screen.getByText(legacyNotice, { exact: false })).toBeInTheDocument()
-  expect(screen.getByTestId('edit-lite-line-count')).toHaveTextContent('2')
-  expect(screen.getByTestId('edit-lite-diagnostics')).toHaveTextContent('0')
-  expect(countRequests(fakeApi, outlineUrl)).toBe(1)
-  fakeApi.verifyExpectations()
-})
-
-test('a legacy source previews the request instead of saving', async () => {
-  const fakeApi = createLegacyFakeApi()
-  await renderLoadedEditLiteRoute({ fakeApi, search: '?source=legacy' })
-  await editFirstLine()
-
-  await userEvent.click(screen.getByRole('button', { name: 'Save line' }))
-  const body = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  ).getByLabelText('Request body')
-
-  expect(JSON.parse(body.textContent ?? '')).toMatchObject({
-    edited: [{ index: 0, line: { number: '1a' } }],
+test('the old lite address redirects to the edit route and keeps the line', async () => {
+  const manyLines = buildEditLiteLines(40)
+  const manyLinesOutline = buildEditLiteOutline(manyLines)
+  const fakeApi = createEditLiteFakeApi()
+    .expectChapterOutline(manyLinesOutline)
+    .allowAllChapterLines(manyLinesOutline, manyLines)
+  renderEditLiteRoute({
+    fakeApi,
+    path: editLiteRedirectPath,
+    search: '?line=40',
+    showLocation: true,
   })
-  expect(countRequests(fakeApi, outlineUrl)).toBe(0)
-  expect(fakeApi.client.postJson).not.toHaveBeenCalled()
+  await waitForLoadedEditLite()
+  const editor = await loadedEditor('40')
+
+  expect(screen.getByTestId('location')).toHaveTextContent(
+    `${chapterEditPath}?line=40`,
+  )
+  expect(within(editor).getByLabelText('Number')).toHaveValue('40')
+  expect(selectedOptions()).toEqual([options()[39]])
+  expect(countClassicRequests(fakeApi)).toBe(0)
+  fakeApi.verifyExpectations()
 })
 
-test('a legacy source previews a move and says that the revision is missing', async () => {
-  const fakeApi = createLegacyFakeApi()
-  await renderLoadedEditLiteRoute({ fakeApi, search: '?source=legacy' })
+test('the old lite address without parameters redirects to the edit route', async () => {
+  renderEditLiteRoute({
+    fakeApi: createApiFakeApi(),
+    path: editLiteRedirectPath,
+    showLocation: true,
+  })
+  await waitForLoadedEditLite()
   await loadedEditor('1')
 
-  await userEvent.click(screen.getByRole('button', { name: 'Move down' }))
-  const preview = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
+  expect(screen.getByTestId('location')).toHaveTextContent(
+    new RegExp(`^${chapterEditPath}$`),
   )
-
-  expect(
-    preview.getByText(`POST ${chapterUrl}/lines/move?view=outline`),
-  ).toBeVisible()
-  expect(
-    JSON.parse(preview.getByLabelText('Request body').textContent ?? ''),
-  ).toEqual({ from: 0, to: 1 })
-  expect(preview.getByText(moveDryRunNotice)).toBeVisible()
-  expect(moveDryRunNotice).toContain(missingRevisionNote)
-  expect(missingRevisionNote).toBe(
-    'The real request also carries the chapter revision, which the read-only snapshot does not have.',
-  )
-  expect(optionNumbers()).toEqual(['1', '2'])
-  expect(fakeApi.client.postJson).not.toHaveBeenCalled()
 })
 
-test('a forced api source does not fall back', async () => {
-  const fakeApi = createLegacyFakeApi()
-  renderEditLiteRoute({ fakeApi, search: '?source=api' })
+test('the edit route ignores a source parameter', async () => {
+  const fakeApi = createApiFakeApi()
+  await renderLoadedEditLiteRoute({ fakeApi, search: '?source=legacy' })
+  const editor = await loadedEditor('1')
 
-  expect(await screen.findByRole('alert')).toHaveTextContent(outlineUrl)
-  expect(screen.queryByRole('heading')).not.toBeInTheDocument()
-  expect(countRequests(fakeApi, snapshotUrl)).toBe(0)
+  expect(within(editor).getByLabelText('Number')).toHaveValue('1')
+  expect(countClassicRequests(fakeApi)).toBe(0)
+  fakeApi.verifyExpectations()
 })
 
-test('an api source saves the edited line and shows the new outline', async () => {
+test('the edit route saves the edited line and shows the new outline', async () => {
   const savedLines = [setLineNumber(lines[0], '1a'), ...lines.slice(1)]
   const savedOutline = buildEditLiteOutline(savedLines, 'revision-2')
   const fakeApi = createApiFakeApi()
@@ -181,29 +145,25 @@ test('an api source saves the edited line and shows the new outline', async () =
   expect(options()[0]).toHaveTextContent(/^1a%n/)
   expect(countRequests(fakeApi, savedLineUrl)).toBe(1)
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  expect(screen.getAllByRole('alert')).toHaveLength(1)
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   expect(fakeApi.client.postJson).toHaveBeenCalledTimes(1)
   fakeApi.verifyExpectations()
 })
 
-test('a reader with an api source gets a read-only page', async () => {
+test('a reader gets a read-only page', async () => {
   const fakeApi = createApiFakeApi()
-  await renderLoadedEditLiteRoute({
-    fakeApi,
-    search: '?source=api',
-    session: guestSession,
-  })
+  await renderLoadedEditLiteRoute({ fakeApi, session: guestSession })
   const editor = await loadedEditor('1')
 
-  expect(screen.getByText(readOnlyNotice, { exact: false })).toBeVisible()
+  expect(screen.getByRole('alert')).toHaveTextContent(readOnlyNotice)
   expect(within(editor).getByLabelText('Number')).toBeDisabled()
+  expect(pageTabNames()).toEqual(['Lines', 'Manuscripts'])
   expect(
     screen.queryByRole('button', { name: 'Save line' }),
   ).not.toBeInTheDocument()
   expect(
-    screen.queryByRole('button', { name: 'Preview request' }),
+    screen.queryByRole('button', { name: 'Add line' }),
   ).not.toBeInTheDocument()
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(fakeApi.client.postJson).not.toHaveBeenCalled()
-  expect(countRequests(fakeApi, snapshotUrl)).toBe(0)
+  expect(countClassicRequests(fakeApi)).toBe(0)
 })

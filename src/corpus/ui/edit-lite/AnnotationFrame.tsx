@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import _ from 'lodash'
 import Spinner from 'common/ui/Spinner'
-import { ChapterChange } from 'corpus/application/edit-lite/ChapterEditSource'
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import {
@@ -41,7 +40,6 @@ interface VariantProps {
 
 interface ControlsProps extends LineViewProps {
   readonly view: AnnotationView
-  readonly change: ChapterChange
 }
 
 export interface AnnotationViewProps extends LineViewProps {
@@ -85,15 +83,11 @@ export function LoadedResource<Value>({
   onRetry,
   children,
 }: ResourceProps<Value>): JSX.Element {
-  const { kind } = useEditLiteContext()
   if (resource?.status === 'ready') {
     return children(resource.value)
   }
   return resource?.status === 'failed' ? (
-    <LoadFailure
-      error={resource.error}
-      onRetry={kind === 'legacy' ? null : onRetry}
-    />
+    <LoadFailure error={resource.error} onRetry={onRetry} />
   ) : (
     <Spinner>{loadingLabel}</Spinner>
   )
@@ -154,7 +148,6 @@ export function AnnotationControls({
   lineState,
   activity,
   view,
-  change,
 }: ControlsProps): JSX.Element | null {
   const { actions, canWrite } = useEditLiteContext()
   const isStale = lineState.annotation?.isStale === true
@@ -169,7 +162,6 @@ export function AnnotationControls({
       )}
       <SaveControls
         saveLabel={`Save ${view}`}
-        change={change}
         canSubmit={hasDraft && !isStale && !isLayoutChanging(activity)}
         canReset={hasDraft || lineState.status === 'failed'}
         progressLabel={findProgressLabel(lineState.status)}

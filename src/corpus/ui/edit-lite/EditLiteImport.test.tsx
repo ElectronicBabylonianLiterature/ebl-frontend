@@ -1,14 +1,11 @@
 import React from 'react'
-import { act, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   ImportedLines,
   useEditLiteContext,
 } from 'corpus/ui/edit-lite/EditLiteContext'
-import EditLiteImport, {
-  importDryRunNotice,
-  importNotice,
-} from 'corpus/ui/edit-lite/EditLiteImport'
+import EditLiteImport from 'corpus/ui/edit-lite/EditLiteImport'
 import {
   EditLiteRenderOptions,
   EditLiteRenderResult,
@@ -61,7 +58,6 @@ test('explains the import like the classic editor', () => {
     screen.getByText(/The imported lines are added to the end of the chapter/),
   ).toBeVisible()
   expect(atfEditor()).toHaveValue('')
-  expect(screen.queryByText(importNotice)).not.toBeInTheDocument()
 })
 
 test('imports the ATF and reports the new lines', async () => {
@@ -105,32 +101,4 @@ test('shows a rejected import next to the ATF and keeps the text', async () => {
   expect(
     screen.queryByText('Invalid line 2: unexpected token'),
   ).not.toBeInTheDocument()
-})
-
-test('a read-only source previews the import instead of sending it', async () => {
-  const view = renderImport({ kind: 'legacy' })
-
-  expect(screen.getByText(importNotice)).toBeVisible()
-
-  await importAtf()
-  const dialog = within(screen.getByRole('dialog', { name: 'Request preview' }))
-
-  expect(dialog.getByText(importDryRunNotice)).toBeVisible()
-  expect(importDryRunNotice).toContain('nothing was sent')
-  expect(
-    dialog.getByText(
-      'POST /texts/L/1/2/chapters/Standard%20Babylonian/I/import?view=outline&revision=revision-1',
-    ),
-  ).toBeVisible()
-  expect(dialog.getByLabelText('Request body')).toHaveTextContent(
-    JSON.stringify({ atf }, null, 2),
-    { normalizeWhitespace: false },
-  )
-  expect(view.source.importLines).not.toHaveBeenCalled()
-  expect(view.onImported).not.toHaveBeenCalled()
-
-  await userEvent.click(dialog.getByText('Close', { selector: '.btn' }))
-
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  expect(atfEditor()).toHaveValue(atf)
 })

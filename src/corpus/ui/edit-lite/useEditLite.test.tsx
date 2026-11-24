@@ -1,6 +1,4 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { ChapterChange } from 'corpus/application/edit-lite/ChapterEditSource'
-import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
@@ -49,25 +47,17 @@ async function waitForStatus(
   )
 }
 
-test('starts with the outline and exposes the source', () => {
-  const { result, source } = renderEditLite(
-    createFakeChapterEditSource({ kind: 'legacy', lines }),
-  )
+test('starts with the outline and exposes the source', async () => {
+  const { result, source } = renderEditLite()
   const { state, context } = result.current
 
   expect(state).toEqual(createEditLiteState(outline))
-  expect(context.kind).toBe('legacy')
-  expect(context.canSave).toBe(false)
-  expect(context.manuscripts).toBe(outline.manuscripts)
-  const change: ChapterChange = { type: 'saveLine', index: 1, line: lines[1] }
-
   expect(context.canWrite).toBe(true)
-  expect(context.describeChange(change)).toEqual({
-    method: 'POST',
-    url: '/texts/L/1/2/chapters/Standard%20Babylonian/I/lines?view=outline&revision=revision-1',
-    body: toLineEditsDto(1, lines[1]),
-  })
-  expect(source.describeChange).toHaveBeenCalledWith(change)
+  expect(context.manuscripts).toBe(outline.manuscripts)
+
+  await context.searchLemma('kur')
+
+  expect(source.searchLemma).toHaveBeenCalledWith('kur')
 })
 
 test('ensureLines marks the lines as loading and then stores them', async () => {
@@ -224,14 +214,14 @@ test('the actions and the context stay stable while lines change', async () => {
 
 test('a new source keeps the actions and updates the context', async () => {
   const view = renderEditLite()
-  const { actions } = view.result.current.context
-  const legacySource = createFakeChapterEditSource({ kind: 'legacy', lines })
-  view.rerender(legacySource)
+  const { context } = view.result.current
+  const nextSource = createFakeChapterEditSource({ lines })
+  view.rerender(nextSource)
   ensureLines(view, 0, 1)
   await waitForStatus(view, 0, 'ready')
 
-  expect(view.result.current.context.kind).toBe('legacy')
-  expect(view.result.current.context.actions).toBe(actions)
-  expect(legacySource.loadLines).toHaveBeenCalledWith(0, 1)
+  expect(view.result.current.context).not.toBe(context)
+  expect(view.result.current.context.actions).toBe(context.actions)
+  expect(nextSource.loadLines).toHaveBeenCalledWith(0, 1)
   expect(view.source.loadLines).not.toHaveBeenCalled()
 })

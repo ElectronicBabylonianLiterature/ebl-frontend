@@ -31,10 +31,10 @@ export default function OmittedWordsSelect(props: {
   reconstructionTokens: readonly Token[]
   value: readonly number[]
   onChange: (value: number[]) => void
-  disabled?: boolean
+  disabled: boolean
 }): JSX.Element {
   const handleChange = (value: OnChangeValue<OmittedWordOption, true>) => {
-    props.onChange(_.isArray(value) ? value.map((option) => option.value) : [])
+    props.onChange(value.map((option) => option.value))
   }
   const options = createOmittedWordOptions(props.reconstructionTokens)
   return (
@@ -48,7 +48,7 @@ export default function OmittedWordsSelect(props: {
           .filter((option) => option) as MultiValue<OmittedWordOption>
       }
       isMulti
-      isDisabled={props.disabled ?? false}
+      isDisabled={props.disabled}
       onChange={handleChange}
     />
   )

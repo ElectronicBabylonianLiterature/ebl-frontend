@@ -1,16 +1,9 @@
 import _ from 'lodash'
 import serializeReference from 'bibliography/application/serializeReference'
 import Reference from 'bibliography/domain/Reference'
-import {
-  AlignmentToken,
-  ChapterAlignment,
-  LineAlignment,
-} from 'corpus/domain/alignment'
-import {
-  ChapterLemmatization,
-  LineLemmatization,
-} from 'corpus/domain/lemmatization'
-import { EditStatus, Line } from 'corpus/domain/line'
+import { AlignmentToken, LineAlignment } from 'corpus/domain/alignment'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
+import { Line } from 'corpus/domain/line'
 import { Manuscript, OldSiglum } from 'corpus/domain/manuscript'
 
 function toName(record: { name: string }): string {
@@ -87,25 +80,11 @@ export function toLineAlignmentDto(line: LineAlignment) {
   )
 }
 
-export function toAlignmentDto(
-  alignment: ChapterAlignment,
-): Record<string, unknown> {
-  return {
-    alignment: alignment.lines.map(toLineAlignmentDto),
-  } as const
-}
-
 export function toLineLemmatizationDto(line: readonly LineLemmatization[]) {
   return line.map((variant) => ({
     reconstruction: variant[0].map((token) => token.toDto()),
     manuscripts: variant[1].map((line) => line.map((token) => token.toDto())),
   }))
-}
-
-export function toLemmatizationDto(lemmatization: ChapterLemmatization) {
-  return {
-    lemmatization: lemmatization.map(toLineLemmatizationDto),
-  } as const
 }
 
 export function toManuscriptsDto(
@@ -117,23 +96,3 @@ export function toManuscriptsDto(
     uncertainFragments: uncertainChapters,
   } as const
 }
-
-export const toLinesDto = (lines: readonly Line[]) =>
-  ({
-    edited: _(lines)
-      .map((line, index) =>
-        line.status === EditStatus.EDITED
-          ? { line: toLineDto(line), index: index }
-          : null,
-      )
-      .reject(_.isNil)
-      .value(),
-    deleted: _(lines)
-      .map((line, index) => (line.status === EditStatus.DELETED ? index : null))
-      .reject(_.isNil)
-      .value(),
-    new: _(lines)
-      .filter((line) => line.status === EditStatus.NEW)
-      .map(toLineDto)
-      .value(),
-  }) as const

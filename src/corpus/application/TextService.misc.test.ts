@@ -4,9 +4,7 @@ import {
   chapterId,
   chapterUrl,
   createTextServiceTestContext,
-  word,
 } from 'corpus/application/TextService.testSupport'
-import { lemmatization } from 'corpus/application/TextService.update.testSupport'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -14,24 +12,11 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 jest.mock('common/errors/SentryErrorReporter')
 
-const {
-  apiClient,
-  fragmentServiceMock,
-  wordServiceMock,
-  textService,
-  createService,
-} = createTextServiceTestContext()
+const { apiClient, fragmentServiceMock, textService, createService } =
+  createTextServiceTestContext()
 
 beforeEach(() => {
   fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
-})
-
-test('findSuggestions', async () => {
-  wordServiceMock.find.mockReturnValue(Promise.resolve(word))
-  fragmentServiceMock.findSuggestions.mockReturnValue(Promise.resolve([]))
-  await expect(textService.findSuggestions(chapter)).resolves.toEqual(
-    lemmatization,
-  )
 })
 
 test('listAllTexts', async () => {

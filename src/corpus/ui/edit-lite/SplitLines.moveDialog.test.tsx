@@ -1,11 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Line } from 'corpus/domain/line'
-import {
-  buildEditLiteLines,
-  buildMoveUrl,
-} from 'corpus/ui/edit-lite/editLite.testSupport'
-import { moveDryRunNotice } from 'corpus/ui/edit-lite/LineMoveControls'
+import { buildEditLiteLines } from 'corpus/ui/edit-lite/editLite.testSupport'
 import { numberingNote } from 'corpus/ui/edit-lite/LineMoveDialog'
 import {
   button,
@@ -23,7 +19,6 @@ jest.mock('editor/Editor', () =>
 
 const lines: readonly Line[] = buildEditLiteLines(5)
 const initialOrder: readonly string[] = ['1', '2', '3', '4', '5']
-const moveUrl = buildMoveUrl('revision-1')
 
 function dialog(): HTMLElement {
   return screen.getByRole('dialog', { name: 'Move line' })
@@ -40,19 +35,6 @@ async function openDialog(lineNumber: string): Promise<HTMLElement> {
 async function confirmMove(): Promise<void> {
   await userEvent.click(
     within(dialog()).getByRole('button', { name: 'Move line' }),
-  )
-}
-
-function expectPreview(body: { from: number; to: number }): void {
-  const preview = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  )
-
-  expect(preview.getByText(moveDryRunNotice)).toBeVisible()
-  expect(preview.getByText(`POST ${moveUrl}`)).toBeVisible()
-  expect(preview.getByLabelText('Request body')).toHaveTextContent(
-    JSON.stringify(body, null, 2),
-    { normalizeWhitespace: false },
   )
 }
 
@@ -160,50 +142,4 @@ test.each<[string, () => Promise<void>]>([
   expect(button('Move to...')).toHaveFocus()
 
   expect(await openDialog('3')).toHaveValue('0')
-})
-
-test.each<[string, number]>([
-  ['Move up', 0],
-  ['Move down', 2],
-])(
-  '%s on a read-only source shows the request instead of sending it',
-  async (name, to) => {
-    const { source } = renderSplit(1, { kind: 'legacy', lines })
-    await loadedEditor('2')
-    await userEvent.click(button(name))
-
-    expectPreview({ from: 1, to })
-    expect(source.describeChange).toHaveBeenCalledWith({
-      type: 'moveLine',
-      from: 1,
-      to,
-    })
-    expect(source.moveLine).not.toHaveBeenCalled()
-
-    await userEvent.click(screen.getByText('Close', { selector: '.btn' }))
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    expect(optionNumbers()).toEqual(initialOrder)
-    expect(selectedOptions()).toEqual([options()[1]])
-    expect(button(name)).toHaveFocus()
-  },
-)
-
-test('a chosen place on a read-only source shows the request as well', async () => {
-  const { source } = renderSplit(1, { kind: 'legacy', lines })
-  await userEvent.selectOptions(await openDialog('2'), 'After line 5')
-  await confirmMove()
-
-  expectPreview({ from: 1, to: 4 })
-  expect(screen.getAllByRole('dialog')).toHaveLength(1)
-  expect(moveDryRunNotice).toBe(
-    'Dry run: nothing was sent to the server. This is the request that moving the line would send. The real request also carries the chapter revision, which the read-only snapshot does not have.',
-  )
-  expect(source.moveLine).not.toHaveBeenCalled()
-  expect(optionNumbers()).toEqual(initialOrder)
-
-  await userEvent.click(screen.getByText('Close', { selector: '.btn' }))
-
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  expect(button('Move to...')).toHaveFocus()
 })

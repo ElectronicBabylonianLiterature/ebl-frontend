@@ -1,6 +1,5 @@
 import React from 'react'
 import { act, screen, waitFor } from '@testing-library/react'
-import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { EditStatus } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import {
@@ -16,8 +15,8 @@ import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 
 const lines = buildEditLiteLines()
 
-function SourceKind(): JSX.Element {
-  return <p>{useEditLiteContext().kind}</p>
+function WritePermission(): JSX.Element {
+  return <p>{useEditLiteContext().canWrite ? 'writer' : 'reader'}</p>
 }
 
 function countLines(state: EditLiteState): JSX.Element {
@@ -61,18 +60,11 @@ test('more lines can be built for navigation', () => {
   })
 })
 
-test('the fake source serves its lines and describes saves', async () => {
+test('the fake source serves its outline and lines', async () => {
   const source = createFakeChapterEditSource()
 
-  expect(source.kind).toBe('api')
-  expect(source.canSave).toBe(true)
-  expect(source.diagnostics).toEqual([])
-  expect(
-    createFakeChapterEditSource({ diagnostics: ['a problem'] }).diagnostics,
-  ).toEqual(['a problem'])
   await expect(source.loadOutline()).resolves.toEqual(buildEditLiteOutline())
   await expect(source.loadLines(1, 5)).resolves.toEqual(lines.slice(1))
-  expect(source.describeSave(1, lines[1])).toEqual(toLineEditsDto(1, lines[1]))
 })
 
 test('the fake source stores saved lines', async () => {
@@ -101,49 +93,31 @@ test('the fake source moves a stored line without renumbering', async () => {
   await expect(source.loadOutline()).resolves.toEqual(outline)
 })
 
-test.each([
-  [{ kind: 'legacy' } as const, 'legacy'],
-  [{ canSave: false } as const, 'api'],
-])('the fake source %o cannot save', async (options, kind) => {
-  const source = createFakeChapterEditSource(options)
-
-  expect(source.kind).toBe(kind)
-  expect(source.canSave).toBe(false)
-  await expect(source.saveLine(0, lines[0], lines[0])).rejects.toThrow(
-    'Saving is not available.',
-  )
-  await expect(source.moveLine(0, 1)).rejects.toThrow(
-    'Saving is not available.',
-  )
-  await expect(source.loadLines(0, 2)).resolves.toEqual(lines.slice(0, 2))
-})
-
 test('renderWithEditLite provides the context and the state', async () => {
-  const view = renderWithEditLite(countLines, { kind: 'legacy', lines })
+  const view = renderWithEditLite(countLines, { lines, canWrite: false })
 
   expect(screen.getByText('0 lines')).toBeVisible()
-  expect(view.source.kind).toBe('legacy')
   expect(view.outline).toEqual(buildEditLiteOutline(lines))
   expect(view.getState()).toEqual(createEditLiteState(view.outline))
-  expect(view.getContext().kind).toBe('legacy')
+  expect(view.getContext().canWrite).toBe(false)
 
   act(() => view.getContext().actions.ensureLines(0, 2))
 
   expect(await screen.findByText('2 lines')).toBeVisible()
   await waitFor(() => expect(view.getState().lines[1].original).toBe(lines[1]))
 
-  view.rerender(<SourceKind />)
+  view.rerender(<WritePermission />)
 
-  expect(screen.getByText('legacy')).toBeVisible()
+  expect(screen.getByText('reader')).toBeVisible()
   expect(view.getState().lines[1].original).toBe(lines[1])
 })
 
 test('renderWithEditLite accepts a prepared source and outline', () => {
   const source = createFakeChapterEditSource({ lines: lines.slice(0, 1) })
   const outline = buildEditLiteOutline(lines.slice(0, 1))
-  const view = renderWithEditLite(<SourceKind />, { source, outline })
+  const view = renderWithEditLite(<WritePermission />, { source, outline })
 
-  expect(screen.getByText('api')).toBeVisible()
+  expect(screen.getByText('writer')).toBeVisible()
   expect(view.source).toBe(source)
   expect(view.getState().outline).toBe(outline)
 })

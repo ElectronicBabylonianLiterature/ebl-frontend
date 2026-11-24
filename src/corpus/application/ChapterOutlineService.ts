@@ -5,7 +5,6 @@ import {
   LinesPageDto,
 } from 'corpus/application/edit-lite/chapterOutline'
 import { WordInstances } from 'corpus/application/edit-lite/ChapterEditSource'
-import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import { createChapterEndpointUrl } from 'corpus/application/edit-lite/chapterRequests'
 import {
   createLineLemmatization,
@@ -94,20 +93,6 @@ export class ChapterOutlineService extends TextReadService {
       }),
       false,
     )
-  }
-
-  findChapterAtfSnapshot(
-    id: ChapterId,
-    signal?: AbortSignal,
-  ): Promise<ChapterAtfSnapshotDto> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.fetchJson<ChapterAtfSnapshotDto>(
-        `${createChapterUrl(id)}/display?lines=0&variants=0`,
-        false,
-        signal,
-      ),
-    ]).then(([, snapshot]) => snapshot)
   }
 }
 

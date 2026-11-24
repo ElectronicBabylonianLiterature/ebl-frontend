@@ -7,8 +7,8 @@ import {
 import {
   ChapterOutline,
   LinesPageDto,
+  toLineOutline,
 } from 'corpus/application/edit-lite/chapterOutline'
-import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
 import { Line } from 'corpus/domain/line'
 import {
   createAligner,

@@ -11,10 +11,6 @@ import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Word from 'dictionary/domain/Word'
 
-export type ChapterEditSourceKind = 'legacy' | 'api'
-
-export type ChapterEditSourceMode = 'auto' | ChapterEditSourceKind
-
 export type LineDto = ReturnType<typeof toLineDto>
 
 export interface LineEditDto {
@@ -112,16 +108,7 @@ export type ChapterChange =
       readonly lemmaIds: readonly string[]
     }
 
-export interface ChapterRequest {
-  readonly method: 'POST'
-  readonly url: string
-  readonly body: ChapterRequestBody
-}
-
 export interface ChapterEditSource {
-  readonly kind: ChapterEditSourceKind
-  readonly canSave: boolean
-  readonly diagnostics: readonly string[]
   loadOutline(signal?: AbortSignal): Promise<ChapterOutline>
   loadLines(
     offset: number,
@@ -133,8 +120,6 @@ export interface ChapterEditSource {
   searchLemma(query: string): Promise<readonly Word[]>
   createProperNoun(lemma: string, namedEntityTag: string): Promise<Word>
   countWordInstances(word: string): Promise<WordInstances>
-  describeSave(index: number, draft: Line): LinesUpdateDto
-  describeChange(change: ChapterChange): ChapterRequest
   saveLine(index: number, original: Line, draft: Line): Promise<ChapterOutline>
   addLine(line: Line): Promise<ChapterOutline>
   deleteLine(index: number): Promise<ChapterOutline>

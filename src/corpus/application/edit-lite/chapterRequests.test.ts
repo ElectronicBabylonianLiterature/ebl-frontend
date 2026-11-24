@@ -10,7 +10,6 @@ import { editChapterId } from 'corpus/application/edit-lite/chapterEditSource.te
 import {
   createChapterEndpointUrl,
   createChapterUpdateUrl,
-  describeChapterChange,
   toChapterUpdate,
 } from 'corpus/application/edit-lite/chapterRequests'
 import {
@@ -107,18 +106,18 @@ describe.each(changes)('the change %j', (change, endpoint, body) => {
     expect(toChapterUpdate(change)).toEqual({ endpoint, body })
   })
 
-  it('is described as the request that would be sent', () => {
-    expect(describeChapterChange(editChapterId, change, 'revision-4')).toEqual({
-      method: 'POST',
-      url: `${chapterUrl}/${endpoint}?view=outline&revision=revision-4`,
-      body,
-    })
+  it('is posted to the outline view of its endpoint with the revision', () => {
+    const update = toChapterUpdate(change)
+
+    expect(
+      createChapterUpdateUrl(editChapterId, update.endpoint, 'revision-4'),
+    ).toBe(`${chapterUrl}/${endpoint}?view=outline&revision=revision-4`)
   })
 
-  it('is described without a revision when none is known', () => {
-    expect(describeChapterChange(editChapterId, change).url).toBe(
-      `${chapterUrl}/${endpoint}?view=outline`,
-    )
+  it('is posted without a revision when none is known', () => {
+    expect(
+      createChapterUpdateUrl(editChapterId, toChapterUpdate(change).endpoint),
+    ).toBe(`${chapterUrl}/${endpoint}?view=outline`)
   })
 })
 
@@ -150,13 +149,12 @@ it.each([
   [0, 2],
   [3, 0],
 ])('sends a move from %i to %i as the two positions only', (from, to) => {
-  expect(
-    describeChapterChange(editChapterId, { type: 'moveLine', from, to }, 'r7'),
-  ).toEqual({
-    method: 'POST',
-    url: `${chapterUrl}/lines/move?view=outline&revision=r7`,
-    body: { from, to },
-  })
+  const update = toChapterUpdate({ type: 'moveLine', from, to })
+
+  expect(update).toEqual({ endpoint: 'lines/move', body: { from, to } })
+  expect(createChapterUpdateUrl(editChapterId, update.endpoint, 'r7')).toBe(
+    `${chapterUrl}/lines/move?view=outline&revision=r7`,
+  )
 })
 
 it('sends a suggested alignment that was not accepted as no alignment', () => {

@@ -11,8 +11,6 @@ export type LineLemmatization = [
   readonly LemmatizationToken[][],
 ]
 
-export type ChapterLemmatization = readonly LineLemmatization[][]
-
 export function setReconstructionLemma(
   [reconstruction, manuscripts]: LineLemmatization,
   variant: LineVariant,

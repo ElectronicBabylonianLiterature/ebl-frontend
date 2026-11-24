@@ -88,19 +88,6 @@ test('typing in an open row renders that row only', async () => {
   expect(summarizedIds(summarizeManuscript)).toEqual([1, 1])
 })
 
-test('opening the preview renders no row', async () => {
-  const summarizeManuscript = jest.spyOn(
-    manuscriptSummary,
-    'summarizeManuscript',
-  )
-  await renderLoadedManuscripts(services)
-  summarizeManuscript.mockClear()
-  await userEvent.click(screen.getByRole('button', { name: 'Preview request' }))
-
-  expect(screen.getByRole('dialog')).toBeVisible()
-  expect(summarizeManuscript).not.toHaveBeenCalled()
-})
-
 test('a long chapter mounts a form for the opened row only', async () => {
   services.textService.findManuscripts.mockResolvedValue(
     _.range(manyManuscriptsCount).map(

@@ -44,7 +44,7 @@ export default function useWordFlow({
   isLocked,
   activation,
 }: Options): WordFlow {
-  const { actions, canSave } = useEditLiteContext()
+  const { actions } = useEditLiteContext()
   const lineFlow = useLineFlow()
   const [active, setActive] = useState<number | null>(null)
   const canActivate = !isLocked && (activation.position ?? 0) < words.length
@@ -65,9 +65,7 @@ export default function useWordFlow({
   }
   const leave = (): void => {
     suspend()
-    if (canSave) {
-      actions.leaveAnnotation(index, view, () => lineFlow.advance(view))
-    }
+    actions.leaveAnnotation(index, view, () => lineFlow.advance(view))
   }
   const move = (find: (position: number) => number | null): void => {
     const target = find(active as number)

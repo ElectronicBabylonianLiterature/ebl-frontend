@@ -140,7 +140,6 @@ function LemmatizationEditor({
             reconstruction={
               <WordLemmatizers
                 tokens={reconstruction}
-                fragmentService={context}
                 onChange={createChange(variantIndex, null)}
                 disabled={isLocked}
                 renderWord={createRenderer(variantIndex, null)}
@@ -151,7 +150,6 @@ function LemmatizationEditor({
               <span className="edit-lite-annotation__tokens">
                 <WordLemmatizers
                   tokens={manuscripts[manuscriptIndex]}
-                  fragmentService={context}
                   onChange={createChange(variantIndex, manuscriptIndex)}
                   disabled={isLocked}
                   renderWord={createRenderer(variantIndex, manuscriptIndex)}
@@ -166,7 +164,6 @@ function LemmatizationEditor({
         lineState={lineState}
         activity={activity}
         view="lemmatization"
-        change={{ type: 'saveLemmatization', index, lemmatization }}
       />
       {instances.dialog}
     </>

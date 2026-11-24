@@ -1,8 +1,8 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
 import { Line } from 'corpus/domain/line'
 import {
-  buildAnnotationUrl,
   buildEditLiteLines,
   createFakeChapterEditSource,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
@@ -28,7 +28,7 @@ jest.mock('@restart/ui/usePopper', () =>
 const lines: readonly Line[] = buildEditLiteLines(3)
 
 async function waitForSavedView(): Promise<void> {
-  await waitFor(() => expect(button('Preview request')).toBeEnabled())
+  await waitFor(() => expect(button('Reset')).toBeInTheDocument())
   await waitFor(() => expect(button('Reset')).toBeDisabled())
 }
 
@@ -80,60 +80,55 @@ test('reset discards the changes and keeps the loaded tokens', async () => {
   expect(source.saveAlignment).not.toHaveBeenCalled()
 })
 
-test('the request preview shows the address and the body of the save', async () => {
+test('saving sends the alignment of the line as the body of the request', async () => {
   const { source } = await renderLoadedView('Alignment', { lines })
   await omitWord(manuscriptRow(2), 'eliš')
-  await userEvent.click(button('Preview request'))
-  const preview = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  )
+  await userEvent.click(button('Save alignment'))
+  await waitForSavedView()
+  const [[index, alignment]] = source.saveAlignment.mock.calls
 
-  expect(
-    preview.getByText(
-      `POST ${buildAnnotationUrl('alignment', 0, 'revision-1')}`,
-    ),
-  ).toBeVisible()
-  expect(
-    JSON.parse(preview.getByLabelText('Request body').textContent ?? ''),
-  ).toEqual({
-    alignment: [
-      [
-        {
-          alignment: [
-            {
-              value: 'e-nu-ma',
-              alignment: null,
-              variant: '',
-              type: '',
-              language: '',
-            },
-            {
-              value: 'e-liš',
-              alignment: null,
-              variant: '',
-              type: '',
-              language: '',
-            },
-          ],
-          omittedWords: [],
-        },
-        {
-          alignment: [
-            { value: '[x' },
-            { value: 'x' },
-            { value: 'x]' },
-            {
-              value: 'e-li-iš',
-              alignment: null,
-              variant: '',
-              type: '',
-              language: '',
-            },
-          ],
-          omittedWords: [3],
-        },
+  expect(index).toBe(0)
+  expect(toChapterUpdate({ type: 'saveAlignment', index, alignment })).toEqual({
+    endpoint: 'lines/0/alignment',
+    body: {
+      alignment: [
+        [
+          {
+            alignment: [
+              {
+                value: 'e-nu-ma',
+                alignment: null,
+                variant: '',
+                type: '',
+                language: '',
+              },
+              {
+                value: 'e-liš',
+                alignment: null,
+                variant: '',
+                type: '',
+                language: '',
+              },
+            ],
+            omittedWords: [],
+          },
+          {
+            alignment: [
+              { value: '[x' },
+              { value: 'x' },
+              { value: 'x]' },
+              {
+                value: 'e-li-iš',
+                alignment: null,
+                variant: '',
+                type: '',
+                language: '',
+              },
+            ],
+            omittedWords: [3],
+          },
+        ],
       ],
-    ],
+    },
   })
-  expect(source.saveAlignment).not.toHaveBeenCalled()
 })

@@ -2,16 +2,12 @@ import { produce, castDraft } from 'immer'
 import _ from 'lodash'
 import { stringify } from 'common/utils/queryString'
 
-import { Chapter, ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import { Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
-import {
-  ChapterDisplayDto,
-  fromChapterDto,
-  fromDto,
-} from 'corpus/application/dtos'
+import { ChapterDisplayDto, fromDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
 
@@ -51,17 +47,6 @@ export class TextReadService extends TextServiceBase {
           }),
         ),
       )
-  }
-
-  findChapter(id: ChapterId, signal?: AbortSignal): Promise<Chapter> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.fetchJson<Record<string, unknown>>(
-        createChapterUrl(id),
-        false,
-        signal,
-      ),
-    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   findChapterDisplay(

@@ -26,10 +26,6 @@ export default class FakeApi extends FakeApiBase {
     return this.expectGet(createTextUrl(text), text)
   }
 
-  expectChapter(chapter: ChapterId): FakeApi {
-    return this.expectGet(createChapterUrl(chapter), chapter)
-  }
-
   expectChapterDisplay(chapter: ChapterDisplay): FakeApi {
     return this.expectGet(`${createChapterUrl(chapter.id)}/display`, {
       id: chapter.id,
@@ -52,43 +48,6 @@ export default class FakeApi extends FakeApiBase {
 
   expectExtantLines(id: ChapterId, extantLines: ExtantLines): FakeApi {
     return this.expectGet(`${createChapterUrl(id)}/extant_lines`, extantLines)
-  }
-
-  expectUpdateManuscripts(chapter: ChapterId, manuscripts: Dto): FakeApi {
-    return this.expectPost(
-      `${createChapterUrl(chapter)}/manuscripts`,
-      manuscripts,
-      chapter,
-    )
-  }
-
-  expectUpdateAlignment(chapter: ChapterId, alignment: Dto): FakeApi {
-    return this.expectPost(
-      `${createChapterUrl(chapter)}/alignment`,
-      alignment,
-      chapter,
-    )
-  }
-
-  expectUpdateLemmatization(chapter: ChapterId, lemmatization: Dto): FakeApi {
-    return this.expectPost(
-      `${createChapterUrl(chapter)}/lemmatization`,
-      lemmatization,
-      chapter,
-    )
-  }
-
-  expectUpdateLines(chapter: ChapterId, lines: Dto): FakeApi {
-    return this.expectPost(`${createChapterUrl(chapter)}/lines`, lines, chapter)
-  }
-
-  expectImportChapter(chapter: ChapterId, atf: string): FakeApi {
-    return this.expectPost(
-      `${createChapterUrl(chapter)}/import`,
-      { atf },
-      chapter,
-      false,
-    )
   }
 
   expectAnnotations(number: string, annotationDtos: readonly Dto[]): FakeApi {

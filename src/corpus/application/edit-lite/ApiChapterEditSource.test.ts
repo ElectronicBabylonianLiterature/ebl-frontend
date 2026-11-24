@@ -46,18 +46,6 @@ it('is exported by name and as default', () => {
   expect(maximumConcurrentLineRequests).toBe(3)
 })
 
-it.each([[true], [false]])('is an api source that can save: %s', (canWrite) => {
-  const apiSource = new ApiChapterEditSource(
-    textService,
-    editChapterId,
-    canWrite,
-  )
-
-  expect(apiSource.kind).toBe('api')
-  expect(apiSource.canSave).toBe(canWrite)
-  expect(apiSource.diagnostics).toEqual([])
-})
-
 it('loads the outline from the outline endpoint', async () => {
   const signal = new AbortController().signal
   textService.findChapterOutline.mockResolvedValue(apiOutline)

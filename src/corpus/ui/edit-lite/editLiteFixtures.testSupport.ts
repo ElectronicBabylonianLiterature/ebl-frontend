@@ -2,8 +2,8 @@ import _ from 'lodash'
 import {
   ChapterOutline,
   ManuscriptSummary,
+  toLineOutline,
 } from 'corpus/application/edit-lite/chapterOutline'
-import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
 import {
   createLine,
   createManuscriptLine,

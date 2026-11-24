@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import {
   ChapterEndpoint,
   LinesUpdateDto,
@@ -58,6 +57,30 @@ function respondFirst(
   )
 }
 
+export const editLiteProvenanceDtos: Dto[] = [
+  {
+    id: 'nineveh',
+    longName: 'Nineveh',
+    abbreviation: 'Nin',
+    parent: null,
+    sortKey: 1,
+  },
+  {
+    id: 'nippur',
+    longName: 'Nippur',
+    abbreviation: 'Nip',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'borsippa',
+    longName: 'Borsippa',
+    abbreviation: 'Bor',
+    parent: null,
+    sortKey: 3,
+  },
+]
+
 export default class EditLiteFakeApi extends FakeApi {
   expectChapterOutline(outline: ChapterOutline): this {
     return this.expectGet(
@@ -75,16 +98,6 @@ export default class EditLiteFakeApi extends FakeApi {
     return this.allowGet(
       `${linesUrl(outline)}?offset=${offset}&limit=${limit}&revision=${outline.revision}`,
       toLinesPage(lines, offset, limit, outline.revision),
-    )
-  }
-
-  expectChapterAtfSnapshot(
-    id: ChapterId,
-    snapshot: ChapterAtfSnapshotDto,
-  ): this {
-    return this.expectGet(
-      `${createChapterUrl(id)}/display?lines=0&variants=0`,
-      snapshot,
     )
   }
 

@@ -7,6 +7,7 @@ import {
 } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { ChapterEditTextService } from 'corpus/application/edit-lite/createChapterEditSource'
+import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { EditStatus, Line } from 'corpus/domain/line'
 import { deferred, settle } from 'test-support/concurrencyLimiterHelpers'
 
@@ -58,8 +59,10 @@ beforeEach(() => {
   }
 })
 
-it('describes the request a save would send', () => {
-  expect(source.describeSave(4, draft)).toEqual({
+it('posts the edit of the line with its index', async () => {
+  await source.saveLine(4, original, draft)
+
+  expect(textService.updateEditedLines.mock.calls[0][1]).toEqual({
     new: [],
     deleted: [],
     edited: [
@@ -101,7 +104,7 @@ it('refetches the line, posts the edit and resolves with the new outline', async
     [editChapterId, 4, 1, undefined, undefined],
   ])
   expect(textService.updateEditedLines.mock.calls).toEqual([
-    [editChapterId, source.describeSave(4, draft), undefined],
+    [editChapterId, toLineEditsDto(4, draft), undefined],
   ])
 })
 

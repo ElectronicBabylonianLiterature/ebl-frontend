@@ -1,7 +1,6 @@
 import React from 'react'
-import { act, screen, within } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { toNewLineDto } from 'corpus/application/edit-lite/lineEdits'
 import { EditStatus, Line } from 'corpus/domain/line'
 import {
   buildEditLiteLines,
@@ -9,7 +8,6 @@ import {
   EditLiteRenderResult,
   renderWithEditLite,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
-import { dryRunNotice } from 'corpus/ui/edit-lite/DryRunModal'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
 import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'
 import { button } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
@@ -113,23 +111,6 @@ test('discarding removes the new line', async () => {
   expect(view.getState().newLine).toBeNull()
   expect(view.source.addLine).not.toHaveBeenCalled()
   expect(screen.queryByLabelText('Number')).not.toBeInTheDocument()
-})
-
-test('a read-only source previews the request that adds the line', async () => {
-  const view = await renderNewLine({ kind: 'legacy' })
-  await userEvent.click(button('Save line'))
-  const dialog = within(screen.getByRole('dialog', { name: 'Request preview' }))
-
-  expect(dialog.getByText(dryRunNotice)).toBeVisible()
-  expect(dialog.getByLabelText('Request body')).toHaveTextContent(
-    JSON.stringify(toNewLineDto(newLineOf(view)), null, 2),
-    { normalizeWhitespace: false },
-  )
-  expect(view.source.describeChange).toHaveBeenCalledWith({
-    type: 'addLine',
-    line: newLineOf(view),
-  })
-  expect(view.source.addLine).not.toHaveBeenCalled()
 })
 
 test('a manuscript line without a siglum blocks saving with a message', async () => {

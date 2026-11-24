@@ -271,3 +271,39 @@ about 1.8 s.
   19 s (they still load the whole chapter on the server).
 - Browser runs against the faster server: editing, add, delete, import and
   manuscripts 31 of 31; moving lines 27 of 27; keyboard flow 24 of 24.
+
+## Step 8: the new editor replaces the classic page
+
+- Decisions with the user: the new editor serves `.../edit`; `.../edit-lite`
+  redirects there and keeps the query (`?line=`); the mock-up aids go (preview
+  banner and heading text, "Edit (lite preview)" breadcrumb, performance
+  panel, every "Preview request" button and dry run); the `craco.config.js`
+  coverage list loses the deleted files and gains the two edit-lite folders;
+  the TASK files stay until the pull requests are merged.
+- Removed: the classic editor (`ChapterEditView`, `ChapterEditor`, the
+  classic Lines, Alignment, Lemmatization and Manuscripts tabs), the
+  read-only ATF snapshot source with the `?source=` switch, and the code that
+  became unused with them, among others the classic `TextService` writes,
+  `CorpusLemmatizationFactory`, `ChapterAlignment`, `ModalButton`, the
+  classic `WordLemmatizer` and `LemmatizationForm` (the Library lemmatizer
+  uses neither) and `Reconstruction`.
+- Kept and reused by the new editor: `ManuscriptWordAligners`, the alignment
+  input hook of `WordAligner`, `OmittedWordsSelect`, `WordLemmatizers`,
+  `ManuscriptForm`. Internal names (`edit-lite`, `ChapterEditLiteView`) are
+  unchanged.
+- Two modes only: with permission to write texts everything saves; without
+  it the page is read-only with a notice.
+- `craco.config.js`: a deliberate gap in each edit-lite folder makes
+  `yarn test:ci` fail with a threshold error naming the folder, so CI keeps
+  both at 100 %.
+- Tests that used the snapshot source or the dry run to exercise real
+  behaviour were rewritten onto the fake chapter API; tests of removed code
+  went with it. 918 suites, 7799 tests (before: 937 and 8082). Global
+  coverage 98.84 % statements, 97.12 % branches; no remaining file lost
+  coverage.
+- Browser run against a local ebl-api: `/edit` uses only the outline and
+  lines endpoints, has no preview aids, `/edit-lite?line=4` lands on
+  `/edit?line=4` with line 4 selected, `?source=` is ignored, the read-only
+  page has no edit controls; the keyboard flow at `/edit` 24 of 24.
+- Deployment: `/edit` now needs the endpoints of ebl-api #827. Deploy the
+  API first or together with the frontend.

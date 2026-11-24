@@ -25,7 +25,6 @@ import { deferred, settle } from 'test-support/concurrencyLimiterHelpers'
 
 type Apply = (source: ChapterEditSource) => Promise<ChapterOutline>
 
-const chapterUrl = '/texts/L/1/2/chapters/Standard%20Babylonian/I'
 const line: Line = createLine({ number: '9', status: EditStatus.NEW })
 const manuscripts: readonly Manuscript[] = [new Manuscript({ id: 1 })]
 const savedOutline: ChapterOutline = { ...apiOutline, revision: 'revision-2' }
@@ -103,29 +102,21 @@ describe.each(operations)('%s', (_name, change, apply) => {
     expect(textService.findChapterLines).not.toHaveBeenCalled()
   })
 
-  it('describes exactly the request it sends', async () => {
-    await source.loadOutline()
-
-    expect(source.describeChange(change)).toEqual({
-      method: 'POST',
-      url: `${chapterUrl}/${endpoint}?view=outline&revision=revision-1`,
-      body,
-    })
-  })
-
   it('continues with the revision of the returned outline', async () => {
     await source.loadOutline()
     await apply(source)
     await source.loadLines(0, 1)
     await expect(apply(source)).resolves.toBe(laterOutline)
+    await apply(source)
 
-    expect(postedRevisions()).toEqual(['revision-1', 'revision-2'])
+    expect(postedRevisions()).toEqual([
+      'revision-1',
+      'revision-2',
+      'revision-3',
+    ])
     expect(textService.findChapterLines.mock.calls).toEqual([
       [editChapterId, 0, 1, undefined, 'revision-2'],
     ])
-    expect(source.describeChange(change).url).toBe(
-      `${chapterUrl}/${endpoint}?view=outline&revision=revision-3`,
-    )
   })
 
   it('rejects with the reload message when the chapter has moved on', async () => {

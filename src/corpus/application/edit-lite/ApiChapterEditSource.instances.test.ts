@@ -84,9 +84,8 @@ it('sets the lemma of every instance after the saves that were started before', 
       'revision-2',
     ],
   ])
-  expect(source.describeChange({ type: 'deleteLine', index: 0 }).url).toContain(
-    'revision=revision-2',
-  )
+  await source.deleteLine(0)
+  expect(textService.updateChapterOutline.mock.calls[2][3]).toBe('revision-2')
 })
 
 it('creates a proper noun in the dictionary', async () => {

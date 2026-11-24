@@ -1,5 +1,4 @@
 import { act, waitFor } from '@testing-library/react'
-import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { Line } from 'corpus/domain/line'
 import { buildReadyAnnotation } from 'corpus/ui/edit-lite/annotationState.testSupport'
 import {
@@ -140,14 +139,14 @@ test('a failed load keeps its reason and is repeated when the view is opened aga
   expect(view.state().lines[position].status).toBe('ready')
 })
 
-test('the read-only snapshot answers with its reason and no lemmas are requested', async () => {
-  const view = await renderLoaded(
-    createFakeChapterEditSource({ lines, kind: 'legacy' }),
-  )
+test('a line whose tokens cannot be loaded requests no lemmas', async () => {
+  const source = createFakeChapterEditSource({ lines })
+  source.loadAnnotatedLine.mockRejectedValueOnce(new Error('No tokens.'))
+  const view = await renderLoaded(source)
   view.run((actions) => actions.openAnnotation(position, 'lemmatization'))
   await waitFor(() =>
     expect(findAnnotation(view, position)?.tokens).toEqual(
-      failedResource(annotationsNotAvailableMessage),
+      failedResource('No tokens.'),
     ),
   )
   await settleLoads()

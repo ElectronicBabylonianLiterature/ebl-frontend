@@ -12,7 +12,6 @@ import MemorySession, { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 import { createChapterEditSource } from 'corpus/application/edit-lite/createChapterEditSource'
 import { Line } from 'corpus/domain/line'
-import { provenanceDtos } from 'corpus/ui/ChapterEditView.testSupport'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
@@ -21,7 +20,9 @@ import {
   FakeChapterEditSourceOptions,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
-import EditLiteFakeApi from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
+import EditLiteFakeApi, {
+  editLiteProvenanceDtos,
+} from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
 import EditLiteFakeChapter from 'corpus/ui/edit-lite/EditLiteFakeChapter.testSupport'
 import EditLiteFakeDictionary from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
 import { loadedEditor } from 'corpus/ui/edit-lite/SplitLines.testSupport'
@@ -29,6 +30,7 @@ import { Switch } from 'router/compat'
 import CorpusRoutes from 'router/corpusRoutes'
 import { getServices } from 'test-support/AppDriver'
 import { createTextUrl, Dto } from 'test-support/FakeApiExpectation'
+import LocationDisplay from 'test-support/LocationDisplay'
 import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
@@ -38,6 +40,7 @@ export interface EditLiteRouteOptions {
   readonly session?: Session
   readonly fakeApi?: EditLiteFakeApi
   readonly links?: readonly string[]
+  readonly showLocation?: boolean
 }
 
 export interface ServedEditLiteRoute {
@@ -47,17 +50,17 @@ export interface ServedEditLiteRoute {
 
 export { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 
-export const editLitePath = '/corpus/L/1/2/SB/I/edit-lite'
-export const secondEditLitePath = '/corpus/L/1/2/SB/II/edit-lite'
-export const classicEditPath = '/corpus/L/1/2/SB/I/edit'
-export const editLiteHeading = /^Edit Poem of Creation Standard Babylonian I /
+export const chapterEditPath = '/corpus/L/1/2/SB/I/edit'
+export const secondChapterEditPath = '/corpus/L/1/2/SB/II/edit'
+export const editLiteRedirectPath = '/corpus/L/1/2/SB/I/edit-lite'
+export const editLiteHeading = 'Edit Poem of Creation Standard Babylonian I'
 
 export const secondEditLiteChapterId: ChapterId = {
   ...editLiteChapterId,
   name: 'II',
 }
 
-export const editLiteTextDto: Dto = {
+const editLiteTextDto: Dto = {
   ...editLiteChapterId.textId,
   name: 'Poem of Creation',
   numberOfVerses: 162,
@@ -111,7 +114,7 @@ export function createEditLiteFakeApi(): EditLiteFakeApi {
   const fakeApi = new EditLiteFakeApi()
   fakeApi
     .allowChapterManuscripts(editLiteChapterId, editLiteManuscriptDtos)
-    .allowProvenances(provenanceDtos)
+    .allowProvenances(editLiteProvenanceDtos)
     .expectText(editLiteTextDto)
   return fakeApi
 }
@@ -139,11 +142,12 @@ export function countTextRequests(fakeApi: EditLiteFakeApi): number {
 }
 
 export function renderEditLiteRoute({
-  path = editLitePath,
+  path = chapterEditPath,
   search = '',
   session = writerSession,
   fakeApi = createEditLiteFakeApi(),
   links = [],
+  showLocation = false,
 }: EditLiteRouteOptions = {}): RenderResult {
   const routes = CorpusRoutes({
     ...getServices(fakeApi.client),
@@ -157,6 +161,7 @@ export function renderEditLiteRoute({
             {link}
           </Link>
         ))}
+        {showLocation && <LocationDisplay />}
         <Switch>{routes}</Switch>
       </SessionContext.Provider>
     </MemoryRouter>,

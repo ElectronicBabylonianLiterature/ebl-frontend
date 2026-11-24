@@ -43,7 +43,7 @@ const plainToken = {
 }
 
 async function waitForSavedView(): Promise<void> {
-  await waitFor(() => expect(button('Preview request')).toBeEnabled())
+  await waitFor(() => expect(button('Reset')).toBeInTheDocument())
   await waitFor(() => expect(button('Reset')).toBeDisabled())
 }
 

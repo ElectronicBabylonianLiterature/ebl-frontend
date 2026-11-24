@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { ChapterRequest } from 'corpus/application/edit-lite/ChapterEditSource'
 import { Line } from 'corpus/domain/line'
 import ConfirmModal from 'corpus/ui/edit-lite/ConfirmModal'
-import DryRunModal, {
-  createDryRunNotice,
-} from 'corpus/ui/edit-lite/DryRunModal'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { isLineDirty } from 'corpus/ui/edit-lite/editLiteReducer'
 import { LineState } from 'corpus/ui/edit-lite/editLiteState'
@@ -27,9 +23,6 @@ interface Props {
   readonly onDeleted: (index: number) => void
 }
 
-export { lineDryRunNotice } from 'corpus/ui/edit-lite/SaveControls'
-
-export const deleteDryRunNotice = createDryRunNotice('deleting the line')
 export const discardedChangesNote =
   'The unsaved changes of this line are discarded with it.'
 
@@ -50,19 +43,14 @@ export default function LineEditToolbar({
   activity,
   onDeleted,
 }: Props): JSX.Element {
-  const { actions, canSave, describeChange, manuscripts } = useEditLiteContext()
-  const [deletion, setDeletion] = useState<ChapterRequest | null>(null)
+  const { actions, manuscripts } = useEditLiteContext()
   const [isConfirmingDelete, setIsConfirmingDelete] = useState<boolean>(false)
   const problem = findLineProblem(draft, manuscripts)
   const progressLabel = findProgressLabel(lineState.status)
   const isUnsaved = isNew || isLineDirty(lineState)
   const deleteLine = (): void => {
     setIsConfirmingDelete(false)
-    if (canSave) {
-      actions.deleteLine(index, (): void => onDeleted(index))
-    } else {
-      setDeletion(describeChange({ type: 'deleteLine', index }))
-    }
+    actions.deleteLine(index, (): void => onDeleted(index))
   }
 
   return (
@@ -75,11 +63,6 @@ export default function LineEditToolbar({
       <SaveControls
         saveLabel="Save line"
         resetLabel={isNew ? 'Discard new line' : 'Reset'}
-        change={
-          isNew
-            ? { type: 'addLine', line: draft }
-            : { type: 'saveLine', index, line: draft }
-        }
         canSubmit={isUnsaved && problem === null && !isLayoutChanging(activity)}
         canReset={isUnsaved || lineState.status === 'failed'}
         progressLabel={progressLabel}
@@ -106,11 +89,6 @@ export default function LineEditToolbar({
       >
         {describeDeletion(lineState.original ?? draft, isUnsaved)}
       </ConfirmModal>
-      <DryRunModal
-        request={deletion}
-        notice={deleteDryRunNotice}
-        onHide={(): void => setDeletion(null)}
-      />
     </>
   )
 }

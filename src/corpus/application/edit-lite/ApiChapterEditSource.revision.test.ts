@@ -7,6 +7,7 @@ import {
 } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { ChapterEditTextService } from 'corpus/application/edit-lite/createChapterEditSource'
+import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import { createLine, EditStatus, Line } from 'corpus/domain/line'
 import { ApiError } from 'http/ApiClient'
 import { deferred, settle } from 'test-support/concurrencyLimiterHelpers'
@@ -93,7 +94,7 @@ it('saves against the revision of the loaded outline', async () => {
     [editChapterId, 4, 1, undefined, 'revision-1'],
   ])
   expect(textService.updateEditedLines.mock.calls).toEqual([
-    [editChapterId, source.describeSave(4, draft), 'revision-1'],
+    [editChapterId, toLineEditsDto(4, draft), 'revision-1'],
   ])
 })
 

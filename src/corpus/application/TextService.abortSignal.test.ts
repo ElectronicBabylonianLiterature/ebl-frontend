@@ -25,11 +25,6 @@ const reads: [
 ][] = [
   ['find', (service, signal) => service.find(text.id, signal), textUrl],
   [
-    'findChapter',
-    (service, signal) => service.findChapter(chapterId, signal),
-    chapterUrl,
-  ],
-  [
     'findManuscripts',
     (service, signal) => service.findManuscripts(chapterId, signal),
     `${chapterUrl}/manuscripts`,

@@ -2,10 +2,7 @@ import { act } from '@testing-library/react'
 import { ImportedLines } from 'corpus/ui/edit-lite/EditLiteContext'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
-import {
-  buildEditLiteLines,
-  createFakeChapterEditSource,
-} from 'corpus/ui/edit-lite/editLite.testSupport'
+import { buildEditLiteLines } from 'corpus/ui/edit-lite/editLite.testSupport'
 import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
 import {
   EditLiteHook,
@@ -37,26 +34,14 @@ async function renderWithDraft(): Promise<EditLiteHook> {
   return view
 }
 
-test.each([
-  [true, true, true],
-  [false, false, false],
-])(
+test.each([[true], [false]])(
   'the context says whether the page may be edited: %s',
-  (canWrite, expectedWrite, expectedSave) => {
+  (canWrite) => {
     const view = renderEditLiteHook(lines, undefined, canWrite)
 
-    expect(view.result.current.context.canWrite).toBe(expectedWrite)
-    expect(view.result.current.context.canSave).toBe(expectedSave)
+    expect(view.result.current.context.canWrite).toBe(canWrite)
   },
 )
-
-test('a writer with a read-only source may edit but not save', () => {
-  const source = createFakeChapterEditSource({ kind: 'legacy', lines })
-  const view = renderEditLiteHook(lines, source)
-
-  expect(view.result.current.context.canWrite).toBe(true)
-  expect(view.result.current.context.canSave).toBe(false)
-})
 
 test('importLines appends the imported lines and keeps the drafts', async () => {
   const view = await renderWithDraft()

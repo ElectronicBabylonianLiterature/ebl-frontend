@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { ChapterRequest } from 'corpus/application/edit-lite/ChapterEditSource'
 import { LineOutline } from 'corpus/application/edit-lite/chapterOutline'
-import DryRunModal, {
-  createDryRunNotice,
-} from 'corpus/ui/edit-lite/DryRunModal'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import LineMoveDialog from 'corpus/ui/edit-lite/LineMoveDialog'
 import { LineActivity } from 'corpus/ui/edit-lite/lineStates'
@@ -19,10 +15,6 @@ interface Props {
 }
 
 type ButtonClick = React.MouseEvent<HTMLButtonElement>
-
-export const missingRevisionNote =
-  'The real request also carries the chapter revision, which the read-only snapshot does not have.'
-export const moveDryRunNotice = `${createDryRunNotice('moving the line')} ${missingRevisionNote}`
 
 function isFocusLost(starter: HTMLButtonElement): boolean {
   const focusedElement = document.activeElement
@@ -58,21 +50,16 @@ export default function LineMoveControls({
   activity,
   onMoved,
 }: Props): JSX.Element | null {
-  const { actions, canSave, canWrite, describeChange } = useEditLiteContext()
+  const { actions, canWrite } = useEditLiteContext()
   const [chooser, setChooser] = useState<HTMLButtonElement | null>(null)
-  const [preview, setPreview] = useState<ChapterRequest | null>(null)
   const chooserRef = useRef<HTMLButtonElement>(null)
   const canMove = isLoaded && activity === 'idle'
   const restoreFocusTo = useFocusRestoring(canMove, chooserRef)
   const lastIndex = lines.length - 1
   const moveTo = (to: number, starter: HTMLButtonElement): void => {
     setChooser(null)
-    if (canSave) {
-      restoreFocusTo(starter)
-      actions.moveLine(index, to, (): void => onMoved(index, to))
-    } else {
-      setPreview(describeChange({ type: 'moveLine', from: index, to }))
-    }
+    restoreFocusTo(starter)
+    actions.moveLine(index, to, (): void => onMoved(index, to))
   }
 
   return canWrite ? (
@@ -122,11 +109,6 @@ export default function LineMoveControls({
           onCancel={(): void => setChooser(null)}
         />
       )}
-      <DryRunModal
-        request={preview}
-        notice={moveDryRunNotice}
-        onHide={(): void => setPreview(null)}
-      />
     </>
   ) : null
 }

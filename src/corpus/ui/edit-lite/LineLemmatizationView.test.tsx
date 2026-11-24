@@ -1,8 +1,8 @@
-import { act, screen, waitFor, within } from '@testing-library/react'
+import { act, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
 import { Line } from 'corpus/domain/line'
 import {
-  buildAnnotationUrl,
   createFakeChapterEditSource,
   EditLiteRenderOptions,
   FakeChapterEditSource,
@@ -119,7 +119,6 @@ test('the lemmas that were set are saved and shown again, the suggestions are no
   await lemmatizeWord(manuscriptRow(1), 'e-nu-ma', new Lemma(otherElish))
   await userEvent.click(button('Save lemmatization'))
   await waitFor(() => expect(button('Reset')).toBeDisabled())
-  await waitFor(() => expect(button('Preview request')).toBeEnabled())
   const [savedVariant] = (await source.loadAnnotatedLine(0)).variants
 
   expect(source.saveLemmatization).toHaveBeenCalledTimes(1)
@@ -177,20 +176,17 @@ test('reset discards the lemmas that were set and keeps what was loaded', async 
   expect(source.loadLemmatization).toHaveBeenCalledTimes(1)
 })
 
-test('the request preview shows the address and the body of the save', async () => {
-  await renderLoadedView('Lemmatization', options)
-  await userEvent.click(button('Preview request'))
-  const preview = within(
-    screen.getByRole('dialog', { name: 'Request preview' }),
-  )
+test('saving sends the lemmatization of the line as the body of the request', async () => {
+  const { source } = await renderLoadedView('Lemmatization', options)
+  await lemmatizeWord(manuscriptRow(1), 'e-liš', new Lemma(elish))
+  await userEvent.click(button('Save lemmatization'))
+  await waitFor(() => expect(source.loadLemmatization).toHaveBeenCalledTimes(2))
+  await waitFor(() => expect(button('Reset')).toBeDisabled())
+  const [[index, lemmatization]] = source.saveLemmatization.mock.calls
 
+  expect(index).toBe(0)
   expect(
-    preview.getByText(
-      `POST ${buildAnnotationUrl('lemmatization', 0, 'revision-1')}`,
-    ),
-  ).toBeVisible()
-  expect(
-    JSON.parse(preview.getByLabelText('Request body').textContent ?? ''),
+    toChapterUpdate({ type: 'saveLemmatization', index, lemmatization }).body,
   ).toEqual({
     lemmatization: [
       {
@@ -203,7 +199,7 @@ test('the request preview shows the address and the body of the save', async () 
         manuscripts: [
           [
             { value: 'e-nu-ma', uniqueLemma: [] },
-            { value: 'e-liš', uniqueLemma: [] },
+            { value: 'e-liš', uniqueLemma: ['eliš I'] },
           ],
           [
             { value: '[x' },

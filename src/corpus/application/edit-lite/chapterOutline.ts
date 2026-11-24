@@ -1,3 +1,4 @@
+import { Line } from 'corpus/domain/line'
 import { TextId } from 'transliteration/domain/text-id'
 
 export interface ManuscriptSummary {
@@ -40,4 +41,20 @@ export interface LinesPageDto {
   readonly limit: number
   readonly lines: readonly Record<string, unknown>[]
   readonly revision: string
+}
+
+export function toLineOutline(line: Line, index: number): LineOutline {
+  return {
+    index,
+    number: line.number,
+    isSecondLineOfParallelism: line.isSecondLineOfParallelism,
+    isBeginningOfSection: line.isBeginningOfSection,
+    translation: line.translation,
+    variants: line.variants.map((variant) => ({
+      reconstruction: variant.reconstruction,
+      manuscriptIds: variant.manuscripts.map(
+        (manuscriptLine) => manuscriptLine.manuscriptId,
+      ),
+    })),
+  }
 }

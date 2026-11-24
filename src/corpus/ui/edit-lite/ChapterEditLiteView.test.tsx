@@ -1,12 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import MemorySession, { guestSession } from 'auth/Session'
 import TextService from 'corpus/application/TextService'
+import { readOnlyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
-  legacyNotice,
-  previewNotice,
-} from 'corpus/ui/edit-lite/ChapterEditLiteView'
-import {
-  classicEditPath,
   countTextRequests,
   createEditLiteFakeApi,
   createSourceMock,
@@ -17,25 +13,12 @@ import {
   renderLoadedEditLiteRoute,
   waitForLoadedLines,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
-import {
-  buildEditLiteLines,
-  buildEditLiteOutline,
-  createFakeChapterEditSource,
-} from 'corpus/ui/edit-lite/editLite.testSupport'
 import { breadcrumbs } from 'test-support/appDriverHelpers'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
 jest.mock('corpus/application/edit-lite/createChapterEditSource')
-
-function metric(testId: string): HTMLElement {
-  return within(screen.getByTestId('edit-lite-performance')).getByTestId(testId)
-}
-
-function notice(): HTMLElement {
-  return screen.getByText(previewNotice, { exact: false })
-}
 
 afterEach(() => {
   jest.restoreAllMocks()
@@ -51,9 +34,7 @@ test('shows a spinner until the text and the source are loaded', async () => {
 
   expect(
     await screen.findByRole('heading', { name: editLiteHeading }),
-  ).toHaveTextContent(
-    'Edit Poem of Creation Standard Babylonian I lite preview',
-  )
+  ).toHaveTextContent(/^Edit Poem of Creation Standard Babylonian I$/)
   await waitForLoadedLines()
   expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
   fakeApi.verifyExpectations()
@@ -67,7 +48,7 @@ test('shows the breadcrumbs of the chapter', async () => {
   breadcrumbs.expectCrumbs(['eBL', 'Corpus', 'I.2 Poem of Creation'])
   breadcrumbs.expectCrumb('Chapter Standard Babylonian I', '/corpus/L/1/2/SB/I')
   expect(
-    within(breadcrumbs.getBreadcrumbs()).getByText('Edit (lite preview)'),
+    within(breadcrumbs.getBreadcrumbs()).getByText('Edit', { exact: true }),
   ).toHaveAttribute('aria-current', 'page')
 })
 
@@ -79,7 +60,6 @@ test('creates the source for the chapter of the route', async () => {
   expect(createSourceMock).toHaveBeenCalledWith({
     textService: expect.any(TextService),
     id: editLiteChapterId,
-    mode: 'auto',
     canWrite: true,
     signal: expect.any(AbortSignal),
   })
@@ -101,71 +81,47 @@ test.each([
   },
 )
 
-test.each([
-  ['?source=legacy', 'legacy'],
-  ['?source=api', 'api'],
-  ['?source=auto', 'auto'],
-  ['?source=mongo', 'auto'],
-])('requests the source mode of "%s"', async (search, mode) => {
+test.each(['?source=legacy', '?source=api', '?source=auto'])(
+  'ignores the parameter "%s"',
+  async (search) => {
+    mockEditSource()
+    await renderLoadedEditLiteRoute({ search })
+
+    expect(createSourceMock).toHaveBeenCalledWith({
+      textService: expect.any(TextService),
+      id: editLiteChapterId,
+      canWrite: true,
+      signal: expect.any(AbortSignal),
+    })
+  },
+)
+
+test('shows no preview aids', async () => {
   mockEditSource()
-  await renderLoadedEditLiteRoute({ search })
-
-  expect(createSourceMock).toHaveBeenCalledWith(
-    expect.objectContaining({ mode }),
-  )
-})
-
-test('explains the preview and links to the classic edit page', async () => {
-  mockEditSource({ kind: 'api' })
   await renderLoadedEditLiteRoute()
 
-  expect(notice()).toHaveAttribute('role', 'alert')
-  expect(notice()).not.toHaveTextContent(legacyNotice)
-  expect(within(notice()).queryByRole('button')).not.toBeInTheDocument()
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  expect(screen.queryByText(/preview/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/classic/i)).not.toBeInTheDocument()
   expect(
-    within(notice()).getByRole('link', { name: 'Open the classic edit page' }),
-  ).toHaveAttribute('href', classicEditPath)
-})
-
-test('says that a legacy source is read from existing endpoints', async () => {
-  mockEditSource({ kind: 'legacy' })
-  await renderLoadedEditLiteRoute()
-
-  expect(notice()).toHaveTextContent(`${previewNotice} `)
-  expect(notice()).toHaveTextContent(legacyNotice)
-  expect(metric('edit-lite-source-kind')).toHaveTextContent('legacy')
-})
-
-test('reports the source, its size and its diagnostics', async () => {
-  const lines = buildEditLiteLines(12)
-  mockEditSource({ lines, diagnostics: ['Unknown siglum X', 'Odd row'] })
-  await renderLoadedEditLiteRoute()
-
-  expect(metric('edit-lite-source-kind')).toHaveTextContent('api')
-  expect(metric('edit-lite-line-count')).toHaveTextContent('12')
-  expect(metric('edit-lite-manuscript-count')).toHaveTextContent('2')
-  expect(metric('edit-lite-diagnostics')).toHaveTextContent('2')
+    screen.queryByRole('region', { name: 'Performance' }),
+  ).not.toBeInTheDocument()
   expect(
-    Number(metric('edit-lite-dom-nodes').textContent),
-  ).toBeGreaterThanOrEqual(screen.getAllByRole('listitem').length)
-  expect(metric('edit-lite-ace-editors')).toHaveTextContent('0')
+    screen.queryByRole('button', { name: 'Preview request' }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByRole('button', { name: 'Refresh' }),
+  ).not.toBeInTheDocument()
 })
 
-test('measures how long creating the source took', async () => {
-  const source = createFakeChapterEditSource()
-  let now = 1000
-  jest.spyOn(performance, 'now').mockImplementation(() => now)
-  createSourceMock.mockImplementation(() => {
-    now += 2400
-    return Promise.resolve({ source, outline: buildEditLiteOutline() })
-  })
-  await renderLoadedEditLiteRoute()
+test('says that the page is read-only without write permission', async () => {
+  mockEditSource()
+  await renderLoadedEditLiteRoute({ session: guestSession })
 
-  expect(metric('edit-lite-load-ms')).toHaveAttribute(
-    'data-milliseconds',
-    '2400',
+  expect(screen.getByRole('alert')).toHaveTextContent(readOnlyNotice)
+  expect(readOnlyNotice).toBe(
+    'Editing needs permission to edit texts, so this page is read-only.',
   )
-  expect(metric('edit-lite-load-ms')).toHaveTextContent(/^2\.4 s$/)
 })
 
 test('shows the error when the source cannot be created', async () => {

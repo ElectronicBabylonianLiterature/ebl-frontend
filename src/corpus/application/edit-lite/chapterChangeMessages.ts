@@ -16,6 +16,3 @@ export function numberedLineChangedMessage(lineNumber: string): string {
 
 export const lineNotReturnedMessage =
   'The line was not returned by the data source.'
-
-export const annotationsNotAvailableMessage =
-  'Alignment and lemmatization are not available: this chapter was loaded as a read-only ATF snapshot without tokens.'

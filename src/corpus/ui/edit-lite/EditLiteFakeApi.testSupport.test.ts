@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
-import { snapshotDto } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import { toDeletedLineDto } from 'corpus/application/edit-lite/lineEdits'
 import { Line } from 'corpus/domain/line'
 import {
@@ -72,12 +71,9 @@ test('every page of up to three lines is allowed', async () => {
   ).rejects.toThrow('Unexpected not-authenticated fetchJson')
 })
 
-test('the ATF snapshot and the manuscripts are served', async () => {
-  fakeApi
-    .expectChapterAtfSnapshot(editLiteChapterId, snapshotDto)
-    .allowChapterManuscripts(editLiteChapterId, [{ id: 1 }])
+test('the manuscripts are served', async () => {
+  fakeApi.allowChapterManuscripts(editLiteChapterId, [{ id: 1 }])
 
-  await expect(get('display?lines=0&variants=0')).resolves.toBe(snapshotDto)
   await expect(get('manuscripts')).resolves.toEqual([{ id: 1 }])
   fakeApi.verifyExpectations()
 })

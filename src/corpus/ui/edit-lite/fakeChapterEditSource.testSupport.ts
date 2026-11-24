@@ -1,21 +1,12 @@
-import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import {
-  ChapterChange,
   ChapterEditSource,
-  ChapterEditSourceKind,
-  ChapterRequest,
-  LinesUpdateDto,
   WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   ChapterOutline,
   ManuscriptSummary,
 } from 'corpus/application/edit-lite/chapterOutline'
-import {
-  describeChapterChange,
-  toChapterUpdate,
-} from 'corpus/application/edit-lite/chapterRequests'
-import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
+import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
 import {
   createLineLemmatization,
   LemmaSuggestionsDto,
@@ -26,11 +17,9 @@ import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Word from 'dictionary/domain/Word'
-import { ChapterId } from 'transliteration/domain/chapter-id'
 import {
   buildEditLiteLines,
   buildEditLiteOutline,
-  editLiteChapterId,
   editLiteManuscripts,
   editLiteRevision,
 } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
@@ -64,11 +53,7 @@ export {
 export type FakeChapterEditSource = jest.Mocked<ChapterEditSource>
 
 export interface FakeChapterEditSourceOptions {
-  readonly kind?: ChapterEditSourceKind
-  readonly canSave?: boolean
   readonly lines?: readonly Line[]
-  readonly diagnostics?: readonly string[]
-  readonly id?: ChapterId
   readonly words?: readonly Word[]
   readonly suggestions?: readonly FakeLemmaSuggestion[]
 }
@@ -82,8 +67,6 @@ interface FakeChapter {
 export function createFakeChapterEditSource(
   options: FakeChapterEditSourceOptions = {},
 ): FakeChapterEditSource {
-  const kind = options.kind ?? 'api'
-  const canSave = options.canSave ?? kind === 'api'
   const chapter: FakeChapter = {
     lines: options.lines ?? buildEditLiteLines(),
     manuscripts: editLiteManuscripts,
@@ -95,9 +78,6 @@ export function createFakeChapterEditSource(
     uncertainFragments: chapter.uncertainFragments,
   })
   const save = (change: Partial<FakeChapter>): Promise<ChapterOutline> => {
-    if (!canSave) {
-      return Promise.reject(new Error('Saving is not available.'))
-    }
     Object.assign(chapter, change)
     return Promise.resolve(buildOutline())
   }
@@ -124,9 +104,6 @@ export function createFakeChapterEditSource(
   }
 
   return {
-    kind,
-    canSave,
-    diagnostics: options.diagnostics ?? [],
     loadOutline: jest.fn(
       (): Promise<ChapterOutline> => Promise.resolve(buildOutline()),
     ),
@@ -136,9 +113,7 @@ export function createFakeChapterEditSource(
     ),
     loadAnnotatedLine: jest.fn(
       (index: number): Promise<Line> =>
-        kind === 'legacy'
-          ? Promise.reject(new Error(annotationsNotAvailableMessage))
-          : Promise.resolve(annotateLine(chapter.lines[index])),
+        Promise.resolve(annotateLine(chapter.lines[index])),
     ),
     loadLemmatization: jest.fn(
       (line: Line): Promise<readonly LineLemmatization[]> =>
@@ -149,18 +124,6 @@ export function createFakeChapterEditSource(
         dictionary.respond('GET', `/words?lemma=${query}`, null) as Promise<
           Word[]
         >,
-    ),
-    describeSave: jest.fn(
-      (index: number, draft: Line): LinesUpdateDto =>
-        toLineEditsDto(index, draft),
-    ),
-    describeChange: jest.fn(
-      (change: ChapterChange): ChapterRequest =>
-        describeChapterChange(
-          options.id ?? editLiteChapterId,
-          change,
-          editLiteRevision,
-        ),
     ),
     saveLine: jest.fn((index: number, _original: Line, draft: Line) =>
       save({

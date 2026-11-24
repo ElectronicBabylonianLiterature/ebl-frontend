@@ -19,8 +19,10 @@ import {
   chapterUrl,
   createTextServiceTestContext,
   extantLines,
+  textsDto,
 } from 'corpus/application/TextService.testSupport'
-import { textsDto } from 'corpus/application/TextService.update.testSupport'
+import { fromDictionaryLineDto } from 'corpus/application/dtos'
+import { dictionaryLineDisplayDto } from 'test-support/dictionary-line-fixtures'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -52,14 +54,6 @@ const testData: TestData<TextService>[] = [
     [text],
     ['/texts', false],
     Promise.resolve(textsDto),
-  ),
-  new TestData(
-    'findChapter',
-    [chapterId],
-    apiClient.fetchJson,
-    chapter,
-    [chapterUrl, false, undefined],
-    Promise.resolve(chapterDto),
   ),
   new TestData(
     'findChapterDisplay',
@@ -101,6 +95,18 @@ const testData: TestData<TextService>[] = [
     chapter.manuscripts,
     [`${chapterUrl}/manuscripts`, false, undefined],
     Promise.resolve(chapterDto.manuscripts),
+  ),
+  new TestData(
+    'searchLemma',
+    ['qanû I', 'L'],
+    apiClient.fetchJson,
+    [fromDictionaryLineDto(dictionaryLineDisplayDto)],
+    [
+      `/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`,
+      false,
+      undefined,
+    ],
+    Promise.resolve([dictionaryLineDisplayDto]),
   ),
 ]
 

@@ -1,15 +1,16 @@
 import React from 'react'
-import { render, RenderResult, screen, within } from '@testing-library/react'
+import {
+  render,
+  RenderResult,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { PeriodModifiers } from 'common/utils/period'
 import { Periods } from 'common/utils/periodDefinitions'
-import {
-  ChapterChange,
-  ChapterRequest,
-} from 'corpus/application/edit-lite/ChapterEditSource'
-import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
 import TextService from 'corpus/application/TextService'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { getProvenanceByName } from 'corpus/domain/provenance'
@@ -116,8 +117,9 @@ export function buildManuscripts(): Manuscript[] {
 
 export interface ManuscriptsContext extends EditLiteContextValue {
   readonly actions: jest.Mocked<EditLiteActions>
-  readonly describeChange: jest.Mock<ChapterRequest, [ChapterChange]>
 }
+
+type SavedManuscripts = Parameters<EditLiteActions['saveManuscripts']>
 
 export interface ManuscriptsElementOptions {
   readonly id?: ChapterId
@@ -128,11 +130,8 @@ export interface ManuscriptsElementOptions {
 
 export function createManuscriptsContext(
   overrides: Partial<EditLiteContextValue> = {},
-  id: ChapterId = manuscriptsChapterId,
 ): ManuscriptsContext {
   return {
-    kind: 'legacy',
-    canSave: false,
     canWrite: true,
     manuscripts: [],
     ...overrides,
@@ -145,7 +144,7 @@ export function createManuscriptsContext(
       deleteLine: jest.fn(),
       moveLine: jest.fn(),
       importLines: jest.fn(),
-      saveManuscripts: jest.fn(),
+      saveManuscripts: jest.fn().mockResolvedValue(undefined),
       reportUnsavedManuscripts: jest.fn(),
       openAnnotation: jest.fn(),
       changeAnnotation: jest.fn(),
@@ -154,10 +153,6 @@ export function createManuscriptsContext(
       countWordInstances: jest.fn(),
       lemmatizeInstances: jest.fn(),
     },
-    describeChange: jest.fn(
-      (change: ChapterChange): ChapterRequest =>
-        describeChapterChange(id, change),
-    ),
     searchLemma: jest.fn(),
     createProperNoun: jest.fn(),
   }
@@ -172,7 +167,7 @@ export function createManuscriptsElement(
   const id = options.id ?? manuscriptsChapterId
   return (
     <EditLiteContext.Provider
-      value={options.context ?? createManuscriptsContext({}, id)}
+      value={options.context ?? createManuscriptsContext()}
     >
       <EditLiteManuscripts
         id={id}
@@ -216,13 +211,21 @@ export async function openManuscript(siglum: string): Promise<HTMLElement> {
   return screen.getByRole('group', { name: editorName(siglum) })
 }
 
-export async function openPreview(
-  container: HTMLElement = document.body,
-): Promise<HTMLElement> {
-  await userEvent.click(
-    within(container).getByRole('button', { name: 'Preview request' }),
-  )
-  return screen.getByRole('dialog', { name: 'Request preview' })
+export async function saveManuscripts(
+  context: ManuscriptsContext,
+): Promise<SavedManuscripts> {
+  const save = screen.getByRole('button', { name: 'Save manuscripts' })
+  await userEvent.click(save)
+  await waitFor(() => expect(save).toBeEnabled())
+  return _.last(context.actions.saveManuscripts.mock.calls) as SavedManuscripts
+}
+
+export function listUncertainFragments(
+  container: HTMLElement,
+): (string | null)[] {
+  return within(container)
+    .queryAllByRole('button', { name: /^Edit uncertain fragment / })
+    .map((button) => button.textContent)
 }
 
 function prototypesOf(value: object): object[] {

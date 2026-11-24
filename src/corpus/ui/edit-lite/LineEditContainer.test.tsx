@@ -70,8 +70,6 @@ test('a loaded line cannot be saved or reset until it is edited', async () => {
 
   expect(button('Save line')).toBeDisabled()
   expect(button('Reset')).toBeDisabled()
-  expect(button('Preview request')).toBeEnabled()
-  expect(screen.queryByText(/dry run/)).not.toBeInTheDocument()
 })
 
 test('editing updates the draft and enables saving', async () => {

@@ -5,6 +5,7 @@ import TextService from 'corpus/application/TextService'
 import {
   buildManuscripts,
   calledMethodNames,
+  createManuscriptsContext,
   createManuscriptsElement,
   firstSiglum,
   manuscriptsChapterId,
@@ -13,6 +14,7 @@ import {
   openManuscript,
   queryEditor,
   renderLoadedManuscripts,
+  saveManuscripts,
   secondSiglum,
   setUpManuscriptsProvenances,
   toggleOf,
@@ -176,11 +178,12 @@ test('closing a row unmounts the form and keeps the edit', async () => {
   expect(reopened.getByLabelText('Notes')).toHaveValue('first note!')
 })
 
-test('never calls anything but the two reads', async () => {
-  await renderLoadedManuscripts(services)
+test('calls no service but the two reads, also when saving', async () => {
+  const context = createManuscriptsContext()
+  await renderLoadedManuscripts(services, { context })
   const editor = within(await openManuscript(firstSiglum))
   await userEvent.type(editor.getByLabelText('Notes'), '!')
-  await userEvent.click(screen.getByRole('button', { name: 'Preview request' }))
+  await saveManuscripts(context)
 
   expect(calledMethodNames(services.textService)).toEqual(['findManuscripts'])
   expect(calledMethodNames(services.fragmentService)).toEqual([

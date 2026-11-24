@@ -89,12 +89,6 @@ export default class AppDriver {
     expect(this.getView().queryByText(text)).not.toBeInTheDocument()
   }
 
-  expectInputElement(label: Matcher, expectedValue: unknown): void {
-    expect(this.getView().getByLabelText(label)).toHaveValue(
-      String(expectedValue),
-    )
-  }
-
   expectChecked(label: Matcher): void {
     expect(this.getView().getByLabelText(label)).toBeChecked()
   }

@@ -46,6 +46,9 @@ This repository holds the page; the new endpoints are in ebl-api.
   - [x] "Update all instances" for the whole chapter
 - [x] Step 6 dropped by the user (not needed with per-line saves)
 - [x] Step 7 (ebl-api only): faster saving; nothing changed here
+- [x] Step 8: the new editor at `/edit`; classic page, snapshot source and
+      mock-up aids removed
+- [ ] Deploy ebl-api #827 before or with this frontend
 
 ## Open
 
@@ -60,7 +63,7 @@ This repository holds the page; the new endpoints are in ebl-api.
 
 ## Later tasks
 
-- [ ] Replace the classic edit page and remove the legacy source (step 8)
+- [x] Replace the classic edit page and remove the legacy source (step 8)
 
 ## Next phase (decided after the mock-ups)
 

@@ -1,6 +1,5 @@
 import createReference from 'bibliography/application/createReference'
 import {
-  Chapter,
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
@@ -23,12 +22,7 @@ import { PeriodModifiers } from 'common/utils/period'
 import { Periods } from 'common/utils/periodDefinitions'
 import { getProvenanceByName } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import {
-  ChapterListing,
-  createChapter,
-  createText,
-  Text,
-} from 'corpus/domain/text'
+import { ChapterListing, createText, Text } from 'corpus/domain/text'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
 import {
@@ -74,14 +68,6 @@ export function fromDto(textDto): Text {
     references: textDto.references.map(createReference),
     chapters: textDto.chapters.map(fromChapterListingDto),
     projects: textDto.projects?.map(createResearchProject) || [],
-  })
-}
-
-export function fromChapterDto(chapterDto): Chapter {
-  return createChapter({
-    ...chapterDto,
-    manuscripts: chapterDto.manuscripts.map(fromManuscriptDto),
-    lines: chapterDto.lines.map(fromLineDto),
   })
 }
 
@@ -185,13 +171,6 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
     activeVariant,
   )
 }
-
-export {
-  toAlignmentDto,
-  toLemmatizationDto,
-  toManuscriptsDto,
-  toLinesDto,
-} from 'corpus/application/chapterDtoSerialization'
 
 export function fromDictionaryLineDto(dto): DictionaryLineDisplay {
   return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }

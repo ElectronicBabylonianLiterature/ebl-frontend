@@ -1,15 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
+  chapterEditPath,
   countTextRequests,
   createEditLiteFakeApi,
   createSourceMock,
   editFirstLine,
-  editLitePath,
   mockEditSource,
   renderLoadedEditLiteRoute,
+  secondChapterEditPath,
   secondEditLiteChapterId,
-  secondEditLitePath,
 } from 'corpus/ui/edit-lite/ChapterEditLiteView.testSupport'
 import { buildEditLiteLines } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
@@ -82,6 +82,7 @@ test.each([
   ['?variant=accordion&size=25', '1'],
   ['?variant=pages&size=50&line=2', '2'],
   ['?variant=score&debug=1&line=3', '3'],
+  ['?source=legacy&line=2', '2'],
 ])(
   'renders the split view for the leftover parameters of "%s"',
   async (search, lineNumber) => {
@@ -95,14 +96,15 @@ test.each([
     expect(editors()).toHaveLength(1)
     expect(createSourceMock).toHaveBeenCalledTimes(1)
     expect(createSourceMock).toHaveBeenCalledWith(
-      expect.objectContaining({ mode: 'auto' }),
+      expect.not.objectContaining({ mode: expect.anything() }),
     )
   },
 )
 
 test.each([
-  ['the line', `${editLitePath}?line=2`],
-  ['a parameter it does not know', `${editLitePath}?variant=pages&size=25`],
+  ['the line', `${chapterEditPath}?line=2`],
+  ['a parameter it does not know', `${chapterEditPath}?variant=pages&size=25`],
+  ['the old source parameter', `${chapterEditPath}?source=legacy`],
 ])(
   'keeps the loaded data and an edited draft when only %s changes',
   async (_name, link) => {
@@ -123,67 +125,25 @@ test.each([
   },
 )
 
-test('counts the document again when lines have loaded', async () => {
-  const countedElements = (): number =>
-    Number(screen.getByTestId('edit-lite-dom-nodes').textContent)
-  const presentElements = (): number =>
-    (document.documentElement.outerHTML.match(/<[a-z]/gi) ?? []).length
-  mockEditSource({ lines: buildEditLiteLines(30) })
-  await renderLoadedEditLiteRoute()
-  await loadedEditor('1')
-  const firstCount = countedElements()
-
-  expect(firstCount).toBe(presentElements())
-
-  await userEvent.click(options()[9])
-  await loadedEditor('10')
-
-  expect(countedElements()).toBe(presentElements())
-  expect(countedElements()).not.toBe(firstCount)
-})
-
-test('loads again and drops the drafts when the source mode changes', async () => {
-  const legacyLink = `${editLitePath}?source=legacy`
-  const fakeApi = createEditLiteFakeApi()
-  mockEditSource()
-  await renderLoadedEditLiteRoute({ fakeApi, links: [legacyLink] })
-  await editFirstLine()
-  mockEditSource({ kind: 'legacy' })
-
-  await userEvent.click(screen.getByRole('link', { name: legacyLink }))
-
-  expect(await screen.findByTestId('edit-lite-source-kind')).toHaveTextContent(
-    'legacy',
-  )
-  expect(createSourceMock).toHaveBeenCalledTimes(2)
-  expect(createSourceMock).toHaveBeenLastCalledWith(
-    expect.objectContaining({ mode: 'legacy' }),
-  )
-  expect(countTextRequests(fakeApi)).toBe(2)
-  expect(within(await loadedEditor('1')).getByLabelText('Number')).toHaveValue(
-    '1',
-  )
-  expect(screen.queryByText('edited')).not.toBeInTheDocument()
-})
-
 test('loads again when the chapter changes', async () => {
   mockEditSource()
-  await renderLoadedEditLiteRoute({ links: [secondEditLitePath] })
+  await renderLoadedEditLiteRoute({ links: [secondChapterEditPath] })
   await editFirstLine()
   mockEditSource({ lines: buildEditLiteLines(5) })
 
-  await userEvent.click(screen.getByRole('link', { name: secondEditLitePath }))
+  await userEvent.click(
+    screen.getByRole('link', { name: secondChapterEditPath }),
+  )
 
   expect(
     await screen.findByRole('heading', {
-      name: /^Edit Poem of Creation Standard Babylonian II /,
+      name: 'Edit Poem of Creation Standard Babylonian II',
     }),
   ).toBeInTheDocument()
   expect(createSourceMock).toHaveBeenCalledTimes(2)
   expect(createSourceMock).toHaveBeenLastCalledWith(
     expect.objectContaining({ id: secondEditLiteChapterId }),
   )
-  expect(screen.getByTestId('edit-lite-line-count')).toHaveTextContent('5')
   expect(within(await loadedEditor('1')).getByLabelText('Number')).toHaveValue(
     '1',
   )

@@ -139,7 +139,6 @@ function AlignmentEditor({
                     manuscriptLine={manuscriptLine}
                     alignment={manuscriptAlignment}
                     reconstructionTokens={variant.reconstructionTokens}
-                    onChange={changeToken}
                     disabled={isLocked}
                     renderWord={renderWord}
                   />
@@ -169,7 +168,6 @@ function AlignmentEditor({
         lineState={lineState}
         activity={activity}
         view="alignment"
-        change={{ type: 'saveAlignment', index, alignment }}
       />
     </>
   )

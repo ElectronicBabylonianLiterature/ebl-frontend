@@ -8,7 +8,6 @@ import {
 import {
   ChapterChange,
   ChapterEndpoint,
-  ChapterRequest,
   ChapterRequestBody,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
@@ -90,17 +89,4 @@ export function toChapterUpdate(change: ChapterChange): ChapterUpdate {
     change.type
   ] as UpdateFactory<ChapterChange>
   return createUpdate(change)
-}
-
-export function describeChapterChange(
-  id: ChapterId,
-  change: ChapterChange,
-  revision?: string,
-): ChapterRequest {
-  const { endpoint, body } = toChapterUpdate(change)
-  return {
-    method: 'POST',
-    url: createChapterUpdateUrl(id, endpoint, revision),
-    body,
-  }
 }

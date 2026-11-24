@@ -1,11 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { guestSession } from 'auth/Session'
-import {
-  legacyNotice,
-  previewNotice,
-  readOnlyNotice,
-} from 'corpus/ui/edit-lite/ChapterEditLiteView'
+import { readOnlyNotice } from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import {
   countRequests,
   createEditLiteFakeApi,
@@ -36,10 +32,6 @@ jest.mock('editor/Editor', () =>
 jest.mock('corpus/application/edit-lite/createChapterEditSource')
 
 const manuscriptsUrl = `${createChapterUrl(editLiteChapterId)}/manuscripts`
-
-function notice(): HTMLElement {
-  return screen.getByText(previewNotice, { exact: false })
-}
 
 async function importAtf(atf: string): Promise<void> {
   await openTab('Import')
@@ -85,7 +77,6 @@ test('an import shows the new lines at the end of the lines tab and keeps the dr
   expect(selectedOptions()).toEqual([options()[3]])
   expect(within(editor).getByText('4 of 5')).toBeVisible()
   expect(within(options()[0]).getByText('edited')).toBeVisible()
-  expect(screen.getByTestId('edit-lite-line-count')).toHaveTextContent('5')
 
   await userEvent.click(options()[0])
 
@@ -156,9 +147,6 @@ test('saved manuscripts are loaded again and their sigla reach the line editor',
   expect(
     screen.getByRole('button', { name: 'Save manuscripts' }),
   ).toBeDisabled()
-  expect(screen.getByTestId('edit-lite-manuscript-count')).toHaveTextContent(
-    '1',
-  )
 
   await openTab('Lines')
   const editor = within(await loadedEditor('1'))
@@ -168,13 +156,12 @@ test('saved manuscripts are loaded again and their sigla reach the line editor',
   expect(editor.getByRole('button', { name: 'Siglum <unknown>' })).toBeVisible()
 })
 
-test('a reader gets a read-only page in both source modes', async () => {
-  const source = mockEditSource({ kind: 'legacy' })
+test('a reader gets a read-only page', async () => {
+  const source = mockEditSource()
   await renderLoadedEditLiteRoute({ session: guestSession })
   const editor = within(await loadedEditor('1'))
 
-  expect(notice()).toHaveTextContent(readOnlyNotice)
-  expect(notice()).not.toHaveTextContent(legacyNotice)
+  expect(screen.getByRole('alert')).toHaveTextContent(readOnlyNotice)
   expect(readOnlyNotice).toContain('permission to edit texts')
   expect(pageTabNames()).toEqual(['Lines', 'Manuscripts'])
   expect(editor.getByLabelText('Number')).toBeDisabled()
@@ -190,7 +177,8 @@ test('a reader gets a read-only page in both source modes', async () => {
   expect(
     editor.queryByRole('group', { name: 'Translation' }),
   ).not.toBeInTheDocument()
-  expect(source.describeChange).not.toHaveBeenCalled()
+  expect(source.saveLine).not.toHaveBeenCalled()
+  expect(source.addLine).not.toHaveBeenCalled()
 })
 
 test('a reader can read the manuscripts but not edit them', async () => {
@@ -212,12 +200,11 @@ test('a reader can read the manuscripts but not edit them', async () => {
   expect(within(tabPanel('Manuscripts')).getByText('K.1')).toBeVisible()
 })
 
-test('a writer with a legacy source is told that saving is a dry run', async () => {
-  mockEditSource({ kind: 'legacy' })
+test('a writer gets the editing controls and no read-only notice', async () => {
+  mockEditSource()
   await renderLoadedEditLiteRoute()
 
-  expect(notice()).toHaveTextContent(legacyNotice)
-  expect(notice()).not.toHaveTextContent(readOnlyNotice)
+  expect(screen.queryByText(readOnlyNotice)).not.toBeInTheDocument()
   expect(screen.getByRole('tab', { name: 'Import' })).toBeVisible()
   expect(screen.getByRole('button', { name: 'Add line' })).toBeEnabled()
 })

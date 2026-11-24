@@ -1,10 +1,5 @@
 import { createContext, useContext } from 'react'
-import {
-  ChapterChange,
-  ChapterEditSourceKind,
-  ChapterRequest,
-  WordInstances,
-} from 'corpus/application/edit-lite/ChapterEditSource'
+import { WordInstances } from 'corpus/application/edit-lite/ChapterEditSource'
 import { ManuscriptSummary } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
@@ -47,12 +42,9 @@ export interface EditLiteActions {
 }
 
 export interface EditLiteContextValue {
-  readonly kind: ChapterEditSourceKind
-  readonly canSave: boolean
   readonly canWrite: boolean
   readonly manuscripts: readonly ManuscriptSummary[]
   readonly actions: EditLiteActions
-  describeChange(change: ChapterChange): ChapterRequest
   searchLemma(query: string): Promise<readonly Word[]>
   createProperNoun(lemma: string, namedEntityTag: string): Promise<Word>
 }
