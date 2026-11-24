@@ -59,6 +59,17 @@ describe('RealiaDisplay eBL Realia fields', () => {
     )
   })
 
+  it('names an entry with a blank transliteration by its translation', async () => {
+    renderEblEntries([
+      { ...idOnlyEntry, transliteration: ' ', translation: 'Lisi' },
+    ])
+    await waitForSpinnerToBeRemoved(screen)
+    const article = screen.getByRole('article', { name: 'Lisi' })
+    expect(
+      within(article).getByRole('heading', { level: 3 }),
+    ).toHaveTextContent('Lisi')
+  })
+
   it('numbers an entry without any label', async () => {
     renderEblEntries([{ ...idOnlyEntry, id: '' }])
     await waitForSpinnerToBeRemoved(screen)

@@ -23,6 +23,19 @@ export const POSITIONS_OF_SPEECH: { readonly [code: string]: string } = {
   SBJ: 'subjunction',
 }
 
+function ownLabel(
+  labels: { readonly [code: string]: string },
+  code: string,
+): string | undefined {
+  return Object.prototype.hasOwnProperty.call(labels, code)
+    ? labels[code]
+    : undefined
+}
+
 export function partOfSpeechLabel(code: string): string | null {
-  return NAMED_ENTITY_TAGS[code] ?? POSITIONS_OF_SPEECH[code] ?? null
+  return (
+    ownLabel(NAMED_ENTITY_TAGS, code) ??
+    ownLabel(POSITIONS_OF_SPEECH, code) ??
+    null
+  )
 }

@@ -74,7 +74,7 @@ function EblRealiaHeading({
 }): JSX.Element {
   return (
     <h3 className="Realia__ebl-heading">
-      {entry.transliteration ? (
+      {entry.transliteration.trim() ? (
         <EblTransliteration transliteration={entry.transliteration} />
       ) : (
         label

@@ -10,7 +10,10 @@ describe('partOfSpeechLabel', () => {
     expect(partOfSpeechLabel(code)).toEqual(label)
   })
 
-  it('returns null for an unknown code', () => {
-    expect(partOfSpeechLabel('XYZ')).toBeNull()
-  })
+  it.each(['XYZ', 'toString', 'constructor'])(
+    'returns null for the unknown code %s',
+    (code) => {
+      expect(partOfSpeechLabel(code)).toBeNull()
+    },
+  )
 })
