@@ -15,7 +15,7 @@ interface SourceBadge {
 }
 
 function SourceCount({ count }: { count?: number }): JSX.Element | null {
-  return count === undefined ? null : (
+  return count === undefined || count === 0 ? null : (
     <span className="realia-results-list__source-count">({count})</span>
   )
 }

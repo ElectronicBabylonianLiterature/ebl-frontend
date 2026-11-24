@@ -56,6 +56,20 @@ describe('RealiaResultsList reference types', () => {
     ])
   })
 
+  it('leaves out the count of a reference type without entries', () => {
+    renderList([
+      realiaEntryFactory.build({
+        reallexikon: [],
+        afoRegister: [],
+        referenceType: ['RlA'],
+        eblRealia: [],
+      }),
+    ])
+    expect(sourceLabels()).toEqual([
+      'RlAReallexikon der Assyriologie und Vorderasiatischen Archäologie',
+    ])
+  })
+
   it('percent-encodes a headword with a question mark and commas', () => {
     renderList([realiaEntryFactory.build({ id: aquariiHeadword })])
     const link = screen.getByRole('link', { name: aquariiHeadword })

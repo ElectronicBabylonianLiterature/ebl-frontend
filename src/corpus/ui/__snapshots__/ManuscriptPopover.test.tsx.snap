@@ -17,7 +17,7 @@ exports[`Show manuscript line details 1`] = `
       </span>
       <sup>
         <span
-          aria-haspopup="dialog"
+          aria-expanded="false"
           class="reference-popover__citation"
           role="button"
           tabindex="0"

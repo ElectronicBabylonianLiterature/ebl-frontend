@@ -126,7 +126,11 @@ export function EblRealiaEntries({
   return (
     <>
       {entries.map((entry, index) => (
-        <EblRealiaArticle key={entry.id} entry={entry} index={index} />
+        <EblRealiaArticle
+          key={eblRealiaEntryId(index)}
+          entry={entry}
+          index={index}
+        />
       ))}
     </>
   )

@@ -222,7 +222,7 @@ exports[`Snapshot 1`] = `
           }
         </span>
         <span
-          aria-haspopup="dialog"
+          aria-expanded="false"
           class="reference-popover__citation"
           role="button"
           tabindex="0"

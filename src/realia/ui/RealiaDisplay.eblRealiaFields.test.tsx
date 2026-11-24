@@ -80,6 +80,17 @@ describe('RealiaDisplay eBL Realia fields', () => {
     ).toBeInTheDocument()
   })
 
+  it('keeps entries without an ID apart', async () => {
+    renderEblEntries([
+      { ...idOnlyEntry, id: '', transliteration: 'MUL' },
+      { ...idOnlyEntry, id: '', transliteration: 'GU₄' },
+    ])
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getAllByRole('article').map((article) => article.id)).toEqual(
+      ['ebl-realia-1', 'ebl-realia-2'],
+    )
+  })
+
   it('leaves out fields without a value', async () => {
     renderEblEntries([{ ...idOnlyEntry, translation: 'Lisi' }])
     await waitForSpinnerToBeRemoved(screen)

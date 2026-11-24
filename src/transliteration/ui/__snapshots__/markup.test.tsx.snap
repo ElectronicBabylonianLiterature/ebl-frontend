@@ -51,7 +51,7 @@ exports[`Markup 1`] = `
       link to eBL
     </a>
     <span
-      aria-haspopup="dialog"
+      aria-expanded="false"
       class="reference-popover__citation"
       role="button"
       tabindex="0"
