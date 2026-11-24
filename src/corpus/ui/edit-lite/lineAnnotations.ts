@@ -1,4 +1,8 @@
 import _ from 'lodash'
+import {
+  storesSameAlignment,
+  storesSameLemmatization,
+} from 'corpus/application/edit-lite/acceptedAnnotations'
 import { createLineAlignment, Line } from 'corpus/domain/line'
 import {
   AnnotationDraft,
@@ -84,10 +88,14 @@ export function isAnnotationUnrequested(
 export function findLineIndex(
   state: EditLiteState,
   matches: (lineState: LineState) => boolean,
+  exceptIndex?: number,
 ): number | null {
   const index = Object.keys(state.lines)
     .map(Number)
-    .find((candidate) => matches(state.lines[candidate]))
+    .find(
+      (candidate) =>
+        candidate !== exceptIndex && matches(state.lines[candidate]),
+    )
   return index ?? null
 }
 
@@ -107,16 +115,44 @@ export function isLoadingLemmasOf(
     lineState.annotation.lemmas?.status === 'loading'
 }
 
-export function createInitialDraft(
+export function storesLoadedValue(
   annotation: LineAnnotation,
-  view: AnnotationView,
-): AnnotationDraft | null {
+  draft: AnnotationDraft,
+): boolean {
   const line = annotation.tokens.value
-  const lemmatization = annotation.lemmas?.value ?? null
-  if (view === 'alignment') {
-    return line === null ? null : { view, alignment: createLineAlignment(line) }
+  const lemmas = annotation.lemmas?.value ?? null
+  if (draft.view === 'alignment') {
+    return (
+      line !== null &&
+      storesSameAlignment(draft.alignment, createLineAlignment(line))
+    )
   }
-  return lemmatization === null ? null : { view, lemmatization }
+  return lemmas !== null && storesSameLemmatization(draft.lemmatization, lemmas)
+}
+
+export function withOutdatedAnnotation(lineState: LineState): LineState {
+  const annotation = lineState.annotation
+  if (annotation === undefined) {
+    return lineState
+  }
+  return annotation.draft === null
+    ? _.omit(lineState, 'annotation')
+    : {
+        ...lineState,
+        annotation: { ...annotation, lemmas: null, isOutdated: true },
+      }
+}
+
+export function findLemmatizationDraftLine(
+  state: EditLiteState,
+  exceptIndex: number,
+): string | null {
+  const index = findLineIndex(
+    state,
+    (lineState) => findViewDraft(lineState, 'lemmatization') !== null,
+    exceptIndex,
+  )
+  return index === null ? null : state.outline.lines[index].number
 }
 
 export function withStaleAnnotation(lineState: LineState): LineState {

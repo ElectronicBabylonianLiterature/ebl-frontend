@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react'
 import _ from 'lodash'
-import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
+import {
+  AnnotationView,
+  EditLiteState,
+} from 'corpus/ui/edit-lite/editLiteState'
 import { findInitialIndex } from 'corpus/ui/edit-lite/lineIndex'
 import { deleteIndex, moveIndex } from 'corpus/ui/edit-lite/lineMove'
 import { countLines } from 'corpus/ui/edit-lite/lineStates'
@@ -8,6 +11,7 @@ import { countLines } from 'corpus/ui/edit-lite/lineStates'
 interface Selection {
   readonly index: number
   readonly editorKey: number
+  readonly arrivalView: AnnotationView | null
 }
 
 export interface SplitSelection extends Selection {
@@ -15,12 +19,14 @@ export interface SplitSelection extends Selection {
   readonly selectNewLine: () => void
   readonly followMove: (from: number, to: number) => void
   readonly followDelete: (deletedIndex: number) => void
+  readonly advance: (view: AnnotationView) => void
+  readonly settleArrival: () => void
 }
 
 function selectIndex(selection: Selection, index: number): Selection {
   return index === selection.index
     ? selection
-    : { index, editorKey: selection.editorKey + 1 }
+    : { index, editorKey: selection.editorKey + 1, arrivalView: null }
 }
 
 function followDeletedLine(
@@ -30,6 +36,7 @@ function followDeletedLine(
   return {
     index: deleteIndex(selection.index, deletedIndex),
     editorKey: selection.editorKey + Number(selection.index === deletedIndex),
+    arrivalView: null,
   }
 }
 
@@ -42,6 +49,7 @@ export default function useSplitSelection(
   const [selection, setSelection] = useState<Selection>(() => ({
     index: findInitialIndex(initialLine, lineCount) ?? 0,
     editorKey: 0,
+    arrivalView: null,
   }))
   const select = useCallback(
     (index: number): void =>
@@ -67,6 +75,25 @@ export default function useSplitSelection(
       setSelection((current) => followDeletedLine(current, deletedIndex)),
     [],
   )
+  const { editorKey } = selection
+  const advance = useCallback(
+    (view: AnnotationView): void =>
+      setSelection((current) =>
+        current.editorKey === editorKey && current.index + 1 < lineCount
+          ? { ...selectIndex(current, current.index + 1), arrivalView: view }
+          : current,
+      ),
+    [editorKey, lineCount],
+  )
+  const settleArrival = useCallback(
+    (): void =>
+      setSelection((current) =>
+        current.arrivalView === null
+          ? current
+          : { ...current, arrivalView: null },
+      ),
+    [],
+  )
 
   if (selection.index > lastIndex) {
     setSelection(selectIndex(selection, lastIndex))
@@ -74,10 +101,13 @@ export default function useSplitSelection(
 
   return {
     index: Math.min(selection.index, lastIndex),
-    editorKey: selection.editorKey,
+    editorKey,
+    arrivalView: selection.arrivalView,
     select,
     selectNewLine,
     followMove,
     followDelete,
+    advance,
+    settleArrival,
   }
 }

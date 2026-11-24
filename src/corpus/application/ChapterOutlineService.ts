@@ -4,6 +4,7 @@ import {
   ChapterOutline,
   LinesPageDto,
 } from 'corpus/application/edit-lite/chapterOutline'
+import { WordInstances } from 'corpus/application/edit-lite/ChapterEditSource'
 import { ChapterAtfSnapshotDto } from 'corpus/application/edit-lite/chapterAtfSnapshot'
 import { createChapterEndpointUrl } from 'corpus/application/edit-lite/chapterRequests'
 import {
@@ -72,6 +73,27 @@ export class ChapterOutlineService extends TextReadService {
 
   searchDictionaryLemma(query: string): Promise<readonly Word[]> {
     return this.wordService.searchLemma(query)
+  }
+
+  createDictionaryProperNoun(
+    lemma: string,
+    namedEntityTag: string,
+  ): Promise<Word> {
+    return this.wordService.createProperNoun(lemma, namedEntityTag)
+  }
+
+  countWordInstances(
+    id: ChapterId,
+    word: string,
+    revision?: string,
+  ): Promise<WordInstances> {
+    return this.apiClient.fetchJson<WordInstances>(
+      createChapterEndpointUrl(id, 'lemmatization/instances', {
+        word,
+        revision,
+      }),
+      false,
+    )
   }
 
   findChapterAtfSnapshot(

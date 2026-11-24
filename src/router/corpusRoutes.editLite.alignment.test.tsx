@@ -42,6 +42,9 @@ import { createChapterUrl } from 'test-support/FakeApiExpectation'
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const chapterUrl = createChapterUrl(editLiteChapterId)
 const lines: readonly Line[] = buildEditLiteLines(4)
@@ -81,7 +84,7 @@ test('an alignment is loaded with the tokens of its line, saved to its line and 
                 },
                 {
                   value: 'e-liš',
-                  alignment: 3,
+                  alignment: null,
                   variant: '',
                   type: '',
                   language: '',
@@ -96,7 +99,7 @@ test('an alignment is loaded with the tokens of its line, saved to its line and 
                 { value: 'x]' },
                 {
                   value: 'e-li-iš',
-                  alignment: 3,
+                  alignment: null,
                   variant: '',
                   type: '',
                   language: '',
@@ -138,6 +141,7 @@ test('an alignment that the server refuses keeps the changes and shows its reaso
   await loadedEditor('1')
   await openLoadedView('Alignment')
   await alignWord(manuscriptRow(1), 'e-nu-ma', 'eliš')
+  await alignWord(manuscriptRow(1), 'e-liš', 'eliš')
   await userEvent.click(button('Save alignment'))
 
   expect(await screen.findByText(duplicateAlignmentMessage)).toBeVisible()
@@ -206,7 +210,7 @@ test.each<[string, () => Promise<void>, string[], string]>([
     expect(listLineNumbers(changedLines)).toEqual(['3'])
     expect(changedLines[0].variants[0].manuscripts[0]).toMatchObject({
       omittedWords: [1],
-      atfTokens: [expect.objectContaining({ alignment: 1 })],
+      atfTokens: [expect.objectContaining({ alignment: null })],
     })
   },
 )

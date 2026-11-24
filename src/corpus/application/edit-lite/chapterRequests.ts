@@ -1,10 +1,10 @@
 import { stringify } from 'common/utils/queryString'
-import {
-  toLineAlignmentDto,
-  toLineLemmatizationDto,
-  toManuscriptsDto,
-} from 'corpus/application/chapterDtoSerialization'
+import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
 import { createChapterUrl } from 'corpus/application/chapterUrls'
+import {
+  toAcceptedAlignmentDto,
+  toAcceptedLemmatizationDto,
+} from 'corpus/application/edit-lite/acceptedAnnotations'
 import {
   ChapterChange,
   ChapterEndpoint,
@@ -56,11 +56,15 @@ const updateFactories: UpdateFactories = {
   }),
   saveAlignment: (change) => ({
     endpoint: `lines/${change.index}/alignment`,
-    body: { alignment: toLineAlignmentDto(change.alignment) },
+    body: { alignment: toAcceptedAlignmentDto(change.alignment) },
   }),
   saveLemmatization: (change) => ({
     endpoint: `lines/${change.index}/lemmatization`,
-    body: { lemmatization: toLineLemmatizationDto(change.lemmatization) },
+    body: { lemmatization: toAcceptedLemmatizationDto(change.lemmatization) },
+  }),
+  lemmatizeInstances: (change) => ({
+    endpoint: 'lemmatization/instances',
+    body: { word: change.word, uniqueLemma: change.lemmaIds },
   }),
 }
 

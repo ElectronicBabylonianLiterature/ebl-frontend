@@ -1,8 +1,12 @@
 import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { createLineAlignment, Line } from 'corpus/domain/line'
-import { setOmittedWords } from 'corpus/domain/alignment'
+import { setAlignmentToken, setOmittedWords } from 'corpus/domain/alignment'
 import { setReconstructionLemma } from 'corpus/domain/lemmatization'
 import Word from 'dictionary/domain/Word'
+import {
+  emptyWordMessage,
+  sameLemmaMessage,
+} from 'corpus/ui/edit-lite/EditLiteFakeInstances.testSupport'
 import {
   buildEditLiteLines,
   createFakeChapterEditSource,
@@ -44,7 +48,13 @@ test('the fake source stores an alignment on its line only', async () => {
   const [[first, second]] = createLineAlignment(annotateLine(lines[0]))
 
   const outline = await source.saveAlignment(0, [
-    [setOmittedWords(first, [3]), second],
+    [
+      setAlignmentToken(setOmittedWords(first, [3]), 1, {
+        ...first.alignment[1],
+        suggested: false,
+      }),
+      second,
+    ],
   ])
   const saved = await source.loadAnnotatedLine(0)
 
@@ -52,7 +62,7 @@ test('the fake source stores an alignment on its line only', async () => {
   expect(saved.variants[0].manuscripts[0].omittedWords).toEqual([3])
   expect(
     saved.variants[0].manuscripts[0].atfTokens.map((token) => token.alignment),
-  ).toEqual([1, 3])
+  ).toEqual([null, 3])
   await expect(source.loadLines(1, 2)).resolves.toEqual(lines.slice(1))
 })
 
@@ -92,14 +102,14 @@ test('the fake source suggests, stores and serves lemmas', async () => {
     savedLine.variants[0].reconstructionTokens.map(
       (token) => token.uniqueLemma,
     ),
-  ).toEqual([undefined, ['enūma I'], undefined, ['eliš I']])
+  ).toEqual([undefined, ['enūma I'], undefined, []])
   expect(reconstruction.map((token) => token.uniqueLemma)).toEqual([
     null,
     [new Lemma(enuma)],
     null,
     [new Lemma(elish)],
   ])
-  expect(reconstruction[3].suggested).toBe(false)
+  expect(reconstruction[3].suggested).toBe(true)
   await expect(source.loadLines(1, 2)).resolves.toEqual(lines.slice(1))
 })
 
@@ -129,3 +139,29 @@ test.each([[{ kind: 'legacy' } as const], [{ canSave: false } as const]])(
     ).rejects.toThrow('Saving is not available.')
   },
 )
+
+test('the fake source counts and lemmatizes the instances of a word and creates proper nouns', async () => {
+  const source = createFakeChapterEditSource({ lines, ...dictionary })
+
+  await expect(source.countWordInstances('eliš')).resolves.toEqual({
+    word: 'eliš',
+    words: 1,
+    lemmatized: 0,
+    lines: [0],
+    revision: 'revision-1',
+  })
+  await expect(source.countWordInstances('')).rejects.toThrow(emptyWordMessage)
+
+  await source.lemmatizeWordInstances('eliš', ['eliš I'])
+  const created = await source.createProperNoun('Marduk', 'DN')
+
+  await expect(source.countWordInstances('eliš')).resolves.toMatchObject({
+    lemmatized: 1,
+  })
+  await expect(
+    source.lemmatizeWordInstances('eliš', ['eliš I']),
+  ).rejects.toThrow(sameLemmaMessage('eliš', ['eliš I']))
+  expect(created).toMatchObject({ _id: 'Marduk DN', namedEntityTags: ['DN'] })
+  await expect(source.searchLemma('Mar')).resolves.toEqual([created])
+  await expect(source.loadLines(1, 2)).resolves.toEqual(lines.slice(1))
+})

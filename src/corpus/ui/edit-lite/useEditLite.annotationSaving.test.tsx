@@ -9,10 +9,7 @@ import {
   AnnotationDraft,
   AnnotationView,
 } from 'corpus/ui/edit-lite/editLiteState'
-import {
-  annotateLine,
-  buildLineLemmatization,
-} from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
+import { annotateLine } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
 import {
   setLineNumber,
   setLineTranslation,
@@ -86,27 +83,29 @@ test.each(views)(
   },
 )
 
-test('without a draft the values on screen are saved, suggestions included', async () => {
+test('without a draft nothing is saved, whatever is suggested on screen', async () => {
   const view = await renderLoaded()
   const annotatedLine = await openView(view, position, 'lemmatization')
   const alignment = createLineAlignment(annotatedLine)
-  await saveView(view, position, 'alignment')
-  const savedLine = await view.source.loadAnnotatedLine(position)
+  view.run((actions) => actions.saveAnnotation(position, 'alignment'))
+  view.run((actions) => actions.saveAnnotation(position, 'lemmatization'))
+  view.run((actions) =>
+    actions.changeAnnotation(
+      position,
+      { view: 'alignment', alignment },
+      annotatedLine,
+    ),
+  )
+  view.run((actions) => actions.saveAnnotation(position, 'alignment'))
+  await settleLoads()
 
   expect(alignment[0][0].alignment[0]).toMatchObject({
     alignment: 1,
     suggested: true,
   })
-  expect(view.source.saveAlignment.mock.calls).toEqual([[position, alignment]])
-  expect(savedLine.variants[0].manuscripts[0].atfTokens[0].alignment).toBe(1)
-  expect(savedLine.variants[0].alignment[0].alignment[0].suggested).toBe(false)
-
-  await openView(view, position, 'lemmatization')
-  await saveView(view, position, 'lemmatization')
-
-  expect(view.source.saveLemmatization.mock.calls).toEqual([
-    [position, buildLineLemmatization(savedLine)],
-  ])
+  expectNothingSaved(view)
+  expect(findAnnotation(view, position)?.draft).toBeNull()
+  expect(view.state().lines[position].status).toBe('ready')
 })
 
 test('a refused save keeps the draft with the reason and can be repeated', async () => {

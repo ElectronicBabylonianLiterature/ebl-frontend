@@ -12,6 +12,7 @@ import { renderLoadedContainer } from 'corpus/ui/edit-lite/LineEditContainer.tes
 import { describeLockedViews } from 'corpus/ui/edit-lite/LineViews'
 import {
   button,
+  expectActiveWord,
   lemmatizeWord,
   lineViewNames,
   listDisabledViews,
@@ -19,6 +20,7 @@ import {
   omitWord,
   openLineView,
   openLoadedView,
+  queryActivePopover,
   reconstructionRow,
   selectedView,
   viewPanel,
@@ -28,6 +30,9 @@ import Lemma from 'transliteration/domain/Lemma'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
+)
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
 )
 
 const lines: readonly Line[] = buildEditLiteLines(3)
@@ -78,17 +83,28 @@ test('the views are switched with the arrow keys and only one is mounted', async
   })
 
   expect(selectedView()).toBe('Alignment')
-  expect(viewTab('Alignment')).toHaveFocus()
+  expectActiveWord(manuscriptRow(1), 'e-nu-ma', 'Ideal word')
   expect(screen.getAllByRole('tabpanel')).toHaveLength(1)
   expect(screen.queryByLabelText('Number')).not.toBeInTheDocument()
 
+  await userEvent.keyboard('{Escape}')
+  viewTab('Alignment').focus()
   await userEvent.keyboard('{ArrowRight}')
+  await openLoadedView('Lemmatization')
 
   expect(selectedView()).toBe('Lemmatization')
+  expectActiveWord(reconstructionRow(), 'enūma', 'Lemma')
 
-  await userEvent.keyboard('{ArrowLeft}{ArrowLeft}')
+  await userEvent.keyboard('{Escape}')
+  viewTab('Lemmatization').focus()
+  await userEvent.keyboard('{ArrowLeft}')
 
-  expect(selectedView()).toBe('Text')
+  expect(selectedView()).toBe('Alignment')
+  expectActiveWord(manuscriptRow(1), 'e-nu-ma', 'Ideal word')
+
+  await openLineView('Text')
+
+  expect(queryActivePopover()).not.toBeInTheDocument()
   expect(screen.getByLabelText('Number')).toBeVisible()
 })
 

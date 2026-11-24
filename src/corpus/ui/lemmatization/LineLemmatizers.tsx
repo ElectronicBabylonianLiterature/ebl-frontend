@@ -23,13 +23,22 @@ export function WordLemmatizers({
   fragmentService,
   onChange,
   disabled = false,
+  renderWord,
 }: {
   tokens: readonly LemmatizationToken[]
   fragmentService: Pick<FragmentService, 'searchLemma'>
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
   disabled?: boolean
+  renderWord?: (
+    token: LemmatizationToken,
+    index: number,
+    onChange: (uniqueLemma: UniqueLemma) => void,
+  ) => JSX.Element
 }): JSX.Element {
-  const renderWord = (token: LemmatizationToken, index: number): JSX.Element =>
+  const renderDefaultWord = (
+    token: LemmatizationToken,
+    index: number,
+  ): JSX.Element =>
     disabled ? (
       <Word token={token} />
     ) : (
@@ -39,12 +48,21 @@ export function WordLemmatizers({
         onChange={onChange(index)}
       />
     )
+  const renderLemmatizableWord = (
+    token: LemmatizationToken,
+    index: number,
+  ): JSX.Element =>
+    disabled || renderWord === undefined
+      ? renderDefaultWord(token, index)
+      : renderWord(token, index, onChange(index))
 
   return (
     <>
       {tokens.map((token, index) => (
         <Fragment key={index}>
-          {token.lemmatizable ? renderWord(token, index) : token.value}{' '}
+          {token.lemmatizable
+            ? renderLemmatizableWord(token, index)
+            : token.value}{' '}
         </Fragment>
       ))}
     </>

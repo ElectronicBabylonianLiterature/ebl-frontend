@@ -54,6 +54,39 @@ export function setManuscriptAlignment(
   })
 }
 
+export function alignToken(
+  token: AlignmentToken,
+  reconstructionTokens: readonly Token[],
+  alignment: number | null,
+  variant: string,
+): AlignmentToken {
+  const reconstructionToken =
+    alignment === null ? undefined : reconstructionTokens[alignment]
+  return alignment !== null &&
+    reconstructionToken !== undefined &&
+    isAnyWord(reconstructionToken)
+    ? {
+        value: token.value,
+        alignment,
+        variant: variant
+          ? {
+              value: variant,
+              type: reconstructionToken.type,
+              language: reconstructionToken.language,
+            }
+          : null,
+        isAlignable: true,
+        suggested: false,
+      }
+    : {
+        value: token.value,
+        alignment: null,
+        variant: null,
+        isAlignable: true,
+        suggested: false,
+      }
+}
+
 export class ChapterAlignment {
   readonly [immerable] = true
   readonly lines: readonly ManuscriptAlignment[][][]

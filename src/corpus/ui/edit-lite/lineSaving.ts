@@ -30,22 +30,31 @@ function findSavableLine(lineState: LineState | undefined): SavableLine | null {
     : { original, draft }
 }
 
+export type OutlineWrite = (source: ChapterEditSource) => Promise<void>
+
+export function applyOutline(
+  store: EditLiteStore,
+  type: 'outlineReplaced' | 'instancesLemmatized' = 'outlineReplaced',
+): (outline: ChapterOutline) => void {
+  return (outline) => store.dispatch({ type, outline })
+}
+
 export async function saveStoredLine(
   store: EditLiteStore,
   index: number,
-  save: (source: ChapterEditSource) => Promise<ChapterOutline>,
-): Promise<void> {
+  write: OutlineWrite,
+): Promise<boolean> {
   const source = store.getSource()
   store.dispatch({ type: 'saveStarted', index })
   try {
-    const outline = await save(source)
-    store.dispatch({ type: 'outlineReplaced', outline })
+    await write(source)
   } catch (error) {
     store.dispatch({ type: 'saveFailed', index, error: errorMessage(error) })
-    return
+    return false
   }
   const line = await loadLine(source, index)
   store.dispatch({ type: 'saveSucceeded', index, line })
+  return true
 }
 
 async function saveNewLine(
@@ -73,7 +82,7 @@ export function saveLine(store: EditLiteStore, index: number): void {
     void saveNewLine(store, index, draft)
   } else {
     void saveStoredLine(store, index, (source) =>
-      source.saveLine(index, original, draft),
+      source.saveLine(index, original, draft).then(applyOutline(store)),
     )
   }
 }

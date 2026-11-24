@@ -5,6 +5,7 @@ import EditLiteFakeDictionary, {
   buildWordsPath,
   FakeLemmaSuggestion,
   lemmaBatchPath,
+  properNounPath,
 } from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
 import {
   invalidRequestMessage,
@@ -124,4 +125,47 @@ test('nothing else is served', async () => {
   await expect(fakeApi.client.postJson('/words', {})).rejects.toThrow(
     'Unexpected postJson',
   )
+})
+
+test('a proper noun is created with its tag and found afterwards', async () => {
+  const created = await fakeApi.client.postJson(properNounPath, {
+    lemma: 'Marduk',
+    namedEntityTags: ['DN'],
+  })
+
+  expect(created).toMatchObject({
+    _id: 'Marduk DN',
+    lemma: ['Marduk'],
+    pos: [],
+    namedEntityTags: ['DN'],
+  })
+  await expect(
+    fakeApi.client.fetchJson(buildWordsPath(['Marduk DN']), false),
+  ).resolves.toEqual([created])
+  await expect(
+    fakeApi.client.fetchJson('/words?lemma=Mar', false),
+  ).resolves.toEqual([created])
+})
+
+test.each<[string, unknown]>([
+  ['without a lemma', { namedEntityTags: ['DN'] }],
+  ['with an empty lemma', { lemma: '', namedEntityTags: ['DN'] }],
+  ['without a tag', { lemma: 'Marduk', namedEntityTags: [] }],
+  ['with two tags', { lemma: 'Marduk', namedEntityTags: ['DN', 'GN'] }],
+  ['with an empty tag', { lemma: 'Marduk', namedEntityTags: [''] }],
+  ['with tags that are no list', { lemma: 'Marduk', namedEntityTags: 'DN' }],
+  [
+    'with an unknown field',
+    { lemma: 'Marduk', namedEntityTags: ['DN'], pos: [] },
+  ],
+])('a proper noun %s is refused', async (_name, body) => {
+  const error = await fakeApi.client
+    .postJson(properNounPath, body)
+    .catch((reason: unknown) => reason)
+
+  expect(error).toBeInstanceOf(ApiError)
+  expect(error).toMatchObject({ status: 400, message: invalidRequestMessage })
+  await expect(
+    fakeApi.client.fetchJson('/words?lemma=Mar', false),
+  ).resolves.toEqual([])
 })

@@ -63,6 +63,11 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     { type: 'saveLemmatization', index: 3, lemmatization: lineLemmatization },
     (source) => source.saveLemmatization(3, lineLemmatization),
   ],
+  [
+    'lemmatizeWordInstances',
+    { type: 'lemmatizeInstances', word: 'kur', lemmaIds: ['kur I'] },
+    (source) => source.lemmatizeWordInstances('kur', ['kur I']),
+  ],
 ]
 
 let textService: jest.Mocked<ChapterEditTextService>

@@ -36,6 +36,7 @@ export interface LineAnnotation {
   readonly lemmas: Loadable<readonly LineLemmatization[]> | null
   readonly draft: AnnotationDraft | null
   readonly isStale: boolean
+  readonly isOutdated?: true
 }
 
 export interface LineState {
@@ -114,5 +115,6 @@ export type EditLiteAction =
       readonly draft: AnnotationDraft
     })
   | OutlineAction<'outlineReplaced'>
+  | OutlineAction<'instancesLemmatized'>
   | OutlineAction<'manuscriptsSaved'>
   | { readonly type: 'manuscriptsEdited'; readonly hasUnsaved: boolean }

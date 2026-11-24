@@ -12,6 +12,7 @@ interface Props {
   readonly reconstructionTokens: readonly Token[]
   readonly onChange: (index: number, token: AlignmentToken) => void
   readonly disabled?: boolean
+  readonly renderWord?: (index: number) => JSX.Element
 }
 
 export default function ManuscriptWordAligners({
@@ -20,8 +21,9 @@ export default function ManuscriptWordAligners({
   reconstructionTokens,
   onChange,
   disabled = false,
+  renderWord,
 }: Props): JSX.Element {
-  const renderWord = (index: number): JSX.Element =>
+  const renderDefaultWord = (index: number): JSX.Element =>
     disabled ? (
       <Word
         token={alignment.alignment[index]}
@@ -34,13 +36,15 @@ export default function ManuscriptWordAligners({
         onChange={(token: AlignmentToken): void => onChange(index, token)}
       />
     )
+  const renderAlignableWord =
+    disabled || renderWord === undefined ? renderDefaultWord : renderWord
 
   return (
     <>
       {manuscriptLine.atfTokens.map((token, index) => (
         <span key={index}>
           {isAnyWord(token) && token.alignable
-            ? renderWord(index)
+            ? renderAlignableWord(index)
             : token.value}{' '}
         </span>
       ))}

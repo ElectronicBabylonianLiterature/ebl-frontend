@@ -40,6 +40,11 @@ This repository holds the page; the new endpoints are in ebl-api.
   - [x] Tabs "Text", "Alignment", "Lemmatization" in the line editor
   - [x] One line with tokens on demand; saves of one line with the revision
   - [x] Lemma suggestions for a line in one request
+  - [x] Popover at the word; Enter, Tab, Shift+Tab as in the Library
+  - [x] Only accepted suggestions are stored; a line saves on leaving it
+  - [x] The Library's lemma select and word actions
+  - [x] "Update all instances" for the whole chapter
+- [x] Step 6 dropped by the user (not needed with per-line saves)
 
 ## Open
 
@@ -54,7 +59,6 @@ This repository holds the page; the new endpoints are in ebl-api.
 
 ## Later tasks
 
-- [ ] Keep existing alignments per manuscript line (step 6)
 - [ ] Replace the classic edit page and remove the legacy source (step 8)
 
 ## Next phase (decided after the mock-ups)
@@ -90,7 +94,9 @@ Chosen version: C, split view. Model: Fable 5.2.
      alignments is overwritten.
    - Other manuscript lines of the same line that have no alignment still
      get automatic suggestions.
-   - To decide: whether a re-align button per manuscript line is wanted.
+   - Dropped by the user: alignment is saved line by line and only
+     accepted suggestions are stored, so an editor leaves aligned lines
+     alone.
 7. Faster saving on the server: rewrite only the changed line.
    - A move takes 11 to 12 s on a chapter the size of Enūma eliš I.
    - Compact changelog entries for deletes and inserts. Until then such

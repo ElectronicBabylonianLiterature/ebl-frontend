@@ -1,27 +1,23 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createManuscriptLine, Line } from 'corpus/domain/line'
-import Word from 'dictionary/domain/Word'
+import { Line } from 'corpus/domain/line'
 import {
   buildAnnotationUrl,
-  buildEditLiteLines,
   createFakeChapterEditSource,
   EditLiteRenderOptions,
   FakeChapterEditSource,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
-  buildDictionaryWord,
-  createWordToken,
-} from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
-import { buildAlignedLine } from 'corpus/ui/edit-lite/fakeAnnotationRequests.testSupport'
-import {
-  setLineVariant,
-  setVariantManuscriptLine,
-} from 'corpus/ui/edit-lite/lineDraft'
+  elish,
+  lemmaLines,
+  lemmaOptions,
+  otherElish,
+} from 'corpus/ui/edit-lite/lemmaFixtures.testSupport'
 import { renderLoadedContainer } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
 import {
   button,
   lemmatizeWord,
+  listDisabledViews,
   manuscriptRow,
   openLineView,
   openLoadedView,
@@ -37,40 +33,12 @@ import Lemma from 'transliteration/domain/Lemma'
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
-const enuma: Word = buildDictionaryWord('enūma')
-const elish: Word = buildDictionaryWord('eliš')
-const otherElish: Word = buildDictionaryWord('eliš', 'II')
-const [alignedLine, ...otherLines]: Line[] =
-  buildEditLiteLines(2).map(buildAlignedLine)
-const [variant] = alignedLine.variants
-const [, secondManuscript] = variant.manuscripts
-const lines: readonly Line[] = [
-  setLineVariant(
-    alignedLine,
-    0,
-    setVariantManuscriptLine(
-      variant,
-      1,
-      createManuscriptLine({
-        ...secondManuscript,
-        atfTokens: [
-          ...secondManuscript.atfTokens.slice(0, 3),
-          createWordToken('e-li-iš', 'Word', {
-            alignment: 3,
-            uniqueLemma: ['eliš II'],
-          }),
-        ],
-      }),
-    ),
-  ),
-  ...otherLines,
-]
-const options: EditLiteRenderOptions = {
-  lines,
-  words: [enuma, elish, otherElish],
-  suggestions: [{ word: 'enūma', isNormalized: true, lemmas: [['enūma I']] }],
-}
+const lines: readonly Line[] = lemmaLines
+const options: EditLiteRenderOptions = lemmaOptions
 
 function createSource(): FakeChapterEditSource {
   return createFakeChapterEditSource(options)
@@ -135,6 +103,7 @@ test('a lemma set on a reconstruction word goes to the aligned words without a l
     /^e-li-išeliš II$/,
   )
 
+  await userEvent.keyboard('{Backspace}')
   await lemmatizeWord(reconstructionRow(), 'eliš', new Lemma(otherElish))
 
   expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(
@@ -144,7 +113,7 @@ test('a lemma set on a reconstruction word goes to the aligned words without a l
   expect(source.saveLemmatization).not.toHaveBeenCalled()
 })
 
-test('the lemmas on screen are saved as values and shown again', async () => {
+test('the lemmas that were set are saved and shown again, the suggestions are not', async () => {
   const { source } = await renderLoadedView('Lemmatization', options)
   await lemmatizeWord(reconstructionRow(), 'eliš', new Lemma(elish))
   await lemmatizeWord(manuscriptRow(1), 'e-nu-ma', new Lemma(otherElish))
@@ -156,38 +125,40 @@ test('the lemmas on screen are saved as values and shown again', async () => {
   expect(source.saveLemmatization).toHaveBeenCalledTimes(1)
   expect(
     savedVariant.reconstructionTokens.map((token) => token.uniqueLemma),
-  ).toEqual([undefined, ['enūma I'], undefined, ['eliš I']])
+  ).toEqual([undefined, [], undefined, ['eliš I']])
   expect(
     savedVariant.manuscripts.map((manuscript) =>
       manuscript.atfTokens.map((token) => token.uniqueLemma),
     ),
   ).toEqual([
-    [['eliš II'], ['eliš I']],
+    [['eliš II'], []],
     [undefined, undefined, undefined, ['eliš II']],
   ])
   expect(source.loadAnnotatedLine).toHaveBeenCalledTimes(3)
   expect(source.loadLemmatization).toHaveBeenCalledTimes(2)
   expect(reconstructionRow()).toHaveTextContent(/^%n enūmaenūma \| elišeliš$/)
-  expect(wordLabel(reconstructionRow(), 'enūma')).not.toHaveClass(
+  expect(wordLabel(reconstructionRow(), 'enūma')).toHaveClass(
     'Word--suggestion',
   )
-  expect(wordLabel(manuscriptRow(1), 'e-liš')).not.toHaveClass(
-    'Word--suggestion',
-  )
+  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-liš$/)
   expect(button('Save lemmatization')).toBeDisabled()
 })
 
-test('a suggested lemma is saved as a value without any other change', async () => {
-  const { source } = await renderLoadedView('Lemmatization', options)
+test('a suggested lemma that was not accepted is no unsaved change and is not saved', async () => {
+  const { source, getState } = await renderLoadedView('Lemmatization', options)
 
-  expect(button('Save lemmatization')).toBeEnabled()
+  expect(wordLabel(reconstructionRow(), 'enūma')).toHaveClass(
+    'Word--suggestion',
+  )
+  expect(button('Save lemmatization')).toBeDisabled()
   expect(button('Reset')).toBeDisabled()
 
-  await userEvent.click(button('Save lemmatization'))
-  await waitFor(() => expect(button('Save lemmatization')).toBeDisabled())
-  const [savedVariant] = (await source.loadAnnotatedLine(0)).variants
+  await userEvent.keyboard('{Tab}{Tab}{Shift>}{Tab}{/Shift}{Escape}')
 
-  expect(savedVariant.reconstructionTokens[1].uniqueLemma).toEqual(['enūma I'])
+  expect(getState().lines[0].annotation?.draft).toBeNull()
+  expect(listDisabledViews()).toEqual([])
+  expect(button('Save lemmatization')).toBeDisabled()
+  expect(source.saveLemmatization).not.toHaveBeenCalled()
 })
 
 test('reset discards the lemmas that were set and keeps what was loaded', async () => {
@@ -225,7 +196,7 @@ test('the request preview shows the address and the body of the save', async () 
       {
         reconstruction: [
           { value: '%n' },
-          { value: 'enūma', uniqueLemma: ['enūma I'] },
+          { value: 'enūma', uniqueLemma: [] },
           { value: '|' },
           { value: 'eliš', uniqueLemma: [] },
         ],

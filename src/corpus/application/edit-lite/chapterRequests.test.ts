@@ -50,6 +50,11 @@ const changes: readonly [ChapterChange, string, unknown][] = [
     'lines/0/lemmatization',
     lineLemmatizationDto,
   ],
+  [
+    { type: 'lemmatizeInstances', word: 'kur', lemmaIds: ['kur I', 'ra I'] },
+    'lemmatization/instances',
+    { word: 'kur', uniqueLemma: ['kur I', 'ra I'] },
+  ],
 ]
 
 describe('createChapterEndpointUrl', () => {
@@ -154,7 +159,7 @@ it.each([
   })
 })
 
-it('sends a suggested alignment as a value', () => {
+it('sends a suggested alignment that was not accepted as no alignment', () => {
   const suggestedAlignment: LineAlignment = [
     [
       {
@@ -185,7 +190,7 @@ it('sends a suggested alignment as a value', () => {
           alignment: [
             {
               value: 'kur',
-              alignment: 1,
+              alignment: null,
               variant: '',
               type: '',
               language: '',

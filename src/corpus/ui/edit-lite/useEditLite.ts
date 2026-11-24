@@ -55,6 +55,8 @@ export default function useEditLite(
       actions,
       describeChange: (change) => source.describeChange(change),
       searchLemma: (query) => source.searchLemma(query),
+      createProperNoun: (lemma, namedEntityTag) =>
+        source.createProperNoun(lemma, namedEntityTag),
     }),
     [source, canWrite, manuscripts, actions],
   )

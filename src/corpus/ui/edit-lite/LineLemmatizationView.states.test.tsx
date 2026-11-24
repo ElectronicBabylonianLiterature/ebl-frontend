@@ -29,6 +29,9 @@ import Lemma from 'transliteration/domain/Lemma'
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const lines: readonly Line[] = buildEditLiteLines(3)
 const elish: Word = buildDictionaryWord('eliš')

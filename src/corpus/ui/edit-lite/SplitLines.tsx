@@ -5,7 +5,12 @@ import { toLineOutline } from 'corpus/application/edit-lite/legacySnapshot'
 import { createLine } from 'corpus/domain/line'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { EditLiteState } from 'corpus/ui/edit-lite/editLiteState'
+import { findLemmatizationDraftLine } from 'corpus/ui/edit-lite/lineAnnotations'
 import LineEditContainer from 'corpus/ui/edit-lite/LineEditContainer'
+import LineFlowContext, {
+  isFocusWithin,
+  LineFlow,
+} from 'corpus/ui/edit-lite/LineFlowContext'
 import LineMoveControls from 'corpus/ui/edit-lite/LineMoveControls'
 import {
   countLines,
@@ -58,14 +63,33 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
   const hasNewLine = state.newLine !== null
   const lastIndex = countLines(state) - 1
   const listRef = useRef<HTMLUListElement>(null)
+  const editorRef = useRef<HTMLElement>(null)
   const {
     index: selectedIndex,
     editorKey,
+    arrivalView,
     select,
     selectNewLine,
     followMove,
     followDelete,
+    advance,
+    settleArrival,
   } = useSplitSelection(state, initialLine)
+  const lemmatizationDraftLine = findLemmatizationDraftLine(
+    state,
+    selectedIndex,
+  )
+  const lineFlow = useMemo<LineFlow>(
+    () => ({
+      arrivalView,
+      lemmatizationDraftLine,
+      settleArrival,
+      advance,
+      holdFocus: (): void => editorRef.current?.focus(),
+      isFocusHeld: (): boolean => isFocusWithin(editorRef.current),
+    }),
+    [arrivalView, lemmatizationDraftLine, settleArrival, advance],
+  )
   const isNewSelected = hasNewLine && selectedIndex === lines.length
   const lineState = findLineState(state, selectedIndex)
   const activity = findLineActivity(state)
@@ -132,8 +156,10 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
         )}
       </ul>
       <section
+        ref={editorRef}
         className="edit-lite-split__editor"
         aria-labelledby={`${id}-heading`}
+        tabIndex={-1}
       >
         <div className="edit-lite-split__toolbar">
           <Button
@@ -169,14 +195,16 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
           )}
           <AddLineButton disabled={hasNewLine} onAdd={addLine} />
         </div>
-        <LineEditContainer
-          key={editorKey}
-          index={selectedIndex}
-          lineState={lineState}
-          isNew={isNewSelected}
-          activity={activity}
-          onDeleted={followDelete}
-        />
+        <LineFlowContext.Provider value={lineFlow}>
+          <LineEditContainer
+            key={editorKey}
+            index={selectedIndex}
+            lineState={lineState}
+            isNew={isNewSelected}
+            activity={activity}
+            onDeleted={followDelete}
+          />
+        </LineFlowContext.Provider>
       </section>
     </div>
   )

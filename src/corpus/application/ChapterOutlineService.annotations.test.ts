@@ -1,4 +1,5 @@
 import { ChapterLinesOptions } from 'corpus/application/ChapterOutlineService'
+import { createChapterUrl } from 'corpus/application/chapterUrls'
 import { fromLineDto } from 'corpus/application/dtos'
 import { LinesPageDto } from 'corpus/application/edit-lite/chapterOutline'
 import {
@@ -162,3 +163,36 @@ it('searches the lemmas of the dictionary', async () => {
   await expect(textService.searchDictionaryLemma('ak')).resolves.toEqual([aklu])
   expect(wordServiceMock.searchLemma.mock.calls).toEqual([['ak']])
 })
+
+it('creates a proper noun in the dictionary', async () => {
+  wordServiceMock.createProperNoun.mockResolvedValueOnce(aklu)
+
+  await expect(
+    textService.createDictionaryProperNoun('Aklu', 'DN'),
+  ).resolves.toBe(aklu)
+  expect(wordServiceMock.createProperNoun.mock.calls).toEqual([['Aklu', 'DN']])
+})
+
+it.each<[string | undefined, string]>([
+  ['revision 2', '?word=kur%20ra&revision=revision%202'],
+  [undefined, '?word=kur%20ra'],
+])(
+  'counts the instances of a word in a chapter at revision %p',
+  async (revision, query) => {
+    const instances = {
+      word: 'kur ra',
+      words: 3,
+      lemmatized: 1,
+      lines: [0, 4],
+      revision: 'revision 2',
+    }
+    apiClient.fetchJson.mockResolvedValueOnce(instances)
+
+    await expect(
+      textService.countWordInstances(chapterId, 'kur ra', revision),
+    ).resolves.toBe(instances)
+    expect(apiClient.fetchJson.mock.calls).toEqual([
+      [`${createChapterUrl(chapterId)}/lemmatization/instances${query}`, false],
+    ])
+  },
+)

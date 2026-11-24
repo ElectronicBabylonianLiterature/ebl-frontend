@@ -1,7 +1,3 @@
-import {
-  toLineAlignmentDto,
-  toLineLemmatizationDto,
-} from 'corpus/application/chapterDtoSerialization'
 import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import {
   ChapterChange,
@@ -9,12 +5,16 @@ import {
   ChapterEditSourceKind,
   ChapterRequest,
   LinesUpdateDto,
+  WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   ChapterOutline,
   ManuscriptSummary,
 } from 'corpus/application/edit-lite/chapterOutline'
-import { describeChapterChange } from 'corpus/application/edit-lite/chapterRequests'
+import {
+  describeChapterChange,
+  toChapterUpdate,
+} from 'corpus/application/edit-lite/chapterRequests'
 import { toLineEditsDto } from 'corpus/application/edit-lite/lineEdits'
 import {
   createLineLemmatization,
@@ -23,7 +23,7 @@ import {
 } from 'corpus/application/edit-lite/lineLemmatization'
 import { LineAlignment } from 'corpus/domain/alignment'
 import { LineLemmatization } from 'corpus/domain/lemmatization'
-import { createLine, createVariant, EditStatus, Line } from 'corpus/domain/line'
+import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Word from 'dictionary/domain/Word'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -42,9 +42,24 @@ import EditLiteFakeDictionary, {
   buildWordsPath,
   FakeLemmaSuggestion,
   lemmaBatchPath,
+  properNounPath,
 } from 'corpus/ui/edit-lite/EditLiteFakeDictionary.testSupport'
+import {
+  countFakeInstances,
+  lemmatizeFakeInstances,
+} from 'corpus/ui/edit-lite/EditLiteFakeInstances.testSupport'
+import {
+  importFakeLines,
+  toManuscriptSummary,
+  toSavedLine,
+} from 'corpus/ui/edit-lite/fakeChapterLines.testSupport'
 import { annotateLine } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
 import { moveItem } from 'corpus/ui/edit-lite/lineMove'
+
+export {
+  importFakeLines,
+  toSavedLine,
+} from 'corpus/ui/edit-lite/fakeChapterLines.testSupport'
 
 export type FakeChapterEditSource = jest.Mocked<ChapterEditSource>
 
@@ -62,39 +77,6 @@ interface FakeChapter {
   lines: readonly Line[]
   manuscripts: readonly ManuscriptSummary[]
   uncertainFragments: readonly string[]
-}
-
-export function toSavedLine(line: Line): Line {
-  return { ...line, status: EditStatus.CLEAN }
-}
-
-function toImportedLine(row: string, index: number): Line {
-  return createLine({
-    number: `${index + 1}`,
-    variants: [createVariant({ reconstruction: row })],
-  })
-}
-
-function toManuscriptSummary(manuscript: Manuscript): ManuscriptSummary {
-  return {
-    id: Number(manuscript.id),
-    siglum: manuscript.siglum,
-    museumNumber: manuscript.museumNumber,
-    accession: manuscript.accession,
-  }
-}
-
-export function importFakeLines(
-  lines: readonly Line[],
-  atf: string,
-): readonly Line[] {
-  return [
-    ...lines,
-    ...atf
-      .split('\n')
-      .filter((row) => row.trim() !== '')
-      .map((row, position) => toImportedLine(row, lines.length + position)),
-  ]
 }
 
 export function createFakeChapterEditSource(
@@ -201,19 +183,49 @@ export function createFakeChapterEditSource(
     importLines: jest.fn((atf: string) =>
       save({ lines: importFakeLines(chapter.lines, atf) }),
     ),
+    createProperNoun: jest.fn(
+      (lemma: string, namedEntityTag: string): Promise<Word> =>
+        dictionary.respond('POST', properNounPath, {
+          lemma,
+          namedEntityTags: [namedEntityTag],
+        }) as Promise<Word>,
+    ),
+    countWordInstances: jest.fn(
+      (word: string): Promise<WordInstances> =>
+        new Promise((resolve) =>
+          resolve(countFakeInstances(chapter.lines, word, editLiteRevision)),
+        ),
+    ),
     saveAlignment: jest.fn((index: number, alignment: LineAlignment) =>
       annotate(
         index,
-        createAligner({ alignment: toLineAlignmentDto(alignment) }),
+        createAligner(
+          toChapterUpdate({ type: 'saveAlignment', index, alignment }).body,
+        ),
       ),
     ),
     saveLemmatization: jest.fn(
       (index: number, lemmatization: readonly LineLemmatization[]) =>
         annotate(
           index,
-          createLemmatizer({
-            lemmatization: toLineLemmatizationDto(lemmatization),
-          }),
+          createLemmatizer(
+            toChapterUpdate({ type: 'saveLemmatization', index, lemmatization })
+              .body,
+          ),
+        ),
+    ),
+    lemmatizeWordInstances: jest.fn(
+      (word: string, lemmaIds: readonly string[]) =>
+        new Promise<ChapterOutline>((resolve) =>
+          resolve(
+            save({
+              lines: lemmatizeFakeInstances(
+                chapter.lines,
+                toChapterUpdate({ type: 'lemmatizeInstances', word, lemmaIds })
+                  .body,
+              ),
+            }),
+          ),
         ),
     ),
     saveManuscripts: jest.fn(

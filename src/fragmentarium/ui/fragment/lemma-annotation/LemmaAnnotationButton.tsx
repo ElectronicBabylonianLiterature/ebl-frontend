@@ -13,20 +13,34 @@ export interface LemmaActionCallbacks {
   onCreateProperNoun: () => void
 }
 
-export default function LemmaActionButton({
-  token,
+export interface WordActionProps extends LemmaActionCallbacks {
+  readonly word: React.ReactNode
+  readonly isDirty: boolean
+  readonly hasLemmas: boolean
+  readonly canResetAll: boolean
+  readonly multiApplyProblem?: string | null
+  readonly onFocus?: () => void
+  readonly onBlur?: () => void
+}
+
+export function WordActionButton({
+  word,
+  isDirty,
+  hasLemmas,
+  canResetAll,
+  multiApplyProblem = null,
   onResetCurrent,
   onMouseEnter,
   onMouseLeave,
+  onFocus,
+  onBlur,
   onMultiApply,
   onMultiReset,
   onCreateProperNoun,
-}: {
-  token: EditableToken
-} & LemmaActionCallbacks): JSX.Element {
+}: WordActionProps): JSX.Element {
   const session = useContext(SessionContext)
   const canCreateProperNouns = session.isAllowedToCreateProperNouns()
-  const hoverHandlers = { onMouseEnter, onMouseLeave }
+  const hoverHandlers = { onMouseEnter, onMouseLeave, onFocus, onBlur }
 
   return (
     <Dropdown
@@ -37,7 +51,7 @@ export default function LemmaActionButton({
         variant="secondary"
         size="sm"
         onClick={onResetCurrent}
-        disabled={!token.isDirty}
+        disabled={!isDirty}
         aria-label="reset-current-token"
       >
         <i className={'fas fa-rotate-left'} aria-hidden="true"></i>
@@ -52,24 +66,47 @@ export default function LemmaActionButton({
       />
 
       <Dropdown.Menu>
-        <Dropdown.Item {...hoverHandlers} onClick={onMultiApply}>
-          Update all instances of <DisplayToken token={token.token} />
+        <Dropdown.Item
+          {...hoverHandlers}
+          onClick={onMultiApply}
+          disabled={multiApplyProblem !== null}
+        >
+          Update all instances of {word}
+          {multiApplyProblem !== null && (
+            <small className="d-block">{multiApplyProblem}</small>
+          )}
         </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
           {...hoverHandlers}
           onClick={onMultiReset}
-          disabled={!token.isDirty}
+          disabled={!canResetAll}
         >
-          Reset all instances of <DisplayToken token={token.token} />
+          Reset all instances of {word}
         </Dropdown.Item>
-        {canCreateProperNouns &&
-          (token.isDirty || token.lemmas.length === 0) && (
-            <Dropdown.Item {...hoverHandlers} onClick={onCreateProperNoun}>
-              Create a new proper noun for <DisplayToken token={token.token} />
-            </Dropdown.Item>
-          )}
+        {canCreateProperNouns && (isDirty || !hasLemmas) && (
+          <Dropdown.Item {...hoverHandlers} onClick={onCreateProperNoun}>
+            Create a new proper noun for {word}
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
+  )
+}
+
+export default function LemmaActionButton({
+  token,
+  ...callbacks
+}: {
+  token: EditableToken
+} & LemmaActionCallbacks): JSX.Element {
+  return (
+    <WordActionButton
+      word={<DisplayToken token={token.token} />}
+      isDirty={token.isDirty}
+      hasLemmas={token.lemmas.length > 0}
+      canResetAll={token.isDirty}
+      {...callbacks}
+    />
   )
 }

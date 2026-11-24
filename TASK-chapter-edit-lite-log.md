@@ -216,3 +216,47 @@ about 1.8 s.
   opened while another write is running can get a 409 with a Retry. The
   classic word dialogs open at the top of the page, as in the classic
   editor. `GET /words?lemmas=` is one request however many ids.
+
+## Step 5, follow-up: keyboard flow, popovers, lemma actions
+
+- In the Alignment and Lemmatization views the control of a word opens in a
+  popover anchored to that word. One word is active at a time. Enter accepts
+  the value shown and goes to the next word, Tab goes on without accepting,
+  Shift+Tab goes back, Escape closes, F2 moves between the fields or to the
+  word's actions. A hint under the tabs names the keys.
+- Enter or Tab on the last word saves the line when it has changes and opens
+  the next line in the same view with its first word active. A refused save
+  stays on the line.
+- Only accepted suggestions are stored (user decision): the save bodies send
+  the stored value for every word whose value is still a suggestion, and
+  such a suggestion is not an unsaved change. This also holds for a lemma
+  carried from a reconstruction word to an aligned manuscript word. The
+  classic editor still stores everything on screen.
+- The lemma control is the Library lemmatizer's select (shared code, new
+  `fragmentarium/ui/lemmatization/LemmaSelect.tsx`); no "Complex" checkbox.
+  Word actions as in the Library: reset this word, reset all instances in
+  the line, create a proper noun (with the permission; also offered for a
+  word that only has a suggestion). No Autofill button: opening the view
+  already loads the suggestions of the line.
+- "Update all instances" applies to the whole chapter (user decision:
+  replace every occurrence, after a confirmation with the numbers). It uses
+  `GET` and `POST {chapter}/lemmatization/instances`. The open line's own
+  changes are saved first; it is disabled while another line has unsaved
+  lemmatization changes; afterwards the loaded tokens of every line are
+  dropped.
+- Step 6 (keep existing alignments per manuscript line) is dropped by the
+  user: with per-line saves and accepted-only suggestions an editor leaves
+  aligned lines alone.
+- Browser run against a local ebl-api, keys only: 24 checks passed
+  (popover directly below the word, Enter / Tab / Shift+Tab / Escape, save
+  on leaving a line, only accepted suggestions stored, chapter-wide update
+  of 24 instances in 12 lines and nothing else, proper noun created and
+  stored).
+- Limits: the proper-noun panel is the Library's, with its modal styling,
+  inside the popover. The popover can be wider than the editor card.
+  Popper's positioning is replaced by a stub in the tests and was checked
+  in the browser only.
+- Gates: `yarn lint`, `yarn tsc`, qlty clean; `yarn test:ci` 937 suites,
+  8082 tests passed, zero console output; coverage 98.83 % statements,
+  97.14 % branches, both edit-lite folders at 100 %; no file over 250
+  lines. The builder killed 42 of 42 mutations.

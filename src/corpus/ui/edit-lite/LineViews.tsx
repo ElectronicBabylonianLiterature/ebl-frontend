@@ -1,13 +1,23 @@
-import React, { useId, useState } from 'react'
+import React, { useEffect, useId, useMemo, useState } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
-import { LineView } from 'corpus/ui/edit-lite/editLiteState'
+import { AnnotationView, LineView } from 'corpus/ui/edit-lite/editLiteState'
 import LineAlignmentView from 'corpus/ui/edit-lite/LineAlignmentView'
+import { useLineFlow } from 'corpus/ui/edit-lite/LineFlowContext'
 import LineLemmatizationView from 'corpus/ui/edit-lite/LineLemmatizationView'
 import { findUnsavedView } from 'corpus/ui/edit-lite/lineStates'
 import LineTextView, {
   LineTextViewProps,
 } from 'corpus/ui/edit-lite/LineTextView'
+import {
+  idleWordActivation,
+  WordActivation,
+} from 'corpus/ui/edit-lite/useWordFlow'
 import 'corpus/ui/edit-lite/LineViews.sass'
+
+interface OpenedView {
+  readonly view: LineView
+  readonly position: number | null
+}
 
 interface TabProps {
   readonly eventKey: LineView
@@ -31,7 +41,28 @@ export default function LineViews(props: LineTextViewProps): JSX.Element {
   const { index, lineState, activity } = props
   const id = useId()
   const unsavedView = findUnsavedView(lineState)
-  const [view, setView] = useState<LineView>(unsavedView ?? 'text')
+  const { arrivalView, settleArrival } = useLineFlow()
+  const [{ view, position }, setOpened] = useState<OpenedView>(() => {
+    const initialView = unsavedView ?? arrivalView ?? 'text'
+    return {
+      view: initialView,
+      position: initialView === arrivalView ? 0 : null,
+    }
+  })
+  const activation = useMemo<WordActivation>(
+    () => ({
+      position,
+      settle: (): void =>
+        setOpened((opened) => ({ ...opened, position: null })),
+      request: (requested: number): void =>
+        setOpened((opened) => ({ ...opened, position: requested })),
+    }),
+    [position],
+  )
+  const findActivation = (annotationView: AnnotationView): WordActivation =>
+    view === annotationView ? activation : idleWordActivation
+
+  useEffect(settleArrival, [settleArrival])
   const note = unsavedView === null ? null : describeLockedViews(unsavedView)
   const noteId = `${id}-note`
   const createTabProps = (eventKey: LineView): TabProps => {
@@ -49,7 +80,9 @@ export default function LineViews(props: LineTextViewProps): JSX.Element {
       <Tabs
         id={id}
         activeKey={view}
-        onSelect={(key: string | null): void => setView(key as LineView)}
+        onSelect={(key: string | null): void =>
+          setOpened({ view: key as LineView, position: 0 })
+        }
         aria-label="Views of the line"
         mountOnEnter
         unmountOnExit
@@ -63,6 +96,7 @@ export default function LineViews(props: LineTextViewProps): JSX.Element {
             index={index}
             lineState={lineState}
             activity={activity}
+            activation={findActivation('alignment')}
           />
         </Tab>
         <Tab {...createTabProps('lemmatization')}>
@@ -70,6 +104,7 @@ export default function LineViews(props: LineTextViewProps): JSX.Element {
             index={index}
             lineState={lineState}
             activity={activity}
+            activation={findActivation('lemmatization')}
           />
         </Tab>
       </Tabs>

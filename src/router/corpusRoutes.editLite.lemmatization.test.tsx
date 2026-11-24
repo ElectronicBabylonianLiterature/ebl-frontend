@@ -46,6 +46,9 @@ import Lemma from 'transliteration/domain/Lemma'
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const chapterUrl = createChapterUrl(editLiteChapterId)
 const enuma: Word = buildDictionaryWord('enūma')
@@ -86,20 +89,20 @@ test('the lemmas of a line are asked for in one batch and one word request when 
       {
         reconstruction: [
           { value: '%n' },
-          { value: 'enūma', uniqueLemma: ['enūma I'] },
+          { value: 'enūma', uniqueLemma: [] },
           { value: '|' },
           { value: 'eliš', uniqueLemma: ['eliš I'] },
         ],
         manuscripts: [
           [
             { value: 'e-nu-ma', uniqueLemma: [] },
-            { value: 'e-liš', uniqueLemma: ['eliš I'] },
+            { value: 'e-liš', uniqueLemma: [] },
           ],
           [
             { value: '[x' },
             { value: 'x' },
             { value: 'x]' },
-            { value: 'e-li-iš', uniqueLemma: ['eliš I'] },
+            { value: 'e-li-iš', uniqueLemma: [] },
           ],
         ],
       },
@@ -122,18 +125,19 @@ test('the lemmas of a line are asked for in one batch and one word request when 
       lemmatizationBody,
       true,
     ],
+    [lemmaBatchPath, { words: [{ word: 'enūma', isNormalized: true }] }, false],
   ])
   expect(listGets(served, '/words')).toEqual([
     '/words?lemma=e',
     '/words?lemma=el',
-    buildWordsPath(['enūma I', 'eliš I']),
+    buildWordsPath(['eliš I']),
   ])
   expect(listGets(served, 'tokens')).toEqual([
     buildAnnotatedLineUrl(0, 'revision-1'),
     buildAnnotatedLineUrl(0, 'revision-2'),
   ])
-  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-lišeliš$/)
-  expect(wordLabel(manuscriptRow(1), 'e-liš')).not.toHaveClass(
+  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-liš$/)
+  expect(wordLabel(reconstructionRow(), 'eliš')).not.toHaveClass(
     'Word--suggestion',
   )
   expect(wordButton(reconstructionRow(), 'enūma')).toHaveTextContent(
@@ -202,6 +206,6 @@ test.each<[string, () => Promise<void>, string[], string[]]>([
     ).toEqual([undefined, ['eliš I']])
     expect(
       changedLines[0].variants[0].manuscripts[0].atfTokens[0],
-    ).toMatchObject({ alignment: 1, uniqueLemma: ['eliš I'] })
+    ).toMatchObject({ alignment: 1, uniqueLemma: [] })
   },
 )

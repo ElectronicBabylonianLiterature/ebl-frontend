@@ -186,12 +186,13 @@ export async function openServedEditLiteRoute(
   lines: readonly Line[],
   search: string,
   dictionary: EditLiteFakeDictionary = new EditLiteFakeDictionary([]),
+  session: Session = writerSession,
 ): Promise<ServedEditLiteRoute> {
   const chapter = new EditLiteFakeChapter(buildEditLiteOutline(lines), lines)
   const fakeApi = createEditLiteFakeApi()
     .serveChapter(chapter)
     .serveDictionary(dictionary)
-  await renderLoadedEditLiteRoute({ fakeApi, search })
+  await renderLoadedEditLiteRoute({ fakeApi, search, session })
   return { chapter, fakeApi }
 }
 

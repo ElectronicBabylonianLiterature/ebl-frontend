@@ -150,12 +150,16 @@ export function createManuscriptsContext(
       openAnnotation: jest.fn(),
       changeAnnotation: jest.fn(),
       saveAnnotation: jest.fn(),
+      leaveAnnotation: jest.fn(),
+      countWordInstances: jest.fn(),
+      lemmatizeInstances: jest.fn(),
     },
     describeChange: jest.fn(
       (change: ChapterChange): ChapterRequest =>
         describeChapterChange(id, change),
     ),
     searchLemma: jest.fn(),
+    createProperNoun: jest.fn(),
   }
 }
 

@@ -1,5 +1,8 @@
 import _ from 'lodash'
-import { LineMoveDto } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  LineMoveDto,
+  WordInstancesLemmaDto,
+} from 'corpus/application/edit-lite/ChapterEditSource'
 import { LemmaWordQuery } from 'corpus/application/edit-lite/lineLemmatization'
 import { ApiError } from 'http/ApiClient'
 
@@ -29,6 +32,11 @@ export interface LemmaTokenDto extends TokenDto {
 export interface VariantLemmatizationDto {
   readonly reconstruction: readonly LemmaTokenDto[]
   readonly manuscripts: readonly (readonly LemmaTokenDto[])[]
+}
+
+export interface ProperNounDto {
+  readonly lemma: string
+  readonly namedEntityTags: readonly string[]
 }
 
 export const invalidRequestMessage = 'Request data failed validation'
@@ -117,6 +125,24 @@ const isMoveBody = hasShape({ from: isPosition, to: isPosition }, [
   'to',
 ])
 
+const isNonEmptyString: Check = (value) => _.isString(value) && value !== ''
+const isInstancesBody = hasShape(
+  {
+    word: isNonEmptyString,
+    uniqueLemma: (value) =>
+      isListOf(isNonEmptyString)(value) && (value as unknown[]).length > 0,
+  },
+  ['word', 'uniqueLemma'],
+)
+const isProperNounBody = hasShape(
+  {
+    lemma: isNonEmptyString,
+    namedEntityTags: (value) =>
+      isListOf(isNonEmptyString)(value) && (value as unknown[]).length === 1,
+  },
+  ['lemma', 'namedEntityTags'],
+)
+
 function parseBody<Dto>(body: unknown, isValid: Check): Dto {
   return isValid(body)
     ? (body as Dto)
@@ -145,4 +171,12 @@ export function parseLemmaWordsBody(body: unknown): LemmaWordQuery[] {
 
 export function parseMoveBody(body: unknown): LineMoveDto {
   return parseBody<LineMoveDto>(body, isMoveBody)
+}
+
+export function parseInstancesBody(body: unknown): WordInstancesLemmaDto {
+  return parseBody<WordInstancesLemmaDto>(body, isInstancesBody)
+}
+
+export function parseProperNounBody(body: unknown): ProperNounDto {
+  return parseBody<ProperNounDto>(body, isProperNounBody)
 }

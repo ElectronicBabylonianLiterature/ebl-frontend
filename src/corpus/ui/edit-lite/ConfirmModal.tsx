@@ -6,6 +6,7 @@ interface Props {
   readonly title: string
   readonly confirmLabel: string
   readonly confirmVariant?: 'danger' | 'primary'
+  readonly restoreFocus?: boolean
   readonly children: React.ReactNode
   readonly onConfirm: () => void
   readonly onCancel: () => void
@@ -16,6 +17,7 @@ export default function ConfirmModal({
   title,
   confirmLabel,
   confirmVariant = 'danger',
+  restoreFocus = true,
   children,
   onConfirm,
   onCancel,
@@ -27,6 +29,7 @@ export default function ConfirmModal({
       show={show}
       onHide={onCancel}
       animation={false}
+      restoreFocus={restoreFocus}
       aria-labelledby={titleId}
     >
       <Modal.Header closeButton>

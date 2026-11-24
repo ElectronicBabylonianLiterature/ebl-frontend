@@ -1,23 +1,28 @@
-import { ChapterEditSource } from 'corpus/application/edit-lite/ChapterEditSource'
-import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
+import _ from 'lodash'
 import { Line } from 'corpus/domain/line'
 import {
   AnnotationDraft,
   AnnotationView,
-  LineState,
+  EditLiteState,
   Loadable,
 } from 'corpus/ui/edit-lite/editLiteState'
 import { EditLiteStore, errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
 import {
-  createInitialDraft,
   failedResource,
   findLemmasTarget,
+  findLemmatizationDraftLine,
   findLineIndex,
   findTokensTarget,
+  findViewDraft,
+  hasAnnotationDraft,
   isLoadingTokensOf,
   readyResource,
 } from 'corpus/ui/edit-lite/lineAnnotations'
-import { saveStoredLine } from 'corpus/ui/edit-lite/lineSaving'
+import {
+  applyOutline,
+  OutlineWrite,
+  saveStoredLine,
+} from 'corpus/ui/edit-lite/lineSaving'
 import {
   findLineActivity,
   hasTextChanged,
@@ -81,49 +86,91 @@ export function openAnnotation(
   }
 }
 
-function findAnnotationValue(
-  lineState: LineState | undefined,
-  view: AnnotationView,
-): AnnotationDraft | null {
-  const annotation = lineState?.annotation
-  if (annotation === undefined) {
-    return null
-  }
-  const value = annotation.draft ?? createInitialDraft(annotation, view)
-  return value?.view === view ? value : null
-}
-
-function findSavableValue(
-  lineState: LineState | undefined,
-  view: AnnotationView,
-): AnnotationDraft | null {
-  const isRefused =
+function isSaveRefused(state: EditLiteState, index: number): boolean {
+  const lineState = state.lines[index]
+  return (
     lineState?.status === 'saving' ||
     lineState?.annotation?.isStale === true ||
     hasTextChanged(lineState)
-  return isRefused ? null : findAnnotationValue(lineState, view)
+  )
 }
 
-function saveValue(
-  source: ChapterEditSource,
+function findSavableDraft(
+  state: EditLiteState,
   index: number,
-  value: AnnotationDraft,
-): Promise<ChapterOutline> {
-  return value.view === 'alignment'
-    ? source.saveAlignment(index, value.alignment)
-    : source.saveLemmatization(index, value.lemmatization)
+  view: AnnotationView,
+): AnnotationDraft | null {
+  return isSaveRefused(state, index) ||
+    isLayoutChanging(findLineActivity(state))
+    ? null
+    : findViewDraft(state.lines[index], view)
+}
+
+function writeDraft(
+  store: EditLiteStore,
+  index: number,
+  draft: AnnotationDraft,
+): OutlineWrite {
+  return (source) =>
+    (draft.view === 'alignment'
+      ? source.saveAlignment(index, draft.alignment)
+      : source.saveLemmatization(index, draft.lemmatization)
+    ).then(applyOutline(store))
 }
 
 export function saveAnnotation(
   store: EditLiteStore,
   index: number,
   view: AnnotationView,
+  onSaved: () => void = _.noop,
 ): void {
-  const state = store.getState()
-  const value = findSavableValue(state.lines[index], view)
-  if (value !== null && !isLayoutChanging(findLineActivity(state))) {
-    void saveStoredLine(store, index, (source) =>
-      saveValue(source, index, value),
+  const draft = findSavableDraft(store.getState(), index, view)
+  if (draft !== null) {
+    void saveStoredLine(store, index, writeDraft(store, index, draft)).then(
+      (isSaved) => isSaved && onSaved(),
     )
   }
+}
+
+export function leaveAnnotation(
+  store: EditLiteStore,
+  index: number,
+  view: AnnotationView,
+  onLeft: () => void,
+): void {
+  if (hasAnnotationDraft(store.getState().lines[index])) {
+    saveAnnotation(store, index, view, onLeft)
+  } else {
+    onLeft()
+  }
+}
+
+function canLemmatizeInstances(state: EditLiteState, index: number): boolean {
+  return (
+    !isSaveRefused(state, index) &&
+    findLineActivity(state) === 'idle' &&
+    findLemmatizationDraftLine(state, index) === null
+  )
+}
+
+export function lemmatizeInstances(
+  store: EditLiteStore,
+  index: number,
+  word: string,
+  lemmaIds: readonly string[],
+  onDone: () => void,
+): void {
+  const state = store.getState()
+  const draft = findViewDraft(state.lines[index], 'lemmatization')
+  if (!canLemmatizeInstances(state, index)) {
+    return
+  }
+  void saveStoredLine(store, index, async (source) => {
+    if (draft !== null) {
+      await writeDraft(store, index, draft)(source)
+    }
+    await source
+      .lemmatizeWordInstances(word, lemmaIds)
+      .then(applyOutline(store, 'instancesLemmatized'))
+  }).then((isSaved) => isSaved && onDone())
 }

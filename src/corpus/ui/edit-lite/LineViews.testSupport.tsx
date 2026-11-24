@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Line } from 'corpus/domain/line'
 import {
   EditLiteRenderOptions,
   EditLiteRenderResult,
@@ -28,7 +29,9 @@ export function listDisabledViews(): LineViewName[] {
 }
 
 export function selectedView(): string | null {
-  return screen.getByRole('tab', { selected: true }).textContent
+  return within(
+    screen.getByRole('tablist', { name: 'Views of the line' }),
+  ).getByRole('tab', { selected: true }).textContent
 }
 
 export async function openLineView(name: LineViewName): Promise<void> {
@@ -70,22 +73,65 @@ export function wordButton(row: HTMLElement, word: string): HTMLElement {
   })
 }
 
+export function activePopover(): HTMLElement {
+  return screen.getByRole('dialog', { name: /^(Alignment|Lemma) of / })
+}
+
+export function queryActivePopover(): HTMLElement | null {
+  return screen.queryByRole('dialog', { name: /^(Alignment|Lemma) of / })
+}
+
+export function popoverField(name: string): HTMLElement {
+  return within(activePopover()).getByLabelText(name)
+}
+
+export function expectActiveWord(
+  row: HTMLElement,
+  word: string,
+  field: 'Ideal word' | 'Lemma',
+): void {
+  const toggle = wordButton(row, word)
+  const kind = field === 'Lemma' ? 'Lemma' : 'Alignment'
+
+  expect(activePopover()).toHaveAccessibleName(`${kind} of ${word}`)
+  expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  expect(toggle).toHaveAttribute('aria-controls', activePopover().id)
+  expect(popoverField(field)).toHaveFocus()
+  expect(screen.getAllByRole('dialog')).toHaveLength(1)
+}
+
+export async function openWord(row: HTMLElement, word: string): Promise<void> {
+  const toggle = wordButton(row, word)
+  if (toggle.getAttribute('aria-expanded') !== 'true') {
+    await userEvent.click(toggle)
+  }
+}
+
+export async function chooseIdealWord(
+  idealWord: string,
+  variant = '',
+): Promise<void> {
+  const select = popoverField('Ideal word')
+  await userEvent.selectOptions(
+    select,
+    within(select).getByRole('option', { name: idealWord }),
+  )
+  if (variant !== '') {
+    await userEvent.type(popoverField('Variant'), variant)
+  }
+}
+
 export async function alignWord(
   row: HTMLElement,
   word: string,
   idealWord: string,
   variant = '',
 ): Promise<void> {
-  await userEvent.click(wordButton(row, word))
-  const select = screen.getByLabelText('Ideal word')
-  await userEvent.selectOptions(
-    select,
-    within(select).getByRole('option', { name: idealWord }),
+  await openWord(row, word)
+  await chooseIdealWord(idealWord, variant)
+  await userEvent.click(
+    within(activePopover()).getByRole('button', { name: 'Set alignment' }),
   )
-  if (variant !== '') {
-    await userEvent.type(screen.getByLabelText('Variant'), variant)
-  }
-  await userEvent.click(screen.getByRole('button', { name: 'Set alignment' }))
 }
 
 export function wordLabel(row: HTMLElement, word: string): HTMLElement {
@@ -97,19 +143,33 @@ export async function omitWord(row: HTMLElement, word: string): Promise<void> {
   await userEvent.click(await within(row).findByRole('option', { name: word }))
 }
 
+export function findLemmaOption(lemma: Lemma): Promise<HTMLElement> {
+  const optionName = `${lemma.lemma}${lemma.homonym},`
+  return screen.findByText(
+    (_text, element) =>
+      element?.getAttribute('role') === 'option' &&
+      String(element.textContent).startsWith(optionName),
+  )
+}
+
+export async function chooseLemma(lemma: Lemma): Promise<void> {
+  await userEvent.type(popoverField('Lemma'), lemma.lemma.slice(0, 2))
+  await userEvent.click(await findLemmaOption(lemma))
+}
+
 export async function lemmatizeWord(
   row: HTMLElement,
   word: string,
   lemma: Lemma,
 ): Promise<void> {
-  const optionName = `${lemma.lemma}${lemma.homonym},`
-  await userEvent.click(wordButton(row, word))
-  await userEvent.type(screen.getByLabelText('Lemma'), lemma.lemma.slice(0, 2))
-  await userEvent.click(
-    await screen.findByText(
-      (_text, element) =>
-        element?.getAttribute('role') === 'option' &&
-        String(element.textContent).startsWith(optionName),
+  await openWord(row, word)
+  await chooseLemma(lemma)
+}
+
+export function listAlignments(line: Line): (number | null)[][] {
+  return line.variants[0].manuscripts.map((manuscript) =>
+    manuscript.atfTokens.flatMap((token) =>
+      token.alignment === undefined ? [] : [token.alignment],
     ),
   )
 }

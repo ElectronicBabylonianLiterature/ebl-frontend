@@ -1,6 +1,9 @@
+import { WordInstances } from 'corpus/application/edit-lite/ChapterEditSource'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import {
+  leaveAnnotation,
+  lemmatizeInstances,
   openAnnotation,
   saveAnnotation,
 } from 'corpus/ui/edit-lite/annotationActions'
@@ -127,6 +130,24 @@ export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
     },
     saveAnnotation(index: number, view: AnnotationView): void {
       saveAnnotation(store, index, view)
+    },
+    leaveAnnotation(
+      index: number,
+      view: AnnotationView,
+      onLeft: () => void,
+    ): void {
+      leaveAnnotation(store, index, view, onLeft)
+    },
+    countWordInstances(word: string): Promise<WordInstances> {
+      return store.getSource().countWordInstances(word)
+    },
+    lemmatizeInstances(
+      index: number,
+      word: string,
+      lemmaIds: readonly string[],
+      onDone: () => void,
+    ): void {
+      lemmatizeInstances(store, index, word, lemmaIds, onDone)
     },
   }
 }

@@ -18,6 +18,7 @@ import { LineViewProps } from 'corpus/ui/edit-lite/LineTextView'
 import LoadFailure from 'corpus/ui/edit-lite/LoadFailure'
 import { findSiglumLabel } from 'corpus/ui/edit-lite/manuscriptSigla'
 import SaveControls from 'corpus/ui/edit-lite/SaveControls'
+import { WordActivation } from 'corpus/ui/edit-lite/useWordFlow'
 import 'corpus/ui/edit-lite/LineViews.sass'
 
 interface ResourceProps<Value> {
@@ -41,7 +42,10 @@ interface VariantProps {
 interface ControlsProps extends LineViewProps {
   readonly view: AnnotationView
   readonly change: ChapterChange
-  readonly hasSuggestions: boolean
+}
+
+export interface AnnotationViewProps extends LineViewProps {
+  readonly activation: WordActivation
 }
 
 export const staleAnnotationNote =
@@ -93,6 +97,10 @@ export function LoadedResource<Value>({
   ) : (
     <Spinner>{loadingLabel}</Spinner>
   )
+}
+
+export function KeyboardHint({ children }: { children: string }): JSX.Element {
+  return <p className="edit-lite-views__hint">{children}</p>
 }
 
 export function AnnotationVariant({
@@ -147,7 +155,6 @@ export function AnnotationControls({
   activity,
   view,
   change,
-  hasSuggestions,
 }: ControlsProps): JSX.Element | null {
   const { actions, canWrite } = useEditLiteContext()
   const isStale = lineState.annotation?.isStale === true
@@ -163,11 +170,7 @@ export function AnnotationControls({
       <SaveControls
         saveLabel={`Save ${view}`}
         change={change}
-        canSubmit={
-          (hasDraft || hasSuggestions) &&
-          !isStale &&
-          !isLayoutChanging(activity)
-        }
+        canSubmit={hasDraft && !isStale && !isLayoutChanging(activity)}
         canReset={hasDraft || lineState.status === 'failed'}
         progressLabel={findProgressLabel(lineState.status)}
         onSave={(): void => actions.saveAnnotation(index, view)}

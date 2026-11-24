@@ -29,6 +29,9 @@ import {
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const lines: readonly Line[] = buildEditLiteLines(5)
 const draftIndex = 3

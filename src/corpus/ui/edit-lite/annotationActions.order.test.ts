@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react'
 import { Line } from 'corpus/domain/line'
 import { saveAnnotation } from 'corpus/ui/edit-lite/annotationActions'
+import { buildAlignmentDraft } from 'corpus/ui/edit-lite/annotationState.testSupport'
 import {
   buildEditLiteLines,
   createRecordedEditLiteStore,
@@ -12,6 +13,7 @@ import { findImplementation } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 const lines: readonly Line[] = buildEditLiteLines(4)
 const draftPosition = 2
+const annotatedLine: Line = annotateLine(lines[draftPosition])
 
 test('the outline of the answer is applied in the step of the answer, before the reload', async () => {
   const { store, events } = createRecordedEditLiteStore(lines)
@@ -29,7 +31,13 @@ test('the outline of the answer is applied in the step of the answer, before the
   store.dispatch({
     type: 'annotationSettled',
     original: lines[draftPosition],
-    tokens: readyResource(annotateLine(lines[draftPosition])),
+    tokens: readyResource(annotatedLine),
+  })
+  store.dispatch({
+    type: 'annotationChanged',
+    index: draftPosition,
+    line: annotatedLine,
+    draft: buildAlignmentDraft(annotatedLine),
   })
   await Promise.resolve()
   events.length = 0

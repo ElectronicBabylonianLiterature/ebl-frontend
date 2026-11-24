@@ -1,6 +1,9 @@
 import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { fromLineDto } from 'corpus/application/dtos'
-import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
+import {
+  LinesUpdateDto,
+  WordInstances,
+} from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   ChapterOutline,
   LinesPageDto,
@@ -17,27 +20,18 @@ import {
   parseMoveBody,
   rejectRequest,
 } from 'corpus/ui/edit-lite/editLiteFakeRequests.testSupport'
+import {
+  countFakeInstances,
+  lemmatizeFakeInstances,
+} from 'corpus/ui/edit-lite/EditLiteFakeInstances.testSupport'
+import { toLinesPage } from 'corpus/ui/edit-lite/fakeChapterLines.testSupport'
 import { moveItem } from 'corpus/ui/edit-lite/lineMove'
 import { createChapterUrl } from 'test-support/FakeApiExpectation'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export type FakeChapterMethod = 'GET' | 'POST'
 
-export function toLinesPage(
-  lines: readonly Line[],
-  offset: number,
-  limit: number,
-  revision: string,
-  toDto: (line: Line) => Record<string, unknown> = toLineDto,
-): LinesPageDto {
-  return {
-    total: lines.length,
-    offset,
-    limit,
-    lines: lines.slice(offset, offset + limit).map(toDto),
-    revision,
-  }
-}
+export { toLinesPage } from 'corpus/ui/edit-lite/fakeChapterLines.testSupport'
 
 type Route = (query: URLSearchParams, body: unknown) => unknown
 type Annotation = 'alignment' | 'lemmatization'
@@ -82,6 +76,25 @@ export default class EditLiteFakeChapter {
     [
       'POST lines/move',
       (query, body): ChapterOutline => this.moveLine(query, body),
+    ],
+    [
+      'GET lemmatization/instances',
+      (query): WordInstances => {
+        this.checkRevision(query)
+        return countFakeInstances(
+          this.storedLines,
+          query.get('word'),
+          this.revision,
+        )
+      },
+    ],
+    [
+      'POST lemmatization/instances',
+      (query, body): ChapterOutline => {
+        const lines = lemmatizeFakeInstances(this.storedLines, body)
+        this.requireRevision(query, missingRevisionMessage)
+        return this.store(lines)
+      },
     ],
   ])
 

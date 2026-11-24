@@ -1,3 +1,5 @@
+import { listLemmatizableWords } from 'corpus/application/edit-lite/annotationWords'
+import { setWordLemma } from 'corpus/application/edit-lite/lemmaEdits'
 import { setOmittedWords } from 'corpus/domain/alignment'
 import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { createLineAlignment, Line } from 'corpus/domain/line'
@@ -16,12 +18,14 @@ import {
 } from 'corpus/ui/edit-lite/editLiteState'
 import {
   annotateLine,
+  buildDictionaryWord,
   buildLineLemmatization,
 } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
 import {
   failedResource,
   readyResource,
 } from 'corpus/ui/edit-lite/lineAnnotations'
+import Lemma from 'transliteration/domain/Lemma'
 
 export const draftOmittedWords: readonly number[] = [1]
 
@@ -86,10 +90,18 @@ export function buildAlignmentDraft(annotatedLine: Line): AlignmentDraft {
   }
 }
 
+export const draftLemma = new Lemma(buildDictionaryWord('draft'))
+
 export function buildLemmatizationDraft(annotatedLine: Line): AnnotationDraft {
+  const [word] = listLemmatizableWords(annotatedLine)
   return {
     view: 'lemmatization',
-    lemmatization: buildLineLemmatization(annotatedLine),
+    lemmatization: setWordLemma(
+      buildLineLemmatization(annotatedLine),
+      annotatedLine,
+      word,
+      [draftLemma],
+    ),
   }
 }
 

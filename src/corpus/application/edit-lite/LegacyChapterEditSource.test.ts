@@ -70,6 +70,11 @@ const operations: readonly [string, ChapterChange, Apply][] = [
     { type: 'saveLemmatization', index: 1, lemmatization: lineLemmatization },
     (source) => source.saveLemmatization(1, lineLemmatization),
   ],
+  [
+    'lemmatizeWordInstances',
+    { type: 'lemmatizeInstances', word: 'kur', lemmaIds: ['kur I'] },
+    (source) => source.lemmatizeWordInstances('kur', ['kur I']),
+  ],
 ]
 
 let textService: jest.Mocked<ChapterEditTextService>
@@ -204,6 +209,7 @@ describe.each(operations)('%s', (_name, change, apply) => {
 it.each<[string, (source: ChapterEditSource) => Promise<unknown>]>([
   ['the tokens of a line', (source) => source.loadAnnotatedLine(0)],
   ['the lemmas of a line', (source) => source.loadLemmatization(annotatedLine)],
+  ['the instances of a word', (source) => source.countWordInstances('kur')],
 ])('says that %s are not in the snapshot', async (_name, load) => {
   await expect(load(source)).rejects.toThrow(
     new Error(annotationsNotAvailableMessage),
@@ -218,4 +224,11 @@ it.each<[string, (source: ChapterEditSource) => Promise<unknown>]>([
 it('finds no lemmas without asking the dictionary', async () => {
   await expect(source.searchLemma('kur')).resolves.toEqual([])
   expect(textService.searchDictionaryLemma).not.toHaveBeenCalled()
+})
+
+it('creates no proper noun', async () => {
+  await expect(source.createProperNoun('Marduk', 'DN')).rejects.toThrow(
+    new Error(savingNotAvailableMessage),
+  )
+  expect(textService.createDictionaryProperNoun).not.toHaveBeenCalled()
 })

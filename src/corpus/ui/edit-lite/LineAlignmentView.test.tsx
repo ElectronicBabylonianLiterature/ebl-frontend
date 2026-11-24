@@ -9,6 +9,7 @@ import { renderLoadedContainer } from 'corpus/ui/edit-lite/LineEditContainer.tes
 import {
   alignWord,
   button,
+  listDisabledViews,
   manuscriptRow,
   omitWord,
   openLineView,
@@ -23,6 +24,9 @@ import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
+)
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
 )
 
 const lines: readonly Line[] = buildEditLiteLines(3)
@@ -136,36 +140,33 @@ test('aligned words, a variant and omitted words are saved and shown again', asy
     /^e-nu-maenūma$/,
   )
   expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-liš$/)
-  expect(wordLabel(manuscriptRow(2), 'e-li-iš')).not.toHaveClass(
-    'Word--suggestion',
-  )
+  expect(wordLabel(manuscriptRow(2), 'e-li-iš')).toHaveClass('Word--suggestion')
+  expect(
+    (await source.loadAnnotatedLine(0)).variants[0].manuscripts.map(
+      (manuscript) => manuscript.atfTokens.map((token) => token.alignment),
+    ),
+  ).toEqual([
+    [1, null],
+    [undefined, undefined, undefined, null],
+  ])
   expect(within(manuscriptRow(2)).getByText('enūma')).toBeVisible()
   expect(button('Save alignment')).toBeDisabled()
 })
 
-test('a suggestion on screen is saved as a value without any other change', async () => {
-  const { source } = await renderLoadedView('Alignment', { lines })
+test('suggestions that were not accepted are no unsaved change and are not saved', async () => {
+  const { source, getState } = await renderLoadedView('Alignment', { lines })
 
-  expect(button('Save alignment')).toBeEnabled()
+  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).toHaveClass('Word--suggestion')
+  expect(button('Save alignment')).toBeDisabled()
   expect(button('Reset')).toBeDisabled()
+  expect(listDisabledViews()).toEqual([])
+  expect(screen.queryByRole('note')).not.toBeInTheDocument()
 
-  await userEvent.click(button('Save alignment'))
-  await waitFor(() => expect(button('Save alignment')).toBeDisabled())
-  await waitForSavedView()
-  const savedLine = await source.loadAnnotatedLine(0)
+  await userEvent.keyboard('{Tab}{Tab}{Shift>}{Tab}{/Shift}{Escape}')
 
-  expect(
-    savedLine.variants[0].manuscripts.map((manuscript) =>
-      manuscript.atfTokens.map((token) => token.alignment),
-    ),
-  ).toEqual([
-    [1, 3],
-    [undefined, undefined, undefined, 3],
-  ])
-  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).not.toHaveClass(
-    'Word--suggestion',
-  )
-  expect(wordButton(manuscriptRow(1), 'e-nu-ma')).toHaveTextContent(
-    /^e-nu-maenūma$/,
-  )
+  expect(getState().lines[0].annotation?.draft).toBeNull()
+  expect(button('Save alignment')).toBeDisabled()
+  expect(listDisabledViews()).toEqual([])
+  expect(source.saveAlignment).not.toHaveBeenCalled()
+  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).toHaveClass('Word--suggestion')
 })

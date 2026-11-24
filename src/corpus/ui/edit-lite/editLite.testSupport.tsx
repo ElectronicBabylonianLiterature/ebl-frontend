@@ -1,5 +1,7 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
+import { guestSession, Session } from 'auth/Session'
+import SessionContext from 'auth/SessionContext'
 import { ChapterEditSource } from 'corpus/application/edit-lite/ChapterEditSource'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
@@ -58,6 +60,7 @@ export interface EditLiteRenderOptions extends FakeChapterEditSourceOptions {
   readonly source?: FakeChapterEditSource
   readonly outline?: ChapterOutline
   readonly canWrite?: boolean
+  readonly session?: Session
 }
 
 export interface EditLiteRenderResult extends Omit<RenderResult, 'rerender'> {
@@ -154,7 +157,9 @@ export function renderWithEditLite(
     canWrite: options.canWrite ?? true,
   }
   const wrap = (wrappedUi: EditLiteUi): JSX.Element => (
-    <EditLiteHarness {...harnessProps} ui={wrappedUi} />
+    <SessionContext.Provider value={options.session ?? guestSession}>
+      <EditLiteHarness {...harnessProps} ui={wrappedUi} />
+    </SessionContext.Provider>
   )
   const view = render(wrap(ui))
   const current = (): EditLite => latest.current as EditLite

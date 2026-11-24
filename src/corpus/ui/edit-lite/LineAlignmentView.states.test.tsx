@@ -38,6 +38,9 @@ import {
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const lines: readonly Line[] = buildEditLiteLines(3)
 
@@ -93,10 +96,11 @@ test('a refused save keeps the changes and shows the reason of the server', asyn
   expect(listDisabledViews()).toEqual([])
 })
 
-test('a failed save without changes can be dismissed', async () => {
+test('a refused save is dismissed with its changes by a reset', async () => {
   const source = createFakeChapterEditSource({ lines })
   source.saveAlignment.mockRejectedValueOnce(new Error('Invalid alignment'))
   await renderLoadedView('Alignment', { source, lines })
+  await omitWord(manuscriptRow(1), 'eliš')
   await userEvent.click(button('Save alignment'))
   await screen.findByRole('alert')
   await userEvent.click(button('Reset'))
@@ -150,6 +154,7 @@ test('the read-only snapshot says that it has no tokens and offers no retry', as
 test('a source that cannot save shows the request instead of saving', async () => {
   const source = createFakeChapterEditSource({ lines, canSave: false })
   await renderLoadedView('Alignment', { source, lines })
+  await omitWord(manuscriptRow(1), 'eliš')
   await userEvent.click(button('Save alignment'))
   const preview = within(
     screen.getByRole('dialog', { name: 'Request preview' }),

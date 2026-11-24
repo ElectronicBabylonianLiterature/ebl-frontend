@@ -1,4 +1,4 @@
-import { createLineAlignment, Line } from 'corpus/domain/line'
+import { Line } from 'corpus/domain/line'
 import {
   buildAlignmentDraft,
   buildReadyAnnotation,
@@ -16,7 +16,6 @@ import {
   buildLineLemmatization,
 } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
 import {
-  createInitialDraft,
   failedResource,
   findAnnotationDraft,
   findLemmasTarget,
@@ -184,31 +183,6 @@ test.each<[string, boolean, boolean, LineState]>([
     )
   },
 )
-
-test('the initial value of a view comes from the loaded tokens and lemmas', () => {
-  const annotation = buildReadyAnnotation(annotatedLine, {
-    lemmas: readyResource(lemmatization),
-  })
-
-  expect(createInitialDraft(annotation, 'alignment')).toEqual({
-    view: 'alignment',
-    alignment: createLineAlignment(annotatedLine),
-  })
-  expect(createInitialDraft(annotation, 'lemmatization')).toEqual({
-    view: 'lemmatization',
-    lemmatization,
-  })
-  expect(createInitialDraft(requestedAnnotation, 'alignment')).toBeNull()
-  expect(
-    createInitialDraft(buildReadyAnnotation(annotatedLine), 'lemmatization'),
-  ).toBeNull()
-  expect(
-    createInitialDraft(
-      buildReadyAnnotation(annotatedLine, { lemmas: loadingResource }),
-      'lemmatization',
-    ),
-  ).toBeNull()
-})
 
 test('the line that waits for tokens or lemmas is found by what was requested for it', () => {
   const state = reduceEditLite(

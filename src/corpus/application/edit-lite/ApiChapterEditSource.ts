@@ -6,6 +6,7 @@ import {
   ChapterEditSourceKind,
   ChapterRequest,
   LinesUpdateDto,
+  WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   chapterChangedMessage,
@@ -21,6 +22,10 @@ import {
   areLinesEqual,
   toLineEditsDto,
 } from 'corpus/application/edit-lite/lineEdits'
+import {
+  maximumLinesPerRequest,
+  splitIntoRanges,
+} from 'corpus/application/edit-lite/lineRanges'
 import type TextService from 'corpus/application/TextService'
 import { LineAlignment } from 'corpus/domain/alignment'
 import { LineLemmatization } from 'corpus/domain/lemmatization'
@@ -36,34 +41,16 @@ export type ApiChapterEditTextService = Pick<
   | 'findChapterLines'
   | 'findLineSuggestions'
   | 'searchDictionaryLemma'
+  | 'createDictionaryProperNoun'
+  | 'countWordInstances'
   | 'updateEditedLines'
   | 'updateChapterOutline'
 >
 
-export const maximumLinesPerRequest = 10
+export { maximumLinesPerRequest }
 export const maximumConcurrentLineRequests = 3
 export const savingNotPermittedMessage =
   'You do not have permission to save changes to this chapter.'
-
-interface LineRange {
-  readonly offset: number
-  readonly limit: number
-}
-
-function splitIntoRanges(offset: number, limit: number): LineRange[] {
-  const ranges: LineRange[] = []
-  for (
-    let rangeOffset = offset;
-    rangeOffset < offset + limit;
-    rangeOffset += maximumLinesPerRequest
-  ) {
-    ranges.push({
-      offset: rangeOffset,
-      limit: Math.min(maximumLinesPerRequest, offset + limit - rangeOffset),
-    })
-  }
-  return ranges
-}
 
 function rejectRevisionConflict(error: unknown): never {
   throw error instanceof ApiError && error.status === 409
@@ -128,6 +115,16 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return this.textService.searchDictionaryLemma(query)
   }
 
+  createProperNoun(lemma: string, namedEntityTag: string): Promise<Word> {
+    return this.textService.createDictionaryProperNoun(lemma, namedEntityTag)
+  }
+
+  countWordInstances(word: string): Promise<WordInstances> {
+    return this.textService
+      .countWordInstances(this.id, word, this.revision)
+      .catch(rejectRevisionConflict)
+  }
+
   describeSave(index: number, draft: Line): LinesUpdateDto {
     return toLineEditsDto(index, draft)
   }
@@ -183,6 +180,13 @@ export class ApiChapterEditSource implements ChapterEditSource {
     lemmatization: readonly LineLemmatization[],
   ): Promise<ChapterOutline> {
     return this.apply({ type: 'saveLemmatization', index, lemmatization })
+  }
+
+  lemmatizeWordInstances(
+    word: string,
+    lemmaIds: readonly string[],
+  ): Promise<ChapterOutline> {
+    return this.apply({ type: 'lemmatizeInstances', word, lemmaIds })
   }
 
   private apply(change: ChapterChange): Promise<ChapterOutline> {

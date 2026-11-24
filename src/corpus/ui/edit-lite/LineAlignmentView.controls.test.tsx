@@ -21,6 +21,9 @@ import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+jest.mock('@restart/ui/usePopper', () =>
+  jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
+)
 
 const lines: readonly Line[] = buildEditLiteLines(3)
 
@@ -99,14 +102,14 @@ test('the request preview shows the address and the body of the save', async () 
           alignment: [
             {
               value: 'e-nu-ma',
-              alignment: 1,
+              alignment: null,
               variant: '',
               type: '',
               language: '',
             },
             {
               value: 'e-liš',
-              alignment: 3,
+              alignment: null,
               variant: '',
               type: '',
               language: '',
@@ -121,7 +124,7 @@ test('the request preview shows the address and the body of the save', async () 
             { value: 'x]' },
             {
               value: 'e-li-iš',
-              alignment: 3,
+              alignment: null,
               variant: '',
               type: '',
               language: '',

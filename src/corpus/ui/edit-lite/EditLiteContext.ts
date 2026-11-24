@@ -3,6 +3,7 @@ import {
   ChapterChange,
   ChapterEditSourceKind,
   ChapterRequest,
+  WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import { ManuscriptSummary } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
@@ -35,6 +36,14 @@ export interface EditLiteActions {
   openAnnotation(index: number, view: AnnotationView): void
   changeAnnotation(index: number, draft: AnnotationDraft, line: Line): void
   saveAnnotation(index: number, view: AnnotationView): void
+  leaveAnnotation(index: number, view: AnnotationView, onLeft: () => void): void
+  countWordInstances(word: string): Promise<WordInstances>
+  lemmatizeInstances(
+    index: number,
+    word: string,
+    lemmaIds: readonly string[],
+    onDone: () => void,
+  ): void
 }
 
 export interface EditLiteContextValue {
@@ -45,6 +54,7 @@ export interface EditLiteContextValue {
   readonly actions: EditLiteActions
   describeChange(change: ChapterChange): ChapterRequest
   searchLemma(query: string): Promise<readonly Word[]>
+  createProperNoun(lemma: string, namedEntityTag: string): Promise<Word>
 }
 
 const EditLiteContext = createContext<EditLiteContextValue | null>(null)

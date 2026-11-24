@@ -11,7 +11,10 @@ import {
   annotationHandlers,
   resetLoadedLine,
 } from 'corpus/ui/edit-lite/annotationReducer'
-import { hasAnnotationDraft } from 'corpus/ui/edit-lite/lineAnnotations'
+import {
+  hasAnnotationDraft,
+  withOutdatedAnnotation,
+} from 'corpus/ui/edit-lite/lineAnnotations'
 import {
   failedLine,
   findLineState,
@@ -205,6 +208,13 @@ const actionHandlers: ActionHandlers = {
   lineMoved: (state, action) =>
     moveLine(state, action.from, action.to, action.outline),
   outlineReplaced: (state, action) => replaceOutline(state, action.outline),
+  instancesLemmatized: (state, action) => {
+    const replaced = replaceOutline(state, action.outline)
+    return {
+      ...replaced,
+      lines: _.mapValues(replaced.lines, withOutdatedAnnotation),
+    }
+  },
   manuscriptsSaved: (state, action) => ({
     ...replaceOutline(state, action.outline),
     manuscriptsVersion: state.manuscriptsVersion + 1,

@@ -4,6 +4,7 @@ import {
   ChapterEditSourceKind,
   ChapterRequest,
   LinesUpdateDto,
+  WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import { annotationsNotAvailableMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
@@ -68,6 +69,14 @@ export class LegacyChapterEditSource implements ChapterEditSource {
     return Promise.resolve([])
   }
 
+  createProperNoun(): Promise<Word> {
+    return Promise.reject(new Error(savingNotAvailableMessage))
+  }
+
+  countWordInstances(): Promise<WordInstances> {
+    return Promise.reject(new Error(annotationsNotAvailableMessage))
+  }
+
   describeSave(index: number, draft: Line): LinesUpdateDto {
     return toLineEditsDto(index, draft)
   }
@@ -105,6 +114,10 @@ export class LegacyChapterEditSource implements ChapterEditSource {
   }
 
   saveLemmatization(): Promise<ChapterOutline> {
+    return this.refuseToSave()
+  }
+
+  lemmatizeWordInstances(): Promise<ChapterOutline> {
     return this.refuseToSave()
   }
 

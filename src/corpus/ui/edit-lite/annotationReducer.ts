@@ -13,6 +13,7 @@ import {
   isLoadingTokensOf,
   loadingResource,
   requestedAnnotation,
+  storesLoadedValue,
 } from 'corpus/ui/edit-lite/lineAnnotations'
 import { hasTextChanged, readyLine } from 'corpus/ui/edit-lite/lineStates'
 import { withLines } from 'corpus/ui/edit-lite/outlineChanges'
@@ -88,8 +89,11 @@ export function resetLoadedLine(
   if (annotation === undefined) {
     return readyLine(original)
   }
-  return annotation.isStale
-    ? null
+  if (annotation.isStale) {
+    return null
+  }
+  return annotation.isOutdated
+    ? readyLine(original)
     : { ...readyLine(original), annotation: { ...annotation, draft: null } }
 }
 
@@ -110,6 +114,11 @@ export const annotationHandlers: AnnotationHandlers = {
     settleAnnotation(state, isLoadingLemmasOf(line), { lemmas }),
   annotationChanged: (state, { index, line, draft }) =>
     updateAnnotation(state, index, (annotation, lineState) =>
-      canEdit(annotation, lineState, line) ? { ...annotation, draft } : null,
+      canEdit(annotation, lineState, line)
+        ? {
+            ...annotation,
+            draft: storesLoadedValue(annotation, draft) ? null : draft,
+          }
+        : null,
     ),
 }

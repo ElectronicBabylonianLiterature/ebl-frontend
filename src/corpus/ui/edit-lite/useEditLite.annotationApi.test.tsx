@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react'
 import {
-  toLineAlignmentDto,
-  toLineLemmatizationDto,
-} from 'corpus/application/chapterDtoSerialization'
+  toAcceptedAlignmentDto,
+  toAcceptedLemmatizationDto,
+} from 'corpus/application/edit-lite/acceptedAnnotations'
 import { setReconstructionLemma } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import Word from 'dictionary/domain/Word'
@@ -63,7 +63,7 @@ async function draftAlignment({
   const line = await openView(view, draftPosition, 'alignment')
   const draft = buildAlignmentDraft(line)
   view.run((actions) => actions.changeAnnotation(draftPosition, draft, line))
-  return [draft, { alignment: toLineAlignmentDto(draft.alignment) }]
+  return [draft, { alignment: toAcceptedAlignmentDto(draft.alignment) }]
 }
 
 async function draftLemmatization({
@@ -76,7 +76,7 @@ async function draftLemmatization({
   ]
   const draft: AnnotationDraft = { view: 'lemmatization', lemmatization }
   view.run((actions) => actions.changeAnnotation(draftPosition, draft, line))
-  return [draft, { lemmatization: toLineLemmatizationDto(lemmatization) }]
+  return [draft, { lemmatization: toAcceptedLemmatizationDto(lemmatization) }]
 }
 
 async function deleteAndWait({ view }: Editing, index: number): Promise<void> {
@@ -103,7 +103,8 @@ describe.each<[string, Draft, (line: Line) => void]>([
       const [manuscript] = line.variants[0].manuscripts
       expect(manuscript.omittedWords).toEqual(draftOmittedWords)
       expect(manuscript.atfTokens.map((token) => token.alignment)).toEqual([
-        3, 4,
+        null,
+        null,
       ])
     },
   ],
@@ -114,7 +115,7 @@ describe.each<[string, Draft, (line: Line) => void]>([
       const [variant] = line.variants
       expect(
         variant.reconstructionTokens.map((token) => token.uniqueLemma),
-      ).toEqual([undefined, ['line I'], [], ['line I'], []])
+      ).toEqual([undefined, ['line I'], [], [], []])
       expect(variant.manuscripts[0].atfTokens[0].uniqueLemma).toEqual([])
     },
   ],
@@ -207,6 +208,7 @@ test('the tokens, the suggestions and the words of a line are each requested onc
       {
         words: [
           { word: 'of', isNormalized: true },
+          { word: 'line', isNormalized: true },
           { word: '4', isNormalized: true },
         ],
       },

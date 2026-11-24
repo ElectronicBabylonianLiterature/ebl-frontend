@@ -29,19 +29,25 @@ export class LemmaOption extends Lemma {
   }
 }
 
-export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
-  <components.Option {...props}>
-    <InlineMarkdown source={props.label} />
-  </components.Option>
-)
+export function Option<Selected extends Lemma = LemmaOption>(
+  props: OptionProps<Selected, true>,
+): JSX.Element {
+  return (
+    <components.Option {...props}>
+      <InlineMarkdown source={props.label} />
+    </components.Option>
+  )
+}
 
-export const MultiValueLabel = (
-  props: MultiValueGenericProps<LemmaOption, true>,
-): JSX.Element => (
-  <components.MultiValueLabel {...props}>
-    <InlineMarkdown source={props.data.label} />
-  </components.MultiValueLabel>
-)
+export function MultiValueLabel<Selected extends Lemma = LemmaOption>(
+  props: MultiValueGenericProps<Selected, true>,
+): JSX.Element {
+  return (
+    <components.MultiValueLabel {...props}>
+      <InlineMarkdown source={props.data.label} />
+    </components.MultiValueLabel>
+  )
+}
 
 type Props = {
   query?: readonly LemmaOption[]

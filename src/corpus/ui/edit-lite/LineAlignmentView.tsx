@@ -1,5 +1,11 @@
 import React, { useMemo } from 'react'
 import {
+  AnnotationWord,
+  findWordPosition,
+  listAlignableWords,
+} from 'corpus/application/edit-lite/annotationWords'
+import {
+  AlignmentToken,
   LineAlignment,
   ManuscriptAlignment,
   setAlignmentToken,
@@ -9,31 +15,32 @@ import {
 import { createLineAlignment, Line } from 'corpus/domain/line'
 import ManuscriptWordAligners from 'corpus/ui/alignment/ManuscriptWordAligners'
 import OmittedWordsSelect from 'corpus/ui/alignment/OmittedWordsSelect'
+import Word from 'corpus/ui/alignment/Word'
+import AlignmentWordForm from 'corpus/ui/edit-lite/AlignmentWordForm'
 import {
   AnnotationControls,
   AnnotationVariant,
+  AnnotationViewProps,
   isAnnotationLocked,
+  KeyboardHint,
   LoadedResource,
   useAnnotation,
 } from 'corpus/ui/edit-lite/AnnotationFrame'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { findViewDraft } from 'corpus/ui/edit-lite/lineAnnotations'
-import { LineViewProps } from 'corpus/ui/edit-lite/LineTextView'
+import useWordFlow from 'corpus/ui/edit-lite/useWordFlow'
+import { alignmentKeysHint } from 'corpus/ui/edit-lite/wordKeys'
+import WordPopover from 'corpus/ui/edit-lite/WordPopover'
 
-interface EditorProps extends LineViewProps {
+interface EditorProps extends AnnotationViewProps {
   readonly line: Line
-}
-
-function hasSuggestedAlignment(alignment: LineAlignment): boolean {
-  return alignment
-    .flat()
-    .some((manuscript) => manuscript.alignment.some((token) => token.suggested))
 }
 
 function AlignmentEditor({
   index,
   lineState,
   activity,
+  activation,
   line,
 }: EditorProps): JSX.Element {
   const { actions, canWrite } = useEditLiteContext()
@@ -41,9 +48,20 @@ function AlignmentEditor({
     () => createLineAlignment(line),
     [line],
   )
+  const words = useMemo<AnnotationWord[]>(
+    () => listAlignableWords(line),
+    [line],
+  )
   const alignment =
     findViewDraft(lineState, 'alignment')?.alignment ?? initialAlignment
   const isLocked = !canWrite || isAnnotationLocked(lineState)
+  const flow = useWordFlow({
+    index,
+    view: 'alignment',
+    words,
+    isLocked,
+    activation,
+  })
   const change = (
     variantIndex: number,
     manuscriptIndex: number,
@@ -65,6 +83,7 @@ function AlignmentEditor({
 
   return (
     <>
+      {canWrite && <KeyboardHint>{alignmentKeysHint}</KeyboardHint>}
       {line.variants.map((variant, variantIndex) => (
         <AnnotationVariant
           key={variantIndex}
@@ -75,6 +94,44 @@ function AlignmentEditor({
         >
           {(manuscriptLine, manuscriptIndex): JSX.Element => {
             const manuscriptAlignment = alignment[variantIndex][manuscriptIndex]
+            const changeToken = (
+              tokenIndex: number,
+              token: AlignmentToken,
+            ): void =>
+              change(
+                variantIndex,
+                manuscriptIndex,
+                setAlignmentToken(manuscriptAlignment, tokenIndex, token),
+              )
+            const renderWord = (tokenIndex: number): JSX.Element => {
+              const token = manuscriptAlignment.alignment[tokenIndex]
+              const word = { variantIndex, manuscriptIndex, tokenIndex }
+              return (
+                <WordPopover
+                  label={`Alignment of ${token.value}`}
+                  position={findWordPosition(words, word) as number}
+                  flow={flow}
+                  toggle={
+                    <Word
+                      token={token}
+                      reconstructionTokens={variant.reconstructionTokens}
+                    />
+                  }
+                >
+                  {(close): JSX.Element => (
+                    <AlignmentWordForm
+                      token={token}
+                      reconstructionTokens={variant.reconstructionTokens}
+                      flow={flow}
+                      onChange={(changed): void =>
+                        changeToken(tokenIndex, changed)
+                      }
+                      onClose={close}
+                    />
+                  )}
+                </WordPopover>
+              )
+            }
             return (
               <>
                 <span className="edit-lite-annotation__tokens">
@@ -82,18 +139,9 @@ function AlignmentEditor({
                     manuscriptLine={manuscriptLine}
                     alignment={manuscriptAlignment}
                     reconstructionTokens={variant.reconstructionTokens}
-                    onChange={(tokenIndex, token): void =>
-                      change(
-                        variantIndex,
-                        manuscriptIndex,
-                        setAlignmentToken(
-                          manuscriptAlignment,
-                          tokenIndex,
-                          token,
-                        ),
-                      )
-                    }
+                    onChange={changeToken}
                     disabled={isLocked}
+                    renderWord={renderWord}
                   />
                 </span>
                 <div className="edit-lite-annotation__omitted">
@@ -122,7 +170,6 @@ function AlignmentEditor({
         activity={activity}
         view="alignment"
         change={{ type: 'saveAlignment', index, alignment }}
-        hasSuggestions={hasSuggestedAlignment(alignment)}
       />
     </>
   )
@@ -132,7 +179,8 @@ export default function LineAlignmentView({
   index,
   lineState,
   activity,
-}: LineViewProps): JSX.Element {
+  activation,
+}: AnnotationViewProps): JSX.Element {
   const retry = useAnnotation(index, lineState, 'alignment')
   return (
     <LoadedResource
@@ -145,6 +193,7 @@ export default function LineAlignmentView({
           index={index}
           lineState={lineState}
           activity={activity}
+          activation={activation}
           line={line}
         />
       )}

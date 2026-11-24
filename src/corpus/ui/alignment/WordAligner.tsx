@@ -6,7 +6,7 @@ import Word from 'corpus/ui/alignment/Word'
 import 'corpus/ui/alignment/WordAligner.css'
 
 import { Token } from 'transliteration/domain/token'
-import { AlignmentToken } from 'corpus/domain/alignment'
+import { alignToken, AlignmentToken } from 'corpus/domain/alignment'
 import ModalButton from 'common/ui/ModalButton'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
@@ -16,36 +16,17 @@ interface AlignerProps {
   readonly onChange: (token: AlignmentToken) => void
 }
 
-function AlignmentForm(props: AlignerProps) {
-  const [alignment, setAlignment] = useState(props.token.alignment)
-  const [variant, setVariant] = useState(props.token.variant?.value ?? '')
+interface AlignmentInput {
+  readonly fields: JSX.Element
+  readonly createToken: () => AlignmentToken
+}
 
-  function updateToken(alignmentToken: AlignmentToken): AlignmentToken {
-    const token = !_.isNil(alignment) && props.reconstructionTokens[alignment]
-    return token && isAnyWord(token)
-      ? {
-          value: alignmentToken.value,
-          alignment: alignment,
-          variant: variant
-            ? {
-                value: variant,
-                type: token.type,
-                language: token.language,
-              }
-            : null,
-          isAlignable: true,
-          suggested: false,
-        }
-      : {
-          value: alignmentToken.value,
-          alignment: null,
-          variant: null,
-          isAlignable: true,
-          suggested: false,
-        }
-  }
-
-  const onClick = () => props.onChange(updateToken(props.token))
+export function useAlignmentInput(
+  token: AlignmentToken,
+  reconstructionTokens: ReadonlyArray<Token>,
+): AlignmentInput {
+  const [alignment, setAlignment] = useState(token.alignment)
+  const [variant, setVariant] = useState(token.variant?.value ?? '')
 
   const handleAlignmentChange = (
     event: React.ChangeEvent<
@@ -61,37 +42,56 @@ function AlignmentForm(props: AlignerProps) {
     setVariant(event.target.value)
   }
 
+  const fields = (
+    <Row>
+      <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
+        <Form.Label>Ideal word</Form.Label>
+        <Form.Control
+          as="select"
+          value={String(alignment)}
+          onChange={handleAlignmentChange}
+        >
+          <option value="">--</option>
+          {reconstructionTokens.map((reconstructionToken, index) =>
+            isAnyWord(reconstructionToken) ? (
+              <option key={index} value={index}>
+                {' '}
+                {reconstructionToken.value}
+              </option>
+            ) : null,
+          )}
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
+        <Form.Label>Variant</Form.Label>
+        <Form.Control
+          as="input"
+          value={variant}
+          onChange={handleVariantChange}
+        />
+      </Form.Group>
+    </Row>
+  )
+
+  return {
+    fields,
+    createToken: () =>
+      alignToken(token, reconstructionTokens, alignment ?? null, variant),
+  }
+}
+
+function AlignmentForm(props: AlignerProps) {
+  const { fields, createToken } = useAlignmentInput(
+    props.token,
+    props.reconstructionTokens,
+  )
+
   return (
     <Form className="WordAligner__form">
-      <Row>
-        <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
-          <Form.Label>Ideal word</Form.Label>
-          <Form.Control
-            as="select"
-            value={String(alignment)}
-            onChange={handleAlignmentChange}
-          >
-            <option value="">--</option>
-            {props.reconstructionTokens.map((reconstructionToken, index) =>
-              isAnyWord(reconstructionToken) ? (
-                <option key={index} value={index}>
-                  {' '}
-                  {reconstructionToken.value}
-                </option>
-              ) : null,
-            )}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
-          <Form.Label>Variant</Form.Label>
-          <Form.Control
-            as="input"
-            value={variant}
-            onChange={handleVariantChange}
-          />
-        </Form.Group>
-      </Row>
-      <Button onClick={onClick}>Set alignment</Button>
+      {fields}
+      <Button onClick={() => props.onChange(createToken())}>
+        Set alignment
+      </Button>
     </Form>
   )
 }

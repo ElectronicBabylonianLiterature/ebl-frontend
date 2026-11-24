@@ -56,7 +56,21 @@ export type ChapterEndpoint =
   | 'lines/move'
   | 'import'
   | 'manuscripts'
+  | 'lemmatization/instances'
   | LineAnnotationEndpoint
+
+export interface WordInstancesLemmaDto {
+  readonly word: string
+  readonly uniqueLemma: readonly string[]
+}
+
+export interface WordInstances {
+  readonly word: string
+  readonly words: number
+  readonly lemmatized: number
+  readonly lines: readonly number[]
+  readonly revision: string
+}
 
 export type ChapterRequestBody =
   | LinesUpdateDto
@@ -65,6 +79,7 @@ export type ChapterRequestBody =
   | ManuscriptsUpdateDto
   | LineAlignmentDto
   | LineLemmatizationDto
+  | WordInstancesLemmaDto
 
 export type ChapterChange =
   | {
@@ -91,6 +106,11 @@ export type ChapterChange =
       readonly index: number
       readonly lemmatization: readonly LineLemmatization[]
     }
+  | {
+      readonly type: 'lemmatizeInstances'
+      readonly word: string
+      readonly lemmaIds: readonly string[]
+    }
 
 export interface ChapterRequest {
   readonly method: 'POST'
@@ -111,6 +131,8 @@ export interface ChapterEditSource {
   loadAnnotatedLine(index: number): Promise<Line>
   loadLemmatization(line: Line): Promise<readonly LineLemmatization[]>
   searchLemma(query: string): Promise<readonly Word[]>
+  createProperNoun(lemma: string, namedEntityTag: string): Promise<Word>
+  countWordInstances(word: string): Promise<WordInstances>
   describeSave(index: number, draft: Line): LinesUpdateDto
   describeChange(change: ChapterChange): ChapterRequest
   saveLine(index: number, original: Line, draft: Line): Promise<ChapterOutline>
@@ -129,5 +151,9 @@ export interface ChapterEditSource {
   saveLemmatization(
     index: number,
     lemmatization: readonly LineLemmatization[],
+  ): Promise<ChapterOutline>
+  lemmatizeWordInstances(
+    word: string,
+    lemmaIds: readonly string[],
   ): Promise<ChapterOutline>
 }
