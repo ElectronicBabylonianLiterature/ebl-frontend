@@ -5,6 +5,9 @@ import {
   getReferenceTypes,
   RealiaCrossReference,
   RealiaEntry,
+  RealiaReferenceType,
+  realiaReferenceTypeNames,
+  realiaReferenceTypes,
 } from 'realia/domain/RealiaEntry'
 import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 import ExternalLink from 'common/ui/ExternalLink'
@@ -16,14 +19,48 @@ export function WikidataLinks({
 }): JSX.Element {
   return (
     <>
-      {wikidataIds.map((wikidataId) => (
+      {wikidataIds.map((wikidataId, index) => (
         <span key={wikidataId}>
           <ExternalLink href={`https://www.wikidata.org/wiki/${wikidataId}`}>
-            Wikidata: {wikidataId}
+            {wikidataIds.length > 1 ? `Wikidata ${index + 1}` : 'Wikidata'}
           </ExternalLink>{' '}
         </span>
       ))}
     </>
+  )
+}
+
+export function ReferenceTypeBadge({
+  referenceType,
+  className = 'Realia__reference-type',
+  children,
+}: {
+  referenceType: RealiaReferenceType
+  className?: string
+  children?: React.ReactNode
+}): JSX.Element {
+  const name = realiaReferenceTypeNames[referenceType]
+  return (
+    <span className={className}>
+      <abbr title={name} aria-hidden="true">
+        {referenceType}
+      </abbr>
+      <span className="visually-hidden">{name}</span>
+      {children}
+    </span>
+  )
+}
+
+export function ReferenceTypeLegend(): JSX.Element {
+  return (
+    <dl className="Realia__reference-type-legend">
+      {realiaReferenceTypes.map((referenceType) => (
+        <div key={referenceType}>
+          <dt>{referenceType}</dt>
+          <dd>{realiaReferenceTypeNames[referenceType]}</dd>
+        </div>
+      ))}
+    </dl>
   )
 }
 
@@ -43,9 +80,7 @@ export function ReferenceTypeBadges({
       aria-label="Reference types"
     >
       {referenceTypes.map((referenceType) => (
-        <span key={referenceType} className="Realia__reference-type">
-          {referenceType}
-        </span>
+        <ReferenceTypeBadge key={referenceType} referenceType={referenceType} />
       ))}
     </div>
   )

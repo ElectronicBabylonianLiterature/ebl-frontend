@@ -46,7 +46,7 @@ describe('RealiaDisplay sections and reallexikon', () => {
     const entry = realiaEntryFactory.build({ wikidataId: ['Q787'] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    const link = screen.getByRole('link', { name: 'Wikidata: Q787' })
+    const link = screen.getByRole('link', { name: 'Wikidata' })
     expect(link).toHaveAttribute('href', 'https://www.wikidata.org/wiki/Q787')
   })
 

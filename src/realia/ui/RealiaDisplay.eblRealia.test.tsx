@@ -75,7 +75,7 @@ describe('RealiaDisplay eBL Realia', () => {
       screen.getByText('The bright star of the ribbon of the fishes'),
     ).toBeInTheDocument()
     expect(screen.getByText('η Psc')).toBeInTheDocument()
-    expect(screen.getByText('CN')).toBeInTheDocument()
+    expect(screen.getByText('Celestial Name (CN)')).toBeInTheDocument()
     expect(screen.getByText(/Jones/)).toBeInTheDocument()
     expect(referenceTypeBadges()).toEqual(['eBL'])
   })
@@ -88,7 +88,7 @@ describe('RealiaDisplay eBL Realia', () => {
     })
     expect(eblArticle).toHaveAttribute('id', 'ebl-realia-1')
     expect(
-      within(eblArticle).getByRole('link', { name: 'Wikidata: Q14068' }),
+      within(eblArticle).getByRole('link', { name: 'Wikidata' }),
     ).toHaveAttribute('href', 'https://www.wikidata.org/wiki/Q14068')
   })
 

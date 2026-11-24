@@ -54,6 +54,12 @@ export const realiaReferenceTypes = ['RlA', 'AfO', 'eBL'] as const
 
 export type RealiaReferenceType = (typeof realiaReferenceTypes)[number]
 
+export const realiaReferenceTypeNames: Record<RealiaReferenceType, string> = {
+  RlA: 'Reallexikon der Assyriologie und Vorderasiatischen Archäologie',
+  AfO: 'AfO-Register Realien',
+  eBL: 'eBL Realia',
+}
+
 export interface EblRealiaEntry {
   readonly id: string
   readonly transliteration: string

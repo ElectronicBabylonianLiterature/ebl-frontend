@@ -5,31 +5,12 @@ import _ from 'lodash'
 import TextListInput from 'dictionary/ui/editor/TextListInput'
 import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 import Word from 'dictionary/domain/Word'
+import {
+  POSITIONS_OF_SPEECH,
+  VERB_POSITION_OF_SPEECH,
+} from 'dictionary/domain/positionsOfSpeech'
 
-const verb = 'V'
-
-const positionsOfSpeech: { [key: string]: string } = {
-  AJ: 'adjective',
-  AV: 'adverb',
-  N: 'noun',
-  NU: 'number',
-  [verb]: 'verb',
-  DP: 'demonstrative pronoun',
-  IP: 'independent/anaphoric pronoun',
-  PP: 'possessive pronoun',
-  QP: 'interrogative pronoun',
-  RP: 'reflexive/reciprocal pronoun',
-  XP: 'indefinite pronoun',
-  REL: 'relative pronoun',
-  DET: 'determinative pronoun',
-  CNJ: 'conjunction',
-  J: 'interjection',
-  MOD: 'modal, negative, or conditional particle',
-  PRP: 'preposition',
-  SBJ: 'subjunction',
-}
-
-const posOptions = _.map(positionsOfSpeech, (value, key) => ({
+const posOptions = _.map(POSITIONS_OF_SPEECH, (value, key) => ({
   value: key,
   label: value,
 }))
@@ -121,7 +102,7 @@ class PosInput extends Component<{
           options={namedEntityOptions}
           onChange={this.updateNamedEntityTags}
         />
-        {this.props.value.pos.includes(verb) && (
+        {this.props.value.pos.includes(VERB_POSITION_OF_SPEECH) && (
           <TextListInput
             value={this.props.value.roots || []}
             onChange={this.updateRoots}

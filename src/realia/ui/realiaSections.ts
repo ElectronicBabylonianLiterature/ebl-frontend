@@ -4,6 +4,7 @@ import {
   RealiaCrossReference,
   RealiaEntry,
 } from 'realia/domain/RealiaEntry'
+import { eblRealiaEntryLabel } from 'realia/domain/eblRealiaEntryLabel'
 
 export interface RealiaNavSubsection {
   readonly id: string
@@ -80,7 +81,7 @@ export function buildRealiaNav({
       label: 'eBL Realia',
       subsections: entry.eblRealia.map((eblEntry, index) => ({
         id: eblRealiaEntryId(index),
-        label: eblEntry.transliteration,
+        label: eblRealiaEntryLabel(eblEntry, index),
       })),
     })
   }

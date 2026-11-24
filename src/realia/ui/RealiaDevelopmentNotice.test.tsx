@@ -8,6 +8,6 @@ describe('RealiaDevelopmentNotice', () => {
     const alert = screen.getByRole('alert')
     expect(alert).toHaveClass('alert-warning')
     expect(alert).toHaveTextContent(/still under active development/i)
-    expect(alert).toHaveTextContent(/apologies for any issues/i)
+    expect(alert).toHaveTextContent(/incomplete or inconsistent/i)
   })
 })

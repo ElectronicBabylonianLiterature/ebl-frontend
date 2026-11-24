@@ -37,7 +37,7 @@ describe('RealiaResultsList reference types', () => {
         eblRealia: eblRealiaEntryFactory.buildList(1),
       }),
     ])
-    expect(sourceLabels()).toEqual(['eBL(1)'])
+    expect(sourceLabels()).toEqual(['eBLeBL Realia(1)'])
   })
 
   it('shows RlA, AfO and eBL badges in order for an attached entry', () => {
@@ -49,7 +49,11 @@ describe('RealiaResultsList reference types', () => {
         eblRealia: eblRealiaEntryFactory.buildList(1),
       }),
     ])
-    expect(sourceLabels()).toEqual(['RlA(1)', 'AfO(2)', 'eBL(1)'])
+    expect(sourceLabels()).toEqual([
+      'RlAReallexikon der Assyriologie und Vorderasiatischen Archäologie(1)',
+      'AfOAfO-Register Realien(2)',
+      'eBLeBL Realia(1)',
+    ])
   })
 
   it('percent-encodes a headword with a question mark and commas', () => {
@@ -60,5 +64,31 @@ describe('RealiaResultsList reference types', () => {
       `/tools/realia/${encodeURIComponent(aquariiHeadword)}`,
     )
     expect(link.getAttribute('href')).not.toContain('?')
+  })
+
+  it('explains the reference type abbreviations', () => {
+    renderList([
+      realiaEntryFactory.build({ referenceType: ['RlA'], reallexikon: [] }),
+    ])
+    const textOf = (role: string): string[] =>
+      screen.getAllByRole(role).map((element) => element.textContent ?? '')
+    expect(textOf('term')).toEqual(['RlA', 'AfO', 'eBL'])
+    expect(textOf('definition')).toEqual([
+      'Reallexikon der Assyriologie und Vorderasiatischen Archäologie',
+      'AfO-Register Realien',
+      'eBL Realia',
+    ])
+  })
+
+  it('omits the legend when no entry has a reference type', () => {
+    renderList([
+      realiaEntryFactory.build({
+        referenceType: [],
+        reallexikon: [],
+        afoRegister: [],
+        eblRealia: [],
+      }),
+    ])
+    expect(screen.queryByRole('term')).not.toBeInTheDocument()
   })
 })

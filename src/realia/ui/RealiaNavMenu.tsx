@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
 import { RealiaNavSection } from 'realia/ui/realiaSections'
+
+const navBodyId = 'realia-nav-body'
 
 interface Props {
   title: string
@@ -93,72 +95,102 @@ export default function RealiaNavMenu({
   onToggleSection,
   onNavigate,
 }: Props): JSX.Element {
+  const [expanded, setExpanded] = useState(false)
+  const navigate = (id: string): void => {
+    setExpanded(false)
+    onNavigate(id)
+  }
   return (
-    <nav className="Realia__nav" aria-label="On this page">
-      <NavAnchor
-        id={topId}
-        className="Realia__nav-top"
-        activeId={activeId}
-        selectedId={selectedId}
-        onNavigate={onNavigate}
+    <nav
+      className={classNames('Realia__nav', { 'is-expanded': expanded })}
+      aria-label="On this page"
+    >
+      <button
+        type="button"
+        className="Realia__nav-menu-toggle"
+        aria-expanded={expanded}
+        aria-controls={navBodyId}
+        onClick={(): void => setExpanded(!expanded)}
       >
-        <span className="Realia__nav-top-title">{title}</span>
-        {typeLabel && <span className="Realia__nav-top-type">{typeLabel}</span>}
-      </NavAnchor>
-      <ul className="Realia__nav-list">
-        {sections.map((section) => {
-          const open = openSections[section.id]
-          const isActiveGroup =
-            activeId === section.id ||
-            section.subsections.some((subsection) => subsection.id === activeId)
-          return (
-            <li
-              key={section.id}
-              className={classNames('Realia__nav-item', {
-                'is-active-group': isActiveGroup,
-              })}
-            >
-              <div className="Realia__nav-row">
-                <button
-                  type="button"
-                  className="Realia__nav-toggle"
-                  aria-expanded={open}
-                  aria-label={`${open ? 'Collapse' : 'Expand'} ${
-                    section.label
-                  }`}
-                  onClick={(): void => onToggleSection(section.id)}
-                >
-                  <i
-                    className={classNames('fas', {
-                      'fa-caret-down': open,
-                      'fa-caret-right': !open,
-                    })}
-                    aria-hidden="true"
+        <i
+          className={classNames('fas', {
+            'fa-caret-down': expanded,
+            'fa-caret-right': !expanded,
+          })}
+          aria-hidden="true"
+        />
+        On this page
+      </button>
+      <div id={navBodyId} className="Realia__nav-body">
+        <NavAnchor
+          id={topId}
+          className="Realia__nav-top"
+          activeId={activeId}
+          selectedId={selectedId}
+          onNavigate={navigate}
+        >
+          <span className="Realia__nav-top-title">{title}</span>
+          {typeLabel && (
+            <span className="Realia__nav-top-type">{typeLabel}</span>
+          )}
+        </NavAnchor>
+        <ul className="Realia__nav-list">
+          {sections.map((section) => {
+            const open = openSections[section.id]
+            const isActiveGroup =
+              activeId === section.id ||
+              section.subsections.some(
+                (subsection) => subsection.id === activeId,
+              )
+            return (
+              <li
+                key={section.id}
+                className={classNames('Realia__nav-item', {
+                  'is-active-group': isActiveGroup,
+                })}
+              >
+                <div className="Realia__nav-row">
+                  <button
+                    type="button"
+                    className="Realia__nav-toggle"
+                    aria-expanded={open}
+                    aria-label={`${open ? 'Collapse' : 'Expand'} ${
+                      section.label
+                    }`}
+                    onClick={(): void => onToggleSection(section.id)}
+                  >
+                    <i
+                      className={classNames('fas', {
+                        'fa-caret-down': open,
+                        'fa-caret-right': !open,
+                      })}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <NavAnchor
+                    id={section.id}
+                    className="Realia__nav-link"
+                    activeId={activeId}
+                    selectedId={selectedId}
+                    onNavigate={navigate}
+                  >
+                    {section.label}
+                  </NavAnchor>
+                </div>
+                {section.subsections.length > 0 && (
+                  <NavSubsections
+                    section={section}
+                    open={open}
+                    activeId={activeId}
+                    selectedId={selectedId}
+                    onNavigate={navigate}
                   />
-                </button>
-                <NavAnchor
-                  id={section.id}
-                  className="Realia__nav-link"
-                  activeId={activeId}
-                  selectedId={selectedId}
-                  onNavigate={onNavigate}
-                >
-                  {section.label}
-                </NavAnchor>
-              </div>
-              {section.subsections.length > 0 && (
-                <NavSubsections
-                  section={section}
-                  open={open}
-                  activeId={activeId}
-                  selectedId={selectedId}
-                  onNavigate={onNavigate}
-                />
-              )}
-            </li>
-          )
-        })}
-      </ul>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </nav>
   )
 }

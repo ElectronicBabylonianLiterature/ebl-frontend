@@ -3,6 +3,8 @@ import { EblRealiaEntry } from 'realia/domain/RealiaEntry'
 import { eblRealiaEntryId } from 'realia/ui/realiaSections'
 import { WikidataLinks } from 'realia/ui/RealiaParts'
 import ReferenceList from 'bibliography/ui/ReferenceList'
+import { eblRealiaEntryLabel } from 'realia/domain/eblRealiaEntryLabel'
+import { partOfSpeechLabel } from 'dictionary/domain/positionsOfSpeech'
 
 const transliterationSegmentPattern = /([-.\s]+)/
 
@@ -30,18 +32,54 @@ export function EblTransliteration({
   )
 }
 
-function EblRealiaField({
+interface EblRealiaField {
+  readonly label: string
+  readonly value: React.ReactNode
+}
+
+function formatPartOfSpeech(pos: string): string {
+  const label = partOfSpeechLabel(pos)
+  return label ? `${label} (${pos})` : pos
+}
+
+function getEblRealiaFields(entry: EblRealiaEntry): readonly EblRealiaField[] {
+  const fields: readonly EblRealiaField[] = [
+    {
+      label: 'Normalisation',
+      value: entry.normalisation && <em>{entry.normalisation}</em>,
+    },
+    { label: 'Translation', value: entry.translation },
+    { label: 'Identification', value: entry.identification },
+    {
+      label: 'Part of speech',
+      value: entry.pos && formatPartOfSpeech(entry.pos),
+    },
+    {
+      label: 'Links',
+      value: entry.wikidataId.length > 0 && (
+        <WikidataLinks wikidataIds={entry.wikidataId} />
+      ),
+    },
+    { label: 'Remarks', value: entry.remarks },
+  ]
+  return fields.filter((field) => Boolean(field.value))
+}
+
+function EblRealiaHeading({
+  entry,
   label,
-  children,
 }: {
+  entry: EblRealiaEntry
   label: string
-  children: React.ReactNode
 }): JSX.Element {
   return (
-    <>
-      <dt>{label}</dt>
-      <dd>{children}</dd>
-    </>
+    <h3 className="Realia__ebl-heading">
+      {entry.transliteration ? (
+        <EblTransliteration transliteration={entry.transliteration} />
+      ) : (
+        label
+      )}
+    </h3>
   )
 }
 
@@ -52,35 +90,25 @@ function EblRealiaArticle({
   entry: EblRealiaEntry
   index: number
 }): JSX.Element {
+  const label = eblRealiaEntryLabel(entry, index)
+  const fields = getEblRealiaFields(entry)
   return (
     <article
       id={eblRealiaEntryId(index)}
       className="Realia__ebl-article"
-      aria-label={entry.transliteration}
+      aria-label={label}
     >
-      <h3 className="Realia__ebl-heading">
-        <EblTransliteration transliteration={entry.transliteration} />
-      </h3>
-      <dl className="Realia__ebl-fields">
-        {entry.normalisation && (
-          <EblRealiaField label="Normalisation">
-            <em>{entry.normalisation}</em>
-          </EblRealiaField>
-        )}
-        <EblRealiaField label="Translation">{entry.translation}</EblRealiaField>
-        <EblRealiaField label="Identification">
-          {entry.identification}
-        </EblRealiaField>
-        <EblRealiaField label="Part of speech">{entry.pos}</EblRealiaField>
-        {entry.wikidataId.length > 0 && (
-          <EblRealiaField label="Wikidata">
-            <WikidataLinks wikidataIds={entry.wikidataId} />
-          </EblRealiaField>
-        )}
-        {entry.remarks && (
-          <EblRealiaField label="Remarks">{entry.remarks}</EblRealiaField>
-        )}
-      </dl>
+      <EblRealiaHeading entry={entry} label={label} />
+      {fields.length > 0 && (
+        <dl className="Realia__ebl-fields">
+          {fields.map((field) => (
+            <div key={field.label} className="Realia__ebl-field">
+              <dt>{field.label}</dt>
+              <dd>{field.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {entry.reference && (
         <div className="Realia__ebl-references">
           <ReferenceList references={[entry.reference]} />

@@ -6,6 +6,15 @@ import Reference from 'bibliography/domain/Reference'
 
 import 'bibliography/ui/referencePopover.css'
 
+const activationKeys = ['Enter', ' ']
+
+function openOnActivationKey(event: React.KeyboardEvent<HTMLElement>): void {
+  if (activationKeys.includes(event.key)) {
+    event.preventDefault()
+    event.currentTarget.click()
+  }
+}
+
 export default function referencePopover<P extends { reference: Reference }>(
   Component: React.ComponentType<P>,
 ): React.ComponentType<P> {
@@ -27,7 +36,13 @@ export default function referencePopover<P extends { reference: Reference }>(
         trigger={['click']}
         placement="right"
       >
-        <span className="reference-popover__citation">
+        <span
+          className="reference-popover__citation"
+          role="button"
+          tabIndex={0}
+          aria-haspopup="dialog"
+          onKeyDown={openOnActivationKey}
+        >
           <Component {...props} />
         </span>
       </OverlayTrigger>

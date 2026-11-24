@@ -9,6 +9,7 @@ import {
   getRedirectTarget,
   groupAfoRegisterByVolume,
   isRealiaId,
+  realiaReferenceTypeNames,
 } from 'realia/domain/RealiaEntry'
 import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
@@ -113,6 +114,12 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
 
   return (
     <div className="Realia__layout">
+      <div id={realiaSectionIds.top} className="Realia__top">
+        <h1>{entry.id}</h1>
+        <ReferenceTypeBadges entry={entry} />
+        <RealiaMetadata entry={entry} />
+        <RealiaDevelopmentNotice />
+      </div>
       <RealiaNavMenu
         title={entry.id}
         typeLabel={typeLabel}
@@ -125,16 +132,10 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         onNavigate={navigateToSection}
       />
       <div className="Realia__content">
-        <div id={realiaSectionIds.top} className="Realia__top">
-          <RealiaDevelopmentNotice />
-          <h1>{entry.id}</h1>
-          <ReferenceTypeBadges entry={entry} />
-          <RealiaMetadata entry={entry} />
-        </div>
         {entry.reallexikon.length > 0 && (
           <RealiaSection
             id={realiaSectionIds.reallexikon}
-            heading="I. Reallexikon der Assyriologie und Vorderasiatischen Archäologie"
+            heading={`I. ${realiaReferenceTypeNames.RlA}`}
             open={openSections[realiaSectionIds.reallexikon]}
             onToggle={toggleSection}
           >
@@ -144,7 +145,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         {entry.afoRegister.length > 0 && (
           <RealiaSection
             id={realiaSectionIds.afoRegister}
-            heading="II. AfO-Register Realien"
+            heading={`II. ${realiaReferenceTypeNames.AfO}`}
             open={openSections[realiaSectionIds.afoRegister]}
             onToggle={toggleSection}
           >
@@ -157,7 +158,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         {entry.eblRealia.length > 0 && (
           <RealiaSection
             id={realiaSectionIds.eblRealia}
-            heading="III. eBL Realia"
+            heading={`III. ${realiaReferenceTypeNames.eBL}`}
             open={openSections[realiaSectionIds.eblRealia]}
             onToggle={toggleSection}
           >
