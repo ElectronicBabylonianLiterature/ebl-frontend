@@ -28,9 +28,11 @@ exports[`Glossary snapshot 1`] = `
         <span
           class="word-info__wrapper"
         >
-          <span
+          <button
+            aria-expanded="false"
+            aria-haspopup="dialog"
             class="word-info__trigger"
-            role="button"
+            type="button"
           >
             <span
               class="Transliteration__Word"
@@ -63,7 +65,7 @@ exports[`Glossary snapshot 1`] = `
                 </span>
               </span>
             </span>
-          </span>
+          </button>
         </span>
       </span>
        (
@@ -114,9 +116,11 @@ exports[`Glossary snapshot 1`] = `
         <span
           class="word-info__wrapper"
         >
-          <span
+          <button
+            aria-expanded="false"
+            aria-haspopup="dialog"
             class="word-info__trigger"
-            role="button"
+            type="button"
           >
             <span
               class="Transliteration__Word"
@@ -149,7 +153,7 @@ exports[`Glossary snapshot 1`] = `
                 </span>
               </span>
             </span>
-          </span>
+          </button>
         </span>
       </span>
        (

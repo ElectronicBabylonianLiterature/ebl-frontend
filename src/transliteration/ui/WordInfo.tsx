@@ -1,8 +1,7 @@
 import React from 'react'
 import { PropsWithChildren } from 'react'
-import _ from 'lodash'
 import { AnyWord, Token } from 'transliteration/domain/token'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { Overlay, Popover } from 'react-bootstrap'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 
 import 'transliteration/ui/WordInfo.sass'
@@ -36,12 +35,26 @@ export function VariantAlignmentIndicator({
 
 export function PopoverTitle({
   children,
+  id,
+  onClose,
 }: {
   children?: React.ReactNode | undefined
+  id?: string
+  onClose?: () => void
 }): JSX.Element {
   return (
-    <Popover.Header>
-      <span className={'word-info__header'}>{children}</span>
+    <Popover.Header className={onClose && 'word-info__popover-header'}>
+      <span id={id} className={'word-info__header'}>
+        {children}
+      </span>
+      {onClose && (
+        <button
+          type="button"
+          className="btn-close"
+          aria-label="Close word information"
+          onClick={onClose}
+        />
+      )}
     </Popover.Header>
   )
 }
@@ -60,10 +73,36 @@ function LemmaInfoPopover({
 }>): JSX.Element {
   const dictionary = useDictionary()
   const { lemmaMap, lemmaSetter } = useLineLemmasContext()
+  const [show, setShow] = React.useState(false)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const popoverId = `word-info-${React.useId()}`
+  const titleId = `${popoverId}-title`
+
+  const close = React.useCallback((): void => {
+    setShow(false)
+    triggerRef.current?.focus()
+  }, [])
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
+    if (show && event.key === 'Escape') {
+      event.preventDefault()
+      event.stopPropagation()
+      close()
+    }
+  }
 
   const popover = (
-    <Popover id={_.uniqueId('word-info-')}>
-      <PopoverTitle>{children}</PopoverTitle>
+    <Popover
+      id={popoverId}
+      role="dialog"
+      aria-labelledby={titleId}
+      tabIndex={-1}
+      className="word-info__popover"
+      onKeyDown={handleKeyDown}
+    >
+      <PopoverTitle id={titleId} onClose={close}>
+        {children}
+      </PopoverTitle>
       <Popover.Body>
         <LineLemmasContext.Provider
           value={{
@@ -83,18 +122,30 @@ function LemmaInfoPopover({
 
   return (
     <span className={'word-info__wrapper'}>
-      <OverlayTrigger
-        trigger="click"
+      <button
+        type="button"
+        ref={triggerRef}
+        className="word-info__trigger"
+        aria-haspopup="dialog"
+        aria-expanded={show}
+        aria-controls={show ? popoverId : undefined}
+        onClick={(): void => setShow(!show)}
+        onKeyDown={handleKeyDown}
+      >
+        <VariantAlignmentIndicator token={token}>
+          {children}
+        </VariantAlignmentIndicator>
+      </button>
+      <Overlay
+        show={show}
+        target={triggerRef.current}
         rootClose
         placement="top"
-        overlay={popover}
+        onHide={(): void => setShow(false)}
+        onEntered={(node: HTMLElement): void => node.focus()}
       >
-        <span className="word-info__trigger" role="button">
-          <VariantAlignmentIndicator token={token}>
-            {children}
-          </VariantAlignmentIndicator>
-        </span>
-      </OverlayTrigger>
+        {popover}
+      </Overlay>
     </span>
   )
 }
