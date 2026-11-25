@@ -81,7 +81,9 @@ describe('DossierRecordsListDisplay', () => {
     const dossierButton = screen.getByRole('button', { name: 'test' })
     await userEvent.click(dossierButton)
 
-    expect(screen.getAllByRole('button')).toHaveLength(records.length)
+    expect(screen.getAllByRole('button', { name: /^test/ })).toHaveLength(
+      records.length,
+    )
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
     const firstReferenceMarkdown = Citation.for(
       mockRecord.references[0],

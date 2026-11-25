@@ -58,4 +58,6 @@ export const expectedEntry: RealiaEntry = {
   crossReferences: [],
   afoCrossReferences: [],
   references: [],
+  referenceType: [],
+  eblRealia: [],
 }

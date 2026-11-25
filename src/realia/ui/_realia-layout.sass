@@ -1,20 +1,31 @@
 @use 'src/design-tokens' as *
 
 .Realia__layout
-    display: flex
-    align-items: flex-start
-    gap: 1.5rem
+    display: grid
+    grid-template-columns: 15rem minmax(0, 1fr)
+    grid-template-rows: auto 1fr
+    grid-template-areas: "nav top" "nav content"
+    align-items: start
+    column-gap: 1.5rem
 
     @media (max-width: $ebl-breakpoint-md-max)
-        flex-direction: column
-        gap: 1rem
+        grid-template-columns: minmax(0, 1fr)
+        grid-template-rows: auto
+        grid-template-areas: "top" "nav" "content"
+        row-gap: 1rem
 
 .Realia__content
-    flex: 1 1 auto
+    grid-area: content
     min-width: 0
 
 .Realia__top
+    grid-area: top
+    min-width: 0
     scroll-margin-top: 1rem
+
+.realia-development-notice
+    padding: 0.4rem 0.75rem
+    font-size: 0.85rem
 
 .Realia__redirect-pointer
     display: flex
@@ -55,7 +66,7 @@
     font-size: 0.85em
 
 .Realia__nav
-    flex: 0 0 15rem
+    grid-area: nav
     position: sticky
     top: 1rem
     max-height: calc(100vh - 2rem)
@@ -68,10 +79,38 @@
     font-size: 0.875rem
 
     @media (max-width: $ebl-breakpoint-md-max)
-        flex: 1 1 auto
         position: static
         max-height: none
-        width: 100%
+        padding: 0.6rem 0.85rem
+
+.Realia__nav-menu-toggle
+    display: none
+    align-items: center
+    gap: 0.5rem
+    width: 100%
+    padding: 0
+    border: none
+    background: none
+    color: $ebl-color-text-heading
+    font: inherit
+    font-weight: 600
+    text-align: left
+    cursor: pointer
+
+    &:focus-visible
+        outline: 2px solid $ebl-color-brand-primary
+        outline-offset: 2px
+
+    @media (max-width: $ebl-breakpoint-md-max)
+        display: flex
+
+.Realia__nav-body
+    @media (max-width: $ebl-breakpoint-md-max)
+        margin-top: 0.6rem
+
+.Realia__nav:not(.is-expanded) .Realia__nav-body
+    @media (max-width: $ebl-breakpoint-md-max)
+        display: none
 
 .Realia__nav-top
     display: block

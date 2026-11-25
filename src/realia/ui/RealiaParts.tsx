@@ -1,21 +1,102 @@
-import React from 'react'
+import React, { useState } from 'react'
+import _ from 'lodash'
 import classNames from 'classnames'
-import { Collapse } from 'react-bootstrap'
-import { RealiaCrossReference, RealiaEntry } from 'realia/domain/RealiaEntry'
+import { Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import {
+  getReferenceTypes,
+  RealiaCrossReference,
+  RealiaEntry,
+  RealiaReferenceType,
+  realiaReferenceTypeNames,
+  realiaReferenceTypes,
+} from 'realia/domain/RealiaEntry'
 import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 import ExternalLink from 'common/ui/ExternalLink'
+
+export function WikidataLinks({
+  wikidataIds,
+}: {
+  wikidataIds: readonly string[]
+}): JSX.Element {
+  return (
+    <>
+      {wikidataIds.map((wikidataId, index) => (
+        <span key={wikidataId}>
+          <ExternalLink href={`https://www.wikidata.org/wiki/${wikidataId}`}>
+            {wikidataIds.length > 1 ? `Wikidata ${index + 1}` : 'Wikidata'}
+          </ExternalLink>{' '}
+        </span>
+      ))}
+    </>
+  )
+}
+
+export function ReferenceTypeBadge({
+  referenceType,
+  className = 'Realia__reference-type',
+  children,
+}: {
+  referenceType: RealiaReferenceType
+  className?: string
+  children?: React.ReactNode
+}): JSX.Element {
+  const name = realiaReferenceTypeNames[referenceType]
+  const [tooltipId] = useState(() => _.uniqueId('ReferenceTypeTooltip-'))
+  return (
+    <OverlayTrigger
+      placement="top"
+      trigger={['hover', 'focus']}
+      overlay={<Tooltip id={tooltipId}>{name}</Tooltip>}
+    >
+      <span className={className} tabIndex={0}>
+        <abbr aria-hidden="true">{referenceType}</abbr>
+        <span className="visually-hidden">{name}</span>
+        {children}
+      </span>
+    </OverlayTrigger>
+  )
+}
+
+export function ReferenceTypeLegend(): JSX.Element {
+  return (
+    <dl className="Realia__reference-type-legend">
+      {realiaReferenceTypes.map((referenceType) => (
+        <div key={referenceType}>
+          <dt>{referenceType}</dt>
+          <dd>{realiaReferenceTypeNames[referenceType]}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+export function ReferenceTypeBadges({
+  entry,
+}: {
+  entry: RealiaEntry
+}): JSX.Element | null {
+  const referenceTypes = getReferenceTypes(entry)
+  if (referenceTypes.length === 0) {
+    return null
+  }
+  return (
+    <div
+      className="Realia__reference-types"
+      role="group"
+      aria-label="Reference types"
+    >
+      {referenceTypes.map((referenceType) => (
+        <ReferenceTypeBadge key={referenceType} referenceType={referenceType} />
+      ))}
+    </div>
+  )
+}
 
 export function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
   const typeLabels = entry.type.join(', ') || '—'
   return (
     <div className="Realia__metadata">
-      {entry.wikidataId.map((wikidataId) => (
-        <span key={wikidataId}>
-          <ExternalLink href={`https://www.wikidata.org/wiki/${wikidataId}`}>
-            Wikidata: {wikidataId}
-          </ExternalLink>{' '}
-        </span>
-      ))}
+      <WikidataLinks wikidataIds={entry.wikidataId} />
       {entry.relatedTerms.length > 0 && (
         <span>
           <span className="Realia__metadata-label">Related terms: </span>

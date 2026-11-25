@@ -51,7 +51,10 @@ exports[`Markup 1`] = `
       link to eBL
     </a>
     <span
+      aria-expanded="false"
       class="reference-popover__citation"
+      role="button"
+      tabindex="0"
     >
       <span
         class="reference-popover__interactive"

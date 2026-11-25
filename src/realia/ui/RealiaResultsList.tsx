@@ -1,7 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import {
+  getReferenceTypes,
+  getReferenceTypeSectionSizes,
+  RealiaEntry,
+} from 'realia/domain/RealiaEntry'
 import { getRealiaPageUrl } from 'realia/ui/realiaPage'
+import { ReferenceTypeBadge, ReferenceTypeLegend } from 'realia/ui/RealiaParts'
 import 'realia/ui/Realia.sass'
 
 interface SourceBadge {
@@ -9,14 +14,14 @@ interface SourceBadge {
   readonly count?: number
 }
 
+function SourceCount({ count }: { count?: number }): JSX.Element | null {
+  return count === undefined || count === 0 ? null : (
+    <span className="realia-results-list__source-count">({count})</span>
+  )
+}
+
 function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
   const badges: SourceBadge[] = []
-  if (entry.reallexikon.length > 0) {
-    badges.push({ label: 'RlA', count: entry.reallexikon.length })
-  }
-  if (entry.afoRegister.length > 0) {
-    badges.push({ label: 'AfO', count: entry.afoRegister.length })
-  }
   if (entry.references.length > 0) {
     badges.push({ label: 'References', count: entry.references.length })
   }
@@ -27,6 +32,8 @@ function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
 }
 
 function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
+  const referenceTypes = getReferenceTypes(entry)
+  const sectionSizes = getReferenceTypeSectionSizes(entry)
   const sourceBadges = getSourceBadges(entry)
   return (
     <li className="realia-results-list__item">
@@ -48,16 +55,21 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
           {entry.relatedTerms.join(', ')}
         </div>
       )}
-      {sourceBadges.length > 0 && (
+      {(referenceTypes.length > 0 || sourceBadges.length > 0) && (
         <div className="realia-results-list__sources">
+          {referenceTypes.map((referenceType) => (
+            <ReferenceTypeBadge
+              key={referenceType}
+              referenceType={referenceType}
+              className="realia-results-list__source"
+            >
+              <SourceCount count={sectionSizes[referenceType]} />
+            </ReferenceTypeBadge>
+          ))}
           {sourceBadges.map((badge) => (
             <span key={badge.label} className="realia-results-list__source">
               {badge.label}
-              {badge.count !== undefined && (
-                <span className="realia-results-list__source-count">
-                  ({badge.count})
-                </span>
-              )}
+              <SourceCount count={badge.count} />
             </span>
           ))}
         </div>
@@ -75,10 +87,15 @@ export default function RealiaResultsList({
     return <p>No results found.</p>
   }
   return (
-    <ul className="realia-results-list">
-      {entries.map((entry) => (
-        <RealiaResultItem key={entry.realiaId} entry={entry} />
-      ))}
-    </ul>
+    <>
+      {entries.some((entry) => getReferenceTypes(entry).length > 0) && (
+        <ReferenceTypeLegend />
+      )}
+      <ul className="realia-results-list">
+        {entries.map((entry) => (
+          <RealiaResultItem key={entry.realiaId} entry={entry} />
+        ))}
+      </ul>
+    </>
   )
 }

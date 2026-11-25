@@ -50,6 +50,28 @@ export function rlaArticleUrl(id: string): string {
   return `${RLA_ONLINE_BASE}#${encodeURIComponent(id)}`
 }
 
+export const realiaReferenceTypes = ['RlA', 'AfO', 'eBL'] as const
+
+export type RealiaReferenceType = (typeof realiaReferenceTypes)[number]
+
+export const realiaReferenceTypeNames: Record<RealiaReferenceType, string> = {
+  RlA: 'Reallexikon der Assyriologie und Vorderasiatischen Archäologie',
+  AfO: 'AfO-Register Realien',
+  eBL: 'eBL Realia',
+}
+
+export interface EblRealiaEntry {
+  readonly id: string
+  readonly transliteration: string
+  readonly normalisation: string
+  readonly translation: string
+  readonly identification: string
+  readonly pos: string
+  readonly wikidataId: readonly string[]
+  readonly reference: Reference | null
+  readonly remarks: string
+}
+
 export interface RealiaEntry {
   readonly id: string
   readonly realiaId: string
@@ -61,6 +83,30 @@ export interface RealiaEntry {
   readonly crossReferences: readonly RealiaCrossReference[]
   readonly afoCrossReferences: readonly RealiaCrossReference[]
   readonly references: readonly Reference[]
+  readonly referenceType: readonly RealiaReferenceType[]
+  readonly eblRealia: readonly EblRealiaEntry[]
+}
+
+export function getReferenceTypeSectionSizes(
+  entry: RealiaEntry,
+): Record<RealiaReferenceType, number> {
+  return {
+    RlA: entry.reallexikon.length,
+    AfO: entry.afoRegister.length,
+    eBL: entry.eblRealia.length,
+  }
+}
+
+export function getReferenceTypes(
+  entry: RealiaEntry,
+): readonly RealiaReferenceType[] {
+  if (entry.referenceType.length > 0) {
+    return entry.referenceType
+  }
+  const sectionSizes = getReferenceTypeSectionSizes(entry)
+  return realiaReferenceTypes.filter(
+    (referenceType) => sectionSizes[referenceType] > 0,
+  )
 }
 
 export function getRealiaCrossReferences(
@@ -79,6 +125,7 @@ function isStubReallexikon(entries: readonly ReallexikonEntry[]): boolean {
 function hasOwnContent(entry: RealiaEntry): boolean {
   return [
     entry.afoRegister.length > 0,
+    entry.eblRealia.length > 0,
     entry.references.length > 0,
     entry.afoCrossReferences.length > 0,
     entry.reallexikon.length > 1,
