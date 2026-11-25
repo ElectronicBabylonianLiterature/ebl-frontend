@@ -8,6 +8,7 @@ import {
   makeFragmentService,
   makeProvenance,
   mockAddLayer,
+  mockFitBounds,
   mockQueryRenderedFeatures,
   mockSetLayoutProperty,
   mockSetFeatureState,
@@ -124,11 +125,10 @@ describe('MapTab excavation selection', () => {
       ),
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
-    await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
     expect(
-      within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
-        'status',
-      ),
+      within(
+        screen.getByRole('region', { name: 'Location details' }),
+      ).getByRole('status'),
     ).toHaveTextContent('3 accessible tablets across 1 findspot.')
 
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
@@ -165,15 +165,19 @@ describe('MapTab excavation selection', () => {
       `/tools/map?mv=1&areas=0&selected=area%3A${POLYGON_ID}`,
       makeFindspotService(),
     )
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Selected area' }),
+    await screen.findByRole('region', { name: 'Location details' })
+    await waitFor(() =>
+      expect(
+        within(
+          screen.getByRole('region', { name: 'Location details' }),
+        ).getByRole('status'),
+      ).toHaveTextContent('3 accessible tablets across 1 findspot.'),
     )
-    expect(
-      within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
-        'status',
-      ),
-    ).toHaveTextContent('3 accessible tablets across 1 findspot.')
     expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
+    expect(mockFitBounds).toHaveBeenLastCalledWith(expect.any(Array), {
+      padding: 40,
+      maxZoom: 17,
+    })
     expect(
       screen.getByRole('combobox', { name: 'Inspect excavation area' }),
     ).toHaveValue(POLYGON_ID)
@@ -194,12 +198,11 @@ describe('MapTab excavation selection', () => {
     await userEvent.selectOptions(select, POLYGON_ID)
     await waitFor(() => expect(findspotService.fetchMapData).toHaveBeenCalled())
     expect(select).toHaveFocus()
-    await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
     await waitFor(() =>
       expect(
-        within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
-          'status',
-        ),
+        within(
+          screen.getByRole('region', { name: 'Location details' }),
+        ).getByRole('status'),
       ).toHaveTextContent('Linked tablet data is unavailable right now.'),
     )
     expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()

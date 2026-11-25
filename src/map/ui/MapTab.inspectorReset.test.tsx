@@ -50,10 +50,7 @@ it('resets expanded findspots and the active inspector tab when a different area
     '/tools/map?mv=1&areas=1&selected=area%3A' + first,
     service,
   )
-  await userEvent.click(
-    await screen.findByRole('button', { name: 'Selected area' }),
-  )
-  await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
+  await userEvent.click(await screen.findByRole('tab', { name: 'Findspots' }))
   await userEvent.click(
     await screen.findByRole('button', { name: 'Show all 11' }),
   )

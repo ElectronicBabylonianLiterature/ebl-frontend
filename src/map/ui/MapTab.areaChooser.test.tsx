@@ -49,8 +49,10 @@ it('retains the native chooser and focus while inspecting, revising and clearing
       screen.getByRole('region', { name: 'Location details' }),
     ).toBeVisible()
     expect(
-      screen.queryByRole('region', { name: 'Selected area' }),
-    ).not.toBeInTheDocument()
+      within(
+        screen.getByRole('region', { name: 'Location details' }),
+      ).getByRole('tab', { name: 'Overview' }),
+    ).toBeVisible()
     expect(screen.getByTestId('current-location')).toHaveTextContent(
       `selected=area%3A${polygonId}`,
     )
@@ -70,11 +72,16 @@ it('retains the native chooser and focus while inspecting, revising and clearing
   )
 
   await userEvent.selectOptions(selector, POLYGON_ID)
-  await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
-  expect(screen.getByRole('region', { name: 'Selected area' })).toBeVisible()
+  expect(selector).toHaveFocus()
   expect(
-    screen.getByRole('button', { name: 'Close Selected area' }),
-  ).toHaveFocus()
+    screen.queryByRole('button', { name: 'Selected area' }),
+  ).not.toBeInTheDocument()
+  expect(
+    within(screen.getByRole('region', { name: 'Location details' })).getByRole(
+      'tab',
+      { name: 'Findspots' },
+    ),
+  ).toBeVisible()
   expect(
     screen.getByRole('combobox', { name: 'Inspect excavation area' }),
   ).toBe(selector)

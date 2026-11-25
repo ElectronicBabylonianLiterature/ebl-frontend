@@ -16,10 +16,10 @@ function PanelDock(): JSX.Element {
           render: () => <p>Measure controls</p>,
         },
         {
-          id: 'inspector',
-          label: 'Selected area',
+          id: 'visualization',
+          label: 'Visualization',
           isSupported: true,
-          render: () => <p>Area evidence</p>,
+          render: () => <p>Visualization controls</p>,
         },
       ]}
     />
@@ -32,11 +32,11 @@ it('expands and focuses a newly selected panel after collapsing another', async 
   await userEvent.click(screen.getByRole('button', { name: 'Close Measure' }))
   expect(screen.queryByText('Measure controls')).not.toBeInTheDocument()
 
-  await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
+  await userEvent.click(screen.getByRole('button', { name: 'Visualization' }))
 
-  expect(screen.getByText('Area evidence')).toBeVisible()
+  expect(screen.getByText('Visualization controls')).toBeVisible()
   expect(
-    screen.getByRole('button', { name: 'Close Selected area' }),
+    screen.getByRole('button', { name: 'Close Visualization' }),
   ).toHaveFocus()
 })
 

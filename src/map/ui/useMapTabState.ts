@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
@@ -19,10 +19,10 @@ import useMapLinkedTablets from 'map/ui/useMapLinkedTablets'
 import useMapContainerResize from 'map/ui/useMapContainerResize'
 import { resetMapCamera } from 'map/maplibre/mapCamera'
 import { focusFindspot } from 'map/maplibre/focusFindspot'
+import { fitExcavationArea } from 'map/maplibre/fitExcavationArea'
 import { filterProvenances } from 'map/domain/findspotFilter'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import {
-  findExcavationPolygon,
   sortedExcavationPolygons,
   usablePolygonIndex,
 } from 'map/domain/excavationPolygonIndex'
@@ -66,13 +66,17 @@ export default function useMapTabState(
     [filteredProvenances],
   )
   const camera = useMapCameraOwnership(filteredProvenances)
+  const pendingAreaFocus = useRef<string | null>(null)
   const areaSelection = useMapLinkedAreaSelection({
     experience,
     research: researchState,
     polygonIndex,
     isLoaded,
     error,
-    onSelectFromUrl: camera.claim,
+    onSelectFromUrl: (polygonId) => {
+      camera.claim()
+      pendingAreaFocus.current = polygonId
+    },
   })
   const research = { ...researchState, ...areaSelection }
   const fragmentMapData = useMapLinkedTablets({
@@ -114,12 +118,18 @@ export default function useMapTabState(
     retryVersion: areasRetryVersion,
   })
   useMapContainerResize(mapContainer, mapRef)
+  useEffect(() => {
+    const polygonId = pendingAreaFocus.current
+    pendingAreaFocus.current = null
+    if (polygonId !== null) {
+      fitExcavationArea(mapRef.current, polygonIndex, polygonId)
+    }
+  }, [mapRef, polygonIndex, research.selectedAreaId])
   useMapFeatureSelection(mapRef, research.selectedSiteId, areasRetryVersion)
   useMapPanelAvailability(panel, {
     canShowExcavationAreas:
       canShowExcavationAreas && !isRenderedAreasUnavailable,
     isBackgroundUnavailable,
-    selectedPolygonId: research.selectedAreaId,
   })
   const spatialSearch = useMapSpatialSearch(
     mapRef,
@@ -128,9 +138,6 @@ export default function useMapTabState(
     fragmentMapData,
   )
   const measurement = useMapMeasurement(mapRef, isMeasurementActive)
-  const selectedPolygon = research.selectedAreaId
-    ? (findExcavationPolygon(polygonIndex, research.selectedAreaId) ?? null)
-    : null
   const resetView = useCallback(() => {
     camera.claim()
     resetMapCamera(mapRef.current)
@@ -155,13 +162,7 @@ export default function useMapTabState(
   const inspectArea = (id: string, trigger: HTMLElement): void => {
     camera.claim()
     research.selectArea(id, trigger, false)
-    const polygon = findExcavationPolygon(polygonIndex, id)
-    if (polygon?.bounds && mapRef.current) {
-      mapRef.current.fitBounds(
-        [...polygon.bounds] as [number, number, number, number],
-        { padding: 40, maxZoom: 17 },
-      )
-    }
+    fitExcavationArea(mapRef.current, polygonIndex, id)
   }
   return {
     provenances,
@@ -180,7 +181,6 @@ export default function useMapTabState(
     showExcavationAreas:
       experience.showExcavationAreas && canShowExcavationAreas,
     fragmentMapData,
-    selectedPolygon,
     polygonIndex,
     visualization,
     excavationPolygons: sortedExcavationPolygons(polygonIndex),

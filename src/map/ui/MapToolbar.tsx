@@ -76,7 +76,7 @@ export default function MapToolbar({
             }}
             type="button"
             size="sm"
-            variant={isOpen ? 'secondary' : 'outline-secondary'}
+            variant={isOpen ? 'primary' : 'outline-primary'}
             aria-expanded={isOpen}
             aria-controls={isOpen ? MAP_PANEL_CONTAINER_ID : undefined}
             onClick={() => onToggle(panel.id)}

@@ -1,5 +1,4 @@
 import React from 'react'
-import { mapSiteName } from 'fragmentarium/domain/mapSites'
 import { polygonLinkedData } from 'map/domain/polygonLinkedData'
 import type { MapTabState } from 'map/ui/useMapTabState'
 import MapSelectionInspector from 'map/ui/MapSelectionInspector'
@@ -17,26 +16,7 @@ export default function MapResearchSidebar({
 }: {
   readonly state: MapTabState
 }): JSX.Element {
-  const polygon = state.selectedPolygon
   const panels: readonly MapPanelDefinition[] = [
-    ...(polygon
-      ? [
-          {
-            id: 'inspector' as const,
-            label: 'Selected area',
-            isSupported: true,
-            render: () => (
-              <MapInspector
-                key={polygon.polygonId}
-                polygon={polygon}
-                {...polygonLinkedData(state.fragmentMapData, polygon)}
-                siteName={mapSiteName(polygon.siteId)}
-                onClear={state.research.close}
-              />
-            ),
-          },
-        ]
-      : []),
     {
       id: 'visualization',
       label: 'Visualization',
@@ -80,6 +60,13 @@ export default function MapResearchSidebar({
         research={state.research}
         provenances={state.provenances}
         polygonIndex={state.polygonIndex}
+        renderAreaDetails={(polygon) => (
+          <MapInspector
+            key={polygon.polygonId}
+            polygon={polygon}
+            {...polygonLinkedData(state.fragmentMapData, polygon)}
+          />
+        )}
       />
       <MapExcavationBrowser
         polygonIndex={state.polygonIndex}

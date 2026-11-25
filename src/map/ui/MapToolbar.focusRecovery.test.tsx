@@ -24,7 +24,11 @@ it('returns focus to the first available tool when the closed tool disappeared',
     render: (): JSX.Element => <p>Measure controls</p>,
   }
   const { rerender } = render(
-    <MapToolbar panels={[measure]} active="inspector" onToggle={jest.fn()} />,
+    <MapToolbar
+      panels={[measure]}
+      active="visualization"
+      onToggle={jest.fn()}
+    />,
   )
   rerender(<MapToolbar panels={[measure]} active={null} onToggle={jest.fn()} />)
   expect(screen.getByRole('button', { name: 'Measure' })).toHaveFocus()
@@ -32,7 +36,7 @@ it('returns focus to the first available tool when the closed tool disappeared',
 
 it('closes safely when the last available tool disappears', (): void => {
   const { container, rerender } = render(
-    <MapToolbar panels={[]} active="inspector" onToggle={jest.fn()} />,
+    <MapToolbar panels={[]} active="visualization" onToggle={jest.fn()} />,
   )
   rerender(<MapToolbar panels={[]} active={null} onToggle={jest.fn()} />)
   expect(container).toBeEmptyDOMElement()

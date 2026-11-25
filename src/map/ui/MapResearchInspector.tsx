@@ -16,6 +16,7 @@ interface Props {
   readonly polygon?: ExcavationPolygon
   readonly onClose: () => void
   readonly focusHeading?: boolean
+  readonly children?: React.ReactNode
 }
 
 function ProvenanceDetails({
@@ -90,12 +91,6 @@ function ResearchDetails({
           </>
         ) : null}
         {provenance ? <ProvenanceDetails provenance={provenance} /> : null}
-        {polygon ? (
-          <>
-            <dt>Site identifier</dt>
-            <dd>{polygon.siteId}</dd>
-          </>
-        ) : null}
       </dl>
       {provenance?.coordinates?.notes ? (
         <p className="map-research-inspector__source">
@@ -111,12 +106,21 @@ function ResearchDetails({
   )
 }
 
+function headingFor(
+  polygon: ExcavationPolygon | undefined,
+  siteName: string | undefined,
+): string {
+  if (polygon) return polygon.name ?? 'Unnamed excavation area'
+  return siteName ?? 'Location details'
+}
+
 export default function MapResearchInspector({
   selectionId,
   provenance,
   polygon,
   onClose,
   focusHeading = true,
+  children,
 }: Props): JSX.Element {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const site = polygon ? findMapSite(polygon.siteId) : undefined
@@ -139,7 +143,7 @@ export default function MapResearchInspector({
     >
       <div className="map-research-inspector__header">
         <h4 ref={headingRef} tabIndex={-1}>
-          {polygon?.name ?? siteName ?? 'Location details'}
+          {headingFor(polygon, siteName)}
         </h4>
         <Button
           type="button"
@@ -157,6 +161,7 @@ export default function MapResearchInspector({
         site={site}
         siteName={siteName}
       />
+      {children}
     </section>
   )
 }

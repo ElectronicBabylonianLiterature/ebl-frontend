@@ -289,6 +289,10 @@
     font-size: 0.875rem
     font-weight: 600
 
+  > .map-inspector
+    margin: 0 1rem 1rem
+    font-size: 0.875rem
+
   h4:focus
     outline: 3px solid $ebl-color-brand-primary-dark
     outline-offset: 3px
@@ -345,7 +349,7 @@
     min-height: 0
 
   .map-research-panel
-    max-height: 30rem
+    overflow: visible
 
   .map-site-browser__list
     max-height: 18rem
@@ -369,7 +373,7 @@
     min-height: 0
 
   .map-research-panel
-    max-height: 30rem
+    overflow: visible
 
   .map-site-browser__list
     max-height: 18rem
@@ -433,6 +437,9 @@
     display: flex
     flex-wrap: wrap
     gap: .4rem
+
+    > .btn
+      flex: 1 1 auto
 
   &__panel
     padding: .75rem
@@ -499,9 +506,6 @@
 
     &--dash-dot
       border-style: solid
-
-    &--halo
-      border-style: double
 
   &__label
     overflow-wrap: anywhere

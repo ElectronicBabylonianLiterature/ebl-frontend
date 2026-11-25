@@ -89,7 +89,7 @@ describe('MapTab measurement interaction ownership', () => {
     expect(mockGetClusterExpansionZoom).not.toHaveBeenCalled()
     expect(mockEaseTo).not.toHaveBeenCalled()
     expect(
-      screen.queryByRole('button', { name: 'Selected area' }),
+      screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
   })
 })

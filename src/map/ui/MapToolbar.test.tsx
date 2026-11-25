@@ -54,8 +54,8 @@ describe('MapToolbar', () => {
       <MapToolbar
         panels={[
           panel({
-            id: 'inspector' as MapPanelDefinition['id'],
-            label: 'Inspector',
+            id: 'visualization',
+            label: 'Visualization',
           }),
         ]}
         active={null}
@@ -63,7 +63,7 @@ describe('MapToolbar', () => {
       />,
     )
     expect(original).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Inspector' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Visualization' })).toHaveFocus()
   })
 
   it('keeps focus on the page when the last supported tool is removed', () => {

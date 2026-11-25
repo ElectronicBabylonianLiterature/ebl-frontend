@@ -53,29 +53,24 @@ it('keeps the map tools ahead of a dense linked-tablet inspector in keyboard ord
     screen.queryByRole('button', { name: 'Show selected area' }),
   ).not.toBeInTheDocument()
   screen.getByRole('button', { name: 'Legend' }).focus()
-  for (const label of [
-    'Selected area',
-    'Visualization',
-    'Measure',
-    'Search area',
-  ]) {
+  for (const label of ['Visualization', 'Measure', 'Search area']) {
     await userEvent.tab()
     expect(screen.getByRole('button', { name: label })).toHaveFocus()
   }
-  await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
-  expect(screen.getByRole('region', { name: 'Selected area' })).toBeVisible()
   expect(
-    screen.getByRole('button', { name: 'Close Selected area' }),
-  ).toHaveFocus()
+    screen.queryByRole('button', { name: 'Selected area' }),
+  ).not.toBeInTheDocument()
   const inspector = within(
-    screen.getByRole('region', { name: 'Selected area' }),
+    screen.getByRole('region', { name: 'Location details' }),
   )
   expect(
     await inspector.findByText('60 accessible tablets across 30 findspots.'),
   ).toBeInTheDocument()
   await userEvent.click(inspector.getByRole('tab', { name: 'Findspots' }))
   await userEvent.click(inspector.getByRole('button', { name: 'Show all 30' }))
-  expect(inspector.getAllByRole('link')).toHaveLength(30)
+  expect(
+    within(inspector.getByRole('tabpanel')).getAllByRole('link'),
+  ).toHaveLength(30)
   expect(screen.getAllByRole('link', { name: /^Area A$/ })).toHaveLength(30)
   expect(
     screen.queryByRole('button', { name: 'Show selected area' }),

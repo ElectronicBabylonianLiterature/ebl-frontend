@@ -1,8 +1,4 @@
-export type MapPanelId =
-  | 'inspector'
-  | 'visualization'
-  | 'measurement'
-  | 'spatial-search'
+export type MapPanelId = 'visualization' | 'measurement' | 'spatial-search'
 
 export type ActiveMapPanel = MapPanelId | null
 
