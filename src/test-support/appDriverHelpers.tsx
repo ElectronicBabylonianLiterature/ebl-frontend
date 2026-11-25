@@ -22,6 +22,8 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import RealiaService from 'realia/application/RealiaService'
+import SumerianDictionaryRepository from 'sumerian-dictionary/infrastructure/SumerianDictionaryRepository'
+import SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import FakeApi from 'test-support/FakeApi'
@@ -41,6 +43,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
   dossiersService: DossiersService
   findspotService: FindspotService
 } {
@@ -78,6 +81,9 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const realiaService = new RealiaService(realiaRepository)
+  const sumerianDictionaryService = new SumerianDictionaryService(
+    new SumerianDictionaryRepository(apiClient),
+  )
   const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
   return {
@@ -91,6 +97,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
     cachedMarkupService,
     afoRegisterService,
     realiaService,
+    sumerianDictionaryService,
     dossiersService,
     findspotService,
   }

@@ -9,6 +9,8 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import RealiaService from 'realia/application/RealiaService'
+import SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
+import { CachedMarkupService } from 'markup/application/MarkupService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 jest.mock('signs/application/SignService')
@@ -16,6 +18,8 @@ jest.mock('dictionary/application/WordService')
 jest.mock('corpus/application/TextService')
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('realia/application/RealiaService')
+jest.mock('sumerian-dictionary/application/SumerianDictionaryService')
+jest.mock('markup/application/MarkupService')
 jest.mock('fragmentarium/application/FragmentService')
 
 const realiaSlugs: RealiaSlugs = [{ id: 'Pig' }, { id: 'Enlil%2C%20Ellil' }]
@@ -32,6 +36,12 @@ function getRoutes(sitemap: boolean): JSX.Element[] {
     >)(),
     realiaService: new (RealiaService as jest.Mock<
       jest.Mocked<RealiaService>
+    >)(),
+    sumerianDictionaryService: new (SumerianDictionaryService as jest.Mock<
+      jest.Mocked<SumerianDictionaryService>
+    >)(),
+    cachedMarkupService: new (CachedMarkupService as jest.Mock<
+      jest.Mocked<CachedMarkupService>
     >)(),
     fragmentService: new (FragmentService as jest.Mock<
       jest.Mocked<FragmentService>
@@ -79,4 +89,19 @@ it('decodes an encoded Realia slug back to the entry id when rendering the route
 
   expect(rendered.props.title).toContain('Enlil, Ellil')
   expect(rendered.props.children.props.id).toEqual('Enlil, Ellil')
+})
+
+it('renders the Sumerian Dictionary entry route with the decoded id and the cached markup service', () => {
+  const routes = getRoutes(true)
+  const route = getRouteByPath(routes, '/tools/sumerian-dictionary/:id')
+  const rendered = route.props.render({
+    match: { params: { id: 'sux%2D006390' } },
+  }) as JSX.Element
+
+  expect(route.props).not.toHaveProperty('slugs')
+  expect(rendered.props.title).toEqual('Sumerian Dictionary - eBL')
+  expect(rendered.props.children.props.id).toEqual('sux-006390')
+  expect(rendered.props.children.props.markupService).toBeInstanceOf(
+    CachedMarkupService,
+  )
 })

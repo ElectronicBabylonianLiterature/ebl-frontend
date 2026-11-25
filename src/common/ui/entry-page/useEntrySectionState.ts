@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
-export function useRealiaSectionState(sectionIds: readonly string[]): {
+export function useEntrySectionState(sectionIds: readonly string[]): {
   openSections: Record<string, boolean>
   toggleSection: (id: string) => void
   openSection: (id: string) => void
