@@ -4629,11 +4629,9 @@ exports[`correctly displays simple fragments 1`] = `
               <span
                 class="word-info__wrapper"
               >
-                <button
-                  aria-expanded="false"
-                  aria-haspopup="dialog"
+                <span
                   class="word-info__trigger"
-                  type="button"
+                  role="button"
                 >
                   <span
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4740,7 +4738,7 @@ exports[`correctly displays simple fragments 1`] = `
                       </span>
                     </span>
                   </span>
-                </button>
+                </span>
               </span>
             </td>
             <td>
@@ -6337,11 +6335,9 @@ exports[`correctly displays simple fragments 1`] = `
         <span
           class="word-info__wrapper"
         >
-          <button
-            aria-expanded="false"
-            aria-haspopup="dialog"
+          <span
             class="word-info__trigger"
-            type="button"
+            role="button"
           >
             <span
               class="Transliteration__Word"
@@ -6424,7 +6420,7 @@ exports[`correctly displays simple fragments 1`] = `
                 </span>
               </span>
             </span>
-          </button>
+          </span>
         </span>
       </span>
        (
