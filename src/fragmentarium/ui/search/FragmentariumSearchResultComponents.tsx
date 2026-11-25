@@ -24,6 +24,7 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
+import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
 
 export type FragmentLinesService = Pick<
   FragmentService,
@@ -131,7 +132,10 @@ function FragmentLinesContent({
           <RenderFragmentLines
             fragment={fragment}
             linesToShow={linesToShow}
-            totalLines={queryItem.matchCount}
+            totalMatchingLines={queryItem.totalMatchingLines}
+            totalLines={includeLatestRecord ? queryItem.matchCount : undefined}
+            remainderNoun={includeLatestRecord ? 'line' : 'matching line'}
+            matchingLineIndexes={queryItem.matchingLines}
             lemmaIds={queryLemmas}
           />
         </ResponsiveCol>
@@ -170,7 +174,7 @@ const HydratedFragmentLines = withData<
     const excludeLines = _.isEmpty(queryItem.matchingLines)
     return fragmentService.find(
       queryItem.museumNumber,
-      _.take(queryItem.matchingLines, linesToShow),
+      takeUniqueMatchingLineIndexes(queryItem.matchingLines, linesToShow),
       excludeLines,
     )
   },

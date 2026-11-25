@@ -5,6 +5,8 @@ import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
+import getLibraryCountUnit from 'fragmentarium/ui/search/getLibraryCountUnit'
+import { matchingLineTotal } from 'query/matchingLineTotals'
 import { Col, Row } from 'react-bootstrap'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
 import { linesToShow } from 'fragmentarium/ui/search/FragmentariumSearch'
@@ -115,7 +117,10 @@ const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
   }): JSX.Element => {
     const location = useLocation()
     const history = useHistory()
-    const visibleItems = data.items.slice(0, pageSize)
+    const visibleItems = data.items.slice(0, pageSize).map((item) => ({
+      ...item,
+      totalMatchingLines: matchingLineTotal(item, fragmentQuery),
+    }))
     const lastPageIndex = getLastPageIndex(data.totalDocuments, pageSize)
     React.useEffect(() => {
       if (lastPageIndex !== null && pageIndex > lastPageIndex) {
@@ -150,6 +155,7 @@ const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
+    const countUnit = getLibraryCountUnit(fragmentQuery)
     const isCompleteFirstPage = pageIndex === 0 && !effectiveHasNextPage
     const showPaginationControls = !(
       isCompleteFirstPage && visibleItems.length < RESULT_PAGE_SIZES[0]
@@ -171,7 +177,7 @@ const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
           : 'Found 0 documents'
     const lineCountInfo =
       lineQuery && hasLineCount
-        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} ${countUnit}${
             data.matchCountTotal === 1 ? '' : 's'
           }`
         : null

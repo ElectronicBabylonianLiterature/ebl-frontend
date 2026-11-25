@@ -35,6 +35,7 @@ export type FragmentQueryPreviewLineDto = TextLineDto & {
 
 export type FragmentQueryPreviewDto = {
   lines: readonly FragmentQueryPreviewLineDto[]
+  totalMatchingLines?: number | null
 }
 
 export type BibliographyDocumentsDto = { readonly [id: string]: CslData }

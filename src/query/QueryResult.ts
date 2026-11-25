@@ -17,6 +17,7 @@ export interface QueryItem {
   readonly museumNumber: string
   readonly matchingLines: readonly number[]
   readonly matchCount: number
+  readonly totalMatchingLines?: number | null
   readonly fragment?: Fragment
   readonly thumbnailPath?: string | null
   readonly cardSummary?: QueryItemCardSummary
