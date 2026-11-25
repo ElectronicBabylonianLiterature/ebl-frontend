@@ -38,10 +38,10 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
     >
       <span
         class="realia-results-list__source"
+        tabindex="0"
       >
         <abbr
           aria-hidden="true"
-          title="Reallexikon der Assyriologie und Vorderasiatischen Archäologie"
         >
           RlA
         </abbr>
@@ -60,10 +60,10 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
       </span>
       <span
         class="realia-results-list__source"
+        tabindex="0"
       >
         <abbr
           aria-hidden="true"
-          title="AfO-Register Realien"
         >
           AfO
         </abbr>

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import _ from 'lodash'
 import classNames from 'classnames'
-import { Collapse } from 'react-bootstrap'
+import { Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import {
   getReferenceTypes,
   RealiaCrossReference,
@@ -40,14 +41,19 @@ export function ReferenceTypeBadge({
   children?: React.ReactNode
 }): JSX.Element {
   const name = realiaReferenceTypeNames[referenceType]
+  const [tooltipId] = useState(() => _.uniqueId('ReferenceTypeTooltip-'))
   return (
-    <span className={className}>
-      <abbr title={name} aria-hidden="true">
-        {referenceType}
-      </abbr>
-      <span className="visually-hidden">{name}</span>
-      {children}
-    </span>
+    <OverlayTrigger
+      placement="top"
+      trigger={['hover', 'focus']}
+      overlay={<Tooltip id={tooltipId}>{name}</Tooltip>}
+    >
+      <span className={className} tabIndex={0}>
+        <abbr aria-hidden="true">{referenceType}</abbr>
+        <span className="visually-hidden">{name}</span>
+        {children}
+      </span>
+    </OverlayTrigger>
   )
 }
 
