@@ -16,7 +16,6 @@ interface Props {
   readonly polygon?: ExcavationPolygon
   readonly onClose: () => void
   readonly focusHeading?: boolean
-  readonly children?: React.ReactNode
 }
 
 function ProvenanceDetails({
@@ -118,7 +117,6 @@ export default function MapResearchInspector({
   polygon,
   onClose,
   focusHeading = true,
-  children,
 }: Props): JSX.Element {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const site = polygon ? findMapSite(polygon.siteId) : undefined
@@ -159,7 +157,6 @@ export default function MapResearchInspector({
         site={site}
         siteName={siteName}
       />
-      {children}
     </section>
   )
 }

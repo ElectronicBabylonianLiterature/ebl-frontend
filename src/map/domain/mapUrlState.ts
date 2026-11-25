@@ -79,6 +79,18 @@ export function serializeMapUrlState(state: MapUrlState): string {
   return mergeMapUrlStateIntoSearch('', state)
 }
 
+function needsVersionParameter(
+  state: MapUrlState,
+  hasExplicitAreas: boolean,
+  serializedSelection: string,
+): boolean {
+  const hasNonDefaultState =
+    Boolean(state.filter) ||
+    !state.showExcavationAreas ||
+    state.visualization !== DEFAULT_VISUALIZATION
+  return hasNonDefaultState || hasExplicitAreas || serializedSelection !== ''
+}
+
 export function mergeMapUrlStateIntoSearch(
   search: string,
   state: MapUrlState,
@@ -93,11 +105,7 @@ export function mergeMapUrlStateIntoSearch(
   parameters.delete(SELECTION_PARAM)
   parameters.delete(VISUALIZATION_PARAM)
   if (
-    normalized.filter ||
-    !normalized.showExcavationAreas ||
-    hasExplicitAreas ||
-    serializedSelection ||
-    normalized.visualization !== DEFAULT_VISUALIZATION
+    needsVersionParameter(normalized, hasExplicitAreas, serializedSelection)
   ) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
   }

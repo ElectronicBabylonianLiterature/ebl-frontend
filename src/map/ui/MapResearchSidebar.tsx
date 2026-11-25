@@ -1,8 +1,8 @@
 import React from 'react'
-import { isMapSiteId, mapSiteName } from 'fragmentarium/domain/mapSites'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
+import { polygonLinkedData } from 'map/domain/polygonLinkedData'
 import type { MapTabState } from 'map/ui/useMapTabState'
 import MapSelectionInspector from 'map/ui/MapSelectionInspector'
-import MapAreaLinkedTablets from 'map/ui/MapAreaLinkedTablets'
 import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import MapPanelDock from 'map/ui/MapPanelDock'
 import MapInspector from 'map/ui/MapInspector'
@@ -18,10 +18,6 @@ export default function MapResearchSidebar({
   readonly state: MapTabState
 }): JSX.Element {
   const polygon = state.selectedPolygon
-  const siteData =
-    polygon && isMapSiteId(polygon.siteId)
-      ? state.fragmentMapData.sites.get(polygon.siteId)
-      : undefined
   const panels: readonly MapPanelDefinition[] = [
     ...(polygon
       ? [
@@ -33,9 +29,8 @@ export default function MapResearchSidebar({
               <MapInspector
                 key={polygon.polygonId}
                 polygon={polygon}
-                summary={siteData?.polygonSummaries.get(polygon.polygonId)}
+                {...polygonLinkedData(state.fragmentMapData, polygon)}
                 siteName={mapSiteName(polygon.siteId)}
-                status={siteData?.status ?? 'not-configured'}
                 onClear={state.research.close}
               />
             ),
@@ -85,12 +80,6 @@ export default function MapResearchSidebar({
         research={state.research}
         provenances={state.provenances}
         polygonIndex={state.polygonIndex}
-        renderAreaDetails={(selected) => (
-          <MapAreaLinkedTablets
-            polygon={selected}
-            data={state.fragmentMapData}
-          />
-        )}
       />
       <MapExcavationBrowser
         polygonIndex={state.polygonIndex}

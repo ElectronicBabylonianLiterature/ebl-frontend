@@ -1,5 +1,4 @@
 export type MapPanelId =
-  | 'layers'
   | 'inspector'
   | 'visualization'
   | 'measurement'

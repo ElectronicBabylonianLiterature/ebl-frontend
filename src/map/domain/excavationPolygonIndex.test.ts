@@ -2,6 +2,7 @@ import {
   buildExcavationPolygonIndex,
   findExcavationPolygon,
   sortedExcavationPolygons,
+  usablePolygonIndex,
 } from 'map/domain/excavationPolygonIndex'
 import { featureCollection, polygonFeature } from 'test-support/map-fixtures'
 
@@ -152,3 +153,15 @@ describe('buildExcavationPolygonIndex', () => {
     ).toEqual(['first', 'second'])
   })
 })
+
+it.each([
+  [{ isLoaded: false, error: null }, false],
+  [{ isLoaded: true, error: new Error('offline') }, false],
+  [{ isLoaded: true, error: null }, true],
+])(
+  'uses the polygon index only once loaded without error: %j',
+  (state, usable) => {
+    const index = new Map()
+    expect(usablePolygonIndex({ ...state, index })).toBe(usable ? index : null)
+  },
+)

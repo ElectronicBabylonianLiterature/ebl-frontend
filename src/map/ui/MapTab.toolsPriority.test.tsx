@@ -44,13 +44,11 @@ it('keeps the map tools ahead of a dense linked-tablet inspector in keyboard ord
     service,
   )
   expect(
-    await screen.findByText('60 accessible tablets across 30 findspots.'),
+    await screen.findByRole('region', { name: 'Location details' }),
   ).toBeVisible()
   expect(
-    within(screen.getByRole('region', { name: 'Linked tablets' })).getAllByRole(
-      'link',
-    ),
-  ).toHaveLength(30)
+    screen.queryByRole('region', { name: 'Linked tablets' }),
+  ).not.toBeInTheDocument()
   expect(
     screen.queryByRole('button', { name: 'Show selected area' }),
   ).not.toBeInTheDocument()
@@ -69,7 +67,16 @@ it('keeps the map tools ahead of a dense linked-tablet inspector in keyboard ord
   expect(
     screen.getByRole('button', { name: 'Close Selected area' }),
   ).toHaveFocus()
-  expect(screen.getByRole('tab', { name: 'Findspots' })).toBeVisible()
+  const inspector = within(
+    screen.getByRole('region', { name: 'Selected area' }),
+  )
+  expect(
+    await inspector.findByText('60 accessible tablets across 30 findspots.'),
+  ).toBeInTheDocument()
+  await userEvent.click(inspector.getByRole('tab', { name: 'Findspots' }))
+  await userEvent.click(inspector.getByRole('button', { name: 'Show all 30' }))
+  expect(inspector.getAllByRole('link')).toHaveLength(30)
+  expect(screen.getAllByRole('link', { name: /^Area A$/ })).toHaveLength(30)
   expect(
     screen.queryByRole('button', { name: 'Show selected area' }),
   ).not.toBeInTheDocument()

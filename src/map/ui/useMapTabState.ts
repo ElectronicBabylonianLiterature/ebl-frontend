@@ -24,6 +24,7 @@ import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import {
   findExcavationPolygon,
   sortedExcavationPolygons,
+  usablePolygonIndex,
 } from 'map/domain/excavationPolygonIndex'
 import {
   anySiteHasExcavationPolygons,
@@ -50,10 +51,10 @@ export default function useMapTabState(
   const [areasRetryVersion, setAreasRetryVersion] = useState(0)
   const polygons = useExcavationPolygonIndex()
   const { index: polygonIndex, isLoaded, error, retry } = polygons
+  const usableIndex = usablePolygonIndex(polygons)
   const canShowExcavationAreas =
-    isLoaded &&
-    error === null &&
-    anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex))
+    usableIndex !== null &&
+    anySiteHasExcavationPolygons(deriveMapSiteCapabilities(usableIndex))
   const isExcavationAreasUnavailable =
     error !== null || isRenderedAreasUnavailable
   const filteredProvenances = useMemo(
@@ -104,7 +105,7 @@ export default function useMapTabState(
   )
   useExcavationAreas(mapRef, {
     isVisible: experience.showExcavationAreas && canShowExcavationAreas,
-    polygonIndex: isLoaded && error === null ? polygonIndex : null,
+    polygonIndex: usableIndex,
     selectedPolygonId: research.selectedAreaId,
     paint: visualization.paint,
     values: visualization.values,

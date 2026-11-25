@@ -124,9 +124,6 @@ describe('MapTab excavation selection', () => {
       ),
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
-    expect(
-      screen.getAllByRole('region', { name: 'Linked tablets' }),
-    ).toHaveLength(1)
     await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
     expect(
       within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
@@ -134,7 +131,8 @@ describe('MapTab excavation selection', () => {
       ),
     ).toHaveTextContent('3 accessible tablets across 1 findspot.')
 
-    expect(screen.getByRole('link', { name: 'Area A (3)' })).toHaveAttribute(
+    await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
+    expect(screen.getByRole('link', { name: 'Area A' })).toHaveAttribute(
       'href',
       '/library/search?findspotId=7',
     )
@@ -167,9 +165,14 @@ describe('MapTab excavation selection', () => {
       `/tools/map?mv=1&areas=0&selected=area%3A${POLYGON_ID}`,
       makeFindspotService(),
     )
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Selected area' }),
+    )
     expect(
-      await screen.findByText('3 accessible tablets across 1 findspot.'),
-    ).toBeVisible()
+      within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('3 accessible tablets across 1 findspot.')
     expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
     expect(
       screen.getByRole('combobox', { name: 'Inspect excavation area' }),
@@ -189,10 +192,16 @@ describe('MapTab excavation selection', () => {
       name: 'Inspect excavation area',
     })
     await userEvent.selectOptions(select, POLYGON_ID)
-    expect(
-      await screen.findByText('Linked tablet data is unavailable right now.'),
-    ).toBeVisible()
+    await waitFor(() => expect(findspotService.fetchMapData).toHaveBeenCalled())
     expect(select).toHaveFocus()
+    await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
+    await waitFor(() =>
+      expect(
+        within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
+          'status',
+        ),
+      ).toHaveTextContent('Linked tablet data is unavailable right now.'),
+    )
     expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()
   })
 })

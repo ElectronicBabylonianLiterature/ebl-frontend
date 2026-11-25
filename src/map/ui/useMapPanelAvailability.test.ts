@@ -82,13 +82,6 @@ it.each<PanelCase>([
     closeCalls: 2,
   },
   {
-    active: 'layers',
-    selectedPolygonId: null,
-    canShowExcavationAreas: false,
-    isBackgroundUnavailable: true,
-    closeCalls: 0,
-  },
-  {
     active: null,
     selectedPolygonId: null,
     canShowExcavationAreas: false,

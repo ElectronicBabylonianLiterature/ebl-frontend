@@ -10,10 +10,10 @@ function PanelDock(): JSX.Element {
       panel={useMapTools()}
       panels={[
         {
-          id: 'layers',
-          label: 'Map layers',
+          id: 'measurement',
+          label: 'Measure',
           isSupported: true,
-          render: () => <p>Layer controls</p>,
+          render: () => <p>Measure controls</p>,
         },
         {
           id: 'inspector',
@@ -28,11 +28,9 @@ function PanelDock(): JSX.Element {
 
 it('expands and focuses a newly selected panel after collapsing another', async () => {
   render(<PanelDock />)
-  await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Close Map layers' }),
-  )
-  expect(screen.queryByText('Layer controls')).not.toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
+  await userEvent.click(screen.getByRole('button', { name: 'Close Measure' }))
+  expect(screen.queryByText('Measure controls')).not.toBeInTheDocument()
 
   await userEvent.click(screen.getByRole('button', { name: 'Selected area' }))
 
@@ -44,20 +42,32 @@ it('expands and focuses a newly selected panel after collapsing another', async 
 
 it('closes a focused tool panel with Escape and returns focus to its toolbar button', async () => {
   render(<PanelDock />)
-  await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
+  await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
   await userEvent.keyboard('{Escape}')
 
-  expect(screen.queryByText('Layer controls')).not.toBeInTheDocument()
-  expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
+  expect(screen.queryByText('Measure controls')).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Measure' })).toHaveFocus()
 })
 
 it('keeps the tool panel open for ordinary keyboard input', async () => {
   render(<PanelDock />)
-  const button = screen.getByRole('button', { name: 'Map layers' })
+  const button = screen.getByRole('button', { name: 'Measure' })
   expect(button).not.toHaveAttribute('aria-controls')
   await userEvent.click(button)
   await userEvent.keyboard('{ArrowDown}')
-  expect(screen.getByText('Layer controls')).toBeInTheDocument()
-  expect(screen.getByRole('region', { name: 'Map layers' })).toBeVisible()
+  expect(screen.getByText('Measure controls')).toBeInTheDocument()
+  expect(screen.getByRole('region', { name: 'Measure' })).toBeVisible()
   expect(button).toHaveAttribute('aria-controls', 'map-research-tool-panel')
+})
+
+it('closes an open tool when its toolbar button is pressed again', async () => {
+  render(<PanelDock />)
+  const button = screen.getByRole('button', { name: 'Measure' })
+  await userEvent.click(button)
+  expect(screen.getByText('Measure controls')).toBeVisible()
+
+  await userEvent.click(button)
+
+  expect(screen.queryByText('Measure controls')).not.toBeInTheDocument()
+  expect(button).toHaveAttribute('aria-expanded', 'false')
 })
