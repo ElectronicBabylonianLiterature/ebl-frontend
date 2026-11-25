@@ -38,3 +38,22 @@ it('does not pass the previous result to the next operation', async () => {
 
   expect(second).toHaveBeenCalledWith()
 })
+
+it('settles after every queued operation has settled, including failed ones', async () => {
+  const queue = new SerialQueue()
+  const first = deferred<string>()
+  const onSettled = jest.fn()
+
+  queue.enqueue(() => first.promise).catch(() => undefined)
+  queue
+    .enqueue(() => Promise.reject(new Error('second failed')))
+    .catch(() => undefined)
+  const settled = queue.settled().then(onSettled)
+  await settle()
+  expect(onSettled).not.toHaveBeenCalled()
+
+  first.resolve('first')
+
+  await settled
+  expect(onSettled).toHaveBeenCalledWith(undefined)
+})

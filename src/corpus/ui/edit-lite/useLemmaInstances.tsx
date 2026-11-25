@@ -20,6 +20,9 @@ export interface LemmaInstances {
   request(position: number, word: string, uniqueLemma: UniqueLemma): void
 }
 
+export const instancesBusyMessage =
+  'Other changes of the chapter are being saved or are not saved yet. Wait for them or save them, then update all instances again.'
+
 export function describeLemma(uniqueLemma: UniqueLemma): string {
   return uniqueLemma.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', ')
 }
@@ -56,12 +59,16 @@ export default function useLemmaInstances(
   }: InstancesRequest): void => {
     close()
     onAccept(position, uniqueLemma)
-    actions.lemmatizeInstances(
+    const isStarted = actions.lemmatizeInstances(
       index,
       instances.word,
       uniqueLemma.map((lemma) => lemma.value),
       () => activation.request(position),
     )
+    if (!isStarted) {
+      setProblem(instancesBusyMessage)
+      activation.request(position)
+    }
   }
 
   return {

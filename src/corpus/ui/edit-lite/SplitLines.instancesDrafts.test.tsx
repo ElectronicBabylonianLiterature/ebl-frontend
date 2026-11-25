@@ -1,7 +1,9 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createFakeChapterEditSource } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
   confirmUpdateAll,
+  instanceOptions,
   listReconstructionLemmas,
   openLemmatization,
   selectLine,
@@ -15,7 +17,12 @@ import {
   reconstructionRow,
   wordLabel,
 } from 'corpus/ui/edit-lite/LineViews.testSupport'
-import { options } from 'corpus/ui/edit-lite/SplitLines.testSupport'
+import {
+  options,
+  typeIntoNumber,
+} from 'corpus/ui/edit-lite/SplitLines.testSupport'
+import { instancesBusyMessage } from 'corpus/ui/edit-lite/useLemmaInstances'
+import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
@@ -90,4 +97,27 @@ test('a reset alignment draft of another line loads its tokens again after the u
   expect(wordLabel(reconstructionRow(), 'line')).not.toHaveClass(
     'Word--suggestion',
   )
+})
+
+test('an update confirmed while another line is being saved is refused with a reason', async () => {
+  const source = createFakeChapterEditSource(instanceOptions)
+  const held = holdNextCall(source.saveLine)
+  await openLemmatization('4', source)
+  await selectLine('3')
+  await typeIntoNumber('3', 'a')
+  await userEvent.click(button('Save line'))
+  await selectLine('4')
+  await openLoadedView('Lemmatization')
+  await openWord(reconstructionRow(), 'line')
+  await confirmUpdateAll()
+
+  expect(await screen.findByRole('alert')).toHaveTextContent(
+    instancesBusyMessage,
+  )
+  expect(source.lemmatizeWordInstances).not.toHaveBeenCalled()
+
+  await act(async () => {
+    held.resolve()
+    await source.saveLine.mock.results[0].value
+  })
 })

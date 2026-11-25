@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
-import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
+import {
+  createLemmaOptionsLoader,
+  LemmaOption,
+} from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { components } from 'react-select'
 import type {
   OptionProps,
@@ -12,22 +15,7 @@ import type {
   MultiValue,
 } from 'react-select'
 
-export class LemmaOption extends Lemma {
-  readonly id?: string
-  word: Word
-  isSuggestion?: boolean
-
-  constructor(word: Word, isSuggestion = false) {
-    super(word)
-    this.word = word
-    this.id = _.uniqueId('lemmaoption-')
-    this.isSuggestion = isSuggestion
-  }
-
-  unsetSuggestion = (): LemmaOption => {
-    return new LemmaOption(this.word)
-  }
-}
+export { LemmaOption }
 
 export function Option<Selected extends Lemma = LemmaOption>(
   props: OptionProps<Selected, true>,
@@ -76,11 +64,10 @@ class LemmaSelectionForm extends Component<Props, State> {
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void,
   ): void => {
-    this.props.wordService
-      .searchLemma(inputValue)
-      .then((words) => words.map((word) => new LemmaOption(word)))
-      .then(callback)
-      .catch(() => callback([]))
+    createLemmaOptionsLoader(this.props.wordService, undefined)(
+      inputValue,
+      callback,
+    )
   }
 
   handleChange = (

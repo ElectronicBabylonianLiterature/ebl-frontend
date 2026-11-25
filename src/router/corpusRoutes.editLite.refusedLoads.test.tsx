@@ -43,10 +43,19 @@ test.each<[string, () => Promise<void>, string[], number]>([
 
     await userEvent.click(options()[5])
     const refusedEditor = screen.getByRole('region', { name: 'Line 6' })
-
-    expect(await within(refusedEditor).findByRole('alert')).toHaveTextContent(
-      chapterChangedMessage,
+    await waitFor(() =>
+      expect(fakeApi.client.fetchJson).toHaveBeenLastCalledWith(
+        expect.stringMatching(/limit=2&revision=revision-1$/),
+        false,
+        undefined,
+      ),
     )
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+
+    expect(within(refusedEditor).queryByRole('alert')).not.toBeInTheDocument()
+    expect(screen.queryByText(chapterChangedMessage)).not.toBeInTheDocument()
 
     await act(async () => answerChange())
     await waitFor(() => expect(options()).toHaveLength(storedNumbers.length))

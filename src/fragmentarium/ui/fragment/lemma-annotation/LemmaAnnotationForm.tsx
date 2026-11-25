@@ -6,8 +6,8 @@ import type { ActionMeta, OnChangeValue } from 'react-select'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelect, {
   getTokenLanguage,
-  createLemmaOptionsLoader,
 } from 'fragmentarium/ui/lemmatization/LemmaSelect'
+import { createLemmaOptionsLoader } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 
 type Props = {
   token: EditableToken | null

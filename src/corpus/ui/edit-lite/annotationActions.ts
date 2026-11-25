@@ -159,11 +159,11 @@ export function lemmatizeInstances(
   word: string,
   lemmaIds: readonly string[],
   onDone: () => void,
-): void {
+): boolean {
   const state = store.getState()
   const draft = findViewDraft(state.lines[index], 'lemmatization')
   if (!canLemmatizeInstances(state, index)) {
-    return
+    return false
   }
   void saveStoredLine(store, index, async (source) => {
     if (draft !== null) {
@@ -173,4 +173,5 @@ export function lemmatizeInstances(
       .lemmatizeWordInstances(word, lemmaIds)
       .then(applyOutline(store, 'instancesLemmatized'))
   }).then((isSaved) => isSaved && onDone())
+  return true
 }

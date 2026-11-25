@@ -6,4 +6,8 @@ export default class SerialQueue {
     this.tail = result.catch(() => undefined)
     return result
   }
+
+  settled(): Promise<void> {
+    return this.tail.then(() => undefined)
+  }
 }

@@ -1,6 +1,8 @@
 import Word from 'dictionary/domain/Word'
-import { createLemmaOptionsLoader } from 'fragmentarium/ui/lemmatization/LemmaSelect'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import {
+  createLemmaOptionsLoader,
+  LemmaOption,
+} from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { wordFactory } from 'test-support/word-fixtures'
 
 const searchLemma = jest.fn<Promise<readonly Word[]>, [string]>()

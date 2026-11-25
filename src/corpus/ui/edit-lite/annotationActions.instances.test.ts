@@ -119,9 +119,16 @@ test('the line is saved first and each outline is applied in the step of its ans
 
 test('without unsaved changes of the line only the chapter is saved', async () => {
   const { store, source, events, onDone } = await open()
-  lemmatizeInstances(store, position, 'line', ['line I'], onDone)
+  const isStarted = lemmatizeInstances(
+    store,
+    position,
+    'line',
+    ['line I'],
+    onDone,
+  )
   await waitFor(() => expect(onDone).toHaveBeenCalledTimes(1))
 
+  expect(isStarted).toBe(true)
   expect(source.saveLemmatization).not.toHaveBeenCalled()
   expect(events.slice(0, 3)).toEqual([
     'saveStarted',
@@ -157,7 +164,7 @@ test.each<[string, (recorded: Recorded) => void]>([
 ])('nothing is saved for the chapter while %s', async (_name, block) => {
   const recorded = await open()
   block(recorded)
-  lemmatizeInstances(
+  const isStarted = lemmatizeInstances(
     recorded.store,
     position,
     'line',
@@ -166,6 +173,7 @@ test.each<[string, (recorded: Recorded) => void]>([
   )
   await new Promise((resolve) => setTimeout(resolve, 0))
 
+  expect(isStarted).toBe(false)
   expect(recorded.source.lemmatizeWordInstances).not.toHaveBeenCalled()
   expect(recorded.source.saveLemmatization).not.toHaveBeenCalled()
   expect(recorded.onDone).not.toHaveBeenCalled()

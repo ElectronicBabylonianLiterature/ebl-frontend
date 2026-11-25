@@ -6,7 +6,6 @@ import {
   WordInstances,
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
-  chapterChangedMessage,
   lineNotReturnedMessage,
   numberedLineChangedMessage,
   outlineNotReturnedMessage,
@@ -27,7 +26,11 @@ import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Word from 'dictionary/domain/Word'
-import { ApiError } from 'http/ApiClient'
+import {
+  readAtCurrentRevision,
+  rejectRevisionConflict,
+  RevisionRead,
+} from 'corpus/application/edit-lite/revisionReads'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export type ApiChapterEditTextService = Pick<
@@ -46,12 +49,6 @@ export { maximumLinesPerRequest }
 export const maximumConcurrentLineRequests = 3
 export const savingNotPermittedMessage =
   'You do not have permission to save changes to this chapter.'
-
-function rejectRevisionConflict(error: unknown): never {
-  throw error instanceof ApiError && error.status === 409
-    ? new Error(chapterChangedMessage)
-    : error
-}
 
 export class ApiChapterEditSource implements ChapterEditSource {
   private readonly lineRequestLimiter = new ConcurrencyLimiter(
@@ -80,7 +77,10 @@ export class ApiChapterEditSource implements ChapterEditSource {
     return Promise.all(
       splitIntoRanges(offset, limit).map((range) =>
         this.lineRequestLimiter.run(
-          () => this.findLines(range.offset, range.limit, signal),
+          () =>
+            this.readCurrent((revision) =>
+              this.findLines(range.offset, range.limit, signal, revision),
+            ),
           signal,
         ),
       ),
@@ -88,12 +88,12 @@ export class ApiChapterEditSource implements ChapterEditSource {
   }
 
   async loadAnnotatedLine(index: number): Promise<Line> {
-    const [line] = await this.textService
-      .findChapterLines(this.id, index, 1, undefined, {
-        revision: this.revision,
+    const [line] = await this.readCurrent((revision) =>
+      this.textService.findChapterLines(this.id, index, 1, undefined, {
+        revision,
         tokens: true,
-      })
-      .catch(rejectRevisionConflict)
+      }),
+    )
     if (line === undefined) {
       throw new Error(lineNotReturnedMessage)
     }
@@ -113,9 +113,9 @@ export class ApiChapterEditSource implements ChapterEditSource {
   }
 
   countWordInstances(word: string): Promise<WordInstances> {
-    return this.textService
-      .countWordInstances(this.id, word, this.revision)
-      .catch(rejectRevisionConflict)
+    return this.readCurrent((revision) =>
+      this.textService.countWordInstances(this.id, word, revision),
+    )
   }
 
   saveLine(
@@ -196,7 +196,9 @@ export class ApiChapterEditSource implements ChapterEditSource {
     original: Line,
     draft: Line,
   ): Promise<ChapterOutline> {
-    const [current] = await this.findLines(index, 1)
+    const [current] = await this.findLines(index, 1).catch(
+      rejectRevisionConflict,
+    )
     if (current === undefined || !areLinesEqual(current, original)) {
       throw new Error(numberedLineChangedMessage(original.number))
     }
@@ -205,16 +207,23 @@ export class ApiChapterEditSource implements ChapterEditSource {
       .then((outline) => this.keepRevision(outline), rejectRevisionConflict)
   }
 
+  private readCurrent<Result>(read: RevisionRead<Result>): Promise<Result> {
+    return readAtCurrentRevision(
+      read,
+      () => this.revision,
+      () => this.saveQueue.settled(),
+    )
+  }
+
   private findLines(
     offset: number,
     limit: number,
     signal?: AbortSignal,
+    revision: string | undefined = this.revision,
   ): Promise<readonly Line[]> {
-    return this.textService
-      .findChapterLines(this.id, offset, limit, signal, {
-        revision: this.revision,
-      })
-      .catch(rejectRevisionConflict)
+    return this.textService.findChapterLines(this.id, offset, limit, signal, {
+      revision,
+    })
   }
 
   private keepRevision(outline: ChapterOutline | null): ChapterOutline {
