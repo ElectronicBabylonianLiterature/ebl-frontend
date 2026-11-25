@@ -16,6 +16,7 @@ describe('parseMapUrlState', () => {
       version: 1,
       filter: 'Babylon',
       showExcavationAreas: true,
+      selection: null,
     })
   })
 
@@ -24,6 +25,7 @@ describe('parseMapUrlState', () => {
       version: 1,
       filter: '',
       showExcavationAreas: true,
+      selection: null,
     })
   })
 
@@ -60,6 +62,7 @@ describe('parseMapUrlState', () => {
       version: 1,
       filter: 'a',
       showExcavationAreas: true,
+      selection: null,
     })
   })
 
@@ -93,6 +96,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter: 'Babylon',
       showExcavationAreas: false,
+      selection: null,
     })
     expect(search).toContain('mv=1')
     expect(search).toContain('findspot=Babylon')
@@ -103,6 +107,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter: '',
       showExcavationAreas: false,
+      selection: null,
     })
     expect(search).toContain('mv=1')
     expect(search).toContain('areas=0')
@@ -113,6 +118,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter: 'Aššur',
       showExcavationAreas: true,
+      selection: null,
     }
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
   })
@@ -123,6 +129,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter: overlong,
       showExcavationAreas: false,
+      selection: null,
     })
     const written = parseMapUrlState(search)
     expect(written.filter).toHaveLength(MAX_FILTER_LENGTH)
@@ -134,6 +141,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter: boundaryFilter,
       showExcavationAreas: false,
+      selection: null,
     })
 
     expect(parseMapUrlState(search).filter).toBe(boundaryFilter)
@@ -148,6 +156,7 @@ describe('serializeMapUrlState', () => {
       version: 1,
       filter,
       showExcavationAreas: false,
+      selection: null,
     })
 
     expect(parseMapUrlState(search).filter).toBe(expected)
@@ -187,4 +196,40 @@ it.each([true, false])(
 
 it('uses the first duplicated null visibility value as the default', () => {
   expect(parseMapUrlState('mv=1&areas&areas=0').showExcavationAreas).toBe(true)
+})
+
+describe('selection URL state', () => {
+  const canonicalPolygonIds = [
+    'assur-bb6i-3d76dc1e02af',
+    'kalhu-kalhu-17049d0f312c',
+    'nippur-scribal-quarter-a566fe34fdbe',
+    'uruk-dc-xiv-2-55d0546c4ba6',
+  ]
+
+  it.each(canonicalPolygonIds)(
+    'round-trips canonical selection %s',
+    (polygonId) => {
+      const state = {
+        ...DEFAULT_MAP_URL_STATE,
+        selection: { type: 'excavation-area' as const, polygonId },
+      }
+
+      expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
+    },
+  )
+
+  it('ignores an invalid selection token', () => {
+    expect(parseMapUrlState('mv=1&selected=unknown').selection).toBeNull()
+  })
+
+  it('uses the first duplicated selection value', () => {
+    expect(
+      parseMapUrlState(
+        'mv=1&selected=area%3Aassur-bb6i-3d76dc1e02af&selected=area%3Auruk-dc-xiv-2-55d0546c4ba6',
+      ).selection,
+    ).toEqual({
+      type: 'excavation-area',
+      polygonId: 'assur-bb6i-3d76dc1e02af',
+    })
+  })
 })

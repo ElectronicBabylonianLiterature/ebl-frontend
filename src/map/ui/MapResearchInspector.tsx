@@ -7,7 +7,7 @@ import {
   sanitizeProvenanceRecord,
 } from 'fragmentarium/domain/Provenance'
 import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
-import { findMapSite } from 'map/domain/mapSites'
+import { findMapSite } from 'fragmentarium/domain/mapSites'
 import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   readonly polygon?: ExcavationPolygon
   readonly onClose: () => void
   readonly focusHeading?: boolean
+  readonly children?: React.ReactNode
 }
 
 function ProvenanceDetails({
@@ -117,6 +118,7 @@ export default function MapResearchInspector({
   polygon,
   onClose,
   focusHeading = true,
+  children,
 }: Props): JSX.Element {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const site = polygon ? findMapSite(polygon.siteId) : undefined
@@ -157,6 +159,7 @@ export default function MapResearchInspector({
         site={site}
         siteName={siteName}
       />
+      {children}
     </section>
   )
 }

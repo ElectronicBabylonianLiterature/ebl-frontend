@@ -5,7 +5,7 @@ import Select, { StylesConfig } from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodString, PeriodModifierString } from 'query/FragmentQuery'
 import { HelpCol, ScriptSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 interface PeriodSearchFormGroupProps {
   scriptPeriod: PeriodString

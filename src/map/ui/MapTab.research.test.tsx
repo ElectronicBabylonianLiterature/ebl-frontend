@@ -111,7 +111,7 @@ it('updates marker selection from the map and clears it when search changes', as
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     },
   ])
-  act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+  await act(async () => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
   expect(
     screen.getByRole('button', { name: 'Inspect Babylon' }),
   ).toHaveAttribute('aria-pressed', 'true')
@@ -130,7 +130,7 @@ it('opens excavation details and closes to search after a canvas click', async (
     .mockReturnValueOnce([])
     .mockReturnValueOnce([])
     .mockReturnValueOnce([first])
-  act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+  await act(async () => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
   const inspector = screen.getByRole('region', { name: 'Location details' })
   expect(
     within(inspector).getByRole('heading', { name: first.properties.name }),
@@ -188,7 +188,7 @@ it('keeps an honest empty inspector if a selected marker has no current provenan
       geometry: { type: 'Point', coordinates: [44, 32] },
     },
   ])
-  act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+  await act(async () => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
   const inspector = screen.getByRole('region', { name: 'Location details' })
   expect(
     within(inspector).getByText(
@@ -210,12 +210,16 @@ it('omits stale polygon details rather than substituting another excavation area
         geometry: { type: 'Polygon', coordinates: [] },
       },
     ])
-  act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
+  await act(async () => triggerMapEvent('click', { point: { x: 10, y: 20 } }))
   expect(
-    screen.getByText(
-      'The selected location is not available in the current site list.',
-    ),
-  ).toBeVisible()
+    screen.queryByRole('region', { name: 'Location details' }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.getByRole('combobox', { name: 'Inspect excavation area' }),
+  ).toHaveValue('')
+  expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
+    'selected=',
+  )
 })
 
 it('keeps excavation inspection available when WebGL cannot construct the map', async () => {

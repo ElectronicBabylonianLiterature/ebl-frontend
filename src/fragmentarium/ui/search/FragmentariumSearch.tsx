@@ -20,6 +20,7 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
 import useSearchTab from 'fragmentarium/ui/search/useSearchTab'
+import { isValidFindspotId } from 'fragmentarium/ui/SearchForm.state'
 
 type Props = Pick<
   SearchFormProps,
@@ -41,7 +42,7 @@ function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
   return !_(query)
     .omit('lemmaOperator')
     .omit(transportPaginationFields)
-    .omitBy((value) => !value)
+    .omitBy((value: string | number | undefined) => !value && value !== 0)
     .isEmpty()
 }
 
@@ -67,9 +68,11 @@ function FragmentariumSearch({
     [lemmas, lemmaOperator, transliteration],
   )
 
+  const isValidLibraryQuery =
+    isValidNumber(fragmentQuery.number) &&
+    isValidFindspotId(fragmentQuery.findspotId)
   const showResults =
-    (isValidNumber(fragmentQuery.number) &&
-      hasNonDefaultValues(fragmentQuery)) ||
+    (isValidLibraryQuery && hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
 
   return (
@@ -85,15 +88,17 @@ function FragmentariumSearch({
                 <Row>
                   <Col className="mx-auto">
                     <div className="Library-search__search-header">
-                      <SearchForm
-                        fragmentSearchService={fragmentSearchService}
-                        fragmentService={fragmentService}
-                        dossiersService={dossiersService}
-                        fragmentQuery={fragmentQuery}
-                        wordService={wordService}
-                        bibliographyService={bibliographyService}
-                        showAdvancedSearch={true}
-                      />
+                      <div className="Library-search__form">
+                        <SearchForm
+                          fragmentSearchService={fragmentSearchService}
+                          fragmentService={fragmentService}
+                          dossiersService={dossiersService}
+                          fragmentQuery={fragmentQuery}
+                          wordService={wordService}
+                          bibliographyService={bibliographyService}
+                          showAdvancedSearch={true}
+                        />
+                      </div>
                       <AboutInlineLink
                         to="/about/library"
                         label="Library"
@@ -106,12 +111,14 @@ function FragmentariumSearch({
               {showResults ? (
                 <Tabs activeKey={selectedTab} onSelect={selectTab} justify>
                   <Tab eventKey="library" title="Library">
-                    <SearchResult
-                      fragmentService={fragmentService}
-                      dossiersService={dossiersService}
-                      fragmentQuery={fragmentQuery}
-                      pagination={pagination}
-                    />
+                    {isValidLibraryQuery ? (
+                      <SearchResult
+                        fragmentService={fragmentService}
+                        dossiersService={dossiersService}
+                        fragmentQuery={fragmentQuery}
+                        pagination={pagination}
+                      />
+                    ) : null}
                   </Tab>
                   <Tab eventKey="corpus" title="Corpus">
                     <CorpusSearchResult

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ExcavationPolygonIndex } from 'map/domain/excavationPolygonIndex'
-import { findMapSite } from 'map/domain/mapSites'
+import { findMapSite } from 'fragmentarium/domain/mapSites'
 
 interface Props {
   readonly polygonIndex: ExcavationPolygonIndex

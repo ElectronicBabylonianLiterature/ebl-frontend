@@ -3,6 +3,7 @@ import {
   createArchaeology,
   fromFindspotDto,
   toFindspotDto,
+  toArchaeologyDto,
 } from 'fragmentarium/domain/archaeologyDtos'
 import { findspotFactory } from 'test-support/archaeology-fixtures'
 
@@ -39,3 +40,23 @@ describe('fromFindspotDto', () => {
     })
   })
 })
+
+it.each([null, { polygonIds: ['assur-area'], precision: 'area' }])(
+  'drops server-only map metadata when converting an enriched findspot',
+  (mapLocation) => {
+    const serverFindspot = {
+      ...toFindspotDto(findspotFactory.build({ plans: [] })),
+      mapLocation,
+    }
+    expect(toFindspotDto(fromFindspotDto(serverFindspot))).not.toHaveProperty(
+      'mapLocation',
+    )
+    const archaeology = createArchaeology({
+      findspotId: serverFindspot._id,
+      findspot: serverFindspot,
+    })
+    const writeDto = toArchaeologyDto(archaeology)
+    expect(writeDto.findspotId).toBe(serverFindspot._id)
+    expect(writeDto.findspot).not.toHaveProperty('mapLocation')
+  },
+)

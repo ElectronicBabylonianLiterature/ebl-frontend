@@ -12,13 +12,14 @@ export const MAP_SITE_POLYGON_COUNTS: Readonly<Record<MapSiteId, number>> = {
 export interface MapSiteDefinition {
   readonly siteId: MapSiteId
   readonly siteName: string
+  readonly mapDataSiteParam: string | null
 }
 
 const MAP_SITES: readonly MapSiteDefinition[] = [
-  { siteId: 'assur', siteName: 'Aššur' },
-  { siteId: 'kalhu', siteName: 'Kalḫu' },
-  { siteId: 'nippur', siteName: 'Nippur' },
-  { siteId: 'uruk', siteName: 'Uruk' },
+  { siteId: 'assur', siteName: 'Aššur', mapDataSiteParam: 'ASSUR' },
+  { siteId: 'kalhu', siteName: 'Kalḫu', mapDataSiteParam: 'KALHU' },
+  { siteId: 'nippur', siteName: 'Nippur', mapDataSiteParam: 'NIPPUR' },
+  { siteId: 'uruk', siteName: 'Uruk', mapDataSiteParam: 'URUK' },
 ]
 
 const MAP_SITES_BY_ID = new Map(MAP_SITES.map((site) => [site.siteId, site]))
@@ -33,4 +34,14 @@ export function isMapSiteId(value: unknown): value is MapSiteId {
 
 export function findMapSite(siteId: string): MapSiteDefinition | undefined {
   return isMapSiteId(siteId) ? MAP_SITES_BY_ID.get(siteId) : undefined
+}
+
+export function mapDataSiteParam(siteId: string): string | null {
+  return findMapSite(siteId)?.mapDataSiteParam ?? null
+}
+
+export function findMapSiteByDataParam(
+  siteParam: string,
+): MapSiteDefinition | undefined {
+  return MAP_SITES.find((site) => site.mapDataSiteParam === siteParam)
 }
