@@ -58,12 +58,6 @@ export class LemmatizationToken {
     }
   }
 
-  clearSuggestionFlag(): LemmatizationToken {
-    return produce(this, (draft: Draft<LemmatizationToken>) => {
-      draft.suggested = false
-    })
-  }
-
   toDto(): LemmatizationTokenDto {
     return _.isNil(this.uniqueLemma)
       ? {
@@ -103,10 +97,6 @@ export default class Lemmatization {
 
   applySuggestions(): Lemmatization {
     return this.mapTokens((token) => token.applySuggestion())
-  }
-
-  clearSuggestionFlags(): Lemmatization {
-    return this.mapTokens((token) => token.clearSuggestionFlag())
   }
 
   toDto(): ReadonlyArray<ReadonlyArray<LemmatizationTokenDto>> {

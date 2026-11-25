@@ -17,7 +17,7 @@ const stopSelector = `${fieldSelector}, .dropdown-toggle`
 export const alignmentKeysHint =
   'Enter sets the alignment and goes to the next word, Tab skips the word, Shift+Tab goes back, Escape closes the word and F2 moves between the ideal word and the variant.'
 export const lemmatizationKeysHint =
-  'Enter accepts the lemma and goes to the next word, Tab skips the word, Shift+Tab goes back, Escape closes the word and F2 moves between the lemma and the actions of the word.'
+  'Enter accepts the lemma and goes on, Tab skips the word, Shift+Tab goes back, Escape closes the word and F2 moves between the lemma and the actions of the word. In the reconstruction the keys go from word to word and then to the next line; a lemma accepted on a reconstruction word is also set on the manuscript words aligned to it that have no lemma. Click a manuscript word to change it.'
 
 export function handleWordKeys(
   event: React.KeyboardEvent,

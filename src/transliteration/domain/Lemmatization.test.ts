@@ -104,32 +104,6 @@ it('applySuggestions sets suggestions', () => {
   ).toEqual([[new Lemma(words[0])], [new Lemma(words[1])]])
 })
 
-it('clearSuggestionFlags clears flags', () => {
-  const lemmatization = new Lemmatization(
-    ['1.'],
-    [
-      [
-        new LemmatizationToken(
-          'kur',
-          true,
-          [new Lemma(words[0])],
-          [[new Lemma(words[1])]],
-        ),
-        new LemmatizationToken(
-          'kur',
-          true,
-          [new Lemma(words[1])],
-          [[new Lemma(words[1])]],
-          true,
-        ),
-      ],
-    ],
-  )
-  expect(
-    _.map(lemmatization.clearSuggestionFlags().tokens[0], 'suggested'),
-  ).toEqual([false, false])
-})
-
 test.each([
   [
     new LemmatizationToken('kur', true, [

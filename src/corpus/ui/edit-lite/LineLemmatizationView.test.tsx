@@ -86,7 +86,7 @@ test('the lemmatization view loads the tokens and the lemmas of its line once', 
   )
 })
 
-test('a lemma set on a reconstruction word goes to the aligned words without a lemma of their own', async () => {
+test('a lemma set on a reconstruction word is accepted for the aligned words without a stored lemma', async () => {
   const { source } = await renderLoadedView('Lemmatization', options)
   await lemmatizeWord(reconstructionRow(), 'eliš', new Lemma(elish))
 
@@ -97,7 +97,9 @@ test('a lemma set on a reconstruction word goes to the aligned words without a l
     'Word--suggestion',
   )
   expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-lišeliš$/)
-  expect(wordLabel(manuscriptRow(1), 'e-liš')).toHaveClass('Word--suggestion')
+  expect(wordLabel(manuscriptRow(1), 'e-liš')).not.toHaveClass(
+    'Word--suggestion',
+  )
   expect(wordButton(manuscriptRow(1), 'e-nu-ma')).toHaveTextContent(/^e-nu-ma$/)
   expect(wordButton(manuscriptRow(2), 'e-li-iš')).toHaveTextContent(
     /^e-li-išeliš II$/,
@@ -109,11 +111,14 @@ test('a lemma set on a reconstruction word goes to the aligned words without a l
   expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(
     /^e-lišeliš II$/,
   )
+  expect(wordLabel(manuscriptRow(1), 'e-liš')).not.toHaveClass(
+    'Word--suggestion',
+  )
   expect(source.searchLemma).toHaveBeenCalledWith('el')
   expect(source.saveLemmatization).not.toHaveBeenCalled()
 })
 
-test('the lemmas that were set are saved and shown again, the suggestions are not', async () => {
+test('the lemmas that were set or carried are saved and shown again, the suggestions are not', async () => {
   const { source } = await renderLoadedView('Lemmatization', options)
   await lemmatizeWord(reconstructionRow(), 'eliš', new Lemma(elish))
   await lemmatizeWord(manuscriptRow(1), 'e-nu-ma', new Lemma(otherElish))
@@ -130,7 +135,7 @@ test('the lemmas that were set are saved and shown again, the suggestions are no
       manuscript.atfTokens.map((token) => token.uniqueLemma),
     ),
   ).toEqual([
-    [['eliš II'], []],
+    [['eliš II'], ['eliš I']],
     [undefined, undefined, undefined, ['eliš II']],
   ])
   expect(source.loadAnnotatedLine).toHaveBeenCalledTimes(3)
@@ -139,7 +144,7 @@ test('the lemmas that were set are saved and shown again, the suggestions are no
   expect(wordLabel(reconstructionRow(), 'enūma')).toHaveClass(
     'Word--suggestion',
   )
-  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-liš$/)
+  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-lišeliš$/)
   expect(button('Save lemmatization')).toBeDisabled()
 })
 

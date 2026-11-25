@@ -33,6 +33,7 @@ interface Options {
   readonly index: number
   readonly view: AnnotationView
   readonly words: readonly unknown[]
+  readonly stopCount?: number
   readonly isLocked: boolean
   readonly activation: WordActivation
 }
@@ -41,6 +42,7 @@ export default function useWordFlow({
   index,
   view,
   words,
+  stopCount = words.length,
   isLocked,
   activation,
 }: Options): WordFlow {
@@ -81,7 +83,8 @@ export default function useWordFlow({
     activate: setActive,
     close,
     suspend,
-    next: (): void => move((position) => findNextWord(words.length, position)),
+    next: (): void =>
+      move((position) => findNextWord(words.length, stopCount, position)),
     previous: (): void => move(findPreviousWord),
   }
 }

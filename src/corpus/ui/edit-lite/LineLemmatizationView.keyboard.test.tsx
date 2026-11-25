@@ -1,13 +1,11 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  createFakeChapterEditSource,
-  FakeChapterEditSource,
-} from 'corpus/ui/edit-lite/editLite.testSupport'
+import { createFakeChapterEditSource } from 'corpus/ui/edit-lite/editLite.testSupport'
 import {
   elish,
   lemmaLines,
   lemmaOptions,
+  listStoredLemmas,
   otherElish,
 } from 'corpus/ui/edit-lite/lemmaFixtures.testSupport'
 import { renderLoadedContainer } from 'corpus/ui/edit-lite/LineEditContainer.testSupport'
@@ -39,18 +37,6 @@ jest.mock('@restart/ui/usePopper', () =>
   jest.requireActual('corpus/ui/edit-lite/usePopper.testSupport'),
 )
 
-async function listStoredLemmas(
-  source: FakeChapterEditSource,
-): Promise<unknown[]> {
-  const [variant] = (await source.loadAnnotatedLine(0)).variants
-  return [
-    variant.reconstructionTokens,
-    ...variant.manuscripts.map((manuscript) => manuscript.atfTokens),
-  ].map((tokens) =>
-    tokens.flatMap((token) => (token.lemmatizable ? [token.uniqueLemma] : [])),
-  )
-}
-
 test('the first word is active once the tokens and the lemmas of the line are loaded', async () => {
   const source = createFakeChapterEditSource(lemmaOptions)
   const heldLemmas = holdNextCall(source.loadLemmatization)
@@ -74,7 +60,7 @@ test('the first word is active once the tokens and the lemmas of the line are lo
     within(viewPanel('Lemmatization')).getByText(lemmatizationKeysHint),
   ).toBeVisible()
   expect(lemmatizationKeysHint).toBe(
-    'Enter accepts the lemma and goes to the next word, Tab skips the word, Shift+Tab goes back, Escape closes the word and F2 moves between the lemma and the actions of the word.',
+    'Enter accepts the lemma and goes on, Tab skips the word, Shift+Tab goes back, Escape closes the word and F2 moves between the lemma and the actions of the word. In the reconstruction the keys go from word to word and then to the next line; a lemma accepted on a reconstruction word is also set on the manuscript words aligned to it that have no lemma. Click a manuscript word to change it.',
   )
 })
 
@@ -89,35 +75,36 @@ test('Enter accepts a suggested lemma, Tab skips a word and Shift+Tab goes back'
   expect(wordButton(manuscriptRow(1), 'e-nu-ma')).toHaveTextContent(
     /^e-nu-maenūma$/,
   )
-  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).toHaveClass('Word--suggestion')
+  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).not.toHaveClass(
+    'Word--suggestion',
+  )
   expect(listDisabledViews()).toEqual(['Text', 'Alignment'])
 
-  await userEvent.keyboard('{Enter}{Tab}')
-
-  expectActiveWord(manuscriptRow(1), 'e-liš', 'Lemma')
-  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).toHaveClass('Word--suggestion')
-
-  await userEvent.keyboard('{Shift>}{Tab}{Tab}{Tab}{Tab}{/Shift}')
+  await userEvent.keyboard('{Shift>}{Tab}{Tab}{/Shift}')
 
   expectActiveWord(reconstructionRow(), 'enūma', 'Lemma')
+
+  await userEvent.keyboard('{Tab}')
+
+  expectActiveWord(reconstructionRow(), 'eliš', 'Lemma')
 
   await userEvent.keyboard('{Escape}')
 
   expect(queryActivePopover()).not.toBeInTheDocument()
-  expect(wordButton(reconstructionRow(), 'enūma')).toHaveFocus()
+  expect(wordButton(reconstructionRow(), 'eliš')).toHaveFocus()
 
   await userEvent.click(button('Save lemmatization'))
   await waitFor(() => expect(listDisabledViews()).toEqual([]))
 
   await expect(listStoredLemmas(source)).resolves.toEqual([
     [['enūma I'], []],
-    [[], []],
+    [['enūma I'], []],
     [['eliš II']],
   ])
 })
 
-test('Enter chooses the highlighted option while the menu is open and goes on once it is closed', async () => {
-  await renderLoadedView('Lemmatization', lemmaOptions)
+test('Enter chooses the highlighted option while the menu is open and leaves the line from the last reconstruction word once it is closed', async () => {
+  const { source } = await renderLoadedView('Lemmatization', lemmaOptions)
   await userEvent.keyboard('{Tab}el')
   await findLemmaOption(new Lemma(elish))
   await userEvent.keyboard('{Enter}')
@@ -130,18 +117,29 @@ test('Enter chooses the highlighted option while the menu is open and goes on on
   expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-lišeliš$/)
 
   await userEvent.keyboard('{Enter}')
+  await waitFor(() => expect(listDisabledViews()).toEqual([]))
 
-  expectActiveWord(manuscriptRow(1), 'e-nu-ma', 'Lemma')
+  expect(queryActivePopover()).not.toBeInTheDocument()
+  await expect(listStoredLemmas(source)).resolves.toEqual([
+    [[], ['eliš I']],
+    [[], ['eliš I']],
+    [['eliš II']],
+  ])
 })
 
 test('Tab leaves a word with an open menu without choosing an option', async () => {
   const { getState } = await renderLoadedView('Lemmatization', lemmaOptions)
-  await userEvent.keyboard('{Tab}el')
+  await userEvent.keyboard('el')
   await findLemmaOption(new Lemma(elish))
   await userEvent.keyboard('{Tab}')
 
-  expectActiveWord(manuscriptRow(1), 'e-nu-ma', 'Lemma')
-  expect(wordButton(reconstructionRow(), 'eliš')).toHaveTextContent(/^eliš$/)
+  expectActiveWord(reconstructionRow(), 'eliš', 'Lemma')
+  expect(wordButton(reconstructionRow(), 'enūma')).toHaveTextContent(
+    /^enūmaenūma$/,
+  )
+  expect(wordLabel(reconstructionRow(), 'enūma')).toHaveClass(
+    'Word--suggestion',
+  )
   expect(getState().lines[0].annotation?.draft).toBeNull()
 })
 
@@ -180,12 +178,12 @@ test('several suggestions are offered as options and several options are a compl
 
   await expect(listStoredLemmas(source)).resolves.toEqual([
     [[], ['eliš I', 'eliš II']],
-    [[], []],
+    [[], ['eliš I', 'eliš II']],
     [['eliš II']],
   ])
 })
 
-test('on the last word Tab leaves no word active and saves nothing that was not accepted', async () => {
+test('on the last word Tab or Enter leaves no word active and saves nothing that was not accepted', async () => {
   const { source } = await renderLoadedView('Lemmatization', lemmaOptions)
   await userEvent.click(wordButton(manuscriptRow(2), 'e-li-iš'))
   await userEvent.keyboard('{Tab}')
@@ -197,5 +195,12 @@ test('on the last word Tab leaves no word active and saves nothing that was not 
   await userEvent.keyboard('{Enter}')
 
   expect(queryActivePopover()).not.toBeInTheDocument()
+  expect(source.saveLemmatization).not.toHaveBeenCalled()
+
+  await userEvent.click(wordButton(reconstructionRow(), 'eliš'))
+  await userEvent.keyboard('{Enter}')
+
+  expect(queryActivePopover()).not.toBeInTheDocument()
+  expect(wordButton(reconstructionRow(), 'eliš')).toHaveTextContent(/^eliš$/)
   expect(source.saveLemmatization).not.toHaveBeenCalled()
 })

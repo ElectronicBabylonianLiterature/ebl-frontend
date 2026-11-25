@@ -51,15 +51,25 @@ export function listAlignableWords(line: Line): AnnotationWord[] {
 }
 
 export function listLemmatizableWords(line: Line): AnnotationWord[] {
-  return line.variants.flatMap((variant, variantIndex) => [
-    ...listRowWords(
-      variant.reconstructionTokens,
-      variantIndex,
-      null,
-      isLemmatizableToken,
+  return [
+    ...line.variants.flatMap((variant, variantIndex) =>
+      listRowWords(
+        variant.reconstructionTokens,
+        variantIndex,
+        null,
+        isLemmatizableToken,
+      ),
     ),
-    ...listManuscriptWords(variant, variantIndex, isLemmatizableToken),
-  ])
+    ...line.variants.flatMap((variant, variantIndex) =>
+      listManuscriptWords(variant, variantIndex, isLemmatizableToken),
+    ),
+  ]
+}
+
+export function countReconstructionWords(
+  words: readonly AnnotationWord[],
+): number {
+  return words.filter((word) => word.manuscriptIndex === null).length
 }
 
 export function isSameWord(
@@ -83,9 +93,11 @@ export function findWordPosition(
 
 export function findNextWord(
   wordCount: number,
+  stopCount: number,
   position: number,
 ): number | null {
-  return position + 1 < wordCount ? position + 1 : null
+  const end = position < stopCount ? stopCount : wordCount
+  return position + 1 < end ? position + 1 : null
 }
 
 export function findPreviousWord(position: number): number {

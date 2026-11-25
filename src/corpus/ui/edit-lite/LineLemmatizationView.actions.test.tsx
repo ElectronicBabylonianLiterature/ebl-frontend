@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   elish,
@@ -18,6 +18,7 @@ import {
   queryActivePopover,
   reconstructionRow,
   renderLoadedView,
+  variantRow,
   wordButton,
   wordLabel,
 } from 'corpus/ui/edit-lite/LineViews.testSupport'
@@ -48,19 +49,13 @@ function menuItem(name: RegExp): HTMLElement {
   return within(activePopover()).getByRole('button', { name })
 }
 
-function variantRow(variantNumber: number): HTMLElement {
-  return within(
-    screen.getByRole('group', { name: `Variant ${variantNumber}` }),
-  ).getByRole('group', { name: 'Reconstruction' })
-}
-
 function listPendingWords(): (string | null)[] {
   return Array.from(document.querySelectorAll('.edit-lite-word--pending')).map(
     (word) => word.textContent,
   )
 }
 
-test('reset puts an accepted suggestion back and leaves no unsaved change', async () => {
+test('reset puts an accepted suggestion and the lemma carried from it back and leaves no unsaved change', async () => {
   const { getState } = await renderLoadedView('Lemmatization', lemmaOptions)
 
   expect(resetButton()).toBeDisabled()
@@ -68,7 +63,12 @@ test('reset puts an accepted suggestion back and leaves no unsaved change', asyn
   await userEvent.keyboard('{Enter}{Shift>}{Tab}{/Shift}')
 
   expect(resetButton()).toBeEnabled()
-  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).toHaveClass('Word--suggestion')
+  expect(wordButton(manuscriptRow(1), 'e-nu-ma')).toHaveTextContent(
+    /^e-nu-maenūma$/,
+  )
+  expect(wordLabel(manuscriptRow(1), 'e-nu-ma')).not.toHaveClass(
+    'Word--suggestion',
+  )
 
   await userEvent.click(resetButton())
 

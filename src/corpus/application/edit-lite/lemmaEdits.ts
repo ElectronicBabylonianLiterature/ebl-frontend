@@ -1,10 +1,6 @@
 import _ from 'lodash'
 import { AnnotationWord } from 'corpus/application/edit-lite/annotationWords'
-import {
-  LineLemmatization,
-  setManuscriptLemma,
-  setReconstructionLemma,
-} from 'corpus/domain/lemmatization'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import {
   LemmatizationToken,
@@ -12,12 +8,6 @@ import {
 } from 'transliteration/domain/Lemmatization'
 
 type Lemmatization = readonly LineLemmatization[]
-
-function withoutEmptySuggestion(token: LemmatizationToken): LemmatizationToken {
-  return token.suggested && !token.hasLemma
-    ? token.clearSuggestionFlag()
-    : token
-}
 
 function mapVariant(
   lemmatization: Lemmatization,
@@ -72,51 +62,58 @@ export function isSameLemmaToken(
   )
 }
 
+function listAlignedWords(
+  line: Line,
+  { variantIndex, manuscriptIndex, tokenIndex }: AnnotationWord,
+): AnnotationWord[] {
+  const manuscripts =
+    manuscriptIndex === null ? line.variants[variantIndex].manuscripts : []
+  return manuscripts.flatMap((manuscript, aligned) =>
+    manuscript.atfTokens.flatMap((token, alignedToken) =>
+      token.lemmatizable && token.alignment === tokenIndex
+        ? [{ variantIndex, manuscriptIndex: aligned, tokenIndex: alignedToken }]
+        : [],
+    ),
+  )
+}
+
+function listPropagatedWords(
+  loaded: Lemmatization,
+  line: Line,
+  word: AnnotationWord,
+): AnnotationWord[] {
+  return listAlignedWords(line, word).filter(
+    (aligned) => !findLemmaToken(loaded, aligned).hasLemma,
+  )
+}
+
+function setToken(
+  lemmatization: Lemmatization,
+  word: AnnotationWord,
+  token: LemmatizationToken,
+): LineLemmatization[] {
+  return mapVariant(lemmatization, word.variantIndex, (variant) =>
+    replaceToken(variant, word, token),
+  )
+}
+
 export function setWordLemma(
   lemmatization: Lemmatization,
+  loaded: Lemmatization,
   line: Line,
   word: AnnotationWord,
   uniqueLemma: UniqueLemma,
 ): LineLemmatization[] {
-  return mapVariant(lemmatization, word.variantIndex, (variant) => {
-    if (word.manuscriptIndex !== null) {
-      return setManuscriptLemma(
-        variant,
-        word.manuscriptIndex,
-        word.tokenIndex,
-        uniqueLemma,
-      )
-    }
-    const [reconstruction, manuscripts] = setReconstructionLemma(
-      variant,
-      line.variants[word.variantIndex],
-      word.tokenIndex,
-      uniqueLemma,
-    )
-    return [
-      reconstruction,
-      manuscripts.map((manuscript) => manuscript.map(withoutEmptySuggestion)),
-    ]
-  })
-}
-
-function listPropagatedWords(
-  lemmatization: Lemmatization,
-  line: Line,
-  word: AnnotationWord,
-): AnnotationWord[] {
-  const manuscripts =
-    word.manuscriptIndex === null
-      ? line.variants[word.variantIndex].manuscripts
-      : []
-  return manuscripts.flatMap((manuscript, manuscriptIndex) =>
-    manuscript.atfTokens.flatMap((token, tokenIndex) => {
-      const candidate = { ...word, manuscriptIndex, tokenIndex }
-      return token.alignment === word.tokenIndex &&
-        findLemmaToken(lemmatization, candidate).suggested
-        ? [candidate]
-        : []
-    }),
+  return [word, ...listPropagatedWords(loaded, line, word)].reduce<
+    LineLemmatization[]
+  >(
+    (current, target) =>
+      setToken(
+        current,
+        target,
+        findLemmaToken(current, target).setUniqueLemma(uniqueLemma),
+      ),
+    [...lemmatization],
   )
 }
 
@@ -127,13 +124,10 @@ export function resetWordLemmas(
   words: readonly AnnotationWord[],
 ): LineLemmatization[] {
   return words
-    .flatMap((word) => [
-      word,
-      ...listPropagatedWords(lemmatization, line, word),
-    ])
+    .flatMap((word) => [word, ...listPropagatedWords(loaded, line, word)])
     .reduce<
       LineLemmatization[]
-    >((current, word) => mapVariant(current, word.variantIndex, (variant) => replaceToken(variant, word, findLemmaToken(loaded, word))), [...lemmatization])
+    >((current, word) => setToken(current, word, findLemmaToken(loaded, word)), [...lemmatization])
 }
 
 export function listChangedWords(

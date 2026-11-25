@@ -96,13 +96,13 @@ test('the lemmas of a line are asked for in one batch and one word request when 
         manuscripts: [
           [
             { value: 'e-nu-ma', uniqueLemma: [] },
-            { value: 'e-liš', uniqueLemma: [] },
+            { value: 'e-liš', uniqueLemma: ['eliš I'] },
           ],
           [
             { value: '[x' },
             { value: 'x' },
             { value: 'x]' },
-            { value: 'e-li-iš', uniqueLemma: [] },
+            { value: 'e-li-iš', uniqueLemma: ['eliš I'] },
           ],
         ],
       },
@@ -136,7 +136,7 @@ test('the lemmas of a line are asked for in one batch and one word request when 
     buildAnnotatedLineUrl(0, 'revision-1'),
     buildAnnotatedLineUrl(0, 'revision-2'),
   ])
-  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-liš$/)
+  expect(wordButton(manuscriptRow(1), 'e-liš')).toHaveTextContent(/^e-lišeliš$/)
   expect(wordLabel(reconstructionRow(), 'eliš')).not.toHaveClass(
     'Word--suggestion',
   )
@@ -206,6 +206,6 @@ test.each<[string, () => Promise<void>, string[], string[]]>([
     ).toEqual([undefined, ['eliš I']])
     expect(
       changedLines[0].variants[0].manuscripts[0].atfTokens[0],
-    ).toMatchObject({ alignment: 1, uniqueLemma: [] })
+    ).toMatchObject({ alignment: 1, uniqueLemma: ['eliš I'] })
   },
 )

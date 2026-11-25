@@ -307,3 +307,27 @@ about 1.8 s.
   page has no edit controls; the keyboard flow at `/edit` 24 of 24.
 - Deployment: `/edit` now needs the endpoints of ebl-api #827. Deploy the
   API first or together with the frontend.
+
+## After step 8: Lemmatization keys follow the reconstruction
+
+- User decision: in the Lemmatization view Enter and Tab go through the
+  reconstruction words only, variant after variant, then save and open the
+  next line. Manuscript words are reached by clicking; from there the keys
+  go through the following manuscript words. The Alignment view keeps its
+  order (manuscript words).
+- A lemma set or accepted on a reconstruction word is stored, as an accepted
+  value, on the aligned manuscript words that have no stored lemma; words
+  with a stored lemma are left alone. Enter on a reconstruction word with a
+  stored lemma fills those words too. Changing or resetting the
+  reconstruction word changes or resets them.
+- Removed as unused: `setReconstructionLemma`, `setManuscriptLemma`,
+  `LemmatizationToken.clearSuggestionFlag`, `Lemmatization.clearSuggestionFlags`.
+- Known: a lemma set by hand on a manuscript word without a stored lemma is
+  replaced when the aligned reconstruction word's lemma is changed later in
+  the same draft.
+- Gates: `yarn lint`, `yarn tsc`, qlty clean; `yarn test:ci` 919 suites,
+  7801 tests, zero console output; coverage 98.84 % statements, 97.12 %
+  branches, both edit-lite folders at 100 %. Five mutations killed. Browser
+  run: Enter on the last reconstruction word saved line 2 and opened line 3
+  with its first word active; the aligned manuscript word got the lemma and
+  the one with a stored lemma kept it.

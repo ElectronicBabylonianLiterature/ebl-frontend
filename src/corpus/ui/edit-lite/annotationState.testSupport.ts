@@ -94,10 +94,12 @@ export const draftLemma = new Lemma(buildDictionaryWord('draft'))
 
 export function buildLemmatizationDraft(annotatedLine: Line): AnnotationDraft {
   const [word] = listLemmatizableWords(annotatedLine)
+  const lemmatization = buildLineLemmatization(annotatedLine)
   return {
     view: 'lemmatization',
     lemmatization: setWordLemma(
-      buildLineLemmatization(annotatedLine),
+      lemmatization,
+      lemmatization,
       annotatedLine,
       word,
       [draftLemma],

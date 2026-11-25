@@ -30,6 +30,7 @@ import {
   manuscriptRow,
   openLoadedView,
   queryActivePopover,
+  reconstructionRow,
   selectedView,
 } from 'corpus/ui/edit-lite/LineViews.testSupport'
 import {
@@ -133,7 +134,7 @@ test('two lines in a row are aligned and stored with the keyboard only', async (
   expect(leavePage()).toBe('')
 })
 
-test('a lemmatization line gone through with Enter and Tab stores what was accepted or set', async () => {
+test('a lemmatization line gone through with Enter and Tab stores the reconstruction lemmas and carries them to the aligned words without a stored lemma', async () => {
   const served = await openServedEditLiteRoute(
     lemmaLines,
     '?line=1',
@@ -146,12 +147,13 @@ test('a lemmatization line gone through with Enter and Tab stores what was accep
   await openLoadedView('Lemmatization')
   await userEvent.keyboard('{Enter}el')
   await findLemmaOption(new Lemma(elish))
-  await userEvent.keyboard('{Enter}{Enter}')
+  await userEvent.keyboard('{Enter}')
 
-  expectActiveWord(manuscriptRow(1), 'e-nu-ma', 'Lemma')
+  expectActiveWord(reconstructionRow(), 'eliš', 'Lemma')
   expect(manuscriptRow(1)).toHaveTextContent(/e-nu-maenūma e-lišeliš$/)
+  expect(manuscriptRow(2)).toHaveTextContent(/e-li-išeliš II$/)
 
-  await userEvent.keyboard('{Tab}{Enter}{Tab}')
+  await userEvent.keyboard('{Tab}')
   await waitForLine(1)
   const [variant] = served.chapter.lines[0].variants
 
@@ -178,7 +180,7 @@ test('a lemmatization line gone through with Enter and Tab stores what was accep
             ],
             manuscripts: [
               [
-                { value: 'e-nu-ma', uniqueLemma: [] },
+                { value: 'e-nu-ma', uniqueLemma: ['enūma I'] },
                 { value: 'e-liš', uniqueLemma: ['eliš I'] },
               ],
               [
@@ -205,8 +207,11 @@ test('a lemmatization line gone through with Enter and Tab stores what was accep
   ])
   expect(
     variant.manuscripts[0].atfTokens.map((token) => token.uniqueLemma),
-  ).toEqual([[], ['eliš I']])
-  expect(variant.reconstructionTokens[1].uniqueLemma).toEqual(['enūma I'])
+  ).toEqual([['enūma I'], ['eliš I']])
+  expect(variant.manuscripts[1].atfTokens[3].uniqueLemma).toEqual(['eliš II'])
+  expect(
+    variant.reconstructionTokens.map((token) => token.uniqueLemma),
+  ).toEqual([undefined, ['enūma I'], undefined, ['eliš I']])
   expect(served.chapter.lines.slice(1)).toEqual(lemmaLines.slice(1))
   expect(selectedView()).toBe('Lemmatization')
   expectActiveWord(

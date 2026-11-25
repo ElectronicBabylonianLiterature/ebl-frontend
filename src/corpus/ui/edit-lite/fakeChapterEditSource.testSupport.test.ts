@@ -1,6 +1,6 @@
+import { setWordLemma } from 'corpus/application/edit-lite/lemmaEdits'
 import { createLineAlignment, Line } from 'corpus/domain/line'
 import { setAlignmentToken, setOmittedWords } from 'corpus/domain/alignment'
-import { setReconstructionLemma } from 'corpus/domain/lemmatization'
 import Word from 'dictionary/domain/Word'
 import {
   emptyWordMessage,
@@ -74,18 +74,23 @@ test('the fake source is as strict as the endpoint', async () => {
 test('the fake source suggests, stores and serves lemmas', async () => {
   const source = createFakeChapterEditSource({ lines, ...dictionary })
   const annotatedLine = await source.loadAnnotatedLine(0)
-  const [lemmatization] = await source.loadLemmatization(annotatedLine)
+  const loaded = await source.loadLemmatization(annotatedLine)
 
-  expect(lemmatization[0][3]).toMatchObject({
+  expect(loaded[0][0][3]).toMatchObject({
     uniqueLemma: [new Lemma(elish)],
     suggested: true,
   })
 
-  await source.saveLemmatization(0, [
-    setReconstructionLemma(lemmatization, annotatedLine.variants[0], 1, [
-      new Lemma(enuma),
-    ]),
-  ])
+  await source.saveLemmatization(
+    0,
+    setWordLemma(
+      loaded,
+      loaded,
+      annotatedLine,
+      { variantIndex: 0, manuscriptIndex: null, tokenIndex: 1 },
+      [new Lemma(enuma)],
+    ),
+  )
   const savedLine = await source.loadAnnotatedLine(0)
   const [[reconstruction]] = await source.loadLemmatization(savedLine)
 

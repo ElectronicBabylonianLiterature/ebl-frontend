@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import {
   AnnotationWord,
+  countReconstructionWords,
   listLemmatizableWords,
 } from 'corpus/application/edit-lite/annotationWords'
 import { setWordLemma } from 'corpus/application/edit-lite/lemmaEdits'
@@ -63,6 +64,7 @@ function LemmatizationEditor({
     index,
     view: 'lemmatization',
     words,
+    stopCount: countReconstructionWords(words),
     isLocked,
     activation,
   })
@@ -76,7 +78,15 @@ function LemmatizationEditor({
     index,
     activation,
     (position, uniqueLemma) =>
-      change(setWordLemma(lemmatization, line, words[position], uniqueLemma)),
+      change(
+        setWordLemma(
+          lemmatization,
+          initialLemmatization,
+          line,
+          words[position],
+          uniqueLemma,
+        ),
+      ),
   )
   const editing: LemmaEditing = {
     line,
@@ -115,6 +125,7 @@ function LemmatizationEditor({
       change(
         setWordLemma(
           lemmatization,
+          initialLemmatization,
           line,
           { variantIndex, manuscriptIndex, tokenIndex },
           uniqueLemma,

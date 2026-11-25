@@ -3,7 +3,7 @@ import {
   toAcceptedAlignmentDto,
   toAcceptedLemmatizationDto,
 } from 'corpus/application/edit-lite/acceptedAnnotations'
-import { setReconstructionLemma } from 'corpus/domain/lemmatization'
+import { setWordLemma } from 'corpus/application/edit-lite/lemmaEdits'
 import { Line } from 'corpus/domain/line'
 import Word from 'dictionary/domain/Word'
 import {
@@ -70,10 +70,14 @@ async function draftLemmatization({
   view,
 }: Editing): Promise<[AnnotationDraft, unknown]> {
   const line = await openView(view, draftPosition, 'lemmatization')
-  const [loaded] = findAnnotation(view, draftPosition)?.lemmas?.value ?? []
-  const lemmatization = [
-    setReconstructionLemma(loaded, line.variants[0], 1, [new Lemma(lineWord)]),
-  ]
+  const loaded = findAnnotation(view, draftPosition)?.lemmas?.value ?? []
+  const lemmatization = setWordLemma(
+    loaded,
+    loaded,
+    line,
+    { variantIndex: 0, manuscriptIndex: null, tokenIndex: 1 },
+    [new Lemma(lineWord)],
+  )
   const draft: AnnotationDraft = { view: 'lemmatization', lemmatization }
   view.run((actions) => actions.changeAnnotation(draftPosition, draft, line))
   return [draft, { lemmatization: toAcceptedLemmatizationDto(lemmatization) }]

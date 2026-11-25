@@ -111,7 +111,8 @@ test('a created proper noun becomes the lemma of the word and is saved with the 
   const [variant] = (await source.loadAnnotatedLine(0)).variants
 
   expect(variant.reconstructionTokens[3].uniqueLemma).toEqual(['Marduk DN'])
-  expect(variant.manuscripts[0].atfTokens[1].uniqueLemma).toEqual([])
+  expect(variant.manuscripts[0].atfTokens[1].uniqueLemma).toEqual(['Marduk DN'])
+  expect(variant.manuscripts[1].atfTokens[3].uniqueLemma).toEqual(['eliš II'])
 })
 
 test('cancelling the proper noun gives the lemma select back with the focus', async () => {

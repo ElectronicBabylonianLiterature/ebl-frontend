@@ -57,7 +57,7 @@ export default function LemmaWordForm({
   const handleKeyDown = (event: React.KeyboardEvent): void =>
     handleWordKeys(event, {
       accept: (): void => {
-        if (token.suggested) {
+        if (token.suggested || token.hasLemma) {
           actions.setLemma(uniqueLemma)
         }
         flow.next()

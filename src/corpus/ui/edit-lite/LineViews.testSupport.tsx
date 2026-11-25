@@ -63,6 +63,15 @@ export function manuscriptRow(manuscriptNumber: number): HTMLElement {
   })
 }
 
+export function variantRow(
+  variantNumber: number,
+  rowName = 'Reconstruction',
+): HTMLElement {
+  return within(
+    screen.getByRole('group', { name: `Variant ${variantNumber}` }),
+  ).getByRole('group', { name: rowName })
+}
+
 export function reconstructionRow(): HTMLElement {
   return screen.getByRole('group', { name: 'Reconstruction' })
 }
