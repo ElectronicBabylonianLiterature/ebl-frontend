@@ -50,7 +50,7 @@ export default function useMapResearchSelection(
   )
   const clear = useCallback(() => setSelection(null), [])
   useClearSelectionOnFilterChange(filter, searchContainer, clear)
-  const close = () => {
+  const close = useCallback(() => {
     setSelection(null)
     const trigger = selectionTrigger.current
     if (trigger && trigger !== document.body && document.contains(trigger)) {
@@ -58,7 +58,7 @@ export default function useMapResearchSelection(
     } else {
       searchContainer.current?.querySelector('input')?.focus()
     }
-  }
+  }, [searchContainer])
   return {
     selection,
     selectSite,

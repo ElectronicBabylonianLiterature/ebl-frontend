@@ -20,7 +20,12 @@ interface Options {
   readonly onSelectFromUrl?: () => void
 }
 
-function clearLinkedResearch(research: ResearchSelection): void {
+type LinkedResearch = Pick<
+  ResearchSelection,
+  'selectedAreaId' | 'selectArea' | 'close' | 'clear'
+>
+
+function clearLinkedResearch(research: LinkedResearch): void {
   if (document.activeElement?.closest('.map-research-inspector')) {
     research.close()
   } else {
@@ -28,22 +33,24 @@ function clearLinkedResearch(research: ResearchSelection): void {
   }
 }
 
-function synchronizeLinkedArea({
-  experience,
-  research,
-  polygonIndex,
-  isLoaded,
-  error,
-  onSelectFromUrl,
-}: Options): void {
-  const polygonId = experience.selection?.polygonId ?? null
+function synchronizeLinkedArea(
+  polygonId: string | null,
+  setSelection: MapExperience['setSelection'],
+  research: LinkedResearch,
+  {
+    polygonIndex,
+    isLoaded,
+    error,
+    onSelectFromUrl,
+  }: Pick<Options, 'polygonIndex' | 'isLoaded' | 'error' | 'onSelectFromUrl'>,
+): void {
   if (polygonId === null) {
     if (research.selectedAreaId !== null) clearLinkedResearch(research)
     return
   }
   if (!isLoaded || error !== null) return
   if (!findExcavationPolygon(polygonIndex, polygonId)) {
-    experience.setSelection(null)
+    setSelection(null)
     if (research.selectedAreaId !== null) clearLinkedResearch(research)
     return
   }
@@ -53,27 +60,56 @@ function synchronizeLinkedArea({
   }
 }
 
-export default function useMapLinkedAreaSelection(options: Options) {
-  const { experience, research } = options
-  useEffect(() => synchronizeLinkedArea(options), [options])
+export default function useMapLinkedAreaSelection({
+  experience,
+  research,
+  polygonIndex,
+  isLoaded,
+  error,
+  onSelectFromUrl,
+}: Options) {
+  const polygonId = experience.selection?.polygonId ?? null
+  const { setSelection } = experience
+  const { selectedAreaId, selectArea, selectSite, close, clear } = research
+  useEffect(
+    () =>
+      synchronizeLinkedArea(
+        polygonId,
+        setSelection,
+        { selectedAreaId, selectArea, close, clear },
+        { polygonIndex, isLoaded, error, onSelectFromUrl },
+      ),
+    [
+      polygonId,
+      setSelection,
+      selectedAreaId,
+      selectArea,
+      close,
+      clear,
+      polygonIndex,
+      isLoaded,
+      error,
+      onSelectFromUrl,
+    ],
+  )
   return {
     selectSite: useCallback(
       (id: string, trigger?: HTMLElement) => {
-        experience.setSelection(null)
-        research.selectSite(id, trigger)
+        setSelection(null)
+        selectSite(id, trigger)
       },
-      [experience, research],
+      [setSelection, selectSite],
     ),
     selectArea: useCallback(
       (id: string, trigger?: HTMLElement, focusInspector = true) => {
-        experience.setSelection({ type: 'excavation-area', polygonId: id })
-        research.selectArea(id, trigger, focusInspector)
+        setSelection({ type: 'excavation-area', polygonId: id })
+        selectArea(id, trigger, focusInspector)
       },
-      [experience, research],
+      [setSelection, selectArea],
     ),
     close: useCallback(() => {
-      experience.setSelection(null)
-      research.close()
-    }, [experience, research]),
+      setSelection(null)
+      close()
+    }, [setSelection, close]),
   }
 }
