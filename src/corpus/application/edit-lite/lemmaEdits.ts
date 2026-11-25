@@ -1,5 +1,8 @@
 import _ from 'lodash'
-import { AnnotationWord } from 'corpus/application/edit-lite/annotationWords'
+import {
+  AnnotationWord,
+  pickWordToken,
+} from 'corpus/application/edit-lite/annotationWords'
 import { LineLemmatization } from 'corpus/domain/lemmatization'
 import { Line } from 'corpus/domain/line'
 import {
@@ -44,12 +47,10 @@ function replaceToken(
 
 export function findLemmaToken(
   lemmatization: Lemmatization,
-  { variantIndex, manuscriptIndex, tokenIndex }: AnnotationWord,
+  word: AnnotationWord,
 ): LemmatizationToken {
-  const [reconstruction, manuscripts] = lemmatization[variantIndex]
-  return manuscriptIndex === null
-    ? reconstruction[tokenIndex]
-    : manuscripts[manuscriptIndex][tokenIndex]
+  const [reconstruction, manuscripts] = lemmatization[word.variantIndex]
+  return pickWordToken(reconstruction, manuscripts, word)
 }
 
 export function isSameLemmaToken(

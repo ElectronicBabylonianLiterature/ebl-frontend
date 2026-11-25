@@ -6,7 +6,6 @@ import {
   TextServiceTestContext,
 } from 'corpus/application/TextService.testSupport'
 import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
-import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
 
 export const staleDisplayDto = {
   ...chapterDisplayDto,
@@ -15,12 +14,6 @@ export const staleDisplayDto = {
 }
 
 export const freshDisplayDto = { ...staleDisplayDto, atf: 'saved display' }
-
-export const noLineChanges: LinesUpdateDto = {
-  new: [],
-  deleted: [],
-  edited: [],
-}
 
 type ChapterCacheTestContext = TextServiceTestContext & {
   readonly service: TextService

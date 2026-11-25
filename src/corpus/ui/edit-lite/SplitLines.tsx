@@ -119,6 +119,15 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
       select(target)
     }
   }
+  const selectedIndexRef = useRef(selectedIndex)
+  selectedIndexRef.current = selectedIndex
+  const handleDeleted = (deletedIndex: number): void => {
+    const wasSelected = deletedIndex === selectedIndexRef.current
+    followDelete(deletedIndex)
+    if (wasSelected) {
+      listRef.current?.focus()
+    }
+  }
   const addLine = (): void => {
     actions.addLine()
     selectNewLine()
@@ -204,7 +213,7 @@ function SplitView({ state, initialLine }: Props): JSX.Element {
             lineState={lineState}
             isNew={isNewSelected}
             activity={activity}
-            onDeleted={followDelete}
+            onDeleted={handleDeleted}
           />
         </LineFlowContext.Provider>
       </section>

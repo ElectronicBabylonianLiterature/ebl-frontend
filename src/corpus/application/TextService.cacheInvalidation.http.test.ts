@@ -1,8 +1,8 @@
+import { noLineChanges } from 'corpus/application/edit-lite/lineEdits'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import {
   freshDisplayDto,
-  noLineChanges,
   staleDisplayDto,
 } from 'corpus/application/TextService.cacheInvalidation.testSupport'
 import { chapterId } from 'corpus/application/TextService.testSupport'

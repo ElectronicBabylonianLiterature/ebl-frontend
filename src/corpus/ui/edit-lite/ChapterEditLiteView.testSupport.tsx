@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   render,
   RenderResult,
@@ -19,7 +19,10 @@ import {
   FakeChapterEditSource,
   FakeChapterEditSourceOptions,
 } from 'corpus/ui/edit-lite/editLite.testSupport'
-import { editLiteChapterId } from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
+import {
+  editLiteChapterId,
+  editLiteTextDto,
+} from 'corpus/ui/edit-lite/editLiteFixtures.testSupport'
 import EditLiteFakeApi, {
   editLiteProvenanceDtos,
 } from 'corpus/ui/edit-lite/EditLiteFakeApi.testSupport'
@@ -58,31 +61,6 @@ export const editLiteHeading = 'Edit Poem of Creation Standard Babylonian I'
 export const secondEditLiteChapterId: ChapterId = {
   ...editLiteChapterId,
   name: 'II',
-}
-
-const editLiteTextDto: Dto = {
-  ...editLiteChapterId.textId,
-  name: 'Poem of Creation',
-  numberOfVerses: 162,
-  approximateVerses: false,
-  intro: '',
-  chapters: [
-    {
-      stage: 'Standard Babylonian',
-      name: 'I',
-      title: [],
-      uncertainFragments: [
-        { museumNumber: { prefix: 'K', number: '1', suffix: '' } },
-      ],
-    },
-    {
-      stage: 'Standard Babylonian',
-      name: 'II',
-      title: [],
-      uncertainFragments: [],
-    },
-  ],
-  references: [],
 }
 
 export const editLiteManuscriptDtos: readonly Dto[] = [
@@ -141,19 +119,19 @@ export function countTextRequests(fakeApi: EditLiteFakeApi): number {
   return countRequests(fakeApi, createTextUrl(editLiteChapterId.textId))
 }
 
-export function renderEditLiteRoute({
+function EditLiteRoute({
   path = chapterEditPath,
   search = '',
   session = writerSession,
-  fakeApi = createEditLiteFakeApi(),
+  fakeApi,
   links = [],
   showLocation = false,
-}: EditLiteRouteOptions = {}): RenderResult {
-  const routes = CorpusRoutes({
-    ...getServices(fakeApi.client),
-    sitemap: false,
-  })
-  return render(
+}: EditLiteRouteOptions & { readonly fakeApi: EditLiteFakeApi }): JSX.Element {
+  const routes = useMemo(
+    () => CorpusRoutes({ ...getServices(fakeApi.client), sitemap: false }),
+    [fakeApi],
+  )
+  return (
     <MemoryRouter initialEntries={[`${path}${search}`]}>
       <SessionContext.Provider value={session}>
         {links.map((link) => (
@@ -164,8 +142,22 @@ export function renderEditLiteRoute({
         {showLocation && <LocationDisplay />}
         <Switch>{routes}</Switch>
       </SessionContext.Provider>
-    </MemoryRouter>,
+    </MemoryRouter>
   )
+}
+
+export function renderEditLiteRoute(
+  options: EditLiteRouteOptions = {},
+): RenderResult & { changeSession(session: Session): void } {
+  const fakeApi = options.fakeApi ?? createEditLiteFakeApi()
+  const view = render(<EditLiteRoute {...options} fakeApi={fakeApi} />)
+  return {
+    ...view,
+    changeSession: (session: Session): void =>
+      view.rerender(
+        <EditLiteRoute {...options} fakeApi={fakeApi} session={session} />,
+      ),
+  }
 }
 
 export async function waitForLoadedLines(): Promise<void> {
@@ -181,7 +173,7 @@ export async function waitForLoadedEditLite(): Promise<void> {
 
 export async function renderLoadedEditLiteRoute(
   options: EditLiteRouteOptions = {},
-): Promise<RenderResult> {
+): Promise<ReturnType<typeof renderEditLiteRoute>> {
   const view = renderEditLiteRoute(options)
   await waitForLoadedEditLite()
   return view

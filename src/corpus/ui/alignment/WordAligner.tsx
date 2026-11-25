@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
-import _ from 'lodash'
 
 import 'corpus/ui/alignment/WordAligner.css'
 
@@ -19,6 +18,7 @@ export function useAlignmentInput(
 ): AlignmentInput {
   const [alignment, setAlignment] = useState(token.alignment)
   const [variant, setVariant] = useState(token.variant?.value ?? '')
+  const fieldId = useId()
 
   const handleAlignmentChange = (
     event: React.ChangeEvent<
@@ -36,7 +36,7 @@ export function useAlignmentInput(
 
   const fields = (
     <Row>
-      <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
+      <Form.Group as={Col} controlId={`${fieldId}-alignment`}>
         <Form.Label>Ideal word</Form.Label>
         <Form.Control
           as="select"
@@ -54,7 +54,7 @@ export function useAlignmentInput(
           )}
         </Form.Control>
       </Form.Group>
-      <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
+      <Form.Group as={Col} controlId={`${fieldId}-variant`}>
         <Form.Label>Variant</Form.Label>
         <Form.Control
           as="input"

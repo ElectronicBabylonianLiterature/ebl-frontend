@@ -115,7 +115,7 @@ describe.each(operations)('%s', (_name, change, apply) => {
       'revision-3',
     ])
     expect(textService.findChapterLines.mock.calls).toEqual([
-      [editChapterId, 0, 1, undefined, 'revision-2'],
+      [editChapterId, 0, 1, undefined, { revision: 'revision-2' }],
     ])
   })
 

@@ -166,3 +166,11 @@ test('the new line selected and edited while a line is deleted stays selected', 
   expect(numberInput).toHaveValue('7xy')
   expect(within(editor).getByText('6 of 6')).toBeInTheDocument()
 })
+
+test('deleting the selected line moves the focus to the line list', async () => {
+  const source = createFakeChapterEditSource({ lines })
+  await deleteSecondLine(source)
+
+  await waitForOrder(orderWithoutSecondLine)
+  expect(screen.getByRole('listbox', { name: 'Lines' })).toHaveFocus()
+})

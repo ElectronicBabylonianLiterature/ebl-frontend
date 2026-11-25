@@ -1,3 +1,4 @@
+import { Dto } from 'test-support/FakeApiExpectation'
 import _ from 'lodash'
 import {
   ChapterOutline,
@@ -175,4 +176,29 @@ export function buildLineSavedActions(
     { type: 'outlineReplaced', outline },
     { type: 'saveSucceeded', index, line },
   ]
+}
+
+export const editLiteTextDto: Dto = {
+  ...editLiteChapterId.textId,
+  name: 'Poem of Creation',
+  numberOfVerses: 162,
+  approximateVerses: false,
+  intro: '',
+  chapters: [
+    {
+      stage: 'Standard Babylonian',
+      name: 'I',
+      title: [],
+      uncertainFragments: [
+        { museumNumber: { prefix: 'K', number: '1', suffix: '' } },
+      ],
+    },
+    {
+      stage: 'Standard Babylonian',
+      name: 'II',
+      title: [],
+      uncertainFragments: [],
+    },
+  ],
+  references: [],
 }

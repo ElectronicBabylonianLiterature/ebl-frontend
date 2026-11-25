@@ -1,4 +1,3 @@
-import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
 import {
   lineAlignment,
   lineAlignmentDto,
@@ -14,7 +13,6 @@ import {
 } from 'corpus/application/edit-lite/chapterRequests'
 import {
   toDeletedLineDto,
-  toLineEditsDto,
   toNewLineDto,
 } from 'corpus/application/edit-lite/lineEdits'
 import { LineAlignment } from 'corpus/domain/alignment'
@@ -29,7 +27,6 @@ const manuscripts: readonly Manuscript[] = [
 const atf = '1. kur\n2. ra'
 
 const changes: readonly [ChapterChange, string, unknown][] = [
-  [{ type: 'saveLine', index: 3, line }, 'lines', toLineEditsDto(3, line)],
   [{ type: 'addLine', line }, 'lines', toNewLineDto(line)],
   [{ type: 'deleteLine', index: 5 }, 'lines', toDeletedLineDto(5)],
   [{ type: 'moveLine', from: 4, to: 1 }, 'lines/move', { from: 4, to: 1 }],
@@ -37,7 +34,26 @@ const changes: readonly [ChapterChange, string, unknown][] = [
   [
     { type: 'saveManuscripts', manuscripts, uncertainFragments: ['K.1'] },
     'manuscripts',
-    toManuscriptsDto(manuscripts, ['K.1']),
+    {
+      manuscripts: [
+        {
+          id: 1,
+          siglumDisambiguator: '1a',
+          oldSigla: [],
+          museumNumber: '',
+          accession: '',
+          provenance: 'Nineveh',
+          periodModifier: 'None',
+          period: 'Neo-Assyrian',
+          type: 'Library',
+          notes: '',
+          colophon: '',
+          unplacedLines: '',
+          references: [],
+        },
+      ],
+      uncertainFragments: ['K.1'],
+    },
   ],
   [
     { type: 'saveAlignment', index: 2, alignment: lineAlignment },

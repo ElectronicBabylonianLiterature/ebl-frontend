@@ -1,5 +1,4 @@
-import { createChapter } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
+import { Chapter, createChapter } from 'corpus/domain/chapter.testSupport'
 
 it('fills every missing field with its default', () => {
   expect(createChapter({})).toEqual(

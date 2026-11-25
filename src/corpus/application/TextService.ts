@@ -10,6 +10,8 @@ import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 
 export { createChapterUrl } from 'corpus/application/chapterUrls'
 
+const textListEndpoints: readonly ChapterEndpoint[] = ['manuscripts', 'import']
+
 export default class TextService extends ChapterOutlineService {
   updateEditedLines(
     id: ChapterId,
@@ -29,7 +31,17 @@ export default class TextService extends ChapterOutlineService {
       createChapterUpdateUrl(id, endpoint, revision),
       body,
       true,
-      () => this.invalidateChapterDisplayCache(id),
+      () => this.invalidateCachesAfterUpdate(id, endpoint),
     )
+  }
+
+  private invalidateCachesAfterUpdate(
+    id: ChapterId,
+    endpoint: ChapterEndpoint,
+  ): void {
+    this.invalidateChapterDisplayCache(id)
+    if (textListEndpoints.includes(endpoint)) {
+      this.cachedTexts = null
+    }
   }
 }

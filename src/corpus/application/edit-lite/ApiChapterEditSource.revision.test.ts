@@ -1,5 +1,8 @@
 import ApiChapterEditSource from 'corpus/application/edit-lite/ApiChapterEditSource'
-import { chapterChangedMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
+import {
+  chapterChangedMessage,
+  outlineNotReturnedMessage,
+} from 'corpus/application/edit-lite/chapterChangeMessages'
 import {
   apiOutline,
   createTextServiceMock,
@@ -27,7 +30,7 @@ let source: ApiChapterEditSource
 
 function requestedLineRevisions(): unknown[] {
   return textService.findChapterLines.mock.calls.map(
-    ([, , , , revision]) => revision,
+    ([, , , , options]) => options?.revision,
   )
 }
 
@@ -70,8 +73,8 @@ it('sends the revision of the loaded outline with every lines request', async ()
   await source.loadLines(0, 15, signal)
 
   expect(textService.findChapterLines.mock.calls).toEqual([
-    [editChapterId, 0, 10, signal, 'revision-1'],
-    [editChapterId, 10, 5, signal, 'revision-1'],
+    [editChapterId, 0, 10, signal, { revision: 'revision-1' }],
+    [editChapterId, 10, 5, signal, { revision: 'revision-1' }],
   ])
 })
 
@@ -91,7 +94,7 @@ it('saves against the revision of the loaded outline', async () => {
   await expect(source.saveLine(4, original, draft)).resolves.toBe(savedOutline)
 
   expect(textService.findChapterLines.mock.calls).toEqual([
-    [editChapterId, 4, 1, undefined, 'revision-1'],
+    [editChapterId, 4, 1, undefined, { revision: 'revision-1' }],
   ])
   expect(textService.updateEditedLines.mock.calls).toEqual([
     [editChapterId, toLineEditsDto(4, draft), 'revision-1'],
@@ -197,4 +200,18 @@ it.each([
     'revision-1',
     'revision-1',
   ])
+})
+
+it.each([
+  ['no outline', null],
+  ['an outline without a revision', { ...apiOutline, revision: undefined }],
+])('rejects a save that returns %s', async (_description, response) => {
+  textService.updateEditedLines.mockReset()
+  textService.updateEditedLines.mockResolvedValue(
+    response as unknown as ChapterOutline,
+  )
+
+  await expect(source.saveLine(4, original, draft)).rejects.toThrow(
+    outlineNotReturnedMessage,
+  )
 })

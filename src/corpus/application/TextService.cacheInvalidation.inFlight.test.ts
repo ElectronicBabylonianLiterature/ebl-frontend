@@ -1,3 +1,4 @@
+import { noLineChanges } from 'corpus/application/edit-lite/lineEdits'
 import { chapterId } from 'corpus/application/TextService.testSupport'
 import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
@@ -6,7 +7,6 @@ import {
   createChapterCacheTestContext,
   createHttpSuccessPostJsonMock,
   freshDisplayDto,
-  noLineChanges,
   staleDisplayDto,
 } from 'corpus/application/TextService.cacheInvalidation.testSupport'
 

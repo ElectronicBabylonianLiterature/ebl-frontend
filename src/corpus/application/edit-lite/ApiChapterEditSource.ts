@@ -9,6 +9,7 @@ import {
   chapterChangedMessage,
   lineNotReturnedMessage,
   numberedLineChangedMessage,
+  outlineNotReturnedMessage,
 } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { toChapterUpdate } from 'corpus/application/edit-lite/chapterRequests'
@@ -210,11 +211,16 @@ export class ApiChapterEditSource implements ChapterEditSource {
     signal?: AbortSignal,
   ): Promise<readonly Line[]> {
     return this.textService
-      .findChapterLines(this.id, offset, limit, signal, this.revision)
+      .findChapterLines(this.id, offset, limit, signal, {
+        revision: this.revision,
+      })
       .catch(rejectRevisionConflict)
   }
 
-  private keepRevision(outline: ChapterOutline): ChapterOutline {
+  private keepRevision(outline: ChapterOutline | null): ChapterOutline {
+    if (typeof outline?.revision !== 'string') {
+      throw new Error(outlineNotReturnedMessage)
+    }
     this.revision = outline.revision
     return outline
   }

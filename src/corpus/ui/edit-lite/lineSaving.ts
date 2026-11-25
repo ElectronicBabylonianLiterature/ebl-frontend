@@ -189,8 +189,10 @@ export function addLine(store: EditLiteStore): void {
     })
   } else {
     store.dispatch({ type: 'lineAddStarted' })
-    void loadDefaultLine(store, lastIndex).then((line) =>
-      store.dispatch({ type: 'lineAdded', line }),
-    )
+    void loadDefaultLine(store, lastIndex).then((line) => {
+      if (store.getState().newLine?.status === 'loading') {
+        store.dispatch({ type: 'lineAdded', line })
+      }
+    })
   }
 }

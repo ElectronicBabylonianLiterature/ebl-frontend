@@ -14,5 +14,8 @@ export function numberedLineChangedMessage(lineNumber: string): string {
   return reloadMessage(`Line ${lineNumber} has changed on the server`)
 }
 
+export const outlineNotReturnedMessage =
+  'The chapter was not returned by the server. Reload the chapter to see whether your change was saved.'
+
 export const lineNotReturnedMessage =
   'The line was not returned by the data source.'

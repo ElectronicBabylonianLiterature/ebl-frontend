@@ -61,6 +61,17 @@ export function searchLemmaOptions(
     .then((words) => words.map((word) => new LemmaOption(word)))
 }
 
+export function createLemmaOptionsLoader(
+  search: LemmaSearch,
+  language: string | undefined,
+): (inputValue: string, callback: (lemmas: LemmaOption[]) => void) => void {
+  return (inputValue, callback): void => {
+    searchLemmaOptions(search, inputValue, language)
+      .then(callback)
+      .catch(() => callback([]))
+  }
+}
+
 export default function LemmaSelect<Selected extends Lemma>({
   ariaLabel,
   inputId,
@@ -101,7 +112,6 @@ export default function LemmaSelect<Selected extends Lemma>({
       defaultOptions={defaultOptions}
       onChange={onChange}
       onKeyDown={handleKeyDown}
-      menuIsOpen={undefined}
       value={value}
       placeholder={'---'}
       components={{ Option, MultiValueLabel }}

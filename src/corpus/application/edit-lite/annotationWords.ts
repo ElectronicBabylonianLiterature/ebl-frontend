@@ -104,13 +104,23 @@ export function findPreviousWord(position: number): number {
   return Math.max(position - 1, 0)
 }
 
+export function pickWordToken<Item>(
+  reconstruction: readonly Item[],
+  manuscripts: readonly (readonly Item[])[],
+  { manuscriptIndex, tokenIndex }: AnnotationWord,
+): Item {
+  const tokens =
+    manuscriptIndex === null ? reconstruction : manuscripts[manuscriptIndex]
+  return tokens[tokenIndex]
+}
+
 export function findLineToken(line: Line, word: AnnotationWord): Token {
   const variant = line.variants[word.variantIndex]
-  const tokens =
-    word.manuscriptIndex === null
-      ? variant.reconstructionTokens
-      : variant.manuscripts[word.manuscriptIndex].atfTokens
-  return tokens[word.tokenIndex]
+  return pickWordToken(
+    variant.reconstructionTokens,
+    variant.manuscripts.map((manuscript) => manuscript.atfTokens),
+    word,
+  )
 }
 
 export function listSimilarWords(

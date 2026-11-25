@@ -80,6 +80,7 @@ class LemmaSelectionForm extends Component<Props, State> {
       .searchLemma(inputValue)
       .then((words) => words.map((word) => new LemmaOption(word)))
       .then(callback)
+      .catch(() => callback([]))
   }
 
   handleChange = (

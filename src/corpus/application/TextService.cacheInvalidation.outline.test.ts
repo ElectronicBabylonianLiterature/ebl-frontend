@@ -1,3 +1,4 @@
+import { noLineChanges } from 'corpus/application/edit-lite/lineEdits'
 import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 import {
   ChapterEndpoint,
@@ -16,7 +17,7 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 
 const saves: readonly [ChapterEndpoint, ChapterRequestBody][] = [
-  ['lines', { new: [], deleted: [], edited: [] }],
+  ['lines', noLineChanges],
   ['lines/move', { from: 0, to: 1 }],
   ['import', { atf: '1. kur' }],
   ['manuscripts', { manuscripts: [], uncertainFragments: [] }],
@@ -51,11 +52,32 @@ test('a refused save that returns the outline keeps the warm chapter display', a
   await service.findChapterDisplay(chapterId)
 
   await expect(
-    service.updateEditedLines(chapterId, { new: [], deleted: [], edited: [] }),
+    service.updateEditedLines(chapterId, noLineChanges),
   ).rejects.toThrow('refused')
 
   await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
     atf: 'old display',
   })
   expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+})
+
+test.each<[ChapterEndpoint, number]>([
+  ['manuscripts', 2],
+  ['import', 2],
+  ['lines', 1],
+  ['lines/move', 1],
+])('a %s save reloads the text list %i time(s)', async (endpoint, requests) => {
+  const { apiClient, service } = createChapterCacheTestContext()
+  apiClient.fetchJson.mockResolvedValue([])
+  apiClient.postJson.mockImplementation(
+    createHttpSuccessPostJsonMock(Promise.resolve(apiOutline)),
+  )
+  await service.list()
+
+  await service.updateChapterOutline(chapterId, endpoint, noLineChanges)
+  await service.list()
+
+  expect(
+    apiClient.fetchJson.mock.calls.filter(([path]) => path === '/texts'),
+  ).toHaveLength(requests)
 })

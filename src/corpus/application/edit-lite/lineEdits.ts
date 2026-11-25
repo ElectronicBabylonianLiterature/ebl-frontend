@@ -3,7 +3,11 @@ import { toLineDto } from 'corpus/application/chapterDtoSerialization'
 import { LinesUpdateDto } from 'corpus/application/edit-lite/ChapterEditSource'
 import { Line } from 'corpus/domain/line'
 
-const noLineChanges: LinesUpdateDto = { new: [], deleted: [], edited: [] }
+export const noLineChanges: LinesUpdateDto = {
+  new: [],
+  deleted: [],
+  edited: [],
+}
 
 export function toLineEditsDto(index: number, line: Line): LinesUpdateDto {
   return { ...noLineChanges, edited: [{ index, line: toLineDto(line) }] }

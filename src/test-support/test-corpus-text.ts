@@ -8,7 +8,8 @@ import {
 import { PeriodModifiers } from 'common/utils/period'
 import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
-import { createChapter, createText } from 'corpus/domain/text'
+import { createText } from 'corpus/domain/text'
+import { createChapter } from 'corpus/domain/chapter.testSupport'
 import {
   Manuscript,
   ManuscriptTypes,

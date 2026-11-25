@@ -4,6 +4,7 @@ import ConfirmModal from 'corpus/ui/edit-lite/ConfirmModal'
 import { useEditLiteContext } from 'corpus/ui/edit-lite/EditLiteContext'
 import { errorMessage } from 'corpus/ui/edit-lite/editLiteStore'
 import { useLineFlow } from 'corpus/ui/edit-lite/LineFlowContext'
+import { pluralize } from 'corpus/ui/edit-lite/lineSummary'
 import { WordActivation } from 'corpus/ui/edit-lite/useWordFlow'
 import { UniqueLemma } from 'transliteration/domain/Lemmatization'
 
@@ -19,16 +20,12 @@ export interface LemmaInstances {
   request(position: number, word: string, uniqueLemma: UniqueLemma): void
 }
 
-function count(amount: number, noun: string): string {
-  return `${amount} ${noun}${amount === 1 ? '' : 's'}`
-}
-
 export function describeLemma(uniqueLemma: UniqueLemma): string {
   return uniqueLemma.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', ')
 }
 
 export function describeInstances({ words, lines }: WordInstances): string {
-  return `${count(words, 'word')} in ${count(lines.length, 'line')} of this chapter.`
+  return `${pluralize(words, 'word')} in ${pluralize(lines.length, 'line')} of this chapter.`
 }
 
 export function describeReplacedLemmas({ lemmatized }: WordInstances): string {

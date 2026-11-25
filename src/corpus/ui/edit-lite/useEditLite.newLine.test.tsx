@@ -68,6 +68,17 @@ test('addLine loads the last line first when it is not loaded yet', async () => 
   expect(view.state().lines).toEqual({})
 })
 
+test('a new line discarded while the last line loads does not come back', async () => {
+  const view = renderEditLiteHook(lines)
+  const loaded = holdNextCall(view.source.loadLines)
+  view.run((actions) => actions.addLine())
+  view.run((actions) => actions.resetLine(3))
+
+  await act(async () => loaded.resolve())
+
+  expect(view.state().newLine).toBeNull()
+})
+
 test.each<[string, (view: EditLiteHook) => void]>([
   [
     'cannot be loaded',

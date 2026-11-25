@@ -1,5 +1,6 @@
 import { createLine, createManuscriptLine } from 'corpus/domain/line'
-import { createChapter, createText } from 'corpus/domain/text'
+import { createText } from 'corpus/domain/text'
+import { createChapter } from 'corpus/domain/chapter.testSupport'
 import { textIdToString } from 'transliteration/domain/text-id'
 import { Manuscript } from 'corpus/domain/manuscript'
 

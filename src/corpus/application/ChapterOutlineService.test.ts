@@ -146,7 +146,9 @@ describe('findChapterLines', () => {
     apiClient.fetchJson.mockResolvedValueOnce(linesPage)
 
     await expect(
-      service.findChapterLines(chapterId, 20, 2, signal, 'revision 7/a'),
+      service.findChapterLines(chapterId, 20, 2, signal, {
+        revision: 'revision 7/a',
+      }),
     ).resolves.toEqual(linesPage.lines.map(fromLineDto))
     expect(apiClient.fetchJson.mock.calls).toEqual([
       [
@@ -162,7 +164,9 @@ describe('findChapterLines', () => {
     async (revision) => {
       apiClient.fetchJson.mockResolvedValueOnce(linesPage)
 
-      await service.findChapterLines(chapterId, 20, 2, undefined, revision)
+      await service.findChapterLines(chapterId, 20, 2, undefined, {
+        revision,
+      })
 
       expect(apiClient.fetchJson.mock.calls).toEqual([
         [`${chapterUrl}/lines?offset=20&limit=2`, false, undefined],
@@ -175,7 +179,9 @@ describe('findChapterLines', () => {
     apiClient.fetchJson.mockRejectedValueOnce(error)
 
     await expect(
-      service.findChapterLines(chapterId, 20, 2, undefined, 'revision-7'),
+      service.findChapterLines(chapterId, 20, 2, undefined, {
+        revision: 'revision-7',
+      }),
     ).rejects.toBe(error)
   })
 })

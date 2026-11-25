@@ -66,7 +66,7 @@ describe('loadAnnotatedLine', () => {
     await source.loadLines(7, 1)
 
     expect(textService.findChapterLines.mock.calls).toEqual([
-      [editChapterId, 7, 1, undefined, undefined],
+      [editChapterId, 7, 1, undefined, { revision: undefined }],
     ])
   })
 

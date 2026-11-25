@@ -6,7 +6,7 @@ import type { ActionMeta, OnChangeValue } from 'react-select'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelect, {
   getTokenLanguage,
-  searchLemmaOptions,
+  createLemmaOptionsLoader,
 } from 'fragmentarium/ui/lemmatization/LemmaSelect'
 
 type Props = {
@@ -18,7 +18,6 @@ type Props = {
 }
 type State = {
   options: OnChangeValue<LemmaOption, true>
-  menuIsOpen?: boolean
 }
 
 export default class LemmaAnnotationForm extends React.Component<Props, State> {
@@ -33,20 +32,17 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
 
     this.state = {
       options: this.token?.lemmas ?? [],
-      menuIsOpen: undefined,
     }
   }
 
   loadOptions = (
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void,
-  ): void => {
-    searchLemmaOptions(
+  ): void =>
+    createLemmaOptionsLoader(
       this.props.wordService,
-      inputValue,
       getTokenLanguage(this.props.token?.token),
-    ).then(callback)
-  }
+    )(inputValue, callback)
 
   handleChange = (
     options: OnChangeValue<LemmaOption, true>,

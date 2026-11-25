@@ -78,11 +78,6 @@ export type ChapterRequestBody =
   | WordInstancesLemmaDto
 
 export type ChapterChange =
-  | {
-      readonly type: 'saveLine'
-      readonly index: number
-      readonly line: Line
-    }
   | { readonly type: 'addLine'; readonly line: Line }
   | { readonly type: 'deleteLine'; readonly index: number }
   | { readonly type: 'moveLine'; readonly from: number; readonly to: number }

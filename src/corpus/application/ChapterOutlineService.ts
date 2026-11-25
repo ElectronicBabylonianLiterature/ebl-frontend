@@ -38,12 +38,8 @@ export class ChapterOutlineService extends TextReadService {
     offset: number,
     limit: number,
     signal?: AbortSignal,
-    revisionOrOptions?: string | ChapterLinesOptions,
+    { revision, tokens }: ChapterLinesOptions = {},
   ): Promise<readonly Line[]> {
-    const { revision, tokens }: ChapterLinesOptions =
-      typeof revisionOrOptions === 'object'
-        ? revisionOrOptions
-        : { revision: revisionOrOptions }
     return this.apiClient
       .fetchJson<LinesPageDto>(
         createChapterEndpointUrl(id, 'lines', {

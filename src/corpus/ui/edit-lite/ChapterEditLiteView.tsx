@@ -15,6 +15,7 @@ import { Text } from 'corpus/domain/text'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import { parseEditLiteParameters } from 'corpus/ui/edit-lite/editLiteParameters'
+import ChapterEditHeader from 'corpus/ui/edit-lite/ChapterEditHeader'
 import EditLiteTabs from 'corpus/ui/edit-lite/EditLiteTabs'
 import { findInitialLine } from 'corpus/ui/edit-lite/lineIndex'
 import { hasUnsavedChanges } from 'corpus/ui/edit-lite/lineStates'
@@ -85,6 +86,7 @@ function EditLiteView({
       }
     >
       <div className="chapter-edit-view ebl-consistent-links">
+        <ChapterEditHeader text={text} outline={state.outline} />
         {!canWrite && (
           <Alert variant="info" className="chapter-edit-view__notice">
             {readOnlyNotice}
@@ -119,7 +121,7 @@ async function loadEditLiteData(
 const LoadedEditLiteView = withData<Props, SessionProps, EditLiteData>(
   EditLiteView,
   loadEditLiteData,
-  { watch: (props) => [createChapterUrl(props.id)] },
+  { watch: (props) => [createChapterUrl(props.id), props.canWrite] },
 )
 
 export default function ChapterEditLiteView(props: Props): JSX.Element {

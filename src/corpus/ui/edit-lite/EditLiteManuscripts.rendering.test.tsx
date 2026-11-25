@@ -12,7 +12,6 @@ import {
   renderLoadedManuscripts,
   secondSiglum,
   setUpManuscriptsProvenances,
-  toggleOf,
 } from 'corpus/ui/edit-lite/EditLiteManuscripts.testSupport'
 import * as manuscriptSummary from 'corpus/ui/edit-lite/EditLiteManuscriptSummary'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -31,6 +30,14 @@ const services: ManuscriptsServices = {
   searchBibliography: jest.fn(),
 }
 const manyManuscriptsCount = 300
+
+function rowToggles(expanded: 'true' | 'false'): HTMLElement[] {
+  return Array.from(
+    document.querySelectorAll<HTMLElement>(
+      `button[aria-expanded="${expanded}"]`,
+    ),
+  )
+}
 
 function summarizedIds(
   summarizeManuscript: jest.SpyInstance<unknown, [Manuscript]>,
@@ -97,14 +104,14 @@ test('a long chapter mounts a form for the opened row only', async () => {
   )
   await renderLoadedManuscripts(services)
 
-  expect(screen.getAllByRole('button', { expanded: false })).toHaveLength(
-    manyManuscriptsCount,
-  )
-  expect(screen.queryAllByRole('textbox')).toHaveLength(0)
-  expect(screen.queryAllByRole('combobox')).toHaveLength(0)
+  expect(rowToggles('false')).toHaveLength(manyManuscriptsCount)
+  expect(screen.queryAllByLabelText('Museum Number')).toHaveLength(0)
 
-  await userEvent.click(toggleOf('NinNA250x'))
+  const toggle = rowToggles('false').find((button) =>
+    button.textContent?.startsWith('NinNA250x'),
+  ) as HTMLElement
+  await userEvent.click(toggle)
 
   expect(screen.getAllByLabelText('Museum Number')).toHaveLength(1)
-  expect(screen.getAllByRole('button', { expanded: true })).toHaveLength(1)
+  expect(rowToggles('true')).toEqual([toggle])
 })

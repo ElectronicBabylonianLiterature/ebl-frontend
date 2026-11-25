@@ -1,3 +1,4 @@
+import { noLineChanges } from 'corpus/application/edit-lite/lineEdits'
 import {
   chapterId,
   chapterUrl,
@@ -5,7 +6,6 @@ import {
 import {
   createChapterCacheTestContext,
   freshDisplayDto,
-  noLineChanges,
 } from 'corpus/application/TextService.cacheInvalidation.testSupport'
 
 jest.mock('bibliography/application/BibliographyService')

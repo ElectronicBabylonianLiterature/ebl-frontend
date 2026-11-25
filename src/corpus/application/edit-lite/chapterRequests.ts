@@ -12,7 +12,6 @@ import {
 } from 'corpus/application/edit-lite/ChapterEditSource'
 import {
   toDeletedLineDto,
-  toLineEditsDto,
   toNewLineDto,
 } from 'corpus/application/edit-lite/lineEdits'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -35,10 +34,6 @@ type UpdateFactories = {
 }
 
 const updateFactories: UpdateFactories = {
-  saveLine: (change) => ({
-    endpoint: 'lines',
-    body: toLineEditsDto(change.index, change.line),
-  }),
   addLine: (change) => ({ endpoint: 'lines', body: toNewLineDto(change.line) }),
   deleteLine: (change) => ({
     endpoint: 'lines',

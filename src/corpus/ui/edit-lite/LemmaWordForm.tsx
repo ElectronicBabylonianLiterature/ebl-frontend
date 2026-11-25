@@ -6,7 +6,7 @@ import { handleWordKeys, useFieldFocus } from 'corpus/ui/edit-lite/wordKeys'
 import { WordActionButton } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import ProperNounCreationPanel from 'fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel'
 import LemmaSelect, {
-  searchLemmaOptions,
+  createLemmaOptionsLoader,
 } from 'fragmentarium/ui/lemmatization/LemmaSelect'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import Lemma from 'transliteration/domain/Lemma'
@@ -93,11 +93,7 @@ export default function LemmaWordForm({
               autoFocus={false}
               blurInputOnSelect={false}
               isDisabled={false}
-              loadOptions={(inputValue, callback): void => {
-                void searchLemmaOptions(context, inputValue, language).then(
-                  callback,
-                )
-              }}
+              loadOptions={createLemmaOptionsLoader(context, language)}
               onChange={(options): void => actions.setLemma([...options])}
               onTab={flow.next}
               onShiftTab={flow.previous}
