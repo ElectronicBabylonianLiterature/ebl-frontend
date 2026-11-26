@@ -23,13 +23,7 @@ function inspector(
 ): JSX.Element {
   return (
     <MemoryRouter>
-      <MapInspector
-        polygon={polygon}
-        summary={summary}
-        siteName="Uruk"
-        status={status}
-        onClear={jest.fn()}
-      />
+      <MapInspector polygon={polygon} summary={summary} status={status} />
     </MemoryRouter>
   )
 }
@@ -48,14 +42,12 @@ describe('MapInspector', () => {
         <MapInspector
           polygon={{ ...polygon, areaSquareKm: null }}
           summary={undefined}
-          siteName="Uruk"
           status="loaded-empty"
-          onClear={jest.fn()}
         />
       </MemoryRouter>,
     )
     expect(screen.queryByText('Mapped area')).not.toBeInTheDocument()
-    expect(screen.getByText(POLYGON_ID)).toBeVisible()
+    expect(screen.getByText('Mapped findspots')).toBeVisible()
   })
   it.each(unavailableStates)(
     'does not present derived zeroes while data is %s',
@@ -115,8 +107,8 @@ describe('MapInspector', () => {
     }
     render(inspector('loaded-with-mappings', summary))
 
-    expect(screen.getByText('Polygon ID')).toBeInTheDocument()
-    expect(screen.getByText(POLYGON_ID)).toBeInTheDocument()
+    expect(screen.queryByText('Polygon ID')).not.toBeInTheDocument()
+    expect(screen.queryByText(POLYGON_ID)).not.toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent(
       '3 accessible tablets across 2 findspots.',
     )

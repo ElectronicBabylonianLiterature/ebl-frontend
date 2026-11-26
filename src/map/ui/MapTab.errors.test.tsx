@@ -1,7 +1,6 @@
-import { openLayerControls } from 'map/domain/mapLayerControls.testSupport'
 import fs from 'fs'
 import path from 'path'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 
@@ -22,7 +21,7 @@ import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')
 
-const BACKGROUND_WARNING = /The interactive map could not be loaded/
+const BACKGROUND_WARNING = /The map background is unavailable/
 const EXCAVATION_WARNING = 'Excavation areas are unavailable.'
 const REQUESTED_AREAS_URL = '/tools/map?mv=1&areas=1'
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
@@ -38,7 +37,7 @@ describe('MapTab map errors', () => {
 
   it('shows a user-visible warning when the style document fails to load', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', {
@@ -61,7 +60,7 @@ describe('MapTab map errors', () => {
   it('shows a warning when the style request cannot reach the network', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', {
@@ -78,7 +77,7 @@ describe('MapTab map errors', () => {
   it('stays quiet when the map is used before the style has loaded', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('mousemove', { point: { x: 10, y: 20 } })
@@ -91,7 +90,7 @@ describe('MapTab map errors', () => {
   it('clears the warning once the style finishes loading', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', {
@@ -109,7 +108,7 @@ describe('MapTab map errors', () => {
 
   it('ignores a tile failure', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', {
@@ -124,7 +123,7 @@ describe('MapTab map errors', () => {
 
   it('reports a sprite failure to Sentry without showing the banner', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', {
@@ -141,7 +140,7 @@ describe('MapTab map errors', () => {
 
   it('reports a generic style error without showing the banner', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', { error: { message: 'Failed to fetch' } })
@@ -158,14 +157,13 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
-    await openLayerControls()
+    await screen.findByLabelText('Excavation areas')
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
-    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+    expect(screen.getByLabelText('Excavation areas')).toBeEnabled()
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Retry excavation areas' }),
+    ).toBeVisible()
   })
 
   it('shows an unavailable state for a malformed HTTP-200 asset', async () => {
@@ -175,23 +173,15 @@ describe('MapTab map errors', () => {
 
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
 
-    await openLayerControls()
+    await screen.findByLabelText('Excavation areas')
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
-    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+    expect(screen.getByLabelText('Excavation areas')).toBeEnabled()
   })
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
     renderMapTab(makeFragmentService([makeProvenance()]), REQUESTED_AREAS_URL)
-    await openLayerControls()
-
-    await waitFor(() =>
-      expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
-    )
-    await userEvent.click(screen.getByRole('button', { name: 'Visualization' }))
-    expect(
-      screen.getByRole('region', { name: 'Map visualization' }),
-    ).toBeInTheDocument()
+    await screen.findByRole('combobox', { name: 'Inspect excavation area' })
 
     act(() => {
       triggerMapEvent('error', {
@@ -201,12 +191,7 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
-    expect(
-      screen.queryByRole('region', { name: 'Map visualization' }),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: 'Visualization' }),
-    ).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Excavation areas')).toBeEnabled()
   })
 
   it('falls back to the findspot list when the map cannot be constructed', async () => {
@@ -237,7 +222,7 @@ describe('MapTab map errors', () => {
 
   it('ignores map errors without a nested error object', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     act(() => {
       triggerMapEvent('error', { sourceId: 'ebl-findspots' })

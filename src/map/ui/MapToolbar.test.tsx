@@ -1,15 +1,15 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapSelectionPill from 'map/ui/MapSelectionPill'
+import { Button } from 'react-bootstrap'
 import MapToolbar, { type MapPanelDefinition } from 'map/ui/MapToolbar'
 
 function panel(
   overrides: Partial<MapPanelDefinition> = {},
 ): MapPanelDefinition {
   return {
-    id: 'layers',
-    label: 'Map layers',
+    id: 'measurement',
+    label: 'Measure',
     isSupported: true,
     render: () => <p>content</p>,
     ...overrides,
@@ -24,7 +24,7 @@ describe('MapToolbar', () => {
       <MapToolbar
         {...props}
         extraAction={
-          <MapSelectionPill label="Show selected area" onShow={showSelection} />
+          <Button onClick={showSelection}>Show selected area</Button>
         }
       />,
     )
@@ -42,16 +42,20 @@ describe('MapToolbar', () => {
   it('focuses the first supported tool when the closed tool was removed', () => {
     const onToggle = jest.fn()
     const { rerender } = render(
-      <MapToolbar panels={[panel()]} active="layers" onToggle={onToggle} />,
+      <MapToolbar
+        panels={[panel()]}
+        active="measurement"
+        onToggle={onToggle}
+      />,
     )
-    const original = screen.getByRole('button', { name: 'Map layers' })
+    const original = screen.getByRole('button', { name: 'Measure' })
     original.focus()
     rerender(
       <MapToolbar
         panels={[
           panel({
-            id: 'inspector' as MapPanelDefinition['id'],
-            label: 'Inspector',
+            id: 'visualization',
+            label: 'Visualization',
           }),
         ]}
         active={null}
@@ -59,14 +63,18 @@ describe('MapToolbar', () => {
       />,
     )
     expect(original).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Inspector' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Visualization' })).toHaveFocus()
   })
 
   it('keeps focus on the page when the last supported tool is removed', () => {
     const { rerender } = render(
-      <MapToolbar panels={[panel()]} active="layers" onToggle={jest.fn()} />,
+      <MapToolbar
+        panels={[panel()]}
+        active="measurement"
+        onToggle={jest.fn()}
+      />,
     )
-    screen.getByRole('button', { name: 'Map layers' }).focus()
+    screen.getByRole('button', { name: 'Measure' }).focus()
     rerender(<MapToolbar panels={[]} active={null} onToggle={jest.fn()} />)
     expect(document.body).toHaveFocus()
   })
@@ -85,10 +93,14 @@ describe('MapToolbar', () => {
 
   it('marks the active button as expanded', () => {
     render(
-      <MapToolbar panels={[panel()]} active="layers" onToggle={jest.fn()} />,
+      <MapToolbar
+        panels={[panel()]}
+        active="measurement"
+        onToggle={jest.fn()}
+      />,
     )
 
-    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Measure' })).toHaveAttribute(
       'aria-expanded',
       'true',
     )
@@ -98,15 +110,15 @@ describe('MapToolbar', () => {
     const onToggle = jest.fn()
     render(<MapToolbar panels={[panel()]} active={null} onToggle={onToggle} />)
 
-    screen.getByRole('button', { name: 'Map layers' }).click()
-    expect(onToggle).toHaveBeenCalledWith('layers')
+    screen.getByRole('button', { name: 'Measure' }).click()
+    expect(onToggle).toHaveBeenCalledWith('measurement')
   })
   it('preserves focus outside the drawer when selection changes externally', () => {
     const props = { panels: [panel()], onToggle: jest.fn() }
     const { rerender } = render(
       <>
         <input aria-label="Map filter" />
-        <MapToolbar {...props} active="layers" />
+        <MapToolbar {...props} active="measurement" />
       </>,
     )
     const input = screen.getByRole('textbox', { name: 'Map filter' })

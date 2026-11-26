@@ -26,7 +26,7 @@ describe('MapTab URL state', () => {
       '/tools/map?mv=1&findspot=bab',
     )
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await waitFor(() => expect(input).toHaveValue('bab'))
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
     expect(
@@ -37,7 +37,7 @@ describe('MapTab URL state', () => {
   it('does not add a query string on a plain visit with no filter', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     await waitFor(() => {
       expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
@@ -52,7 +52,7 @@ describe('MapTab URL state', () => {
   it('writes a typed filter to the URL', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'bab')
 
     await waitFor(() => {
@@ -67,7 +67,7 @@ describe('MapTab URL state', () => {
     const overlongFilter = 'a'.repeat(MAX_FILTER_LENGTH + 50)
     const cappedFilter = 'a'.repeat(MAX_FILTER_LENGTH)
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     fireEvent.change(input, { target: { value: overlongFilter } })
 
     await waitFor(() => expect(input).toHaveValue(cappedFilter))

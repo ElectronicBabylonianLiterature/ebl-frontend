@@ -72,6 +72,7 @@ export interface FragmentRepository {
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
+    signal?: AbortSignal,
   ): Promise<Fragment>
   findInCorpus(
     number: string,

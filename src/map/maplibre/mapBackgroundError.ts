@@ -1,3 +1,5 @@
+import type { Map as MapLibreMap } from 'maplibre-gl'
+
 const MAP_STYLE_HOST = 'basemaps.cartocdn.com'
 const MAP_STYLE_PATH = '/gl/positron-gl-style/style.json'
 
@@ -74,4 +76,20 @@ export function getReportableMapError(
   if (isTileScoped(mapEvent) || isMapBackgroundLoadError(event)) return null
 
   return error instanceof Error ? error : new Error(error.message)
+}
+
+export function installFallbackMapBackground(map: MapLibreMap): void {
+  map.setStyle({
+    version: 8,
+    metadata: { 'ebl:fallback': true },
+    glyphs: 'https://tiles.basemaps.cartocdn.com/fonts/{fontstack}/{range}.pbf',
+    sources: {},
+    layers: [
+      {
+        id: 'background',
+        type: 'background',
+        paint: { 'background-color': '#f2efe8' },
+      },
+    ],
+  })
 }

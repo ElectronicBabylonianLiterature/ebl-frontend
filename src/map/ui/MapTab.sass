@@ -1,12 +1,319 @@
 @use 'src/design-tokens' as *
-@use 'src/map/ui/map-zindex' as *
-@use 'src/map/ui/map-panel-drawer'
-@use 'src/map/ui/map-inspector-content'
+@use 'map-inspector-content'
+@use 'map-tools'
+
+.map-experience
+  display: grid
+  gap: 1rem
+  min-width: 0
+  color: $ebl-color-text-primary
+
+  :where(button, a, input):focus-visible
+    outline: 3px solid $ebl-color-brand-primary-dark
+    outline-offset: 3px
+
+  .btn
+    min-height: 2.75rem
+    min-width: 2.75rem
+
+  &__topbar
+    display: grid
+    grid-template-columns: minmax(12rem, 1fr) minmax(15rem, 1.3fr) auto
+    align-items: center
+    gap: 0.85rem 1.25rem
+    padding: 1rem 1.15rem
+    border: 1px solid $ebl-color-border-subtle
+    border-top: 3px solid $ebl-color-brand-primary
+    border-radius: 0.4rem
+    background: $ebl-color-surface-primary
+
+  &__heading
+    min-width: 0
+
+    h3
+      border: 0
+      padding: 0
+      margin: 0 0 0.3rem
+      color: $ebl-color-project-title
+      font-size: 1.35rem
+      font-weight: 700
+      line-height: 1.25
+
+    p
+      margin: 0
+      color: $ebl-color-text-neutral
+      font-size: 0.875rem
+      line-height: 1.5
+
+  &__search
+    min-width: 0
+
+    label
+      display: block
+      margin-bottom: 0.35rem
+      color: $ebl-color-text-neutral
+      font-size: 0.875rem
+      font-weight: 600
+
+    .findspot-filter__control
+      min-height: 2.75rem
+      border-color: $ebl-color-border-input
+
+    .findspot-filter__input-container,
+    .findspot-filter__single-value
+      color: $ebl-color-text-primary
+
+    .findspot-filter__placeholder
+      color: $ebl-color-text-neutral
+
+    .findspot-filter__clear-indicator,
+    .findspot-filter__dropdown-indicator
+      justify-content: center
+      min-height: 2.75rem
+      min-width: 2.75rem
+      padding: 0.5rem
+      color: $ebl-color-text-neutral
+
+  &__actions
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: flex-end
+    gap: 0.5rem
+    min-width: 0
+
+  &__layers
+    grid-column: 1 / -1
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 0.5rem 1.25rem
+    padding-top: 0.65rem
+    border-top: 1px solid $ebl-color-border-light
+    font-size: 0.875rem
+
+    .form-check
+      display: inline-flex
+      align-items: center
+      gap: 0.55rem
+      min-height: 2.75rem
+      margin: 0
+      padding-left: 0
+
+    .form-check-input
+      flex: 0 0 auto
+      float: none
+      width: 1.15rem
+      height: 1.15rem
+      margin: 0
+      border-color: $ebl-color-text-neutral
+      cursor: pointer
+
+    .form-check-label
+      display: inline-flex
+      align-items: center
+      min-height: 2.75rem
+      color: $ebl-color-text-primary
+      font-weight: 600
+      cursor: pointer
+
+    p
+      margin: 0
+      color: $ebl-color-text-neutral
+
+    .alert
+      flex: 1 1 100%
+      margin: 0
+
+  &__body
+    display: grid
+    grid-template-columns: minmax(0, 1fr) minmax(15rem, 17rem)
+    gap: 1rem
+    min-width: 0
+    height: min(72vh, 48rem)
+    min-height: 32rem
 
 .map-stage
+  position: relative
+  display: flex
+  flex-direction: column
+  min-width: 0
+  min-height: 0
+  width: 100%
+  height: 100%
+  overflow: hidden
+  border: 1px solid $ebl-color-border-default
+  border-radius: 0.4rem
+  background: $ebl-color-surface-subtle
+
+  &__container
+    flex: 1 1 auto
+    min-height: 0
+    width: 100%
+
   &__background-alert
     flex: 0 0 auto
-    margin-bottom: 0.75rem
+    margin: 0
+    border-radius: 0
+    font-size: 0.875rem
+
+  .maplibregl-ctrl-group button
+    width: 2.75rem
+    height: 2.75rem
+
+  .maplibregl-popup-content
+    max-width: 100%
+    border-radius: 0.35rem
+    color: $ebl-color-text-primary
+    font-size: 0.875rem
+    line-height: 1.5
+
+    a
+      color: $ebl-color-brand-primary-dark
+      font-weight: 600
+
+  .maplibregl-popup-close-button
+    min-width: 2.75rem
+    min-height: 2.75rem
+
+.map-research-panel
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  min-width: 0
+  min-height: 0
+  overflow-y: auto
+  border: 1px solid $ebl-color-border-subtle
+  border-radius: 0.4rem
+  background: $ebl-color-surface-primary
+  overscroll-behavior: contain
+
+.map-experience .map-site-browser,
+.map-experience .map-research-inspector
+  min-width: 0
+
+  h3,
+  h4
+    margin: 0
+    color: $ebl-color-project-title
+    font-size: 1.05rem
+    font-weight: 700
+    line-height: 1.4
+
+  &__header
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: space-between
+    gap: 0.5rem
+    padding: 1rem
+    border-bottom: 1px solid $ebl-color-border-light
+
+    > span
+      color: $ebl-color-text-neutral
+      font-size: 0.875rem
+      line-height: 1.5
+
+.map-experience .map-site-browser
+  display: flex
+  flex-direction: column
+  min-height: 0
+
+  &__list
+    min-height: 0
+    margin: 0
+    padding: 0
+    overflow-y: auto
+    list-style: none
+    overscroll-behavior: contain
+
+  &__item
+    margin-bottom: 0
+    display: flex
+    align-items: center
+    gap: 0.65rem
+    padding: 0.6rem 1rem
+    border-bottom: 1px solid $ebl-color-border-light
+
+    > div
+      flex: 1 1 auto
+      min-width: 0
+
+    a
+      display: inline-flex
+      align-items: center
+      min-height: 2.75rem
+      color: $ebl-color-brand-primary-dark
+      font-weight: 600
+      overflow-wrap: anywhere
+
+  &__select
+    display: flex
+    align-items: center
+    justify-content: space-between
+    flex: 0 0 auto
+    width: auto
+    min-height: 2.75rem
+    padding: 0.5rem 0.65rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.3rem
+    background: $ebl-color-surface-primary
+    color: $ebl-color-text-primary
+    font-size: 0.95rem
+    text-align: left
+    overflow-wrap: anywhere
+
+    &[aria-pressed='true']
+      border-color: $ebl-color-brand-primary-dark
+      border-left-width: 4px
+      background: $ebl-color-surface-inline-link
+      font-weight: 600
+
+  &__meta
+    display: block
+    color: $ebl-color-text-neutral
+    font-size: 0.875rem
+
+.map-experience .map-research-inspector
+  border-bottom: 1px solid $ebl-color-border-subtle
+
+  > p
+    margin: 0.85rem 1rem
+
+  > a
+    display: flex
+    align-items: center
+    min-height: 2.75rem
+    margin: 0 1rem 1rem
+    color: $ebl-color-brand-primary-dark
+    font-size: 0.875rem
+    font-weight: 600
+
+  > .map-inspector
+    margin: 0 1rem 1rem
+    font-size: 0.875rem
+
+  h4:focus
+    outline: 3px solid $ebl-color-brand-primary-dark
+    outline-offset: 3px
+
+  &__details
+    margin: 0
+    padding: 1rem
+    font-size: 0.875rem
+
+    dt
+      color: $ebl-color-text-neutral
+      font-weight: 600
+
+    dd
+      margin: 0.2rem 0 0.85rem
+      overflow-wrap: anywhere
+
+  &__type,
+  &__source
+    color: $ebl-color-text-neutral
+    font-size: 0.875rem
 
 .map-share-link
   display: flex
@@ -17,158 +324,141 @@
   max-width: 100%
 
   &__status
-    min-width: 0
-    overflow-wrap: anywhere
-    color: $ebl-color-text-secondary
+    max-width: 16rem
+    color: $ebl-color-text-neutral
     font-size: 0.875rem
-
-.map-experience
-  display: grid
-  gap: 0.85rem
-  color: $ebl-color-text-primary
-
-  &__topbar
-    display: flex
-    flex-wrap: wrap
-    align-items: flex-end
-    gap: 0.75rem 1rem
-    padding: 0.8rem 0.95rem
-    border: 1px solid $ebl-color-border-subtle
-    border-radius: 0.35rem
-    background: $ebl-color-surface-primary
-
-  &__heading
-    flex: 1 1 12rem
-    min-width: 0
     overflow-wrap: anywhere
 
-    span
-      display: block
-      color: $ebl-color-text-secondary
-      font-size: 0.72rem
-      font-weight: 700
-      text-transform: uppercase
+@media (hover: hover)
+  .map-site-browser__select:hover
+    border-color: $ebl-color-brand-primary
+    background: $ebl-color-surface-inline-link
 
-    h3
-      margin: 0
-      font-size: 1.45rem
-      font-weight: 700
-      line-height: 1.15
+@media (max-width: $ebl-breakpoint-lg-max)
+  .map-experience__topbar
+    grid-template-columns: minmax(0, 1fr) auto
 
-  &__search
-    flex: 2 1 16rem
-    min-width: 0
-    max-width: 24rem
+  .map-experience__search
+    grid-column: 1 / -1
+    grid-row: 2
 
-  &__actions
-    display: flex
-    flex: 1 1 auto
-    flex-wrap: wrap
-    align-items: center
-    justify-content: flex-end
-    gap: 0.45rem
-    min-width: 0
-    max-width: 100%
-    color: $ebl-color-text-secondary
-    font-size: 0.875rem
-
-  &__body
-    position: relative
-    height: min(76vh, 760px)
-
-.map-stage
-  position: relative
-  display: flex
-  flex-direction: column
-  width: 100%
-  height: 100%
-  overflow: hidden
-  border: 1px solid $ebl-color-border-default
-  border-radius: 0.45rem
-  background: $ebl-color-surface-muted
-
-  &__container
-    flex: 1 1 auto
+  .map-experience__body
+    grid-template-columns: minmax(0, 1fr)
+    grid-template-rows: 28rem auto
+    height: auto
     min-height: 0
-    width: 100%
 
-.map-presentation-bar
-  display: flex
-  align-items: center
-  justify-content: space-between
-  gap: 0.5rem
-  padding: 0.5rem 0.75rem
-  border: 1px solid $ebl-color-border-subtle
-  border-radius: 0.35rem
+  .map-research-panel
+    overflow: visible
 
-.map-experience--presenting .map-experience__body
-  height: 82vh
-
-.map-tab
-  min-width: 0
-
-  &__description
-    color: $ebl-color-text-secondary
-    margin: 0.75rem 0
-
-  &__findspot-links
-    margin-top: 1rem
-
-    ul
-      columns: 2 14rem
-      padding-left: 1.25rem
-
-  &__findspot-links-heading
-    font-size: 1rem
-    margin-bottom: 0.5rem
-
-  .maplibregl-popup-content a
-    color: $ebl-color-brand-primary
-    font-weight: 500
+  .map-site-browser__list
+    max-height: 18rem
 
 @media (max-width: $ebl-breakpoint-md-max)
   .map-experience__topbar
-    align-items: stretch
+    grid-template-columns: minmax(0, 1fr)
+    padding: 0.85rem
 
-  .map-experience__heading,
-  .map-experience__search,
   .map-experience__actions
-    flex-basis: 100%
-    max-width: 100%
+    justify-content: flex-start
+
+  .map-experience__layers
+    align-items: center
+    gap: 0.35rem 0.85rem
 
   .map-experience__body
-    height: 68vh
-    min-height: min(30rem, 85vh)
+    grid-template-columns: minmax(0, 1fr)
+    grid-template-rows: 25rem auto
+    height: auto
+    min-height: 0
 
-  .map-experience__actions .btn,
-  .map-panel-drawer__header .btn,
-  .map-presentation-bar .btn
+  .map-research-panel
+    overflow: visible
+
+  .map-site-browser__list
+    max-height: 18rem
+
+@media (prefers-reduced-motion: reduce)
+  .map-experience *,
+  .findspot-filter__menu
+    scroll-behavior: auto
+    transition: none
+
+.map-tab__description
+  margin: 0
+  color: $ebl-color-text-neutral
+  font-size: 0.875rem
+
+.map-experience__marker-status
+  color: $ebl-color-text-neutral
+
+.findspot-filter__option
+  display: flex
+  align-items: center
+  min-height: 2.75rem
+
+.map-excavation-browser
+  display: grid
+  gap: 0.5rem
+  padding: 1rem
+  border-bottom: 1px solid $ebl-color-border-light
+  color: $ebl-color-text-neutral
+  font-size: 0.875rem
+
+  select
     min-height: 2.75rem
+    width: 100%
+    max-width: 100%
+    color: $ebl-color-text-primary
 
-.map-experience__search .findspot-filter__control
-  min-height: 38px
+    &:focus-visible
+      outline: 3px solid $ebl-color-brand-primary-dark
+      outline-offset: 3px
 
-@media (max-width: $ebl-breakpoint-md-max)
-  .map-panel-drawer__body button,
-  .map-panel-drawer__body .btn,
-  .map-panel-drawer__header .btn
-    min-height: 2.75rem
-    min-width: 2.75rem
+.map-experience .map-experience__heading
+  h3
+    padding: 0
+    border: 0
+    margin: 0 0 0.3rem
+    font-size: 1.35rem
+    color: $ebl-color-project-title
 
-  .map-panel-drawer__body .form-select,
-  .map-experience__search .findspot-filter__control,
-  .findspot-filter__option
-    min-height: 2.75rem
+  p
+    margin: 0
+    color: $ebl-color-text-neutral
+    font-size: 0.875rem
+    line-height: 1.5
 
-  .map-panel-drawer__body .form-check-label
-    display: inline-flex
-    min-height: 2.75rem
+.map-research-tools
+  display: grid
+  gap: .75rem
+
+  .map-toolbar__bar
+    display: flex
+    flex-wrap: wrap
+    gap: .4rem
+
+    > .btn
+      flex: 1 1 auto
+
+  &__panel
+    padding: .75rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: .4rem
+
+  &__heading
+    display: flex
     align-items: center
+    justify-content: space-between
+    gap: .5rem
+    margin-bottom: .75rem
 
-
+    h4
+      margin: 0
+      font-size: 1rem
 .map-legend
   position: absolute
-  z-index: $map-z-toolbar
+  z-index: 2
   top: 0.75rem
   left: 0.75rem
   pointer-events: auto
@@ -216,9 +506,6 @@
 
     &--dash-dot
       border-style: solid
-
-    &--halo
-      border-style: double
 
   &__label
     overflow-wrap: anywhere

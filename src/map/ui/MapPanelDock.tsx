@@ -1,14 +1,15 @@
-import React from 'react'
-import type { RefObject } from 'react'
-import MapToolbar, { type MapPanelDefinition } from 'map/ui/MapToolbar'
-import MapPanelDrawer from 'map/ui/MapPanelDrawer'
-import type { MapPanelController } from 'map/ui/useMapPanel'
+import React, { useEffect, useRef } from 'react'
+import { Button } from 'react-bootstrap'
+import MapToolbar, {
+  MAP_PANEL_CONTAINER_ID,
+  type MapPanelDefinition,
+} from 'map/ui/MapToolbar'
+import type { MapToolsController } from 'map/ui/useMapTools'
 
 interface Props {
   readonly panels: readonly MapPanelDefinition[]
-  readonly panel: MapPanelController
+  readonly panel: MapToolsController
   readonly selectionAction?: React.ReactNode
-  readonly drawerRef?: RefObject<HTMLElement>
   readonly status?: React.ReactNode
 }
 
@@ -16,34 +17,53 @@ export default function MapPanelDock({
   panels,
   panel,
   selectionAction,
-  drawerRef,
   status,
 }: Props): JSX.Element {
+  const closeButton = useRef<HTMLButtonElement>(null)
   const activePanel = panels.find(
     (definition) => definition.id === panel.active && definition.isSupported,
   )
+  const activePanelId = activePanel?.id
+  useEffect(() => {
+    if (activePanelId) closeButton.current?.focus()
+  }, [activePanelId])
 
-  const hasTools = panels.some((definition) => definition.isSupported)
   return (
-    <div
-      className={`map-panel-dock${status ? ' map-panel-dock--with-status' : ''}${status && !hasTools ? ' map-panel-dock--status-only' : ''}`}
-    >
+    <div className="map-research-tools">
       <MapToolbar
         panels={panels}
         active={panel.active}
         onToggle={panel.toggle}
         extraAction={selectionAction}
       />
-      {status ? <div className="map-panel-dock__status">{status}</div> : null}
+      {status}
       {activePanel ? (
-        <MapPanelDrawer
-          key={activePanel.id}
-          title={activePanel.label}
-          onClose={panel.close}
-          rootRef={drawerRef}
+        <section
+          id={MAP_PANEL_CONTAINER_ID}
+          aria-label={activePanel.label}
+          className="map-research-tools__panel"
+          onKeyDown={(event) => {
+            if (event.key === 'Escape' && !event.defaultPrevented) {
+              event.stopPropagation()
+              panel.close()
+            }
+          }}
         >
+          <div className="map-research-tools__heading">
+            <h4>{activePanel.label}</h4>
+            <Button
+              ref={closeButton}
+              type="button"
+              variant="outline-secondary"
+              size="sm"
+              aria-label={'Close ' + activePanel.label}
+              onClick={panel.close}
+            >
+              Close
+            </Button>
+          </div>
           {activePanel.render()}
-        </MapPanelDrawer>
+        </section>
       ) : null}
     </div>
   )

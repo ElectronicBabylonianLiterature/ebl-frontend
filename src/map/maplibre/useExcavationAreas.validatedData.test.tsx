@@ -31,9 +31,8 @@ function Harness({
   const mapRef = useRef(mockMapInstance as unknown as MapLibreMap)
   useExcavationAreas(mapRef, {
     isVisible: true,
-    selectedPolygonId: null,
-    onSelectPolygon: jest.fn(),
     polygonIndex: index,
+    selectedPolygonId: null,
   })
   return null
 }

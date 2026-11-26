@@ -23,7 +23,7 @@ const clusterIdProperty = 'cluster_id'
 
 it('ignores every map callback captured before its owner unmounts', async () => {
   const { unmount } = renderMapTab(makeFragmentService([makeProvenance()]))
-  await screen.findByLabelText('Filter findspots by name')
+  await screen.findByLabelText('Search sites')
   const callbacks = mockOn.mock.calls.map(([, callbackOrLayer, callback]) =>
     typeof callbackOrLayer === 'function' ? callbackOrLayer : callback,
   )
@@ -48,7 +48,7 @@ it('ignores every map callback captured before its owner unmounts', async () => 
 
 it('ignores a cluster expansion rejection after its owner unmounts', async () => {
   const { unmount } = renderMapTab(makeFragmentService([makeProvenance()]))
-  await screen.findByLabelText('Filter findspots by name')
+  await screen.findByLabelText('Search sites')
   let rejectExpansion: (error: Error) => void = () => undefined
   mockGetClusterExpansionZoom.mockReturnValue(
     new Promise((_resolve, reject) => {
@@ -57,6 +57,7 @@ it('ignores a cluster expansion rejection after its owner unmounts', async () =>
   )
   mockGetSource.mockReturnValue({
     getClusterExpansionZoom: mockGetClusterExpansionZoom,
+    setData: jest.fn(),
   })
   mockQueryRenderedFeatures.mockReturnValue([
     {
@@ -77,11 +78,12 @@ it('ignores a cluster expansion rejection after its owner unmounts', async () =>
 
 it('reports an active cluster expansion failure and falls back to its center', async () => {
   renderMapTab(makeFragmentService([makeProvenance()]))
-  await screen.findByLabelText('Filter findspots by name')
+  await screen.findByLabelText('Search sites')
   const error = new Error('cluster lookup failed')
   mockGetClusterExpansionZoom.mockRejectedValue(error)
   mockGetSource.mockReturnValue({
     getClusterExpansionZoom: mockGetClusterExpansionZoom,
+    setData: jest.fn(),
   })
   mockQueryRenderedFeatures.mockReturnValue([
     {

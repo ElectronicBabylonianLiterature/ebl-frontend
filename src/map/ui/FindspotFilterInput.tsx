@@ -49,39 +49,42 @@ export default function FindspotFilterInput({
     selectedOption ?? (filter ? { value: filter, label: filter } : null)
 
   return (
-    <Select<FindspotOption>
-      value={value}
-      controlShouldRenderValue={selectedOption !== null}
-      inputValue={inputValue}
-      onInputChange={(nextInput, meta) => {
-        if (meta.action === 'input-change') {
-          const nextFilter = normalizeMapFilter(nextInput)
+    <>
+      <label htmlFor="findspot-filter-input">Search sites</label>
+      <Select<FindspotOption>
+        inputId="findspot-filter-input"
+        value={value}
+        controlShouldRenderValue={selectedOption !== null}
+        inputValue={inputValue}
+        onInputChange={(nextInput, meta) => {
+          if (meta.action === 'input-change') {
+            const nextFilter = normalizeMapFilter(nextInput)
+            if (nextFilter !== filter) {
+              internallyRequestedFilterRef.current = nextFilter
+            }
+            setInputValue(nextFilter)
+            onFilterChange(nextFilter)
+          }
+        }}
+        onChange={(option) => {
+          const nextFilter = option ? option.value : ''
           if (nextFilter !== filter) {
             internallyRequestedFilterRef.current = nextFilter
           }
-          setInputValue(nextFilter)
+          setInputValue('')
           onFilterChange(nextFilter)
+        }}
+        options={options}
+        filterOption={(option, rawInput) =>
+          matchesFindspot(option.label, rawInput)
         }
-      }}
-      onChange={(option) => {
-        const nextFilter = option ? option.value : ''
-        if (nextFilter !== filter) {
-          internallyRequestedFilterRef.current = nextFilter
-        }
-        setInputValue('')
-        onFilterChange(nextFilter)
-      }}
-      options={options}
-      filterOption={(option, rawInput) =>
-        matchesFindspot(option.label, rawInput)
-      }
-      placeholder="Filter by site name..."
-      aria-label="Filter findspots by name"
-      classNamePrefix="findspot-filter"
-      isClearable
-      menuPortalTarget={document.body}
-      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-      noOptionsMessage={() => 'No site names match your filter.'}
-    />
+        placeholder="Search archaeological sites…"
+        classNamePrefix="findspot-filter"
+        isClearable
+        menuPortalTarget={document.body}
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        noOptionsMessage={() => 'No site names match your filter.'}
+      />
+    </>
   )
 }

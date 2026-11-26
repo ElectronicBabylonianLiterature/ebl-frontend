@@ -17,7 +17,7 @@ import { EXCAVATION_AREAS_SOURCE_ID } from 'map/domain/mapLayerIds'
 
 jest.mock('maplibre-gl')
 
-it('switches visualization through its drawer and keeps URL, legend and feature state consistent', async () => {
+it('switches visualization through its sidebar tool and keeps URL, legend and feature state consistent', async () => {
   resetMapMocks()
   mockGetSource.mockImplementation((sourceId: string) =>
     sourceId === EXCAVATION_AREAS_SOURCE_ID ? {} : undefined,
@@ -83,4 +83,14 @@ it('switches visualization through its drawer and keeps URL, legend and feature 
       screen.getByRole('region', { name: 'Map legend details' }),
     ).getByText('Mapping evidence source'),
   ).toBeVisible()
+  await userEvent.click(visualization)
+  expect(
+    screen.queryByRole('region', { name: 'Visualization' }),
+  ).not.toBeInTheDocument()
+  await userEvent.click(visualization)
+  await userEvent.keyboard('{Escape}')
+  expect(
+    screen.queryByRole('region', { name: 'Visualization' }),
+  ).not.toBeInTheDocument()
+  expect(visualization).toHaveFocus()
 })
