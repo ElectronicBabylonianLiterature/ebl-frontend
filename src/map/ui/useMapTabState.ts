@@ -11,6 +11,7 @@ import useMapExperience from 'map/ui/useMapExperience'
 import useMapTools from 'map/ui/useMapTools'
 import useMapPanelAvailability from 'map/ui/useMapPanelAvailability'
 import useMapVisualization from 'map/ui/useMapVisualization'
+import useMapMeasurement from 'map/ui/useMapMeasurement'
 import useMapResearchSelection from 'map/ui/useMapResearchSelection'
 import useMapLinkedAreaSelection from 'map/ui/useMapLinkedAreaSelection'
 import useMapLinkedTablets from 'map/ui/useMapLinkedTablets'
@@ -87,11 +88,15 @@ export default function useMapTabState(
     isVisible: experience.showExcavationAreas,
     selectedAreaId: research.selectedAreaId,
   })
+  const isMeasurementActive =
+    panel.active === 'measurement' && !isBackgroundUnavailable
+  const isInteractionEnabled = !isMeasurementActive
   const mapRef = useFindspotMap(mapContainer, filteredProvenances, {
     camera,
     onMapBackgroundErrorChange: setIsBackgroundUnavailable,
     onFindspotSelect: research.selectSite,
     onExcavationSelect: research.selectArea,
+    isInteractionEnabled,
   })
   useMapSourceData(mapRef, filteredProvenances, camera)
   const visualization = useMapVisualization(
@@ -107,6 +112,7 @@ export default function useMapTabState(
     values: visualization.values,
     onAvailabilityChange: setIsRenderedAreasUnavailable,
     retryVersion: areasRetryVersion,
+    isInteractionEnabled,
   })
   useMapContainerResize(mapContainer, mapRef)
   useEffect(() => {
@@ -122,6 +128,7 @@ export default function useMapTabState(
       canShowExcavationAreas && !isRenderedAreasUnavailable,
     isBackgroundUnavailable,
   })
+  const measurement = useMapMeasurement(mapRef, isMeasurementActive)
   const resetView = useCallback(() => {
     camera.claim()
     resetMapCamera(mapRef.current)
@@ -167,6 +174,7 @@ export default function useMapTabState(
     fragmentMapData,
     polygonIndex,
     visualization,
+    measurement,
     excavationPolygons: sortedExcavationPolygons(polygonIndex),
     resetView,
     retryAreas,

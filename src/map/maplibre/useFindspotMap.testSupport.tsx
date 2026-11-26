@@ -23,6 +23,7 @@ export function HookHarness({
   provenances,
   onMapBackgroundErrorChange,
   cameraResetVersion = 0,
+  isInteractionEnabled,
   onFindspotSelect,
   onExcavationSelect,
 }: {
@@ -30,6 +31,7 @@ export function HookHarness({
   provenances: Parameters<typeof useFindspotMap>[1]
   onMapBackgroundErrorChange?: (hasError: boolean) => void
   cameraResetVersion?: number
+  isInteractionEnabled?: boolean
   onFindspotSelect?: (id: string) => void
   onExcavationSelect?: (id: string) => void
 }): JSX.Element | null {
@@ -43,6 +45,7 @@ export function HookHarness({
   useFindspotMap(ref, provenances, {
     onMapBackgroundErrorChange,
     camera,
+    isInteractionEnabled,
     onFindspotSelect,
     onExcavationSelect,
   })

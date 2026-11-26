@@ -6,6 +6,7 @@ import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import MapPanelDock from 'map/ui/MapPanelDock'
 import MapInspector from 'map/ui/MapInspector'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
+import MapMeasurePanel from 'map/ui/MapMeasurePanel'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 
@@ -29,6 +30,12 @@ export default function MapResearchSidebar({
           onModeChange={state.experience.setVisualization}
         />
       ),
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
   ]
   return (
