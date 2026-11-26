@@ -9,7 +9,7 @@ import {
 const STATE_CASES: readonly [string, Partial<MapUrlState>][] = [
   ['defaults', {}],
   ['filter', { filter: 'Uruk' }],
-  ['areas', { showExcavationAreas: true }],
+  ['areas hidden', { showExcavationAreas: false }],
   [
     'selection',
     { selection: { type: 'excavation-area', polygonId: 'uruk-area' } },
@@ -19,7 +19,7 @@ const STATE_CASES: readonly [string, Partial<MapUrlState>][] = [
 ]
 
 it.each(STATE_CASES)(
-  'serializes and merges the same normalized state for %s',
+  'preserves the normalized state and explicit area visibility for %s',
   (_label, changes) => {
     const state = { ...DEFAULT_MAP_URL_STATE, ...changes }
     const serialized = serializeMapUrlState(state)
@@ -33,20 +33,21 @@ it.each(STATE_CASES)(
     expect(parseMapUrlState(merged)).toEqual(state)
     expect(parameters.getAll('outside')).toEqual(['a', 'b'])
     parameters.delete('outside')
-    expect(Object.fromEntries(parameters)).toEqual(
-      Object.fromEntries(new URLSearchParams(serialized)),
-    )
+    const expected = new URLSearchParams(serialized)
+    expected.set('mv', '1')
+    expected.set('areas', state.showExcavationAreas ? '1' : '0')
+    expect(Object.fromEntries(parameters)).toEqual(Object.fromEntries(expected))
   },
 )
 
-it('clears all managed parameters when the normalized state is default', () => {
+it('clears research parameters while preserving explicit area visibility', () => {
   expect(serializeMapUrlState(DEFAULT_MAP_URL_STATE)).toBe('')
   expect(
     mergeMapUrlStateIntoSearch(
       'mv=1&findspot=Uruk&areas=1&selected=area:uruk&viz=count&terrain=1&outside=a',
       DEFAULT_MAP_URL_STATE,
     ),
-  ).toBe('outside=a')
+  ).toBe('outside=a&mv=1&areas=1')
 })
 
 it('treats repeated valueless fields as empty strings', () => {

@@ -5,7 +5,8 @@ import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs'
 import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/maplibre/mapCamera'
 import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
-import { initializeFindspotSource } from 'map/maplibre/mapFindspotSource'
+import { createFindspotStyleHandlers } from 'map/maplibre/mapFindspotStyle'
+import type { MapCameraOwnership } from 'map/maplibre/useMapCameraOwnership'
 import {
   type FindspotMapHandlers,
   subscribeFindspotInteractions,
@@ -21,12 +22,13 @@ interface FindspotMapState {
   provenances: readonly ProvenanceRecord[] | null
   isInteractionEnabled: boolean
   interactionVersion: number
-  cameraResetVersion: number
-  cameraResetProvenances: readonly ProvenanceRecord[] | null
 }
 
 interface FindspotMapOptions {
   getState: () => FindspotMapState
+  camera: MapCameraOwnership
+  onFindspotSelect?: (id: string) => void
+  onExcavationSelect?: (polygonId: string) => void
   navigate: (path: string) => void
   reportError: (error: Error) => void
   onBackgroundErrorChange?: (hasError: boolean) => void
@@ -53,27 +55,13 @@ function createMap(
   }
 }
 
-function initializeStyle(
-  map: MapLibreMap,
-  options: FindspotMapOptions,
-  cameraResetVersionAtCreation: number,
-): void {
-  options.onBackgroundErrorChange?.(false)
-  const state = options.getState()
-  if (!state.provenances) return
-
-  const resetStillOwnsLatestData =
-    state.cameraResetVersion !== cameraResetVersionAtCreation &&
-    state.provenances === state.cameraResetProvenances
-  initializeFindspotSource(map, state.provenances, !resetStillOwnsLatestData)
-}
-
 function handleMapError(
   event: MapLibreErrorEvent,
   options: FindspotMapOptions,
+  onBackgroundErrorChange: (hasError: boolean) => void,
 ): void {
   if (isMapBackgroundLoadError(event)) {
-    options.onBackgroundErrorChange?.(true)
+    onBackgroundErrorChange(true)
     return
   }
   const reportableError = getReportableMapError(event)
@@ -85,7 +73,7 @@ export function initializeFindspotMap(
   mapRef: MutableRefObject<MapLibreMap | null>,
   options: FindspotMapOptions,
 ): (() => void) | undefined {
-  const cameraResetVersionAtCreation = options.getState().cameraResetVersion
+  const isInitialCamera = options.camera.capture()
   const map = createMap(container, options)
   if (!map) return
 
@@ -98,15 +86,24 @@ export function initializeFindspotMap(
     isCurrentMap,
     provenances: () => options.getState().provenances,
     getInteractionVersion: () => options.getState().interactionVersion,
+    camera: options.camera,
+    onFindspotSelect: options.onFindspotSelect,
+    onExcavationSelect: options.onExcavationSelect,
     navigate: options.navigate,
     reportError: options.reportError,
   }
+  const styleHandlers = createFindspotStyleHandlers(map, {
+    camera: options.camera,
+    provenances: handlers.provenances,
+    isInitialCamera,
+    onBackgroundErrorChange: options.onBackgroundErrorChange,
+  })
   const handleStyleLoad = (): void => {
-    if (isCurrentMap())
-      initializeStyle(map, options, cameraResetVersionAtCreation)
+    if (isCurrentMap()) styleHandlers.onStyleLoad()
   }
   const handleError = (event: MapLibreErrorEvent): void => {
-    if (isCurrentMap()) handleMapError(event, options)
+    if (isCurrentMap())
+      handleMapError(event, options, styleHandlers.onBackgroundErrorChange)
   }
 
   map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
@@ -120,6 +117,6 @@ export function initializeFindspotMap(
     unsubscribeInteractions()
     map.off('error', handleError)
     map.remove()
-    mapRef.current = null
+    if (mapRef.current === map) mapRef.current = null
   }
 }

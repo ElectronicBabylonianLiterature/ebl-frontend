@@ -91,7 +91,7 @@ describe('mapLegendEntries', () => {
       'solid',
       'dashed',
       'dash-dot',
-      'halo',
+      'solid',
     ])
     expect(new Set(entries.map((entry) => entry.color)).size).toBe(
       entries.length,

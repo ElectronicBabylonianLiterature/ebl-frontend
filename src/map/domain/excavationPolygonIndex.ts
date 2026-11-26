@@ -23,6 +23,14 @@ export type ExcavationPolygonIndex = ReadonlyMap<
   readonly ExcavationPolygon[]
 >
 
+export function usablePolygonIndex(state: {
+  readonly index: ExcavationPolygonIndex
+  readonly isLoaded: boolean
+  readonly error: Error | null
+}): ExcavationPolygonIndex | null {
+  return state.isLoaded && state.error === null ? state.index : null
+}
+
 export function findExcavationPolygon(
   index: ExcavationPolygonIndex,
   polygonId: string | null,

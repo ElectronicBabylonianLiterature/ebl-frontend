@@ -213,3 +213,9 @@ test.each([
 #atf: use math
 #atf: use legacy`)
 })
+
+test('preserves legacy fragments that omitted acquisition data', () => {
+  const legacyProps = { ...config }
+  Reflect.deleteProperty(legacyProps, 'acquisitions')
+  expect(new Fragment(legacyProps).acquisitions).toEqual([])
+})

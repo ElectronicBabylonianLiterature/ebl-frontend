@@ -38,7 +38,6 @@ export default function useMapUrlState(): MapUrlStateController {
       setState(next)
       const currentLocation = latestLocationRef.current
       const search = mergeMapUrlStateIntoSearch(currentLocation.search, next)
-      if (search === currentLocation.search.replace(/^\?/, '')) return
       lastWrittenSearchRef.current = search
       navigate(
         {
@@ -62,7 +61,7 @@ export default function useMapUrlState(): MapUrlStateController {
     const next = parseMapUrlState(search)
     latestStateRef.current = next
     setState(next)
-  }, [location.search])
+  }, [location.key, location.search])
 
   return { state, update }
 }

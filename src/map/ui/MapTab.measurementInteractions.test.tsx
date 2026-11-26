@@ -32,7 +32,7 @@ describe('MapTab measurement interaction ownership', () => {
     fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
   })
 
-  it('closes the measurement drawer when its map background becomes unavailable', async () => {
+  it('closes the measurement tool panel when its map background becomes unavailable', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     await userEvent.click(
       await screen.findByRole('button', { name: 'Measure' }),
@@ -45,9 +45,7 @@ describe('MapTab measurement interaction ownership', () => {
       })
     })
 
-    expect(
-      screen.getByText(/The interactive map could not be loaded/),
-    ).toBeVisible()
+    expect(screen.getByText(/The map background is unavailable/)).toBeVisible()
     expect(
       screen.queryByRole('region', { name: 'Measure' }),
     ).not.toBeInTheDocument()
@@ -91,12 +89,12 @@ describe('MapTab measurement interaction ownership', () => {
     expect(mockGetClusterExpansionZoom).not.toHaveBeenCalled()
     expect(mockEaseTo).not.toHaveBeenCalled()
     expect(
-      screen.queryByRole('button', { name: 'Selected area' }),
+      screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
   })
 })
 
-it('clears keyboard-added points before Escape dismisses the measurement drawer', async () => {
+it('clears keyboard-added points before Escape dismisses the measurement tool panel', async () => {
   resetMapMocks()
   fetchMock.resetMocks()
   fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)

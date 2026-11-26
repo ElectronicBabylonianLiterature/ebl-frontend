@@ -4,41 +4,26 @@ import MapShareLink from 'map/ui/MapShareLink'
 
 interface Props {
   readonly filterControl: React.ReactNode
+  readonly layerControl: React.ReactNode
   readonly visibleSiteCount: number
   readonly onResetView: () => void
-  readonly onEnterPresentation: () => void
-  readonly presentationTriggerRef: React.Ref<HTMLButtonElement>
 }
 
 export default function MapExperienceHeader({
   filterControl,
+  layerControl,
   visibleSiteCount,
   onResetView,
-  onEnterPresentation,
-  presentationTriggerRef,
 }: Props): JSX.Element {
   return (
     <header className="map-experience__topbar">
       <div className="map-experience__heading">
-        <span>eBL interactive map</span>
-        <h3>Archaeological atlas</h3>
+        <h3>Explore sites</h3>
+        <p>Explore archaeological sites and excavation boundaries.</p>
       </div>
       <div className="map-experience__search">{filterControl}</div>
       <div className="map-experience__actions">
-        <span>
-          {visibleSiteCount} visible{' '}
-          {visibleSiteCount === 1 ? 'findspot' : 'findspots'}
-        </span>
         <MapShareLink />
-        <Button
-          ref={presentationTriggerRef}
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          onClick={onEnterPresentation}
-        >
-          Presentation mode
-        </Button>
         <Button
           type="button"
           variant="outline-secondary"
@@ -47,6 +32,12 @@ export default function MapExperienceHeader({
         >
           Reset view
         </Button>
+      </div>
+      <div className="map-experience__layers">
+        {layerControl}
+        <span className="map-experience__marker-status" role="status">
+          {visibleSiteCount} map {visibleSiteCount === 1 ? 'marker' : 'markers'}
+        </span>
       </div>
     </header>
   )

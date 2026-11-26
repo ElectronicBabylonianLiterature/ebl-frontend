@@ -72,11 +72,11 @@ describe('MapTab spatial-search interactions', () => {
     expect(mockGetClusterExpansionZoom).not.toHaveBeenCalled()
     expect(mockEaseTo).not.toHaveBeenCalled()
     expect(
-      screen.queryByRole('button', { name: 'Selected area' }),
+      screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
   })
 
-  it('clears a pending rectangle across presentation mode', async () => {
+  it('clears a pending rectangle when switching research tools', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     await userEvent.click(
       await screen.findByRole('button', { name: 'Search area' }),
@@ -95,12 +95,8 @@ describe('MapTab spatial-search interactions', () => {
       'Add corner 2 of 2.',
     )
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Presentation mode' }),
-    )
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Exit presentation mode' }),
-    )
+    await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Search area' }))
 
     expect(
       within(screen.getByRole('region', { name: 'Search area' })).getByRole(
@@ -112,7 +108,7 @@ describe('MapTab spatial-search interactions', () => {
   })
 })
 
-it('cancels keyboard rectangle drawing before Escape dismisses the drawer', async () => {
+it('cancels keyboard rectangle drawing before Escape dismisses the tool panel', async () => {
   resetMapMocks()
   fetchMock.resetMocks()
   fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)

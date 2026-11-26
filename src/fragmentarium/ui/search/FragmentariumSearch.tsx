@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
@@ -19,6 +19,8 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
 import { SearchPagination } from 'fragmentarium/ui/search/pagination'
+import useSearchTab from 'fragmentarium/ui/search/useSearchTab'
+import { isValidFindspotId } from 'fragmentarium/ui/SearchForm.state'
 
 type Props = Pick<
   SearchFormProps,
@@ -40,7 +42,7 @@ function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
   return !_(query)
     .omit('lemmaOperator')
     .omit(transportPaginationFields)
-    .omitBy((value) => !value)
+    .omitBy((value: string | number | undefined) => !value && value !== 0)
     .isEmpty()
 }
 
@@ -55,16 +57,22 @@ function FragmentariumSearch({
   textService,
   activeTab,
 }: Props): JSX.Element {
-  const corpusQuery: CorpusQuery = _.pick(
-    fragmentQuery,
-    'lemmas',
-    'lemmaOperator',
-    'transliteration',
+  const { selectedTab, selectTab } = useSearchTab(activeTab)
+  const { lemmas, lemmaOperator, transliteration } = fragmentQuery
+  const corpusQuery: CorpusQuery = useMemo(
+    () =>
+      _.pickBy(
+        { lemmas, lemmaOperator, transliteration },
+        (value): boolean => value !== undefined,
+      ),
+    [lemmas, lemmaOperator, transliteration],
   )
 
+  const isValidLibraryQuery =
+    isValidNumber(fragmentQuery.number) &&
+    isValidFindspotId(fragmentQuery.findspotId)
   const showResults =
-    (isValidNumber(fragmentQuery.number) &&
-      hasNonDefaultValues(fragmentQuery)) ||
+    (isValidLibraryQuery && hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
 
   return (
@@ -80,15 +88,17 @@ function FragmentariumSearch({
                 <Row>
                   <Col className="mx-auto">
                     <div className="Library-search__search-header">
-                      <SearchForm
-                        fragmentSearchService={fragmentSearchService}
-                        fragmentService={fragmentService}
-                        dossiersService={dossiersService}
-                        fragmentQuery={fragmentQuery}
-                        wordService={wordService}
-                        bibliographyService={bibliographyService}
-                        showAdvancedSearch={true}
-                      />
+                      <div className="Library-search__form">
+                        <SearchForm
+                          fragmentSearchService={fragmentSearchService}
+                          fragmentService={fragmentService}
+                          dossiersService={dossiersService}
+                          fragmentQuery={fragmentQuery}
+                          wordService={wordService}
+                          bibliographyService={bibliographyService}
+                          showAdvancedSearch={true}
+                        />
+                      </div>
                       <AboutInlineLink
                         to="/about/library"
                         label="Library"
@@ -99,28 +109,18 @@ function FragmentariumSearch({
                 </Row>
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={activeTab || 'library'} justify>
-                  <Tab
-                    eventKey="library"
-                    title="Library"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#library')
-                    }
-                  >
-                    <SearchResult
-                      fragmentService={fragmentService}
-                      dossiersService={dossiersService}
-                      fragmentQuery={fragmentQuery}
-                      pagination={pagination}
-                    />
+                <Tabs activeKey={selectedTab} onSelect={selectTab} justify>
+                  <Tab eventKey="library" title="Library">
+                    {isValidLibraryQuery ? (
+                      <SearchResult
+                        fragmentService={fragmentService}
+                        dossiersService={dossiersService}
+                        fragmentQuery={fragmentQuery}
+                        pagination={pagination}
+                      />
+                    ) : null}
                   </Tab>
-                  <Tab
-                    eventKey="corpus"
-                    title="Corpus"
-                    onEnter={() =>
-                      window.history.replaceState(null, '', '#corpus')
-                    }
-                  >
+                  <Tab eventKey="corpus" title="Corpus">
                     <CorpusSearchResult
                       textService={textService}
                       corpusQuery={corpusQuery}

@@ -3,6 +3,7 @@ import {
   MAX_FILTER_LENGTH,
   parseMapUrlState,
   serializeMapUrlState,
+  mergeMapUrlStateIntoSearch,
 } from 'map/domain/mapUrlState'
 
 describe('parseMapUrlState', () => {
@@ -14,7 +15,7 @@ describe('parseMapUrlState', () => {
     expect(parseMapUrlState('mv=1&findspot=Babylon')).toEqual({
       version: 1,
       filter: 'Babylon',
-      showExcavationAreas: false,
+      showExcavationAreas: true,
       selection: null,
       visualization: 'mapped',
       terrain: false,
@@ -32,20 +33,11 @@ describe('parseMapUrlState', () => {
     })
   })
 
-  it('parses terrain only from the explicit enabled flag', () => {
-    expect(parseMapUrlState('mv=1&terrain=1').terrain).toBe(true)
-    expect(parseMapUrlState('mv=1&terrain=0').terrain).toBe(false)
-  })
-
-  it('parses a supported visualization and defaults an invalid one', () => {
-    expect(parseMapUrlState('mv=1&areas=1&viz=evidence').visualization).toBe(
-      'evidence',
-    )
-    expect(parseMapUrlState('mv=1&viz=unknown').visualization).toBe('mapped')
-  })
-
-  it('falls back to the default state when the version is missing', () => {
-    expect(parseMapUrlState('findspot=Babylon')).toEqual(DEFAULT_MAP_URL_STATE)
+  it('preserves a legacy unversioned findspot filter', () => {
+    expect(parseMapUrlState('findspot=Babylon')).toEqual({
+      ...DEFAULT_MAP_URL_STATE,
+      filter: 'Babylon',
+    })
   })
 
   it('falls back to the default state when the version does not match', () => {
@@ -73,7 +65,7 @@ describe('parseMapUrlState', () => {
     expect(parseMapUrlState('mv=1&findspot=a&findspot=b')).toEqual({
       version: 1,
       filter: 'a',
-      showExcavationAreas: false,
+      showExcavationAreas: true,
       selection: null,
       visualization: 'mapped',
       terrain: false,
@@ -118,17 +110,17 @@ describe('serializeMapUrlState', () => {
     expect(search).toContain('findspot=Babylon')
   })
 
-  it('includes the version and area flag without a filter', () => {
+  it('includes the version and explicit disabled area flag without a filter', () => {
     const search = serializeMapUrlState({
       version: 1,
       filter: '',
-      showExcavationAreas: true,
+      showExcavationAreas: false,
       selection: null,
       visualization: 'mapped',
       terrain: false,
     })
     expect(search).toContain('mv=1')
-    expect(search).toContain('areas=1')
+    expect(search).toContain('areas=0')
   })
 
   it('round-trips through parseMapUrlState', () => {
@@ -192,6 +184,41 @@ describe('serializeMapUrlState', () => {
   })
 })
 
+it.each(['', 'mv=1', 'mv=1&areas=invalid', 'mv=1&areas', 'areas=1'])(
+  'shows excavation areas by default for %s',
+  (search) => expect(parseMapUrlState(search).showExcavationAreas).toBe(true),
+)
+
+it('restores an explicit disabled layer from versioned and legacy links', () => {
+  expect(parseMapUrlState('mv=1&areas=0').showExcavationAreas).toBe(false)
+  expect(parseMapUrlState('areas=0').showExcavationAreas).toBe(false)
+})
+
+it('preserves an explicit enabled preference and unrelated parameters when clearing a filter', () => {
+  expect(
+    mergeMapUrlStateIntoSearch(
+      '?mv=1&findspot=Uruk&areas=1&source=archive',
+      DEFAULT_MAP_URL_STATE,
+    ),
+  ).toBe('source=archive&mv=1&areas=1')
+})
+
+it.each([true, false])(
+  'round-trips layer visibility %s with a filter',
+  (showExcavationAreas) => {
+    const state = {
+      ...DEFAULT_MAP_URL_STATE,
+      filter: 'Uruk',
+      showExcavationAreas,
+    }
+    expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
+  },
+)
+
+it('uses the first duplicated null visibility value as the default', () => {
+  expect(parseMapUrlState('mv=1&areas&areas=0').showExcavationAreas).toBe(true)
+})
+
 describe('selection URL state', () => {
   const canonicalPolygonIds = [
     'assur-bb6i-3d76dc1e02af',
@@ -225,5 +252,16 @@ describe('selection URL state', () => {
       type: 'excavation-area',
       polygonId: 'assur-bb6i-3d76dc1e02af',
     })
+  })
+  it('parses terrain only from the explicit enabled flag', () => {
+    expect(parseMapUrlState('mv=1&terrain=1').terrain).toBe(true)
+    expect(parseMapUrlState('mv=1&terrain=0').terrain).toBe(false)
+  })
+
+  it('parses a supported visualization and defaults an invalid one', () => {
+    expect(parseMapUrlState('mv=1&areas=1&viz=evidence').visualization).toBe(
+      'evidence',
+    )
+    expect(parseMapUrlState('mv=1&viz=unknown').visualization).toBe('mapped')
   })
 })

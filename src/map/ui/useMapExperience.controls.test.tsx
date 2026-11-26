@@ -7,7 +7,7 @@ function MapRoute({ children }: React.PropsWithChildren): JSX.Element {
   return <MemoryRouter initialEntries={['/tools/map']}>{children}</MemoryRouter>
 }
 
-it('persists layer and visualization controls and resets their URL state', async (): Promise<void> => {
+it('persists terrain controls without resetting other research URL state', async (): Promise<void> => {
   const { result } = renderHook(useMapExperience, { wrapper: MapRoute })
   act((): void => result.current.setShowExcavationAreas(true))
   await waitFor((): void =>
@@ -30,15 +30,15 @@ it('persists layer and visualization controls and resets their URL state', async
   await waitFor((): void =>
     expect(result.current.selection?.polygonId).toBe('area-a'),
   )
-  act((): void => result.current.resetState())
+  act((): void => result.current.setTerrain(false))
   await waitFor((): void => {
     expect(result.current).toEqual(
       expect.objectContaining({
-        showExcavationAreas: false,
-        visualization: 'mapped',
+        showExcavationAreas: true,
+        visualization: 'density',
         terrain: false,
-        filter: '',
-        selection: null,
+        filter: 'Uruk',
+        selection: { type: 'excavation-area', polygonId: 'area-a' },
       }),
     )
   })

@@ -1,17 +1,33 @@
 import React from 'react'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import InjectedApp from 'InjectedApp'
+import { AuthenticationContext } from 'auth/Auth'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
 import {
   cacheScopeResolverOf,
   mockAuthService,
+  mockErrorReporter,
   renderInjectedApp,
   stubPrefetches,
 } from 'injectedApp.testSupport'
 
 jest.mock('App', () => {
+  const { useContext, useState } = jest.requireActual('react')
+  const { MediaGalleryContext } = jest.requireActual(
+    'fragmentarium/application/MediaGalleryContext',
+  )
   return function MockApp() {
-    return <div data-testid="app">App</div>
+    const services = useContext(MediaGalleryContext)
+    const [edits, setEdits] = useState(0)
+    return (
+      <div data-testid="app">
+        <span data-testid="media-scope">{services?.sessionKey}</span>
+        <button onClick={() => setEdits(edits + 1)}>Edits {edits}</button>
+      </div>
+    )
   }
 })
 
@@ -69,3 +85,39 @@ describe('every cache-scoped service resolves the same scope', () => {
     },
   )
 })
+
+afterEach(() => delete process.env.REACT_APP_MEDIA_GALLERY_ENABLED)
+
+test.each(['known', 'missing', 'unavailable'] as const)(
+  'clears gallery scope on logout with %s user metadata and preserves editing state',
+  async (identity) => {
+    process.env.REACT_APP_MEDIA_GALLERY_ENABLED = 'true'
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockReturnValue(
+      identity === 'known' ? { sub: 'auth0|subject-a' } : {},
+    )
+    if (identity === 'unavailable') {
+      mockAuthService.getUser.mockImplementation(() => {
+        throw new Error('User metadata unavailable')
+      })
+    }
+    const { rerender } = renderInjectedApp()
+    await userEvent.click(screen.getByRole('button', { name: 'Edits 0' }))
+    const firstScope = screen.getByTestId('media-scope').textContent as string
+    const application = (
+      <AuthenticationContext.Provider value={mockAuthService}>
+        <InjectedApp errorReporter={mockErrorReporter} />
+      </AuthenticationContext.Provider>
+    )
+    rerender(application)
+    expect(screen.getByTestId('media-scope')).toHaveTextContent(firstScope)
+    mockAuthService.isAuthenticated.mockReturnValue(false)
+    rerender(
+      <AuthenticationContext.Provider value={mockAuthService}>
+        <InjectedApp errorReporter={mockErrorReporter} />
+      </AuthenticationContext.Provider>,
+    )
+    expect(screen.getByTestId('media-scope')).not.toHaveTextContent(firstScope)
+    expect(screen.getByRole('button', { name: 'Edits 1' })).toBeVisible()
+  },
+)

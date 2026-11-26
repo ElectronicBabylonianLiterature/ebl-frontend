@@ -85,7 +85,7 @@ export function evidenceFillOpacity(): ExpressionSpecification {
   return [
     'case',
     SELECTED,
-    0.4,
+    0.55,
     HOVERED,
     0.34,
     IS_UNAVAILABLE,
