@@ -6,8 +6,10 @@ import { handleWordKeys, useFieldFocus } from 'corpus/ui/edit-lite/wordKeys'
 import { WordActionButton } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import ProperNounCreationPanel from 'fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel'
 import LemmaSelect from 'fragmentarium/ui/lemmatization/LemmaSelect'
-import { createLemmaOptionsLoader } from 'fragmentarium/ui/lemmatization/lemmaOptions'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import {
+  createLemmaOptionsLoader,
+  LemmaOption,
+} from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import Lemma from 'transliteration/domain/Lemma'
 import {
   LemmatizationToken,

@@ -146,7 +146,7 @@ export function createEditLiteActions(store: EditLiteStore): EditLiteActions {
       word: string,
       lemmaIds: readonly string[],
       onDone: () => void,
-    ): boolean {
+    ): string | null {
       return lemmatizeInstances(store, index, word, lemmaIds, onDone)
     },
   }

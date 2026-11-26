@@ -56,6 +56,12 @@ test.each<[string, () => Promise<void>, string[], number]>([
 
     expect(within(refusedEditor).queryByRole('alert')).not.toBeInTheDocument()
     expect(screen.queryByText(chapterChangedMessage)).not.toBeInTheDocument()
+    expect(within(refusedEditor).getByText('Loading line...')).toBeVisible()
+    expect(
+      fakeApi.client.fetchJson.mock.calls.filter(([path]) =>
+        path.endsWith('revision=revision-2'),
+      ),
+    ).toEqual([])
 
     await act(async () => answerChange())
     await waitFor(() => expect(options()).toHaveLength(storedNumbers.length))

@@ -7,6 +7,8 @@ import {
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { ChapterEditTextService } from 'corpus/application/edit-lite/createChapterEditSource'
 import { createLine, EditStatus, Line } from 'corpus/domain/line'
+import { chapterChangedMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
+import { maximumLinesPerRequest } from 'corpus/application/edit-lite/lineRanges'
 import { ApiError } from 'http/ApiClient'
 import { deferred, settle } from 'test-support/concurrencyLimiterHelpers'
 
@@ -80,4 +82,59 @@ it('retries a word count that conflicted with a save in flight', async () => {
   expect(
     textService.countWordInstances.mock.calls.map(([, , revision]) => revision),
   ).toEqual([apiOutline.revision, 'revision-2'])
+})
+
+it('retries an annotated line that conflicted with a save in flight', async () => {
+  const save = deferred<ChapterOutline>()
+  textService.updateEditedLines.mockReturnValueOnce(save.promise)
+  const saved = source.saveLine(0, original, draft)
+  await settle()
+  textService.findChapterLines
+    .mockRejectedValueOnce(conflict)
+    .mockResolvedValueOnce([neighbour])
+
+  const line = source.loadAnnotatedLine(1)
+  await settle()
+  save.resolve(savedOutline)
+
+  await expect(line).resolves.toBe(neighbour)
+  await saved
+  expect(requestedLineRevisions()).toEqual([
+    apiOutline.revision,
+    apiOutline.revision,
+    'revision-2',
+  ])
+})
+
+it('reports a changed chapter for a conflict without an own save', async () => {
+  textService.findChapterLines.mockRejectedValueOnce(conflict)
+
+  await expect(source.loadLines(1, 1)).rejects.toThrow(chapterChangedMessage)
+  expect(requestedLineRevisions()).toEqual([apiOutline.revision])
+})
+
+it('reads the whole window again when its pages came from different revisions', async () => {
+  const save = deferred<ChapterOutline>()
+  textService.updateEditedLines.mockReturnValueOnce(save.promise)
+  const saved = source.saveLine(0, original, draft)
+  await settle()
+  textService.findChapterLines.mockClear()
+  textService.findChapterLines
+    .mockResolvedValueOnce([original])
+    .mockRejectedValueOnce(conflict)
+    .mockResolvedValue([neighbour])
+
+  const lines = source.loadLines(0, maximumLinesPerRequest + 1)
+  await settle()
+  save.resolve(savedOutline)
+
+  await expect(lines).resolves.toEqual([neighbour, neighbour])
+  await saved
+  expect(requestedLineRevisions()).toEqual([
+    apiOutline.revision,
+    apiOutline.revision,
+    'revision-2',
+    'revision-2',
+    'revision-2',
+  ])
 })

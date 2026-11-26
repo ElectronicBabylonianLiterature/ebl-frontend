@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import WordService from 'dictionary/application/WordService'
 import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationForm'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { kurToken } from 'test-support/test-tokens'
 import { wordFactory } from 'test-support/word-fixtures'
 

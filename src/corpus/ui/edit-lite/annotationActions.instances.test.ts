@@ -1,7 +1,9 @@
 import { waitFor } from '@testing-library/react'
 import { ChapterOutline } from 'corpus/application/edit-lite/chapterOutline'
 import { Line } from 'corpus/domain/line'
+import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import {
+  instancesBusyMessage,
   leaveAnnotation,
   lemmatizeInstances,
 } from 'corpus/ui/edit-lite/annotationActions'
@@ -13,6 +15,7 @@ import {
 } from 'corpus/ui/edit-lite/annotationState.testSupport'
 import {
   buildEditLiteLines,
+  buildEditLiteOutline,
   createRecordedEditLiteStore,
   FakeChapterEditSource,
   RecordedEditLiteStore,
@@ -22,7 +25,10 @@ import {
   annotateLine,
   buildLineLemmatization,
 } from 'corpus/ui/edit-lite/editLiteTokens.testSupport'
-import { setLineNumber } from 'corpus/ui/edit-lite/lineDraft'
+import {
+  setLineNumber,
+  setLineTranslation,
+} from 'corpus/ui/edit-lite/lineDraft'
 import { findImplementation } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 const lines: readonly Line[] = buildEditLiteLines(6)
@@ -119,7 +125,7 @@ test('the line is saved first and each outline is applied in the step of its ans
 
 test('without unsaved changes of the line only the chapter is saved', async () => {
   const { store, source, events, onDone } = await open()
-  const isStarted = lemmatizeInstances(
+  const refusal = lemmatizeInstances(
     store,
     position,
     'line',
@@ -128,7 +134,7 @@ test('without unsaved changes of the line only the chapter is saved', async () =
   )
   await waitFor(() => expect(onDone).toHaveBeenCalledTimes(1))
 
-  expect(isStarted).toBe(true)
+  expect(refusal).toBeNull()
   expect(source.saveLemmatization).not.toHaveBeenCalled()
   expect(events.slice(0, 3)).toEqual([
     'saveStarted',
@@ -164,7 +170,7 @@ test.each<[string, (recorded: Recorded) => void]>([
 ])('nothing is saved for the chapter while %s', async (_name, block) => {
   const recorded = await open()
   block(recorded)
-  const isStarted = lemmatizeInstances(
+  const refusal = lemmatizeInstances(
     recorded.store,
     position,
     'line',
@@ -173,7 +179,7 @@ test.each<[string, (recorded: Recorded) => void]>([
   )
   await new Promise((resolve) => setTimeout(resolve, 0))
 
-  expect(isStarted).toBe(false)
+  expect(refusal).toBe(instancesBusyMessage)
   expect(recorded.source.lemmatizeWordInstances).not.toHaveBeenCalled()
   expect(recorded.source.saveLemmatization).not.toHaveBeenCalled()
   expect(recorded.onDone).not.toHaveBeenCalled()
@@ -223,4 +229,20 @@ test('a line is not left when its save is refused', async () => {
   await Promise.resolve()
 
   expect(onDone).not.toHaveBeenCalled()
+})
+
+test('a line that changed on the server says so instead of asking to wait', async () => {
+  const { store, source, onDone } = await open(buildLemmatizationDraft)
+  const changedLines = lines.map((line, index) =>
+    index === position ? setLineTranslation(line, '#tr.en: changed') : line,
+  )
+  store.dispatch({
+    type: 'outlineReplaced',
+    outline: buildEditLiteOutline(changedLines, 'revision-2'),
+  })
+
+  expect(lemmatizeInstances(store, position, 'line', ['line I'], onDone)).toBe(
+    lineChangedOnServerMessage,
+  )
+  expect(source.lemmatizeWordInstances).not.toHaveBeenCalled()
 })

@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { lineChangedOnServerMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import { Line } from 'corpus/domain/line'
 import {
   AnnotationDraft,
@@ -145,12 +146,21 @@ export function leaveAnnotation(
   }
 }
 
-function canLemmatizeInstances(state: EditLiteState, index: number): boolean {
-  return (
-    !isSaveRefused(state, index) &&
+export const instancesBusyMessage =
+  'Other changes of the chapter are being saved or are not saved yet. Wait for them or save them, then update all instances again.'
+
+function findInstancesRefusal(
+  state: EditLiteState,
+  index: number,
+): string | null {
+  if (state.lines[index]?.annotation?.isStale === true) {
+    return lineChangedOnServerMessage
+  }
+  return !isSaveRefused(state, index) &&
     findLineActivity(state) === 'idle' &&
     findLemmatizationDraftLine(state, index) === null
-  )
+    ? null
+    : instancesBusyMessage
 }
 
 export function lemmatizeInstances(
@@ -159,11 +169,12 @@ export function lemmatizeInstances(
   word: string,
   lemmaIds: readonly string[],
   onDone: () => void,
-): boolean {
+): string | null {
   const state = store.getState()
   const draft = findViewDraft(state.lines[index], 'lemmatization')
-  if (!canLemmatizeInstances(state, index)) {
-    return false
+  const refusal = findInstancesRefusal(state, index)
+  if (refusal !== null) {
+    return refusal
   }
   void saveStoredLine(store, index, async (source) => {
     if (draft !== null) {
@@ -173,5 +184,5 @@ export function lemmatizeInstances(
       .lemmatizeWordInstances(word, lemmaIds)
       .then(applyOutline(store, 'instancesLemmatized'))
   }).then((isSaved) => isSaved && onDone())
-  return true
+  return null
 }

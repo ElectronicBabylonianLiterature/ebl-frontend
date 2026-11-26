@@ -15,8 +15,6 @@ import type {
   MultiValue,
 } from 'react-select'
 
-export { LemmaOption }
-
 export function Option<Selected extends Lemma = LemmaOption>(
   props: OptionProps<Selected, true>,
 ): JSX.Element {
@@ -60,15 +58,7 @@ class LemmaSelectionForm extends Component<Props, State> {
     }
   }
 
-  loadOptions = (
-    inputValue: string,
-    callback: (lemmas: LemmaOption[]) => void,
-  ): void => {
-    createLemmaOptionsLoader(this.props.wordService, undefined)(
-      inputValue,
-      callback,
-    )
-  }
+  loadOptions = createLemmaOptionsLoader(this.props.wordService, undefined)
 
   handleChange = (
     query: MultiValue<LemmaOption>,

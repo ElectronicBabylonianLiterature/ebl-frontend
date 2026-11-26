@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { wordFactory } from 'test-support/word-fixtures'
 import { kurToken } from 'test-support/test-tokens'
 

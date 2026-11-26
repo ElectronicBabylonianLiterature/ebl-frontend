@@ -1,7 +1,10 @@
 import { chapterChangedMessage } from 'corpus/application/edit-lite/chapterChangeMessages'
 import {
   readAtCurrentRevision,
+  readAtOneRevision,
   rejectRevisionConflict,
+  RevisionTracked,
+  trackRevision,
 } from 'corpus/application/edit-lite/revisionReads'
 import { ApiError } from 'http/ApiClient'
 
@@ -75,4 +78,98 @@ it('keeps errors other than a conflict when rejecting', () => {
 
   expect(() => rejectRevisionConflict(error)).toThrow(error)
   expect(() => rejectRevisionConflict(conflict)).toThrow(chapterChangedMessage)
+})
+
+it('stops waiting for writes when the read is aborted', async () => {
+  const controller = new AbortController()
+  const read = jest.fn().mockRejectedValue(conflict)
+  writesSettled.mockReturnValue(new Promise(() => undefined))
+
+  const result = readAtCurrentRevision(
+    read,
+    () => revision,
+    writesSettled,
+    controller.signal,
+  )
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(writesSettled).toHaveBeenCalledTimes(1)
+  controller.abort()
+
+  await expect(result).rejects.toMatchObject({ name: 'AbortError' })
+  expect(read).toHaveBeenCalledTimes(1)
+})
+
+it('does not wait for writes when the read was aborted already', async () => {
+  const controller = new AbortController()
+  controller.abort()
+  const read = jest.fn().mockRejectedValue(conflict)
+
+  await expect(
+    readAtCurrentRevision(
+      read,
+      () => revision,
+      writesSettled,
+      controller.signal,
+    ),
+  ).rejects.toMatchObject({ name: 'AbortError' })
+  expect(writesSettled).not.toHaveBeenCalled()
+})
+
+it('retries after the writes settled while a signal is given', async () => {
+  const read = jest
+    .fn()
+    .mockRejectedValueOnce(conflict)
+    .mockResolvedValue('lines')
+  writesSettled.mockImplementation(() => {
+    revision = 'revision-2'
+    return Promise.resolve()
+  })
+
+  await expect(
+    readAtCurrentRevision(
+      read,
+      () => revision,
+      writesSettled,
+      new AbortController().signal,
+    ),
+  ).resolves.toBe('lines')
+})
+
+it('records the revision a read was made at', async () => {
+  const read = jest.fn().mockResolvedValue('lines')
+
+  await expect(trackRevision(read)('revision-1')).resolves.toEqual({
+    revision: 'revision-1',
+    result: 'lines',
+  })
+})
+
+function tracked(...revisions: string[]): readonly RevisionTracked<string>[] {
+  return revisions.map((partRevision, index) => ({
+    revision: partRevision,
+    result: `part ${index}`,
+  }))
+}
+
+it('keeps parts that were read at one revision', async () => {
+  const readAll = jest.fn().mockResolvedValue(tracked('r1', 'r1'))
+
+  await expect(readAtOneRevision(readAll)).resolves.toEqual([
+    'part 0',
+    'part 1',
+  ])
+  expect(readAll).toHaveBeenCalledTimes(1)
+})
+
+it('reads all parts again when they were read at different revisions', async () => {
+  const readAll = jest
+    .fn()
+    .mockResolvedValueOnce(tracked('r1', 'r2'))
+    .mockResolvedValueOnce(tracked('r2', 'r2'))
+
+  await expect(readAtOneRevision(readAll)).resolves.toEqual([
+    'part 0',
+    'part 1',
+  ])
+  expect(readAll).toHaveBeenCalledTimes(2)
 })

@@ -8,7 +8,7 @@ import LemmaAnnotation, {
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { wordFactory } from 'test-support/word-fixtures'
 import {
   createEditableTokens,

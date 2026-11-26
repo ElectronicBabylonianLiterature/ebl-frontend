@@ -15,13 +15,14 @@ import {
   openLoadedView,
   openWord,
   reconstructionRow,
+  wordButton,
   wordLabel,
 } from 'corpus/ui/edit-lite/LineViews.testSupport'
 import {
   options,
   typeIntoNumber,
 } from 'corpus/ui/edit-lite/SplitLines.testSupport'
-import { instancesBusyMessage } from 'corpus/ui/edit-lite/useLemmaInstances'
+import { instancesBusyMessage } from 'corpus/ui/edit-lite/annotationActions'
 import { holdNextCall } from 'corpus/ui/edit-lite/useEditLite.testSupport'
 
 jest.mock('editor/Editor', () =>
@@ -115,6 +116,10 @@ test('an update confirmed while another line is being saved is refused with a re
     instancesBusyMessage,
   )
   expect(source.lemmatizeWordInstances).not.toHaveBeenCalled()
+  expect(wordButton(reconstructionRow(), 'line')).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  )
 
   await act(async () => {
     held.resolve()

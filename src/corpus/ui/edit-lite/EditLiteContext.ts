@@ -38,7 +38,7 @@ export interface EditLiteActions {
     word: string,
     lemmaIds: readonly string[],
     onDone: () => void,
-  ): boolean
+  ): string | null
 }
 
 export interface EditLiteContextValue {

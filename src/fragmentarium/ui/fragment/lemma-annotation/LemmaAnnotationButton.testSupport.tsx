@@ -4,7 +4,7 @@ import LemmaActionButton, {
   LemmaActionCallbacks,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 import { wordFactory } from 'test-support/word-fixtures'

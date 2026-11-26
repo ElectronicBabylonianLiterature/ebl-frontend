@@ -118,7 +118,7 @@ it('continues with the revision of the saved outline', async () => {
   expect(postedRevisions()).toEqual(['revision-1', 'revision-2'])
 })
 
-it('sends queued lines requests with the revision of a save that finished meanwhile', async () => {
+it('sends queued lines requests with the revision of a save that finished meanwhile and reads the window again at it', async () => {
   const pending = deferred<readonly Line[]>()
   await source.loadOutline()
   textService.findChapterLines
@@ -138,6 +138,10 @@ it('sends queued lines requests with the revision of a save that finished meanwh
     'revision-1',
     'revision-1',
     'revision-1',
+    'revision-2',
+    'revision-2',
+    'revision-2',
+    'revision-2',
     'revision-2',
   ])
 })

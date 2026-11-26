@@ -28,8 +28,11 @@ import { Manuscript } from 'corpus/domain/manuscript'
 import Word from 'dictionary/domain/Word'
 import {
   readAtCurrentRevision,
+  readAtOneRevision,
   rejectRevisionConflict,
   RevisionRead,
+  RevisionTracked,
+  trackRevision,
 } from 'corpus/application/edit-lite/revisionReads'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
@@ -74,17 +77,22 @@ export class ApiChapterEditSource implements ChapterEditSource {
     limit: number,
     signal?: AbortSignal,
   ): Promise<readonly Line[]> {
-    return Promise.all(
-      splitIntoRanges(offset, limit).map((range) =>
-        this.lineRequestLimiter.run(
-          () =>
-            this.readCurrent((revision) =>
-              this.findLines(range.offset, range.limit, signal, revision),
-            ),
-          signal,
+    const readRanges = (): Promise<RevisionTracked<readonly Line[]>[]> =>
+      Promise.all(
+        splitIntoRanges(offset, limit).map((range) =>
+          this.lineRequestLimiter.run(
+            () =>
+              this.readCurrent(
+                trackRevision((revision) =>
+                  this.findLines(range.offset, range.limit, signal, revision),
+                ),
+                signal,
+              ),
+            signal,
+          ),
         ),
-      ),
-    ).then((pages) => pages.flat())
+      )
+    return readAtOneRevision(readRanges).then((pages) => pages.flat())
   }
 
   async loadAnnotatedLine(index: number): Promise<Line> {
@@ -207,11 +215,15 @@ export class ApiChapterEditSource implements ChapterEditSource {
       .then((outline) => this.keepRevision(outline), rejectRevisionConflict)
   }
 
-  private readCurrent<Result>(read: RevisionRead<Result>): Promise<Result> {
+  private readCurrent<Result>(
+    read: RevisionRead<Result>,
+    signal?: AbortSignal,
+  ): Promise<Result> {
     return readAtCurrentRevision(
       read,
       () => this.revision,
       () => this.saveQueue.settled(),
+      signal,
     )
   }
 
