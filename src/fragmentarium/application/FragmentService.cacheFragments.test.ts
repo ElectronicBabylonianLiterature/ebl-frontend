@@ -28,7 +28,12 @@ describe('fragment read caching', () => {
     })
 
     expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
-    expect(fragmentRepository.find).toHaveBeenCalledWith(number, [1], true)
+    expect(fragmentRepository.find).toHaveBeenCalledWith(
+      number,
+      [1],
+      true,
+      undefined,
+    )
   })
 
   test('fetches fragment reads separately for different line options', async () => {

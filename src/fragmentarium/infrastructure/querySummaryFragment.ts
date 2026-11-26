@@ -22,6 +22,8 @@ import { createTransliteration } from 'transliteration/application/dtos'
 import { TextLineDto } from 'transliteration/domain/text-line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { BaseToken, Token } from 'transliteration/domain/token'
+import sortFragmentQueryPreviewLines from 'fragmentarium/infrastructure/sortFragmentQueryPreviewLines'
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
 
 export type QueryMuseumNumberDto = {
   prefix: string
@@ -124,10 +126,6 @@ function hasRenderablePreview(dto: Partial<QuerySummaryItemDto>): boolean {
   )
 }
 
-function isNonNegativeInteger(value: unknown): value is number {
-  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
-}
-
 export function isSummaryLineIndexes(
   matchingLines: unknown,
 ): matchingLines is readonly number[] {
@@ -222,7 +220,9 @@ export function createQuerySummaryFragment(
     folios: [],
     record: [],
     text: createTransliteration({
-      lines: dto.matchingLinePreview?.lines ?? [],
+      lines: sortFragmentQueryPreviewLines(
+        dto.matchingLinePreview?.lines ?? [],
+      ),
     }),
     notes: { text: '', parts: [] },
     museum: Museums.HYPERURANION,

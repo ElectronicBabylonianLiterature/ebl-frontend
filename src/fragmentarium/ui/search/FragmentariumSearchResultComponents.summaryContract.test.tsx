@@ -85,6 +85,47 @@ function summaryItemDto(index: number): Record<string, unknown> {
 }
 
 describe('summary contract guardrail', () => {
+  it('renders mapper-produced preview lines in original source order', () => {
+    const reverse = {
+      ...previewLine(6, []),
+      index: 5,
+      location: {
+        object: null,
+        surface: 'r',
+        column: 'ii',
+        sealNumber: null,
+      },
+    }
+    const obverse = {
+      ...previewLine(6, []),
+      index: 1,
+      location: {
+        object: null,
+        surface: 'o',
+        column: null,
+        sealNumber: null,
+      },
+    }
+    const [queryItem] = mapItems([
+      createSummaryItemDto({
+        matchingLines: [5, 1, 5, 6],
+        matchingLinePreview: {
+          lines: [reverse, obverse],
+          totalMatchingLines: 3,
+        },
+      }),
+    ])
+
+    expect(queryItem.matchingLines).toEqual([5, 1, 5, 6])
+    renderCards([queryItem])
+
+    expect(screen.getAllByRole('row').map((row) => row.textContent)).toEqual([
+      'o. 6',
+      'r. ii 6',
+    ])
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
   it('renders fifty mapper-produced summary cards with zero hydration', () => {
     const queryItems = mapItems(
       Array.from({ length: 50 }, (unused, index) => summaryItemDto(index + 1)),

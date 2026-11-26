@@ -2,6 +2,7 @@ import {
   createAbortError,
   isAbortError,
   isCancellation,
+  rejectOnAbort,
 } from 'common/utils/abortError'
 import { abortedSignalWithReason } from 'test-support/abortedSignal'
 
@@ -36,6 +37,39 @@ describe('isCancellation', () => {
 
   it('is false for an unrelated error without a signal', () => {
     expect(isCancellation(new Error('boom'))).toBe(false)
+  })
+})
+
+describe('rejectOnAbort', () => {
+  const pending = new Promise<string>(() => undefined)
+
+  it('returns the promise unchanged without a signal', () => {
+    expect(rejectOnAbort(pending)).toBe(pending)
+  })
+
+  it('rejects when the signal aborts before the promise settles', async () => {
+    const controller = new AbortController()
+    const result = rejectOnAbort(pending, controller.signal)
+    controller.abort()
+    await expect(result).rejects.toMatchObject({ name: 'AbortError' })
+  })
+
+  it('rejects when the signal is already aborted', async () => {
+    const controller = new AbortController()
+    controller.abort()
+    await expect(
+      rejectOnAbort(Promise.resolve('value'), controller.signal),
+    ).rejects.toMatchObject({ name: 'AbortError' })
+  })
+
+  it('settles with the promise when the signal stays live', async () => {
+    const { signal } = new AbortController()
+    await expect(rejectOnAbort(Promise.resolve('value'), signal)).resolves.toBe(
+      'value',
+    )
+    await expect(
+      rejectOnAbort(Promise.reject(new Error('boom')), signal),
+    ).rejects.toThrow('boom')
   })
 })
 

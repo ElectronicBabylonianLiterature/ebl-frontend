@@ -1,6 +1,6 @@
 import FragmentCardThumbnail from 'fragmentarium/ui/search/FragmentCardThumbnail'
 import React from 'react'
-import _ from 'lodash'
+import fragmentPreviewLookup from 'query/fragmentPreviewLookup'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import withData from 'http/withData'
@@ -113,8 +113,10 @@ const HydratedCompactFragmentCard = withData<
     />
   ),
   ({ fragmentService, queryItem }) => {
-    const lines = _.take(queryItem.matchingLines, LATEST_CARD_LINES_TO_SHOW)
-    const excludeLines = _.isEmpty(queryItem.matchingLines)
+    const { lines, excludeLines } = fragmentPreviewLookup(
+      queryItem.matchingLines,
+      LATEST_CARD_LINES_TO_SHOW,
+    )
     return fragmentService.find(queryItem.museumNumber, lines, excludeLines)
   },
 )

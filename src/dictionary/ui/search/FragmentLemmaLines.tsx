@@ -14,7 +14,7 @@ import {
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
 import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
-import takeUniqueMatchingLineIndexes from 'query/takeUniqueMatchingLineIndexes'
+import fragmentPreviewLookup from 'query/fragmentPreviewLookup'
 import {
   countUniqueMatchingLines,
   matchingLineTotal,
@@ -54,7 +54,7 @@ const FragmentLines = withData<
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      takeUniqueMatchingLineIndexes(props.lineIndexes, FRAGMENT_LINES_TO_SHOW),
+      fragmentPreviewLookup(props.lineIndexes, FRAGMENT_LINES_TO_SHOW).lines,
     ),
   {
     watch: ({ museumNumber, lineIndexes }) => [

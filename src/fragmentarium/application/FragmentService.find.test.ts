@@ -30,6 +30,7 @@ describe('find', () => {
       number,
       undefined,
       undefined,
+      undefined,
     )
   })
 })

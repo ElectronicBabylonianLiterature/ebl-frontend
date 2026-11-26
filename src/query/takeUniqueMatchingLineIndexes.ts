@@ -1,3 +1,5 @@
+import isNonNegativeInteger from 'common/utils/isNonNegativeInteger'
+
 export default function takeUniqueMatchingLineIndexes(
   indexes: readonly number[],
   limit: number,
@@ -10,7 +12,7 @@ export default function takeUniqueMatchingLineIndexes(
   }
 
   for (const index of indexes) {
-    if (Number.isSafeInteger(index) && index >= 0 && !seen.has(index)) {
+    if (isNonNegativeInteger(index) && !seen.has(index)) {
       seen.add(index)
       result.push(index)
       if (result.length >= limit) {

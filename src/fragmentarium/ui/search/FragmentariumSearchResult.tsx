@@ -42,6 +42,7 @@ function ResultPages({
   hasNextPage,
   lastPageIndex,
   showPaginationControls,
+  querySignature,
 }: {
   fragments: readonly QueryItem[]
   fragmentService: FragmentLinesService
@@ -53,6 +54,7 @@ function ResultPages({
   hasNextPage: boolean
   lastPageIndex: number | null
   showPaginationControls: boolean
+  querySignature: string
 }): JSX.Element {
   const renderPageButtons = (
     position: PaginationPosition,
@@ -77,7 +79,7 @@ function ResultPages({
       {renderPageButtons('top')}
       {fragments.map((fragment, index) => (
         <React.Fragment
-          key={`${index}:${fragment.museumNumber}:${fragment.matchingLines.join(
+          key={`${querySignature}:${pageIndex}:${pageSize}:${index}:${fragment.museumNumber}:${fragment.matchingLines.join(
             ',',
           )}`}
         >
@@ -223,6 +225,7 @@ const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
             hasNextPage={effectiveHasNextPage}
             lastPageIndex={lastPageIndex}
             showPaginationControls={showPaginationControls}
+            querySignature={stringify(fragmentQuery)}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
               linesToShow,

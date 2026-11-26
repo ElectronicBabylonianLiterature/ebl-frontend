@@ -12,3 +12,22 @@ export function createAbortError(signal: AbortSignal): Error {
     new DOMException('The operation was aborted.', 'AbortError')
   )
 }
+
+export function rejectOnAbort<Value>(
+  promise: Promise<Value>,
+  signal?: AbortSignal,
+): Promise<Value> {
+  if (!signal) {
+    return promise
+  }
+  return new Promise<Value>((resolve, reject) => {
+    const abort = (): void => reject(createAbortError(signal))
+    if (signal.aborted) {
+      abort()
+    }
+    signal.addEventListener('abort', abort, { once: true })
+    promise
+      .then(resolve, reject)
+      .finally(() => signal.removeEventListener('abort', abort))
+  })
+}
