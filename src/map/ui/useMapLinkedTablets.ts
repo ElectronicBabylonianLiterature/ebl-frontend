@@ -1,6 +1,7 @@
 import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import useFragmentMapData from 'map/domain/useFragmentMapData'
 import type { ExcavationPolygonIndexState } from 'map/maplibre/useExcavationPolygonIndex'
+import { usablePolygonIndex } from 'map/domain/excavationPolygonIndex'
 
 export default function useMapLinkedTablets({
   findspotService,
@@ -15,7 +16,7 @@ export default function useMapLinkedTablets({
 }) {
   return useFragmentMapData(
     findspotService,
-    polygons.isLoaded && polygons.error === null ? polygons.index : null,
+    usablePolygonIndex(polygons),
     isVisible || selectedAreaId !== null,
   )
 }

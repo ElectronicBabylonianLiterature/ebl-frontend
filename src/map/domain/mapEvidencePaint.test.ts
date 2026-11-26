@@ -79,7 +79,7 @@ describe('evidence fill opacity', () => {
         selected: true,
         hover: true,
       }),
-    ).toBe(0.4)
+    ).toBe(0.55)
     expect(
       evaluate(evidenceFillOpacity(), { ...stateFor('curated'), hover: true }),
     ).toBe(0.34)

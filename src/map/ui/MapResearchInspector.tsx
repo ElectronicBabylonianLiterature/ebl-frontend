@@ -91,12 +91,6 @@ function ResearchDetails({
           </>
         ) : null}
         {provenance ? <ProvenanceDetails provenance={provenance} /> : null}
-        {polygon ? (
-          <>
-            <dt>Site identifier</dt>
-            <dd>{polygon.siteId}</dd>
-          </>
-        ) : null}
       </dl>
       {provenance?.coordinates?.notes ? (
         <p className="map-research-inspector__source">
@@ -110,6 +104,14 @@ function ResearchDetails({
       ) : null}
     </>
   )
+}
+
+function headingFor(
+  polygon: ExcavationPolygon | undefined,
+  siteName: string | undefined,
+): string {
+  if (polygon) return polygon.name ?? 'Unnamed excavation area'
+  return siteName ?? 'Location details'
 }
 
 export default function MapResearchInspector({
@@ -141,7 +143,7 @@ export default function MapResearchInspector({
     >
       <div className="map-research-inspector__header">
         <h4 ref={headingRef} tabIndex={-1}>
-          {polygon?.name ?? siteName ?? 'Location details'}
+          {headingFor(polygon, siteName)}
         </h4>
         <Button
           type="button"

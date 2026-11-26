@@ -7,6 +7,7 @@ import MapPanelDock from 'map/ui/MapPanelDock'
 import MapInspector from 'map/ui/MapInspector'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import MapMeasurePanel from 'map/ui/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 
@@ -36,6 +37,20 @@ export default function MapResearchSidebar({
       label: 'Measure',
       isSupported: !state.isBackgroundUnavailable,
       render: () => <MapMeasurePanel measurement={state.measurement} />,
+    },
+    {
+      id: 'spatial-search',
+      label: 'Search area',
+      isSupported:
+        state.canShowExcavationAreas &&
+        !state.isExcavationAreasUnavailable &&
+        !state.isBackgroundUnavailable,
+      render: () => (
+        <MapSpatialSearchPanel
+          spatialSearch={state.spatialSearch}
+          findspots={state.fragmentMapData.findspots}
+        />
+      ),
     },
   ]
   return (

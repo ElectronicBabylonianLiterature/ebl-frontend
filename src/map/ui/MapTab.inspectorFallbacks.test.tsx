@@ -59,9 +59,7 @@ test.each([
       await screen.findByRole('region', { name: 'Location details' }),
     )
     expect(
-      inspector.getByRole('heading', {
-        name: siteId === 'nippur' ? 'Nippur' : 'Location details',
-      }),
+      inspector.getByRole('heading', { name: 'Unnamed excavation area' }),
     ).toBeVisible()
     expect(inspector.getByRole('tab', { name: 'Overview' })).toBeVisible()
     expect(inspector.queryByText('Mapped area')).not.toBeInTheDocument()

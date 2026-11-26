@@ -1,8 +1,8 @@
 import React from 'react'
 import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
-  type ExcavationPolygonIndex,
   type ExcavationPolygon,
+  type ExcavationPolygonIndex,
   findExcavationPolygon,
 } from 'map/domain/excavationPolygonIndex'
 import MapResearchInspector from 'map/ui/MapResearchInspector'
@@ -17,7 +17,7 @@ export default function MapSelectionInspector({
   readonly research: ReturnType<typeof useMapResearchSelection>
   readonly provenances: readonly ProvenanceRecord[]
   readonly polygonIndex: ExcavationPolygonIndex
-  readonly renderAreaDetails?: (polygon: ExcavationPolygon) => React.ReactNode
+  readonly renderAreaDetails: (polygon: ExcavationPolygon) => React.ReactNode
 }): JSX.Element | null {
   const { selection, selectedSiteId, selectedAreaId, close, focusInspector } =
     research
@@ -39,7 +39,7 @@ export default function MapSelectionInspector({
           focusHeading={focusInspector}
           onClose={close}
         >
-          {polygon && renderAreaDetails ? renderAreaDetails(polygon) : null}
+          {polygon ? renderAreaDetails(polygon) : null}
         </MapResearchInspector>
       ) : null}
     </>

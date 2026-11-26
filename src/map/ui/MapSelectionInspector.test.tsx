@@ -27,6 +27,7 @@ function Harness({
         research={research}
         provenances={[]}
         polygonIndex={INDEX}
+        renderAreaDetails={() => null}
       />
     </MemoryRouter>
   )

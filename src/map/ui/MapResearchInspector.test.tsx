@@ -71,7 +71,8 @@ it('shows excavation details without internal polygon identifiers', () => {
   expect(screen.getByText('Excavation area')).toBeVisible()
   expect(screen.queryByText('Polygon ID')).not.toBeInTheDocument()
   expect(screen.queryByText('uruk-area-1')).not.toBeInTheDocument()
-  expect(screen.getByText('uruk')).toBeVisible()
+  expect(screen.queryByText('Site identifier')).not.toBeInTheDocument()
+  expect(screen.queryByText('uruk')).not.toBeInTheDocument()
   expect(screen.getByRole('link')).toHaveAttribute(
     'href',
     buildFragmentSearchLink('Uruk'),
@@ -90,7 +91,7 @@ it('omits unsupported fields and links for an unknown site', () => {
     </MemoryRouter>,
   )
   expect(
-    screen.getByRole('heading', { name: 'Location details' }),
+    screen.getByRole('heading', { name: 'Unnamed excavation area' }),
   ).toBeVisible()
   expect(screen.queryByRole('link')).not.toBeInTheDocument()
   expect(screen.queryByText('Archaeological site')).not.toBeInTheDocument()
