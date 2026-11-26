@@ -81,7 +81,7 @@ it('marks an inexact line count and further results', async () => {
 
   expect(
     await screen.findByText(
-      'Found about 2,000 matching line variants. Showing chapters 1-2; more results are available',
+      `Found about ${new Intl.NumberFormat().format(2000)} matching line variants. Showing chapters 1-2; more results are available`,
     ),
   ).toBeVisible()
 })
