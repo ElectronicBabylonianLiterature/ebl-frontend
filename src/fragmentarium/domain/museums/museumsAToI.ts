@@ -62,6 +62,13 @@ export const museumsAToI = {
     country: 'DE',
     url: 'https://www.bsb-muenchen.de/',
   },
+  BIRMINGHAM_MUSEUM_AND_ART_GALLERY: {
+    key: 'BIRMINGHAM_MUSEUM_AND_ART_GALLERY',
+    name: 'Birmingham Museum and Art Gallery',
+    city: 'Birmingham',
+    country: 'GB',
+    url: 'https://www.birminghammuseums.org.uk/',
+  },
   BRYN_MAWR_COLLEGE: {
     key: 'BRYN_MAWR_COLLEGE',
     name: 'Bryn Mawr College Special Collections',

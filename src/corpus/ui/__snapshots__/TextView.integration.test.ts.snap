@@ -1117,7 +1117,10 @@ exports[`Chapter Show list of manuscripts 1`] = `
                               >
                                 <li>
                                   <span
+                                    aria-expanded="false"
                                     class="reference-popover__citation"
+                                    role="button"
+                                    tabindex="0"
                                   >
                                     <span
                                       class="reference-popover__interactive"

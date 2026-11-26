@@ -38,8 +38,18 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
     >
       <span
         class="realia-results-list__source"
+        tabindex="0"
       >
-        RlA
+        <abbr
+          aria-hidden="true"
+        >
+          RlA
+        </abbr>
+        <span
+          class="visually-hidden"
+        >
+          Reallexikon der Assyriologie und Vorderasiatischen Archäologie
+        </span>
         <span
           class="realia-results-list__source-count"
         >
@@ -50,8 +60,18 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
       </span>
       <span
         class="realia-results-list__source"
+        tabindex="0"
       >
-        AfO
+        <abbr
+          aria-hidden="true"
+        >
+          AfO
+        </abbr>
+        <span
+          class="visually-hidden"
+        >
+          AfO-Register Realien
+        </span>
         <span
           class="realia-results-list__source-count"
         >

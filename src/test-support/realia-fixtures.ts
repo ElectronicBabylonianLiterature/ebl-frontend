@@ -5,6 +5,7 @@ import {
   AfoRegisterEntry,
   ReallexikonEntry,
   RealiaCrossReference,
+  EblRealiaEntry,
 } from 'realia/domain/RealiaEntry'
 
 const chance = new Chance('realia-fixtures')
@@ -55,4 +56,21 @@ export const realiaEntryFactory = Factory.define<RealiaEntry>(() => ({
   crossReferences: [],
   afoCrossReferences: [],
   references: [],
+  referenceType: [],
+  eblRealia: [],
 }))
+
+export const eblRealiaEntryFactory = Factory.define<EblRealiaEntry>(() => {
+  const transliteration = `MÚL ${chance.word()}-${chance.word()}`
+  return {
+    id: transliteration,
+    transliteration,
+    normalisation: '',
+    translation: chance.sentence({ words: 5 }),
+    identification: `${chance.character({ pool: 'αβγδη' })} Psc`,
+    pos: 'CN',
+    wikidataId: [`Q${chance.integer({ min: 1000, max: 99999 })}`],
+    reference: null,
+    remarks: '',
+  }
+})

@@ -58,7 +58,7 @@ export function createFindspotPopup(
 
   title.textContent = name
   titleRow.append(title)
-  link.textContent = 'View fragments'
+  link.textContent = 'View tablets'
   link.setAttribute('href', fragmentSearchLink)
   link.addEventListener('click', (event) => {
     if (!isPlainLeftClick(event)) return
@@ -77,9 +77,7 @@ export function createFindspotPopup(
   }
 
   content.append(
-    createRow(
-      geometryType === 'polygon' ? 'Approximate area location' : 'Single point',
-    ),
+    createRow(geometryType === 'polygon' ? 'Mapped area' : 'Site location'),
     link,
   )
 

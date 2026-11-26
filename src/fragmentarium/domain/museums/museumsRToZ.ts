@@ -153,6 +153,13 @@ export const museumsRToZ = {
     copyright:
       'Credit: Staatliche Museen zu Berlin, Vorderasiatisches Museum, [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)',
   },
+  WORLD_MUSEUM_LIVERPOOL: {
+    key: 'WORLD_MUSEUM_LIVERPOOL',
+    name: 'World Museum',
+    city: 'Liverpool',
+    country: 'GB',
+    url: 'https://www.liverpoolmuseums.org.uk/world-museum',
+  },
   YALE_PEABODY_COLLECTION: {
     key: 'YALE_PEABODY_COLLECTION',
     name: 'Yale Peabody Museum, Yale Babylonian Collection',

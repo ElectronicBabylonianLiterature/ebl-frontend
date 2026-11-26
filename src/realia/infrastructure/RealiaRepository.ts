@@ -1,17 +1,35 @@
 import ApiClient from 'http/ApiClient'
 import createReference from 'bibliography/application/createReference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import Reference from 'bibliography/domain/Reference'
 import {
   RealiaEntry,
   ReallexikonEntry,
   AfoRegisterEntry,
   RealiaCrossReference,
+  EblRealiaEntry,
+  RealiaReferenceType,
+  realiaReferenceTypes,
 } from 'realia/domain/RealiaEntry'
+
+type EmbeddedReferenceDto = Pick<ReferenceDto, 'id'> & Partial<ReferenceDto>
 
 interface ReallexikonEntryDto {
   readonly id: string
   readonly title: string
-  readonly reference: ReferenceDto | null
+  readonly reference: EmbeddedReferenceDto | null
+}
+
+interface EblRealiaEntryDto {
+  readonly id: string
+  readonly transliteration?: string
+  readonly normalisation?: string
+  readonly translation?: string
+  readonly identification?: string
+  readonly pos?: string
+  readonly wikidataId?: Nullable<string>
+  readonly reference?: EmbeddedReferenceDto | null
+  readonly remarks?: string
 }
 
 interface RealiaCrossReferenceDto {
@@ -43,6 +61,8 @@ interface RealiaEntryDto {
   readonly crossReferences: Nullable<RealiaCrossReferenceDto>
   readonly afoCrossReferences: Nullable<RealiaCrossReferenceDto>
   readonly references: Nullable<ReferenceDto>
+  readonly referenceType?: Nullable<string>
+  readonly eblRealia?: Nullable<EblRealiaEntryDto>
 }
 
 function toArray<T>(value: Nullable<T>): readonly T[] {
@@ -52,12 +72,56 @@ function toArray<T>(value: Nullable<T>): readonly T[] {
   return Array.isArray(value) ? value : [value as T]
 }
 
-function mapReallexikonEntry(dto: ReallexikonEntryDto): ReallexikonEntry {
+function mapEmbeddedReference(
+  dto: EmbeddedReferenceDto | null | undefined,
+  documentReferences: readonly ReferenceDto[],
+): Reference | null {
+  if (!dto) {
+    return null
+  }
+  const documentReference = documentReferences.find(
+    (reference) => reference.id === dto.id,
+  )
+  return createReference({
+    type: 'DISCUSSION',
+    pages: '',
+    notes: '',
+    linesCited: [],
+    ...dto,
+    document: dto.document ?? documentReference?.document,
+  })
+}
+
+function mapReallexikonEntry(
+  dto: ReallexikonEntryDto,
+  documentReferences: readonly ReferenceDto[],
+): ReallexikonEntry {
   return {
     id: dto.id,
     title: dto.title,
-    reference: dto.reference ? createReference(dto.reference) : null,
+    reference: mapEmbeddedReference(dto.reference, documentReferences),
   }
+}
+
+function mapEblRealiaEntry(
+  dto: EblRealiaEntryDto,
+  documentReferences: readonly ReferenceDto[],
+): EblRealiaEntry {
+  return {
+    id: dto.id,
+    transliteration: dto.transliteration ?? '',
+    normalisation: dto.normalisation ?? '',
+    translation: dto.translation ?? '',
+    identification: dto.identification ?? '',
+    pos: dto.pos ?? '',
+    wikidataId: toArray(dto.wikidataId),
+    reference: mapEmbeddedReference(dto.reference, documentReferences),
+    remarks: dto.remarks ?? '',
+  }
+}
+
+function isRealiaReferenceType(value: string): value is RealiaReferenceType {
+  return (realiaReferenceTypes as readonly string[]).includes(value)
 }
 
 function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
@@ -105,9 +169,15 @@ function mapAfoRegisterEntry(dto: AfoRegisterEntryDto): AfoRegisterEntry {
 }
 
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
-  const reallexikonDtos = toArray(dto.reallexikon)
-  const reallexikonReferenceIds = new Set(
-    reallexikonDtos
+  const documentReferences = toArray(dto.references)
+  const reallexikon = toArray(dto.reallexikon).map((entry) =>
+    mapReallexikonEntry(entry, documentReferences),
+  )
+  const eblRealia = toArray(dto.eblRealia).map((entry) =>
+    mapEblRealiaEntry(entry, documentReferences),
+  )
+  const sectionReferenceIds = new Set(
+    [...reallexikon, ...eblRealia]
       .map((entry) => entry.reference?.id)
       .filter((id): id is string => id != null),
   )
@@ -118,12 +188,14 @@ function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
     type: toArray(dto.type),
     wikidataId: toArray(dto.wikidataId),
     afoRegister: toArray(dto.afoRegister).map(mapAfoRegisterEntry),
-    reallexikon: reallexikonDtos.map(mapReallexikonEntry),
+    reallexikon,
     crossReferences: toArray(dto.crossReferences).map(mapCrossReference),
     afoCrossReferences: toArray(dto.afoCrossReferences).map(mapCrossReference),
-    references: toArray(dto.references)
-      .filter((reference) => !reallexikonReferenceIds.has(reference.id))
+    references: documentReferences
+      .filter((reference) => !sectionReferenceIds.has(reference.id))
       .map(createReference),
+    referenceType: toArray(dto.referenceType).filter(isRealiaReferenceType),
+    eblRealia,
   }
 }
 

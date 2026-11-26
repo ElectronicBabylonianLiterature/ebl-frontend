@@ -4,6 +4,7 @@ import {
   RealiaCrossReference,
   RealiaEntry,
 } from 'realia/domain/RealiaEntry'
+import { eblRealiaEntryLabel } from 'realia/domain/eblRealiaEntryLabel'
 
 export interface RealiaNavSubsection {
   readonly id: string
@@ -20,6 +21,7 @@ export const realiaSectionIds = {
   top: 'realia-top',
   reallexikon: 'realia-section-reallexikon',
   afoRegister: 'realia-section-afo-register',
+  eblRealia: 'realia-section-ebl-realia',
   references: 'realia-section-references',
   seeAlso: 'realia-section-see-also',
 } as const
@@ -37,6 +39,10 @@ export function afoVolumeId(afoVolume: string): string {
 
 export function rlaArticleId(title: string): string {
   return `rla-${slugify(title)}`
+}
+
+export function eblRealiaEntryId(index: number): string {
+  return `ebl-realia-${index + 1}`
 }
 
 export function buildRealiaNav({
@@ -66,6 +72,16 @@ export function buildRealiaNav({
       subsections: volumeGroups.map((group) => ({
         id: afoVolumeId(group.volume),
         label: afoVolumeLabel(group),
+      })),
+    })
+  }
+  if (entry.eblRealia.length > 0) {
+    sections.push({
+      id: realiaSectionIds.eblRealia,
+      label: 'eBL Realia',
+      subsections: entry.eblRealia.map((eblEntry, index) => ({
+        id: eblRealiaEntryId(index),
+        label: eblRealiaEntryLabel(eblEntry, index),
       })),
     })
   }
