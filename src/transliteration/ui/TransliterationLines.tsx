@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren, useMemo } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
 import { createLineId } from 'transliteration/ui/note-links'
 import LineNotes from 'transliteration/ui/LineNotes'
@@ -8,12 +8,11 @@ import { DisplayDollarAndAtLine } from 'transliteration/ui/dollar-and-at-lines'
 import { LineProps } from 'transliteration/ui/LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
+import { isTranslationLine } from 'transliteration/domain/type-guards'
 import {
-  isColumnAtLine,
-  isObjectAtLine,
-  isSurfaceAtLine,
-  isTranslationLine,
-} from 'transliteration/domain/type-guards'
+  getCurrentLabels,
+  hasTextLineWithId,
+} from 'transliteration/domain/lineLabels'
 import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { DisplayParallelLine } from 'transliteration/ui/parallel-line'
@@ -23,6 +22,7 @@ export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 interface TextDisplayProps {
   text: Text
   activeLine?: string
+  matchLegacyLineIds: boolean
   language: string | null
   translationStyle: TranslationStyle
 }
@@ -76,18 +76,6 @@ function FirstLineNotes({
   )
 }
 
-export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
-  if (isObjectAtLine(line)) {
-    return { ...labels, object: line.label }
-  } else if (isSurfaceAtLine(line)) {
-    return { ...labels, surface: line.label }
-  } else if (isColumnAtLine(line)) {
-    return { ...labels, column: line.label }
-  } else {
-    return labels
-  }
-}
-
 export type TranslationStyle = 'inline' | 'standoff'
 
 function DisplayRow({
@@ -96,6 +84,7 @@ function DisplayRow({
   columns,
   labels,
   activeLine,
+  matchLegacyLineIds,
   notes,
   hiddenLineNumbers,
   children,
@@ -117,6 +106,7 @@ function DisplayRow({
         columns={columns}
         labels={labels}
         activeLine={activeLine}
+        matchLegacyLineIds={matchLegacyLineIds}
       />
       <td>
         <LineNotes
@@ -163,6 +153,7 @@ function getHiddenNoteLines(
 function DisplayText({
   text,
   activeLine,
+  matchLegacyLineIds,
   language,
   translationStyle,
 }: TextDisplayProps): JSX.Element {
@@ -184,6 +175,7 @@ function DisplayText({
                     columns={text.numberOfColumns}
                     labels={labels}
                     activeLine={activeLine}
+                    matchLegacyLineIds={matchLegacyLineIds}
                     notes={notes}
                     hiddenLineNumbers={getHiddenNoteLines(
                       lines,
@@ -222,6 +214,10 @@ export default function TransliterationLines({
   translationStyle?: TranslationStyle
   language?: string | null
 }): JSX.Element {
+  const matchLegacyLineIds = useMemo(
+    () => !hasTextLineWithId(text.lines, activeLine),
+    [text.lines, activeLine],
+  )
   const notes = text.notes
   const hiddenLineNumbers = getHiddenNoteLines(
     text.lines,
@@ -241,6 +237,7 @@ export default function TransliterationLines({
         <DisplayText
           text={text}
           activeLine={activeLine}
+          matchLegacyLineIds={matchLegacyLineIds}
           language={language}
           translationStyle={translationStyle}
         />

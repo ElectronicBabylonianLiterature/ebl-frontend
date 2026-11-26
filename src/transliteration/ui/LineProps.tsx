@@ -7,4 +7,5 @@ export interface LineProps {
   columns: number
   labels?: Labels
   activeLine?: string
+  matchLegacyLineIds?: boolean
 }

@@ -2,7 +2,10 @@ import React from 'react'
 import { stageToAbbreviation } from 'common/utils/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import { labelsAbbreviation } from 'transliteration/domain/labels'
+import {
+  createLineAnchorId,
+  labelsAbbreviation,
+} from 'transliteration/domain/labels'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
@@ -34,9 +37,8 @@ export function DisplayParallelFragment({
 }: {
   fragment: ParallelFragment
 }): JSX.Element {
-  const atfLineNumber = lineNumberToAtf(fragment.lineNumber)
   const labels = labelsAbbreviation(fragment.labels)
-  const hash = labels ? `${labels} ${atfLineNumber}` : atfLineNumber
+  const hash = createLineAnchorId(labels ? [labels] : [], fragment.lineNumber)
 
   const parallel = (
     <>
