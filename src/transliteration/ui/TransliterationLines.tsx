@@ -1,7 +1,7 @@
-import _ from 'lodash'
 import React, { FunctionComponent, PropsWithChildren, useMemo } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
-import { NoteLinks, createLineId } from 'transliteration/ui/note-links'
+import { createLineId } from 'transliteration/ui/note-links'
+import LineNotes from 'transliteration/ui/LineNotes'
 import DisplayRulingDollarLine from 'transliteration/ui/rulings'
 import DisplayTextLine from 'transliteration/ui/text-line'
 import { DisplayDollarAndAtLine } from 'transliteration/ui/dollar-and-at-lines'
@@ -9,14 +9,14 @@ import { LineProps } from 'transliteration/ui/LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { isTranslationLine } from 'transliteration/domain/type-guards'
-import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
-import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
-import { DisplayParallelLine } from 'transliteration/ui/parallel-line'
-import TranslationColumn from 'transliteration/ui/TranslationColumn'
 import {
   getCurrentLabels,
   hasTextLineWithId,
 } from 'transliteration/domain/lineLabels'
+import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
+import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
+import { DisplayParallelLine } from 'transliteration/ui/parallel-line'
+import TranslationColumn from 'transliteration/ui/TranslationColumn'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 interface TextDisplayProps {
@@ -24,6 +24,7 @@ interface TextDisplayProps {
   activeLine?: string
   matchLegacyLineIds: boolean
   language: string | null
+  translationStyle: TranslationStyle
 }
 
 export const defaultLineComponents: LineComponentMap = new Map([
@@ -50,19 +51,24 @@ export const defaultLineComponents: LineComponentMap = new Map([
 function FirstLineNotes({
   notes,
   columns,
+  hiddenLineNumbers,
 }: {
   notes: Notes
   columns: number
+  hiddenLineNumbers: readonly number[]
 }): JSX.Element {
-  const hasNotes = !_.isEmpty(notes.get(0))
   return (
     <>
-      {hasNotes && (
+      {(!!notes.get(0)?.length || hiddenLineNumbers.length > 0) && (
         <tr id={createLineId(0)}>
           <td></td>
           <td colSpan={columns}></td>
           <td>
-            <NoteLinks notes={notes} lineNumber={0} />
+            <LineNotes
+              notes={notes}
+              lineNumber={0}
+              hiddenLineNumbers={hiddenLineNumbers}
+            />
           </td>
         </tr>
       )}
@@ -80,11 +86,13 @@ function DisplayRow({
   activeLine,
   matchLegacyLineIds,
   notes,
+  hiddenLineNumbers,
   children,
 }: PropsWithChildren<
   LineProps & {
     lineIndex: number
     notes: Notes
+    hiddenLineNumbers: readonly number[]
   }
 >): JSX.Element {
   const LineComponent =
@@ -101,71 +109,62 @@ function DisplayRow({
         matchLegacyLineIds={matchLegacyLineIds}
       />
       <td>
-        <NoteLinks notes={notes} lineNumber={lineNumber} />
+        <LineNotes
+          notes={notes}
+          lineNumber={lineNumber}
+          hiddenLineNumbers={hiddenLineNumbers}
+        />
       </td>
       {children}
     </tr>
   )
 }
 
-function skipLine(line: AbstractLine, language: string | null): boolean {
-  return !!language && isTranslationLine(line) && line.language !== language
-}
-
-function DisplaySingleColumnText({
-  text,
-  activeLine,
-  matchLegacyLineIds,
-  language,
-}: TextDisplayProps): JSX.Element {
+function skipLine(
+  line: AbstractLine,
+  language: string | null,
+  translationStyle: TranslationStyle,
+): boolean {
   return (
-    <>
-      {
-        text.lines.reduce<[JSX.Element[], Labels]>(
-          (
-            [elements, labels]: [JSX.Element[], Labels],
-            line: AbstractLine,
-            index: number,
-          ) => {
-            const rows = skipLine(line, language)
-              ? elements
-              : [
-                  ...elements,
-                  <DisplayRow
-                    key={index}
-                    line={line}
-                    lineIndex={index}
-                    columns={text.numberOfColumns}
-                    labels={labels}
-                    activeLine={activeLine}
-                    matchLegacyLineIds={matchLegacyLineIds}
-                    notes={text.notes}
-                  />,
-                ]
-            return [rows, getCurrentLabels(labels, line)]
-          },
-          [[], defaultLabels],
-        )[0]
-      }
-    </>
+    isTranslationLine(line) &&
+    (translationStyle === 'standoff' ||
+      (!!language && line.language !== language))
   )
 }
-function DisplayTwoColumnText({
+
+function getHiddenNoteLines(
+  lines: readonly AbstractLine[],
+  notes: Notes,
+  lineIndex: number,
+  language: string | null,
+  translationStyle: TranslationStyle,
+): number[] {
+  const lineNumbers: number[] = []
+  for (
+    let index = lineIndex + 1;
+    index < lines.length && skipLine(lines[index], language, translationStyle);
+    index++
+  ) {
+    if (notes.get(index + 1)?.length) lineNumbers.push(index + 1)
+  }
+  return lineNumbers
+}
+
+function DisplayText({
   text,
   activeLine,
   matchLegacyLineIds,
   language,
+  translationStyle,
 }: TextDisplayProps): JSX.Element {
+  const notes = text.notes
+  const lines = text.lines
   return (
     <>
       {
-        text.lines.reduce<[JSX.Element[], Labels]>(
-          (
-            [elements, labels]: [JSX.Element[], Labels],
-            line: AbstractLine,
-            index: number,
-          ) => {
-            const rows = isTranslationLine(line)
+        lines.reduce<[JSX.Element[], Labels]>(
+          ([elements, labels], line, index) => {
+            const rows = skipLine(line, language, translationStyle)
               ? elements
               : [
                   ...elements,
@@ -177,11 +176,18 @@ function DisplayTwoColumnText({
                     labels={labels}
                     activeLine={activeLine}
                     matchLegacyLineIds={matchLegacyLineIds}
-                    notes={text.notes}
+                    notes={notes}
+                    hiddenLineNumbers={getHiddenNoteLines(
+                      lines,
+                      notes,
+                      index,
+                      language,
+                      translationStyle,
+                    )}
                   >
-                    {language && (
+                    {translationStyle === 'standoff' && language && (
                       <TranslationColumn
-                        lines={text.lines}
+                        lines={lines}
                         lineIndex={index}
                         language={language}
                       />
@@ -208,23 +214,32 @@ export default function TransliterationLines({
   translationStyle?: TranslationStyle
   language?: string | null
 }): JSX.Element {
-  const DisplayTextComponent =
-    translationStyle === 'standoff'
-      ? DisplayTwoColumnText
-      : DisplaySingleColumnText
   const matchLegacyLineIds = useMemo(
     () => !hasTextLineWithId(text.lines, activeLine),
     [text.lines, activeLine],
   )
+  const notes = text.notes
+  const hiddenLineNumbers = getHiddenNoteLines(
+    text.lines,
+    notes,
+    -1,
+    language,
+    translationStyle,
+  )
   return (
     <table className="Transliteration__lines">
       <tbody>
-        <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
-        <DisplayTextComponent
+        <FirstLineNotes
+          notes={notes}
+          columns={text.numberOfColumns}
+          hiddenLineNumbers={hiddenLineNumbers}
+        />
+        <DisplayText
           text={text}
           activeLine={activeLine}
           matchLegacyLineIds={matchLegacyLineIds}
           language={language}
+          translationStyle={translationStyle}
         />
       </tbody>
     </table>

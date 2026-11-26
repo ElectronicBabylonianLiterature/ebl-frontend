@@ -21,7 +21,7 @@ exports[`Show Library entries shows the matching Library line 1`] = `
     class="row"
   >
     <div
-      class="fragment-lines-with-lemma__identifier col-sm-1 col-12"
+      class="col-1"
     >
       <a
         data-discover="true"
@@ -31,7 +31,7 @@ exports[`Show Library entries shows the matching Library line 1`] = `
       </a>
     </div>
     <div
-      class="fragmentlines-column col-sm-11 col-12"
+      class="fragmentlines-column col"
     >
       <table>
         <tbody>

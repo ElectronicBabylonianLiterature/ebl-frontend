@@ -246,6 +246,42 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      MDZ Digitale Bibliothek (
+      <a
+        aria-label="MDZ Digitale Bibliothek text L123"
+        href="https://mdz-nbn-resolving.de/details:L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Deutsches Museum (
+      <a
+        aria-label="Deutsches Museum text L123"
+        href="https://digital.deutsches-museum.de/item/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      SMÄK (
+      <a
+        aria-label="SMÄK text L123"
+        href="https://sammlung.smaek.de/de/object/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       ark (
       <a
         aria-label="ark text L123"
