@@ -1,6 +1,7 @@
 import React from 'react'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useNavigate } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -41,6 +42,16 @@ function renderRoutes(initialEntry: string): FragmentService {
   return renderLibrarySearch(initialEntry, buildQueryResult)
 }
 
+function BrowserHistoryControls(): JSX.Element {
+  const navigate = useNavigate()
+  return (
+    <>
+      <button onClick={() => navigate(-1)}>Back</button>
+      <button onClick={() => navigate(1)}>Forward</button>
+    </>
+  )
+}
+
 describe('FragmentariumRoutes library search pagination', () => {
   it('sends the first explicit-limit page by default', async () => {
     const view = renderRoutes('/library/search/?number=000123')
@@ -50,7 +61,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 0,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -65,7 +76,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       genre: 'CANONICAL:Technical:Astronomy:Astronomical Diaries',
       limit: 51,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -81,7 +92,7 @@ describe('FragmentariumRoutes library search pagination', () => {
         number: 'K.1',
         limit: 51,
         offset: 0,
-        count: 'page',
+        count: 'exact',
       })
     },
   )
@@ -134,7 +145,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 101,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
   })
 
@@ -148,7 +159,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 50,
-      count: 'page',
+      count: 'exact',
     })
 
     await userEvent.click(screen.getAllByText('Next')[0])
@@ -163,7 +174,68 @@ describe('FragmentariumRoutes library search pagination', () => {
       number: '000123',
       limit: 51,
       offset: 100,
-      count: 'page',
+      count: 'exact',
     })
+  })
+
+  it.each(['paginationIndex', 'pagination%49ndex'])(
+    'corrects an out-of-range direct URL using %s',
+    async (paginationKey) => {
+      const view = renderLibrarySearch(
+        `/library/search/?number=000123&genre=CANONICAL%3ATechnical&${paginationKey}=99#library`,
+        (query) => ({
+          items:
+            query.offset === 200
+              ? [{ museumNumber: 'K.201', matchingLines: [], matchCount: 0 }]
+              : [],
+          matchCountTotal: null,
+          totalDocuments: 237,
+          hasNextPage: false,
+        }),
+      )
+
+      expect(await screen.findByText('K.201')).toBeInTheDocument()
+      expect(screen.getByTestId('location')).toHaveTextContent(
+        'number=000123&genre=CANONICAL%3ATechnical&paginationIndex=4',
+      )
+      expect(screen.getByTestId('location')).toHaveTextContent('#library')
+      expect(view.query).toHaveBeenLastCalledWith({
+        number: '000123',
+        genre: 'CANONICAL:Technical',
+        limit: 51,
+        offset: 200,
+        count: 'exact',
+      })
+      expect(view.query).toHaveBeenCalledTimes(2)
+    },
+  )
+
+  it('restores numbered pages through browser Back and Forward', async () => {
+    const view = renderLibrarySearch(
+      '/library/search/?number=K.1#library',
+      (query) => ({
+        items: [
+          {
+            museumNumber: `K.${(query.offset ?? 0) + 1}`,
+            matchingLines: [],
+            matchCount: 0,
+          },
+        ],
+        matchCountTotal: null,
+        totalDocuments: 237,
+      }),
+      <BrowserHistoryControls />,
+    )
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    await userEvent.click(screen.getAllByText('3')[0])
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(screen.getByTestId('location')).toHaveTextContent('#library')
+
+    await userEvent.click(screen.getByText('Back'))
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    await userEvent.click(screen.getByText('Forward'))
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledTimes(4)
   })
 })

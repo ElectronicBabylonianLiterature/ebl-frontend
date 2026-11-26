@@ -29,12 +29,7 @@ function Harness({
   readonly index: ExcavationPolygonIndex | null
 }): null {
   const mapRef = useRef(mockMapInstance as unknown as MapLibreMap)
-  useExcavationAreas(mapRef, {
-    isVisible: true,
-    selectedPolygonId: null,
-    onSelectPolygon: jest.fn(),
-    polygonIndex: index,
-  })
+  useExcavationAreas(mapRef, true, undefined, index)
   return null
 }
 
@@ -84,7 +79,6 @@ it('inserts fills and outlines below findspot clusters, labels and points in act
   expect(layerIds).toEqual([
     'excavation-area-fill',
     'excavation-area-outline',
-    'excavation-area-selected',
     'ebl-clusters',
     'ebl-cluster-count',
     'ebl-unclustered-points',

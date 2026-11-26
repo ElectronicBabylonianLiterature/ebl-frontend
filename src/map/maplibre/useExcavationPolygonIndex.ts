@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   type ExcavationPolygonIndex,
   fetchExcavationPolygonIndex,
@@ -8,6 +8,7 @@ export interface ExcavationPolygonIndexState {
   readonly index: ExcavationPolygonIndex
   readonly isLoaded: boolean
   readonly error: Error | null
+  readonly retry: () => void
 }
 
 const EMPTY_INDEX: ExcavationPolygonIndex = new Map()
@@ -17,10 +18,11 @@ function asError(reason: unknown): Error {
 }
 
 export default function useExcavationPolygonIndex(): ExcavationPolygonIndexState {
-  const [state, setState] = useState<ExcavationPolygonIndexState>({
+  const [requestVersion, setRequestVersion] = useState(0)
+  const [state, setState] = useState({
     index: EMPTY_INDEX,
     isLoaded: false,
-    error: null,
+    error: null as Error | null,
   })
 
   useEffect(() => {
@@ -43,7 +45,12 @@ export default function useExcavationPolygonIndex(): ExcavationPolygonIndexState
     return () => {
       ignore = true
     }
+  }, [requestVersion])
+
+  const retry = useCallback(() => {
+    setState({ index: EMPTY_INDEX, isLoaded: false, error: null })
+    setRequestVersion((version) => version + 1)
   }, [])
 
-  return state
+  return { ...state, retry }
 }

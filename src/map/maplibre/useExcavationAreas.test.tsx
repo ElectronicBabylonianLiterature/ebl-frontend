@@ -31,13 +31,7 @@ function Harness({
   const mapRef = useRef<MapLibreMap | null>(
     mockMapInstance as unknown as MapLibreMap,
   )
-  useExcavationAreas(mapRef, {
-    isVisible: isVisible,
-    onAvailabilityChange: onAvailabilityChange,
-    selectedPolygonId: null,
-    onSelectPolygon: jest.fn(),
-    polygonIndex: POLYGON_INDEX,
-  })
+  useExcavationAreas(mapRef, isVisible, onAvailabilityChange, POLYGON_INDEX)
   return null
 }
 
@@ -52,13 +46,7 @@ function OwnerTeardownHarness(): null {
     },
     [],
   )
-  useExcavationAreas(mapRef, {
-    isVisible: true,
-    onAvailabilityChange: undefined,
-    selectedPolygonId: null,
-    onSelectPolygon: jest.fn(),
-    polygonIndex: POLYGON_INDEX,
-  })
+  useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX)
   return null
 }
 
@@ -76,8 +64,8 @@ describe('useExcavationAreas', () => {
       EXCAVATION_AREAS_SOURCE_ID,
       expect.any(Object),
     )
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
-    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(2)
     expect(mockSetLayoutProperty).toHaveBeenCalledWith(
       expect.any(String),
       'visibility',
@@ -90,12 +78,12 @@ describe('useExcavationAreas', () => {
     const { rerender } = render(<Harness isVisible />)
 
     expect(mockAddSource).toHaveBeenCalledTimes(1)
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
 
     rerender(<Harness isVisible={false} />)
 
     expect(mockAddSource).toHaveBeenCalledTimes(1)
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
     expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
       expect.any(String),
       'visibility',
@@ -145,8 +133,8 @@ describe('useExcavationAreas', () => {
 
     act(() => triggerMapEvent('style.load'))
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
-    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(2)
     expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
       expect.any(String),
       'visibility',

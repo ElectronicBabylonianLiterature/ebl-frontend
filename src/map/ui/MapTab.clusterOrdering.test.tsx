@@ -31,7 +31,7 @@ it.each(['cluster', 'site'])(
   'keeps the newer %s click when an earlier cluster resolves late',
   async (nextClick) => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
     let finishFirst: (zoom: number) => void = () => undefined
     mockGetClusterExpansionZoom
       .mockReturnValueOnce(
@@ -42,6 +42,7 @@ it.each(['cluster', 'site'])(
       .mockResolvedValue(12)
     mockGetSource.mockReturnValue({
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      setData: jest.fn(),
     })
     mockQueryRenderedFeatures.mockReturnValueOnce([firstCluster])
     act(() => triggerMapEvent('click', { point: { x: 10, y: 20 } }))

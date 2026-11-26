@@ -16,10 +16,8 @@ it.each(['Evidence', 'Findspots'])(
       <MemoryRouter>
         <MapInspector
           polygon={excavationPolygon()}
-          siteName="Assur"
           summary={undefined}
           status="error"
-          onClear={jest.fn()}
         />
       </MemoryRouter>,
     )
@@ -31,20 +29,17 @@ it.each(['Evidence', 'Findspots'])(
   },
 )
 
-it('expands all mapped findspots and clears the selection through the inspector', async () => {
+it('expands all mapped findspots', async () => {
   const polygon = excavationPolygon()
   const rows = Array.from({ length: 12 }, (_, index) =>
     findspotMapDataDto({ findspotId: index, polygonIds: [polygon.polygonId] }),
   )
-  const onClear = jest.fn()
   render(
     <MemoryRouter>
       <MapInspector
         polygon={polygon}
-        siteName="Assur"
         summary={aggregateFindspotMapData(rows).get(polygon.polygonId)}
         status="loaded-with-mappings"
-        onClear={onClear}
       />
     </MemoryRouter>,
   )
@@ -56,8 +51,6 @@ it('expands all mapped findspots and clears the selection through the inspector'
   expect(
     within(screen.getByRole('tabpanel')).getAllByRole('link'),
   ).toHaveLength(12)
-  await userEvent.click(screen.getByRole('button', { name: 'Clear selection' }))
-  expect(onClear).toHaveBeenCalledTimes(1)
 })
 
 it.each([
@@ -87,10 +80,8 @@ it.each([
       <MemoryRouter>
         <MapInspector
           polygon={polygon}
-          siteName="Assur"
           summary={aggregateFindspotMapData(rows).get(polygon.polygonId)}
           status="loaded-with-mappings"
-          onClear={jest.fn()}
         />
       </MemoryRouter>,
     )

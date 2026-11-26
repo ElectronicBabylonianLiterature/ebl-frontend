@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
 import MapInspectorTabs, { type InspectorTab } from 'map/ui/MapInspectorTabs'
 import MapCompletenessNote from 'map/ui/MapCompletenessNote'
 import { buildFindspotFragmentSearchLink } from 'map/domain/mapLinks'
@@ -8,6 +9,7 @@ import {
   locationPrecisionLabel,
   mappingEvidenceLabel,
   countLabel,
+  mappedAreaLabel,
 } from 'map/domain/mapResearchLabels'
 import {
   derivePolygonResearchSummary,
@@ -20,9 +22,7 @@ import type { FragmentMapDataStatus } from 'map/domain/useFragmentMapData'
 interface Props {
   readonly polygon: ExcavationPolygon
   readonly summary: PolygonFindspotSummary | undefined
-  readonly siteName: string
   readonly status: FragmentMapDataStatus
-  readonly onClear: () => void
 }
 
 function hasLoaded(status: FragmentMapDataStatus): boolean {
@@ -68,16 +68,10 @@ function OverviewTab({
   return (
     <>
       <dl className="map-inspector__facts">
-        <dt>Site</dt>
-        <dd>{research.siteName}</dd>
-        <dt>Excavation area</dt>
-        <dd>{research.displayName}</dd>
-        <dt>Polygon ID</dt>
-        <dd>{research.polygonId}</dd>
         {research.areaSquareKm !== null ? (
           <>
             <dt>Mapped area</dt>
-            <dd>{research.areaSquareKm.toFixed(3)} km²</dd>
+            <dd>{mappedAreaLabel(research.areaSquareKm)}</dd>
           </>
         ) : null}
         {hasLoaded(status) ? (
@@ -160,16 +154,14 @@ function FindspotsTab({
 export default function MapInspector({
   polygon,
   summary,
-  siteName,
   status,
-  onClear,
 }: Props): JSX.Element {
   const [expandedCount, setExpandedCount] = useState(10)
   const research = derivePolygonResearchSummary({
     polygonId: polygon.polygonId,
     polygon,
     summary,
-    siteName,
+    siteName: mapSiteName(polygon.siteId),
   })
 
   const tabs: readonly InspectorTab[] = [
@@ -199,12 +191,6 @@ export default function MapInspector({
 
   return (
     <div className="map-inspector">
-      <header className="map-inspector__header">
-        <strong>{research.displayName}</strong>
-        <button type="button" onClick={onClear}>
-          Clear selection
-        </button>
-      </header>
       <p
         className="visually-hidden"
         role="status"

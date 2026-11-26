@@ -96,7 +96,7 @@ const LemmaSearchFormGroup = withData<
     )
   },
   ({ wordService, lemmas }) => {
-    const lemmaIds = lemmas ? lemmas.split('+') : []
+    const lemmaIds = _.split(lemmas, '+')
     return wordService
       .findAll(lemmaIds)
       .then(_.partial(createOptions, lemmaIds))
