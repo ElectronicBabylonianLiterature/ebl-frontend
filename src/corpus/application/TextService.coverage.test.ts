@@ -89,6 +89,7 @@ test('loads selected display lines and injects old-line references', async () =>
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     `${chapterUrl}/display?lines=2&variants=1`,
     false,
+    expect.any(AbortSignal),
   )
   expect(bibliographyServiceMock.find).toHaveBeenCalledWith(reference.id)
   expect(display.lines[0].oldLineNumbers[0].reference.document).toBe(entry)
