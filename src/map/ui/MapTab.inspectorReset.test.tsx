@@ -12,7 +12,6 @@ import {
   mockQueryRenderedFeatures,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
-import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/maplibre/mapExcavationLayers'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 jest.mock('maplibre-gl')
@@ -51,24 +50,18 @@ it('resets expanded findspots and the active inspector tab when a different area
     '/tools/map?mv=1&areas=1&selected=area%3A' + first,
     service,
   )
-  await userEvent.click(
-    await screen.findByRole('button', { name: 'Show selected area' }),
-  )
-  await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
+  await userEvent.click(await screen.findByRole('tab', { name: 'Findspots' }))
   await userEvent.click(
     await screen.findByRole('button', { name: 'Show all 11' }),
   )
   expect(
     within(screen.getByRole('tabpanel')).getAllByRole('link'),
   ).toHaveLength(11)
-  mockQueryRenderedFeatures.mockReturnValue([{ id: second }])
-  act(() =>
-    triggerMapEvent(
-      'click',
-      { point: { x: 1, y: 1 } },
-      EXCAVATION_AREA_FILL_LAYER_ID,
-    ),
-  )
+  mockQueryRenderedFeatures
+    .mockReturnValueOnce([])
+    .mockReturnValueOnce([])
+    .mockReturnValueOnce([{ properties: { id: second } }])
+  act(() => triggerMapEvent('click', { point: { x: 1, y: 1 } }))
   expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
     'aria-selected',
     'true',

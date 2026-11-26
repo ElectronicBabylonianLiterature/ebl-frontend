@@ -5,6 +5,13 @@ import ts from 'typescript'
 export const mediaArchitectureModules = [
   'fragmentarium/application/MediaBinaryLoader',
   'fragmentarium/application/MediaRepository',
+  'fragmentarium/application/MediaGalleryContext',
+  'fragmentarium/infrastructure/MediaGalleryProvider',
+  'fragmentarium/ui/images/MediaGallery',
+  'fragmentarium/ui/images/MediaPreview',
+  'fragmentarium/ui/images/MediaThumbnail',
+  'fragmentarium/ui/images/MediaSummaryThumbnail',
+  'fragmentarium/ui/images/MediaViewer',
   'fragmentarium/domain/media',
   'fragmentarium/domain/mediaGallery',
   'fragmentarium/infrastructure/mediaDtos',
@@ -18,6 +25,10 @@ export const mediaArchitectureModules = [
 
 const mediaArchitectureRoot = 'fragmentarium/'
 const mediaArchitectureFileName = /^media/i
+
+function isTestSourceFile(relativePath: string): boolean {
+  return /\.test(?:Support)?\./.test(relativePath)
+}
 
 export type ModuleReferenceKind =
   | 'import'
@@ -151,7 +162,7 @@ export function findExpectedMediaArchitectureModules(
     .map((filePath) => toRelativePath(sourceRoot, filePath))
     .filter(
       (relativePath) =>
-        !relativePath.includes('.test.') &&
+        !isTestSourceFile(relativePath) &&
         isMediaArchitectureFile(relativePath),
     )
     .map(toModulePath)
@@ -172,7 +183,7 @@ export function findMediaArchitectureReferences(
 
 export function isProductionSourceFile(relativePath: string): boolean {
   return (
-    !relativePath.includes('.test.') &&
+    !isTestSourceFile(relativePath) &&
     !isMediaArchitectureModule(toModulePath(relativePath))
   )
 }

@@ -32,7 +32,7 @@ describe('MapTab tool availability', () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(
-      await screen.findByText(/The interactive map could not be loaded/),
+      await screen.findByText(/The map background is unavailable/),
     ).toBeInTheDocument()
     expect(
       screen.queryByRole('button', { name: 'Search area' }),

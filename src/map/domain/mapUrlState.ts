@@ -11,14 +11,12 @@ import {
 
 export const MAP_URL_STATE_VERSION = 1
 export const MAX_FILTER_LENGTH = 200
-
 const VERSION_PARAM = 'mv'
 const FILTER_PARAM = 'findspot'
 const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
 const VISUALIZATION_PARAM = 'viz'
 const SURROGATE_CODE_UNIT = /^[\uD800-\uDFFF]$/
-
 const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
 
 export interface MapUrlState {
@@ -32,7 +30,7 @@ export interface MapUrlState {
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   version: MAP_URL_STATE_VERSION,
   filter: '',
-  showExcavationAreas: false,
+  showExcavationAreas: true,
   selection: null,
   visualization: DEFAULT_VISUALIZATION,
 }
@@ -50,7 +48,7 @@ export function normalizeMapUrlState(state: MapUrlState): MapUrlState {
     version: MAP_URL_STATE_VERSION,
     filter: normalizeMapFilter(state.filter),
     showExcavationAreas: state.showExcavationAreas,
-    selection: state.selection,
+    selection: state.selection ?? null,
     visualization: isMapVisualizationMode(state.visualization)
       ? state.visualization
       : DEFAULT_VISUALIZATION,
@@ -65,14 +63,13 @@ function asString(value: string | (string | null)[] | null): string {
 export function parseMapUrlState(search: string): MapUrlState {
   const query = parse(search)
   const version = asString(query[VERSION_PARAM])
-  if (version !== String(MAP_URL_STATE_VERSION)) {
+  if (version && version !== String(MAP_URL_STATE_VERSION)) {
     return DEFAULT_MAP_URL_STATE
   }
-
   return normalizeMapUrlState({
     version: MAP_URL_STATE_VERSION,
     filter: asString(query[FILTER_PARAM]),
-    showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
+    showExcavationAreas: asString(query[AREAS_PARAM]) !== '0',
     selection: parseMapSelection(asString(query[SELECTION_PARAM])),
     visualization: asString(query[VISUALIZATION_PARAM]) as MapVisualizationMode,
   })
@@ -82,6 +79,18 @@ export function serializeMapUrlState(state: MapUrlState): string {
   return mergeMapUrlStateIntoSearch('', state)
 }
 
+function needsVersionParameter(
+  state: MapUrlState,
+  hasExplicitAreas: boolean,
+  serializedSelection: string,
+): boolean {
+  const hasNonDefaultState =
+    Boolean(state.filter) ||
+    !state.showExcavationAreas ||
+    state.visualization !== DEFAULT_VISUALIZATION
+  return hasNonDefaultState || hasExplicitAreas || serializedSelection !== ''
+}
+
 export function mergeMapUrlStateIntoSearch(
   search: string,
   state: MapUrlState,
@@ -89,26 +98,28 @@ export function mergeMapUrlStateIntoSearch(
   const parameters = new URLSearchParams(search)
   const normalized = normalizeMapUrlState(state)
   const serializedSelection = serializeMapSelection(normalized.selection)
-
+  const hasExplicitAreas = parameters.has(AREAS_PARAM)
   parameters.delete(VERSION_PARAM)
   parameters.delete(FILTER_PARAM)
   parameters.delete(AREAS_PARAM)
   parameters.delete(SELECTION_PARAM)
   parameters.delete(VISUALIZATION_PARAM)
   if (
-    normalized.filter ||
-    normalized.showExcavationAreas ||
-    serializedSelection ||
-    normalized.visualization !== DEFAULT_VISUALIZATION
+    needsVersionParameter(normalized, hasExplicitAreas, serializedSelection)
   ) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
   }
   if (normalized.filter) parameters.set(FILTER_PARAM, normalized.filter)
-  if (normalized.showExcavationAreas) parameters.set(AREAS_PARAM, '1')
+  if (
+    normalized.filter ||
+    !normalized.showExcavationAreas ||
+    hasExplicitAreas
+  ) {
+    parameters.set(AREAS_PARAM, normalized.showExcavationAreas ? '1' : '0')
+  }
   if (serializedSelection) parameters.set(SELECTION_PARAM, serializedSelection)
   if (normalized.visualization !== DEFAULT_VISUALIZATION) {
     parameters.set(VISUALIZATION_PARAM, normalized.visualization)
   }
-
   return parameters.toString()
 }

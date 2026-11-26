@@ -1,106 +1,77 @@
-import React, { useRef } from 'react'
-import { Alert } from 'react-bootstrap'
+import React from 'react'
+import { Alert, Button } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
-import useMapTabState, { type MapTabState } from 'map/ui/useMapTabState'
-import useProvenances, { ProvenanceSource } from 'map/ui/useProvenances'
-import MapStage from 'map/ui/MapStage'
-import MapPanelDock from 'map/ui/MapPanelDock'
+import type { FindspotService } from 'fragmentarium/application/FindspotService'
+import useProvenances, { type ProvenanceSource } from 'map/ui/useProvenances'
+import useMapTabState from 'map/ui/useMapTabState'
 import MapExperienceHeader from 'map/ui/MapExperienceHeader'
-import MapPresentationBar from 'map/ui/MapPresentationBar'
-import useMapPresentationFocus from 'map/ui/useMapPresentationFocus'
+import MapLayerControls from 'map/ui/MapLayerControls'
+import MapStage from 'map/ui/MapStage'
 import MapLegend from 'map/ui/MapLegend'
-import MapSelectionPill from 'map/ui/MapSelectionPill'
-import buildMapToolPanels from 'map/ui/mapToolPanels'
+import MapResearchSidebar from 'map/ui/MapResearchSidebar'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
-import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
+import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import 'map/ui/MapTab.sass'
 
 interface Props {
-  readonly findspotService: FindspotService
   readonly fragmentService: ProvenanceSource
+  readonly findspotService: FindspotService
 }
 
 function LoadedMapTab({
-  findspotService,
   provenances,
+  findspotService,
 }: {
+  readonly provenances: readonly ProvenanceRecord[]
   readonly findspotService: FindspotService
-  readonly provenances: MapTabState['provenances']
 }): JSX.Element {
   const state = useMapTabState(findspotService, provenances)
-  const {
-    experience,
-    panel,
-    filteredProvenances,
-    selectedPolygon,
-    visibleFindspotCount,
-  } = state
-  const isPresenting = experience.presentation.isActive
-  const presentationTriggerRef = useRef<HTMLButtonElement>(null)
-  useMapPresentationFocus(presentationTriggerRef, isPresenting)
-  const description = isPresenting
-    ? {
-        className: 'visually-hidden',
-        content: 'Interactive findspot map in presentation mode.',
-      }
-    : {
-        className: 'map-tab__description',
-        content: 'Matching tablet search links are available below the map.',
-      }
-
-  const clearSelection = (): void => {
-    experience.setSelection(null)
-    panel.close()
-  }
-
-  const panels = buildMapToolPanels(state, clearSelection)
-
-  const excavationStatus =
-    state.isExcavationAreasUnavailable &&
-    (experience.showExcavationAreas ||
-      experience.selection !== null ||
-      (!isPresenting && panel.active === 'layers')) ? (
-      <Alert variant="warning">Excavation areas are unavailable.</Alert>
-    ) : null
-
   return (
-    <div
-      className={`map-tab map-experience${
-        isPresenting ? ' map-experience--presenting' : ''
-      }`}
-    >
-      {isPresenting ? (
-        <MapPresentationBar onExit={experience.presentation.exit} />
-      ) : (
-        <MapExperienceHeader
-          visibleSiteCount={visibleFindspotCount}
-          onResetView={state.resetView}
-          presentationTriggerRef={presentationTriggerRef}
-          onEnterPresentation={experience.presentation.enter}
-          filterControl={
+    <div className="map-tab map-experience">
+      <MapExperienceHeader
+        visibleSiteCount={state.visibleFindspotCount}
+        onResetView={state.resetView}
+        filterControl={
+          <div ref={state.searchContainer}>
             <FindspotFilterInput
-              provenances={state.provenances}
-              filter={experience.filter}
-              onFilterChange={experience.setFilter}
+              provenances={provenances}
+              filter={state.experience.filter}
+              onFilterChange={state.experience.setFilter}
             />
-          }
-        />
-      )}
-      {isPresenting ? null : (
-        <FindspotEmptyState
-          provenances={filteredProvenances}
-          filter={experience.filter}
-        />
-      )}
-
+          </div>
+        }
+        layerControl={
+          <MapLayerControls
+            showExcavationAreas={state.experience.showExcavationAreas}
+            onShowExcavationAreasChange={
+              state.experience.setShowExcavationAreas
+            }
+          />
+        }
+      />
+      {state.isExcavationAreasLoading ? (
+        <p role="status">Loading excavation areas…</p>
+      ) : null}
+      {state.isExcavationAreasUnavailable ? (
+        <Alert variant="warning" className="map-experience__layer-warning">
+          <span>Excavation areas are unavailable.</span>{' '}
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={state.retryAreas}
+          >
+            Retry excavation areas
+          </Button>
+        </Alert>
+      ) : null}
       <div className="map-experience__body">
         <MapStage
           containerRef={state.mapContainer}
           isBackgroundUnavailable={state.isBackgroundUnavailable}
           describedById="findspot-map-description"
-          showFallbackHint={!isPresenting}
+          showFallbackHint
           legend={
             state.showExcavationAreas ? (
               <MapLegend
@@ -109,51 +80,26 @@ function LoadedMapTab({
               />
             ) : null
           }
-          overlay={
-            <MapPanelDock
-              panels={isPresenting ? [] : panels}
-              status={excavationStatus}
-              panel={panel}
-              drawerRef={state.drawerRef}
-              selectionAction={
-                selectedPolygon && panel.active !== 'inspector' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('inspector')}
-                  />
-                ) : null
-              }
-            />
-          }
         />
+        <MapResearchSidebar state={state} />
       </div>
-      <p id="findspot-map-description" className={description.className}>
-        {description.content}
+      <p id="findspot-map-description" className="map-tab__description">
+        Explore mapped sites and excavation areas. Site details and Library
+        searches are available beside or below the map.
       </p>
-      {isPresenting ? null : (
-        <>
-          <FindspotSearchList provenances={filteredProvenances} />
-        </>
-      )}
     </div>
   )
 }
 
 export default function MapTab({
-  findspotService,
   fragmentService,
+  findspotService,
 }: Props): JSX.Element {
   const { provenances, error } = useProvenances(fragmentService)
-
-  if (error) {
+  if (error)
     return <Alert variant="danger">Failed to load map data: {error}</Alert>
-  }
-
-  if (provenances === null) {
-    return <Spinner>Loading map data...</Spinner>
-  }
-
+  if (provenances === null) return <Spinner>Loading map data...</Spinner>
   return (
-    <LoadedMapTab findspotService={findspotService} provenances={provenances} />
+    <LoadedMapTab provenances={provenances} findspotService={findspotService} />
   )
 }

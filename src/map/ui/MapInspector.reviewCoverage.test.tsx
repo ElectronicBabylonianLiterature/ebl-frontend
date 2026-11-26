@@ -37,11 +37,9 @@ it('copies the displayed selection and active research context without inventing
       <MapInspector
         polygon={polygon}
         summary={summary}
-        siteName="Assur"
         status="loaded-with-mappings"
         visualizationMode="count"
         siteFilter="Assur"
-        onClear={jest.fn()}
       />
     </MemoryRouter>,
   )

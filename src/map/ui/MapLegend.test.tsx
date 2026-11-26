@@ -74,7 +74,7 @@ describe('MapLegend', () => {
       'map-legend-mark',
     )
     expect(marks.map((mark) => mark.style.borderWidth).filter(Boolean)).toEqual(
-      ['1.2px', '1.9px', '2.6px', '3.3px'],
+      ['1.2px', '1.9px', '2.6px', '3.3px', '3px'],
     )
   })
 

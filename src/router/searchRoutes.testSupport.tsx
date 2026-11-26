@@ -36,11 +36,16 @@ function createServices(
   return services
 }
 
-function renderRoutes(initialEntry: string, routes: JSX.Element[]): void {
+function renderRoutes(
+  initialEntry: string,
+  routes: JSX.Element[],
+  extraContent?: React.ReactNode,
+): void {
   render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={new MemorySession(['read:fragments'])}>
         <LocationDisplay />
+        {extraContent}
         <Switch>{routes}</Switch>
       </SessionContext.Provider>
     </MemoryRouter>,
@@ -50,12 +55,14 @@ function renderRoutes(initialEntry: string, routes: JSX.Element[]): void {
 export function renderLibrarySearch(
   initialEntry: string,
   buildQueryResult: QueryResultBuilder,
+  extraContent?: React.ReactNode,
 ): FragmentService {
   const services = createServices(buildQueryResult)
 
   renderRoutes(
     initialEntry,
     FragmentariumRoutes({ ...services, sitemap: false }),
+    extraContent,
   )
 
   return services.fragmentService

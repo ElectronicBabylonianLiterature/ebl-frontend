@@ -7,6 +7,7 @@ import {
   COLOR_MAPPED_FRAGMENTS,
   COLOR_MAPPED_ZERO,
   COLOR_SELECTED,
+  OUTLINE_SELECTED,
   COLOR_UNAVAILABLE,
   COLOR_UNMAPPED,
 } from 'map/domain/mapPaintColors'
@@ -17,7 +18,7 @@ import {
 } from 'map/domain/mapEvidencePaint'
 import { mappingEvidenceLabel } from 'map/domain/mapResearchLabels'
 
-export type LegendPattern = 'solid' | 'dashed' | 'dotted' | 'dash-dot' | 'halo'
+export type LegendPattern = 'solid' | 'dashed' | 'dotted' | 'dash-dot'
 
 export interface MapLegendEntry {
   readonly key: string
@@ -25,6 +26,7 @@ export interface MapLegendEntry {
   readonly color: string
   readonly pattern: LegendPattern
   readonly outlineWidth?: number
+  readonly outlineColor?: string
 }
 
 const UNAVAILABLE_ENTRY: MapLegendEntry = {
@@ -43,7 +45,9 @@ const SELECTED_ENTRY: MapLegendEntry = {
   key: 'selected',
   label: 'Selected area',
   color: COLOR_SELECTED,
-  pattern: 'halo',
+  pattern: 'solid',
+  outlineColor: OUTLINE_SELECTED,
+  outlineWidth: 3,
 }
 const DENSITY_UNCLASSIFIED_ENTRY: MapLegendEntry = {
   key: 'density-unclassified',

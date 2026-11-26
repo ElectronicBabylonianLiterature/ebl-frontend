@@ -1,5 +1,4 @@
 import { screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import useExcavationPolygonIndex from 'map/maplibre/useExcavationPolygonIndex'
 import useFragmentMapData, {
   type SiteFragmentMapDataState,
@@ -18,12 +17,12 @@ jest.mock('map/maplibre/useExcavationPolygonIndex')
 jest.mock('map/domain/useFragmentMapData')
 
 test.each([
-  ['nippur', 'Nippur', false],
-  ['unknown-site', 'unknown-site', false],
-  ['nippur', 'Nippur', true],
+  ['nippur', false],
+  ['unknown-site', false],
+  ['nippur', true],
 ] as const)(
-  'shows an honest inspector for %s without a matching summary (%s, %s)',
-  async (siteId, siteName, hasSiteData) => {
+  'shows an honest inspector for %s without a matching summary (site data: %s)',
+  async (siteId, hasSiteData) => {
     const polygon = excavationPolygon({
       siteId,
       polygonId: 'area-a',
@@ -36,6 +35,7 @@ test.each([
     mockIndex.mockReturnValue({
       index: new Map([[siteId, [polygon]]]),
       isLoaded: true,
+      retry: jest.fn(),
       error: null,
     })
     const sites = new Map<MapSiteId, SiteFragmentMapDataState>()
@@ -57,14 +57,15 @@ test.each([
       makeFragmentService([]),
       '/tools/map?mv=1&selected=area%3Aarea-a',
     )
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Selected area' }),
+    const inspector = within(
+      await screen.findByRole('region', { name: 'Location details' }),
     )
-    expect(screen.getByText(siteName)).toBeVisible()
-    expect(screen.queryByText('Mapped area')).not.toBeInTheDocument()
-    const status = within(
-      screen.getByRole('region', { name: 'Selected area' }),
-    ).getByRole('status')
+    expect(
+      inspector.getByRole('heading', { name: 'Unnamed excavation area' }),
+    ).toBeVisible()
+    expect(inspector.getByRole('tab', { name: 'Overview' })).toBeVisible()
+    expect(inspector.queryByText('Mapped area')).not.toBeInTheDocument()
+    const status = inspector.getByRole('status')
     if (hasSiteData)
       expect(status).toHaveTextContent(
         '0 accessible tablets across 0 findspots.',

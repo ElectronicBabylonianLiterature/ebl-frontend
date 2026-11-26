@@ -12,6 +12,7 @@ import {
   excavationPaintProperties,
 } from 'map/maplibre/mapExcavationPaint'
 import { SELECTED } from 'map/domain/mapStateExpressions'
+import { OUTLINE_SELECTED } from 'map/domain/mapPaintColors'
 export {
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
@@ -84,10 +85,9 @@ export const excavationAreaSelectedLayer: AddLayerObject = {
   source: EXCAVATION_AREAS_SOURCE_ID,
   layout: { visibility: 'visible', 'line-join': 'round' },
   paint: {
-    'line-color': '#ffffff',
-    'line-width': ['case', SELECTED, 7, 0],
-    'line-opacity': ['case', SELECTED, 0.9, 0],
-    'line-blur': ['case', SELECTED, 1.5, 0],
+    'line-color': OUTLINE_SELECTED,
+    'line-width': ['case', SELECTED, 4, 0],
+    'line-opacity': ['case', SELECTED, 1, 0],
   },
 }
 
@@ -96,4 +96,5 @@ export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
 export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
 ]

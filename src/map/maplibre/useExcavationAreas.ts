@@ -14,18 +14,11 @@ import {
   removeExcavationAreas,
   setExcavationAreasVisible,
 } from 'map/maplibre/mapExcavationResources'
-import { applyExcavationPaint } from 'map/domain/mapChoroplethLayers'
-import {
-  CATEGORICAL_PAINT,
-  type ExcavationPaint,
-} from 'map/maplibre/mapExcavationPaint'
+import { type ExcavationPaint } from 'map/maplibre/mapExcavationPaint'
 import type { PolygonVisualizationValues } from 'map/domain/mapVisualizationValues'
-import {
-  applySelection,
-  applyVisualizationValues,
-} from 'map/maplibre/mapExcavationFeatureState'
+import { applySelection } from 'map/maplibre/mapExcavationFeatureState'
 
-const EMPTY_VALUES: PolygonVisualizationValues = new Map()
+import useExcavationAreaVisualization from 'map/maplibre/useExcavationAreaVisualization'
 
 export interface ExcavationAreaOptions {
   readonly polygonIndex: ExcavationPolygonIndex | null
@@ -33,7 +26,8 @@ export interface ExcavationAreaOptions {
   readonly selectedPolygonId: string | null
   readonly paint?: ExcavationPaint
   readonly values?: PolygonVisualizationValues
-  readonly onSelectPolygon: (polygonId: string) => void
+  readonly onSelectPolygon?: (polygonId: string) => void
+  readonly retryVersion?: number
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
   readonly isInteractionEnabled?: boolean
 }
@@ -44,12 +38,18 @@ function observeExcavationClicks(
   isCurrentMap: () => boolean,
 ): () => void {
   const handleClick = (event: MapMouseEvent): void => {
-    if (!isCurrentMap() || getOptions().isInteractionEnabled === false) return
+    if (
+      !isCurrentMap() ||
+      !getOptions().isVisible ||
+      !getOptions().onSelectPolygon ||
+      getOptions().isInteractionEnabled === false
+    )
+      return
     const [feature] = map.queryRenderedFeatures(event.point, {
       layers: [EXCAVATION_AREA_FILL_LAYER_ID],
     })
     if (typeof feature?.id === 'string') {
-      getOptions().onSelectPolygon(feature.id)
+      getOptions().onSelectPolygon?.(feature.id)
     }
   }
   map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
@@ -61,6 +61,7 @@ function useExcavationAreaLifecycle(
   options: ExcavationAreaOptions,
 ): void {
   const polygonIndex = options.polygonIndex
+  const retryVersion = options.retryVersion ?? 0
   const latestOptionsRef = useRef(options)
   latestOptionsRef.current = options
 
@@ -72,7 +73,12 @@ function useExcavationAreaLifecycle(
     const ownsMap = (): boolean => mapRef.current === map
     const isCurrentMap = (): boolean => isActive && ownsMap()
     const install = (): void => {
-      if (isCurrentMap()) addExcavationAreas(map, polygonIndex)
+      if (!isCurrentMap()) return
+      try {
+        addExcavationAreas(map, polygonIndex)
+      } catch {
+        latestOptionsRef.current.onAvailabilityChange?.(true)
+      }
     }
 
     const stopObservingClicks = observeExcavationClicks(
@@ -96,15 +102,16 @@ function useExcavationAreaLifecycle(
       stopObservingAvailability()
       map.off(MAP_STYLE_LOAD_EVENT, install)
       stopObservingClicks()
-      if (ownsMap()) removeExcavationAreas(map)
+      if (ownsMap() && map.getStyle()) removeExcavationAreas(map)
     }
-  }, [mapRef, polygonIndex])
+  }, [mapRef, polygonIndex, retryVersion])
 }
 
 function useExcavationAreaVisibility(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isVisible: boolean,
   polygonIndex: ExcavationPolygonIndex | null,
+  retryVersion: number,
 ): void {
   useEffect(() => {
     const map = mapRef.current
@@ -112,7 +119,7 @@ function useExcavationAreaVisibility(
 
     let isActive = true
     const updateVisibility = (): void => {
-      if (isActive && mapRef.current === map)
+      if (isActive && mapRef.current === map && map.getStyle())
         setExcavationAreasVisible(map, isVisible)
     }
     map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
@@ -122,7 +129,7 @@ function useExcavationAreaVisibility(
       isActive = false
       map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
-  }, [mapRef, isVisible, polygonIndex])
+  }, [mapRef, isVisible, polygonIndex, retryVersion])
 }
 
 function useExcavationAreaSelection(
@@ -130,6 +137,7 @@ function useExcavationAreaSelection(
   isVisible: boolean,
   selectedPolygonId: string | null,
   polygonIndex: ExcavationPolygonIndex | null,
+  retryVersion: number,
 ): void {
   const previousSelectedIdRef = useRef<string | null>(null)
 
@@ -142,6 +150,7 @@ function useExcavationAreaSelection(
       if (
         !isActive ||
         mapRef.current !== map ||
+        !map.getStyle() ||
         !map.getSource(EXCAVATION_AREAS_SOURCE_ID)
       )
         return
@@ -156,55 +165,7 @@ function useExcavationAreaSelection(
       isActive = false
       map.off(MAP_STYLE_LOAD_EVENT, updateSelection)
     }
-  }, [mapRef, isVisible, selectedPolygonId, polygonIndex])
-}
-
-function useExcavationAreaVisualization(
-  mapRef: MutableRefObject<MapLibreMap | null>,
-  paint: ExcavationPaint | undefined,
-  values: PolygonVisualizationValues | undefined,
-  polygonIndex: ExcavationPolygonIndex | null,
-): void {
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map) return
-
-    let isActive = true
-    const updatePaint = (): void => {
-      if (isActive && mapRef.current === map)
-        applyExcavationPaint(map, paint ?? CATEGORICAL_PAINT)
-    }
-    map.on(MAP_STYLE_LOAD_EVENT, updatePaint)
-    updatePaint()
-
-    return () => {
-      isActive = false
-      map.off(MAP_STYLE_LOAD_EVENT, updatePaint)
-    }
-  }, [mapRef, paint, polygonIndex])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map) return
-
-    let isActive = true
-    const updateValues = (): void => {
-      if (
-        isActive &&
-        mapRef.current === map &&
-        map.getSource(EXCAVATION_AREAS_SOURCE_ID)
-      ) {
-        applyVisualizationValues(map, values ?? EMPTY_VALUES)
-      }
-    }
-    map.on(MAP_STYLE_LOAD_EVENT, updateValues)
-    updateValues()
-
-    return () => {
-      isActive = false
-      map.off(MAP_STYLE_LOAD_EVENT, updateValues)
-    }
-  }, [mapRef, values, polygonIndex])
+  }, [mapRef, isVisible, selectedPolygonId, polygonIndex, retryVersion])
 }
 
 export default function useExcavationAreas(
@@ -212,17 +173,24 @@ export default function useExcavationAreas(
   options: ExcavationAreaOptions,
 ): void {
   useExcavationAreaLifecycle(mapRef, options)
-  useExcavationAreaVisibility(mapRef, options.isVisible, options.polygonIndex)
+  useExcavationAreaVisibility(
+    mapRef,
+    options.isVisible,
+    options.polygonIndex,
+    options.retryVersion ?? 0,
+  )
   useExcavationAreaSelection(
     mapRef,
     options.isVisible,
     options.selectedPolygonId,
     options.polygonIndex,
+    options.retryVersion ?? 0,
   )
   useExcavationAreaVisualization(
     mapRef,
     options.paint,
     options.values,
     options.polygonIndex,
+    options.retryVersion ?? 0,
   )
 }

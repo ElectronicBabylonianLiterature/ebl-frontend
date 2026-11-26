@@ -28,7 +28,7 @@ describe('MapTab URL state', () => {
       '/tools/map?mv=1&findspot=bab',
     )
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await waitFor(() => expect(input).toHaveValue('bab'))
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
     expect(
@@ -39,7 +39,7 @@ describe('MapTab URL state', () => {
   it('does not add a query string on a plain visit with no filter', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
-    await screen.findByLabelText('Filter findspots by name')
+    await screen.findByLabelText('Search sites')
 
     await waitFor(() => {
       expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
@@ -54,7 +54,7 @@ describe('MapTab URL state', () => {
   it('writes a typed filter to the URL', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     await userEvent.type(input, 'bab')
 
     await waitFor(() => {
@@ -69,7 +69,7 @@ describe('MapTab URL state', () => {
     const overlongFilter = 'a'.repeat(MAX_FILTER_LENGTH + 50)
     const cappedFilter = 'a'.repeat(MAX_FILTER_LENGTH)
 
-    const input = await screen.findByLabelText('Filter findspots by name')
+    const input = await screen.findByLabelText('Search sites')
     fireEvent.change(input, { target: { value: overlongFilter } })
 
     await waitFor(() => expect(input).toHaveValue(cappedFilter))
@@ -78,27 +78,27 @@ describe('MapTab URL state', () => {
     expect(parseMapUrlState(search).filter).toBe(cappedFilter)
   })
 
-  it('resets the filter, active panel and camera while preserving unrelated URL state', async () => {
+  it('resets only the camera while preserving the active tool, filter and unrelated URL state', async () => {
     renderMapTab(
       makeFragmentService([makeProvenance()]),
       '/tools/map?outside=keep&mv=1&findspot=bab',
     )
-    const input = await screen.findByLabelText('Filter findspots by name')
-    await userEvent.click(screen.getByRole('button', { name: 'Map layers' }))
-    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+    const input = await screen.findByLabelText('Search sites')
+    await userEvent.click(screen.getByRole('button', { name: 'Measure' }))
+    expect(screen.getByRole('button', { name: 'Measure' })).toHaveAttribute(
       'aria-expanded',
       'true',
     )
 
     await userEvent.click(screen.getByRole('button', { name: 'Reset view' }))
 
-    await waitFor(() => expect(input).toHaveValue(''))
-    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+    expect(input).toHaveValue('bab')
+    expect(screen.getByRole('button', { name: 'Measure' })).toHaveAttribute(
       'aria-expanded',
-      'false',
+      'true',
     )
     expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
-      '/tools/map?outside=keep',
+      '/tools/map?outside=keep&mv=1&findspot=bab',
     )
     expect(mockEaseTo).toHaveBeenCalledWith({
       center: INITIAL_CENTER,

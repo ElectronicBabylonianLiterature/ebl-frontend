@@ -4,7 +4,11 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 
 jest.mock('bibliography/application/BibliographyService', () => {
   return function () {
-    return { find: jest.fn(), findMany: jest.fn(), search: jest.fn() }
+    return {
+      find: jest.fn(),
+      findManyById: jest.fn(),
+      search: jest.fn(),
+    }
   }
 })
 

@@ -23,9 +23,11 @@ it('requests scoped counts on spatial-search demand while excavation fills stay 
     ),
   )
   const fetchMapData = jest.fn(() => Promise.resolve([]))
-  renderMapTab(makeFragmentService([makeProvenance()]), {
-    fetchMapData,
-  } as unknown as FindspotService)
+  renderMapTab(
+    makeFragmentService([makeProvenance()]),
+    '/tools/map?mv=1&areas=0',
+    { fetchMapData } as unknown as FindspotService,
+  )
   const button = await screen.findByRole('button', { name: 'Search area' })
   expect(fetchMapData).not.toHaveBeenCalled()
   await userEvent.click(button)
@@ -33,4 +35,5 @@ it('requests scoped counts on spatial-search demand while excavation fills stay 
   expect(screen.getByTestId('current-location')).not.toHaveTextContent(
     'areas=1',
   )
+  expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
 })

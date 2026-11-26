@@ -39,6 +39,7 @@ export const mockResize = mockMapMethods.resize
 export const mockSetPaintProperty = mockMapMethods.setPaintProperty
 export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = mockMapMethods.isStyleLoaded
+export const mockSetStyle = jest.fn()
 export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
 export const mockOnce = mockMapMethods.once
 export const mockAddControl = jest.fn()
@@ -64,6 +65,7 @@ export const mockMapInstance = {
   ...mockMapMethods,
   setFeatureState: mockSetFeatureState,
   getStyle: mockGetStyle,
+  setStyle: mockSetStyle,
   addControl: mockAddControl,
   getCanvas: mockGetCanvas,
   getBounds: mockGetBounds,

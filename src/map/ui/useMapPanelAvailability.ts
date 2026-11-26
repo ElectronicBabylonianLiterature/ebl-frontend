@@ -1,22 +1,16 @@
 import { useEffect } from 'react'
-import type { MapPanelController } from 'map/ui/useMapPanel'
+import type { MapToolsController } from 'map/ui/useMapTools'
 
 interface MapPanelAvailability {
-  readonly selectedPolygonId: string | null
   readonly canShowExcavationAreas: boolean
   readonly isBackgroundUnavailable: boolean
 }
 
 export default function useMapPanelAvailability(
-  { active, close }: Pick<MapPanelController, 'active' | 'close'>,
-  {
-    selectedPolygonId,
-    canShowExcavationAreas,
-    isBackgroundUnavailable,
-  }: MapPanelAvailability,
+  { active, close }: Pick<MapToolsController, 'active' | 'close'>,
+  { canShowExcavationAreas, isBackgroundUnavailable }: MapPanelAvailability,
 ): void {
   useEffect(() => {
-    if (selectedPolygonId === null && active === 'inspector') close()
     if (!canShowExcavationAreas && active === 'visualization') close()
     if (
       isBackgroundUnavailable &&
@@ -30,11 +24,5 @@ export default function useMapPanelAvailability(
     ) {
       close()
     }
-  }, [
-    active,
-    canShowExcavationAreas,
-    close,
-    isBackgroundUnavailable,
-    selectedPolygonId,
-  ])
+  }, [active, canShowExcavationAreas, close, isBackgroundUnavailable])
 }

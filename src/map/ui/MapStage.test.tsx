@@ -30,7 +30,7 @@ describe('MapStage', () => {
     )
 
     expect(
-      screen.queryByText(/interactive map could not be loaded/i),
+      screen.queryByText(/map background is unavailable/i),
     ).not.toBeInTheDocument()
   })
 
@@ -41,7 +41,7 @@ describe('MapStage', () => {
     )
 
     expect(
-      screen.getByText(/interactive map could not be loaded/i),
+      screen.getByText(/map background is unavailable/i),
     ).toBeInTheDocument()
   })
 
@@ -55,12 +55,12 @@ describe('MapStage', () => {
       />,
     )
     expect(
-      screen.getByText(/Findspot links remain available below/),
+      screen.getByText(/You can still browse sites and use Library links/),
     ).toBeInTheDocument()
 
     rerender(<MapStage containerRef={containerRef} isBackgroundUnavailable />)
     expect(
-      screen.queryByText(/Findspot links remain available below/),
+      screen.queryByText(/You can still browse sites and use Library links/),
     ).not.toBeInTheDocument()
   })
 

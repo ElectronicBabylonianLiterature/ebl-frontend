@@ -154,6 +154,9 @@ describe('spatial-search layers', () => {
       SPATIAL_SEARCH_FILL_LAYER_ID,
     ])
     expect(methods.removeSource).toHaveBeenCalledWith(SPATIAL_SEARCH_SOURCE_ID)
+    removeSpatialSearchLayers(map)
+    expect(methods.removeLayer).toHaveBeenCalledTimes(3)
+    expect(methods.removeSource).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -199,14 +202,16 @@ describe('createSpatialSearchLayerLifecycle', () => {
   })
 
   it('detaches listeners without accessing a replaced map style', () => {
-    const { map, methods } = createMap()
+    const { map, methods, load } = createMap()
     let isCurrent = true
     const lifecycle = createSpatialSearchLayerLifecycle(map, () => isCurrent)
     jest.clearAllMocks()
     isCurrent = false
 
+    load()
     lifecycle.update([43, 35], [])
     lifecycle.dispose()
+    load()
 
     expect(methods.isStyleLoaded).not.toHaveBeenCalled()
     expect(methods.off).toHaveBeenCalledWith('style.load', expect.any(Function))

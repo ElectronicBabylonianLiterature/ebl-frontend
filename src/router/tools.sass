@@ -25,3 +25,42 @@
     line-height: 1.8
     color: $ebl-color-text-primary
     margin-bottom: 1.25rem
+
+.tools-map-navigation
+  display: none
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .tools-container--map
+    padding-top: 0.5rem
+    padding-bottom: 1.5rem
+
+    .tools-content__header
+      gap: 0.5rem
+      margin-bottom: 0.75rem
+      padding-bottom: 0.5rem
+
+    .tools-content__icon
+      font-size: 1.65rem
+
+    .tools-content__title
+      font-size: 1.4rem
+
+    .tools-sidebar
+      margin-bottom: 1rem
+
+    .tools-nav
+      display: none
+
+    .tools-map-navigation
+      display: grid
+      gap: 0.35rem
+      color: $ebl-color-text-neutral
+      font-size: 0.875rem
+
+      select
+        min-height: 2.75rem
+        color: $ebl-color-text-primary
+
+        &:focus-visible
+          outline: 3px solid $ebl-color-brand-primary-dark
+          outline-offset: 3px

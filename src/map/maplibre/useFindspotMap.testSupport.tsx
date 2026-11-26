@@ -8,6 +8,7 @@ import {
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
+import useMapCameraOwnership from 'map/maplibre/useMapCameraOwnership'
 
 const CLUSTER_ID_PROPERTY = 'cluster_id'
 
@@ -21,23 +22,33 @@ export function HookHarness({
   withContainer = true,
   provenances,
   onMapBackgroundErrorChange,
-  cameraResetVersion,
+  cameraResetVersion = 0,
   isInteractionEnabled,
+  onFindspotSelect,
+  onExcavationSelect,
 }: {
   withContainer?: boolean
   provenances: Parameters<typeof useFindspotMap>[1]
   onMapBackgroundErrorChange?: (hasError: boolean) => void
   cameraResetVersion?: number
   isInteractionEnabled?: boolean
+  onFindspotSelect?: (id: string) => void
+  onExcavationSelect?: (id: string) => void
 }): JSX.Element | null {
   const ref = useRef<HTMLDivElement>(null)
-  useFindspotMap(
-    ref,
-    provenances,
+  const camera = useMapCameraOwnership(provenances)
+  const previousVersion = useRef(cameraResetVersion)
+  if (previousVersion.current !== cameraResetVersion) {
+    previousVersion.current = cameraResetVersion
+    camera.claim()
+  }
+  useFindspotMap(ref, provenances, {
     onMapBackgroundErrorChange,
-    cameraResetVersion,
+    camera,
     isInteractionEnabled,
-  )
+    onFindspotSelect,
+    onExcavationSelect,
+  })
   return withContainer ? <div ref={ref} /> : null
 }
 
