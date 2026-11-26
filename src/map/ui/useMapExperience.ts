@@ -7,6 +7,8 @@ export interface MapExperience {
   readonly filter: string
   readonly selection: MapSelection | null
   readonly showExcavationAreas: boolean
+  readonly terrain: boolean
+  readonly setTerrain: (isEnabled: boolean) => void
   readonly visualization: MapVisualizationMode
   readonly setSelection: (selection: MapSelection | null) => void
   readonly setFilter: (filter: string) => void
@@ -21,6 +23,11 @@ export default function useMapExperience(): MapExperience {
     selection: state.selection,
     showExcavationAreas: state.showExcavationAreas,
     visualization: state.visualization,
+    terrain: state.terrain,
+    setTerrain: useCallback(
+      (terrain: boolean) => update({ terrain }),
+      [update],
+    ),
     setSelection: useCallback(
       (selection: MapSelection | null) => update({ selection }),
       [update],

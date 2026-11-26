@@ -12,6 +12,7 @@ import useMapTools from 'map/ui/useMapTools'
 import useMapPanelAvailability from 'map/ui/useMapPanelAvailability'
 import useMapVisualization from 'map/ui/useMapVisualization'
 import useMapMeasurement from 'map/ui/useMapMeasurement'
+import useMapTerrain from 'map/maplibre/useMapTerrain'
 import useMapSpatialSearch from 'map/ui/useMapSpatialSearch'
 import useMapExportView from 'map/ui/useMapExportView'
 import useMapResearchSelection from 'map/ui/useMapResearchSelection'
@@ -42,6 +43,7 @@ export default function useMapTabState(
   const mapContainer = useRef<HTMLDivElement>(null)
   const searchContainer = useRef<HTMLDivElement>(null)
   const experience = useMapExperience()
+  const { setTerrain } = experience
   const panel = useMapTools()
   const researchState = useMapResearchSelection(
     searchContainer,
@@ -139,6 +141,9 @@ export default function useMapTabState(
       canShowExcavationAreas && !isRenderedAreasUnavailable,
     isBackgroundUnavailable,
   })
+  const terrain = useMapTerrain(mapRef, experience.terrain, {
+    onUnavailable: () => setTerrain(false),
+  })
   const spatialSearch = useMapSpatialSearch(
     mapRef,
     isSpatialSearchActive,
@@ -159,8 +164,9 @@ export default function useMapTabState(
   )
   const resetView = useCallback(() => {
     camera.claim()
+    setTerrain(false)
     resetMapCamera(mapRef.current)
-  }, [camera, mapRef])
+  }, [camera, mapRef, setTerrain])
   const retryAreas = useCallback(() => {
     setIsRenderedAreasUnavailable(false)
     setAreasRetryVersion((version) => version + 1)
@@ -202,6 +208,7 @@ export default function useMapTabState(
     fragmentMapData,
     polygonIndex,
     visualization,
+    terrain,
     excavationPolygons,
     exportView,
     measurement,

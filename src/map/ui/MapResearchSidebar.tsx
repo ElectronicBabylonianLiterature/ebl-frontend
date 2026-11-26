@@ -9,6 +9,7 @@ import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import MapMeasurePanel from 'map/ui/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
 import MapExportPanel from 'map/ui/MapExportPanel'
+import MapTerrainPanel from 'map/ui/MapTerrainPanel'
 import { exportDataStatuses } from 'map/domain/mapExportData'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
@@ -71,6 +72,17 @@ export default function MapResearchSidebar({
             scope: state.exportView.scope,
             dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
           })}
+        />
+      ),
+    },
+    {
+      id: 'terrain',
+      label: 'Terrain',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => (
+        <MapTerrainPanel
+          terrain={state.terrain}
+          onChange={state.experience.setTerrain}
         />
       ),
     },

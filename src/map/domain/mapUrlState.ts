@@ -16,6 +16,7 @@ const FILTER_PARAM = 'findspot'
 const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
 const VISUALIZATION_PARAM = 'viz'
+const TERRAIN_PARAM = 'terrain'
 const SURROGATE_CODE_UNIT = /^[\uD800-\uDFFF]$/
 const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
 
@@ -24,6 +25,7 @@ export interface MapUrlState {
   readonly filter: string
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
+  readonly terrain: boolean
   readonly visualization: MapVisualizationMode
 }
 
@@ -33,6 +35,7 @@ export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   showExcavationAreas: true,
   selection: null,
   visualization: DEFAULT_VISUALIZATION,
+  terrain: false,
 }
 
 export function normalizeMapFilter(filter: string): string {
@@ -45,6 +48,7 @@ export function normalizeMapFilter(filter: string): string {
 
 export function normalizeMapUrlState(state: MapUrlState): MapUrlState {
   return {
+    terrain: state.terrain === true,
     version: MAP_URL_STATE_VERSION,
     filter: normalizeMapFilter(state.filter),
     showExcavationAreas: state.showExcavationAreas,
@@ -68,6 +72,7 @@ export function parseMapUrlState(search: string): MapUrlState {
   }
   return normalizeMapUrlState({
     version: MAP_URL_STATE_VERSION,
+    terrain: asString(query[TERRAIN_PARAM]) === '1',
     filter: asString(query[FILTER_PARAM]),
     showExcavationAreas: asString(query[AREAS_PARAM]) !== '0',
     selection: parseMapSelection(asString(query[SELECTION_PARAM])),
@@ -87,7 +92,8 @@ function needsVersionParameter(
   const hasNonDefaultState =
     Boolean(state.filter) ||
     !state.showExcavationAreas ||
-    state.visualization !== DEFAULT_VISUALIZATION
+    state.visualization !== DEFAULT_VISUALIZATION ||
+    state.terrain
   return hasNonDefaultState || hasExplicitAreas || serializedSelection !== ''
 }
 
@@ -103,6 +109,7 @@ export function mergeMapUrlStateIntoSearch(
   parameters.delete(FILTER_PARAM)
   parameters.delete(AREAS_PARAM)
   parameters.delete(SELECTION_PARAM)
+  parameters.delete(TERRAIN_PARAM)
   parameters.delete(VISUALIZATION_PARAM)
   if (
     needsVersionParameter(normalized, hasExplicitAreas, serializedSelection)
@@ -121,5 +128,6 @@ export function mergeMapUrlStateIntoSearch(
   if (normalized.visualization !== DEFAULT_VISUALIZATION) {
     parameters.set(VISUALIZATION_PARAM, normalized.visualization)
   }
+  if (normalized.terrain) parameters.set(TERRAIN_PARAM, '1')
   return parameters.toString()
 }
