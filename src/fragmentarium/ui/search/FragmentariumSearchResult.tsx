@@ -1,4 +1,6 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -21,10 +23,12 @@ import PaginationItems, {
 import {
   createPagedFragmentQuery,
   hasNextPageAfter,
+  getLastPageIndex,
   isLineQuery,
   paginationURLParam,
   RESULT_PAGE_SIZES,
   SearchPagination,
+  updatePaginationSearchParam,
 } from 'fragmentarium/ui/search/pagination'
 
 function ResultPages({
@@ -36,6 +40,7 @@ function ResultPages({
   pageIndex,
   pageSize,
   hasNextPage,
+  lastPageIndex,
   showPaginationControls,
   querySignature,
 }: {
@@ -47,6 +52,7 @@ function ResultPages({
   pageIndex: number
   pageSize: number
   hasNextPage: boolean
+  lastPageIndex: number | null
   showPaginationControls: boolean
   querySignature: string
 }): JSX.Element {
@@ -60,6 +66,7 @@ function ResultPages({
             activePage={pageIndex}
             pageSize={pageSize}
             hasNextPage={hasNextPage}
+            lastPageIndex={lastPageIndex}
             paginationURLParam={paginationURLParam}
             position={position}
           />
@@ -95,16 +102,14 @@ function ResultPages({
 export type SearchResultFragmentService = FragmentLinesService &
   Pick<FragmentService, 'query'>
 
-export const SearchResult = withData<
-  {
-    fragmentService: SearchResultFragmentService
-    dossiersService: DossiersService
-    fragmentQuery: FragmentSearchCriteria
-    pagination: SearchPagination
-  },
-  unknown,
-  QueryResult
->(
+type SearchResultProps = {
+  fragmentService: SearchResultFragmentService
+  dossiersService: DossiersService
+  fragmentQuery: FragmentSearchCriteria
+  pagination: SearchPagination
+}
+
+const PagedSearchResult = withData<SearchResultProps, unknown, QueryResult>(
   ({
     data,
     fragmentService,
@@ -112,16 +117,43 @@ export const SearchResult = withData<
     fragmentQuery,
     pagination: { pageIndex, pageSize },
   }): JSX.Element => {
+    const location = useLocation()
+    const history = useHistory()
     const visibleItems = data.items.slice(0, pageSize).map((item) => ({
       ...item,
       totalMatchingLines: matchingLineTotal(item, fragmentQuery),
     }))
+    const lastPageIndex = getLastPageIndex(data.totalDocuments, pageSize)
+    React.useEffect(() => {
+      if (lastPageIndex !== null && pageIndex > lastPageIndex) {
+        history.replace({
+          pathname: location.pathname,
+          search: updatePaginationSearchParam(
+            location.search,
+            paginationURLParam,
+            lastPageIndex,
+          ),
+          hash: location.hash,
+        })
+      }
+    }, [
+      history,
+      lastPageIndex,
+      location.hash,
+      location.pathname,
+      location.search,
+      pageIndex,
+    ])
+
+    if (lastPageIndex !== null && pageIndex > lastPageIndex) {
+      return <></>
+    }
+
     const lineQuery = isLineQuery(fragmentQuery)
-    const effectiveHasNextPage = hasNextPageAfter(
-      data.items,
-      pageSize,
-      data.hasNextPage,
-    )
+    const effectiveHasNextPage =
+      lastPageIndex === null
+        ? hasNextPageAfter(data.items, pageSize, data.hasNextPage)
+        : pageIndex < lastPageIndex
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
@@ -137,7 +169,11 @@ export const SearchResult = withData<
       fragmentCount > 0
         ? `Showing documents ${(offset + 1).toLocaleString()}-${(
             offset + fragmentCount
-          ).toLocaleString()}`
+          ).toLocaleString()}${
+            lastPageIndex === null
+              ? ''
+              : ` of ${data.totalDocuments?.toLocaleString()}`
+          }`
         : pageIndex > 0
           ? 'No results on this page'
           : 'Found 0 documents'
@@ -149,7 +185,7 @@ export const SearchResult = withData<
         : null
     const resultInfo = lineCountInfo
       ? `${lineCountInfo}. ${documentRange}`
-      : isCompleteFirstPage
+      : lastPageIndex === null && isCompleteFirstPage
         ? `Found ${pageDocumentCount}`
         : documentRange
     const showNumberSuggestion =
@@ -187,6 +223,7 @@ export const SearchResult = withData<
             pageIndex={pageIndex}
             pageSize={pageSize}
             hasNextPage={effectiveHasNextPage}
+            lastPageIndex={lastPageIndex}
             showPaginationControls={showPaginationControls}
             querySignature={stringify(fragmentQuery)}
             linesToShow={Math.max(
@@ -206,3 +243,10 @@ export const SearchResult = withData<
     ],
   },
 )
+
+export function SearchResult(props: SearchResultProps): JSX.Element {
+  const requestKey = stringify(
+    createPagedFragmentQuery(props.fragmentQuery, props.pagination),
+  )
+  return <PagedSearchResult key={requestKey} {...props} />
+}

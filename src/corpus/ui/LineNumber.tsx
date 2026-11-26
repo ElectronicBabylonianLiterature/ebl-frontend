@@ -4,6 +4,7 @@ import lineNumberToString, {
 } from 'transliteration/domain/lineNumberToString'
 import { OldLineNumber } from 'transliteration/domain/line-number'
 import referencePopover from 'bibliography/ui/referencePopover'
+import Citation from 'bibliography/ui/Citation'
 import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
@@ -17,7 +18,7 @@ const OldLineNumberCitation = referencePopover(({ reference }) => (
 ))
 
 function OldLineNumbers({
-  oldLineNumbers = [],
+  oldLineNumbers,
   show,
 }: {
   oldLineNumbers: readonly OldLineNumber[]
@@ -27,6 +28,9 @@ function OldLineNumbers({
     <span
       className={classnames({
         'chapter-display__old-line-numbers': true,
+        'chapter-display__old-line-numbers--with-fallback': oldLineNumbers.some(
+          ({ reference }) => reference.hasUnresolvedDocument,
+        ),
         hidden: !show,
       })}
     >
@@ -35,7 +39,13 @@ function OldLineNumbers({
         <React.Fragment key={index}>
           {index > 0 && '; '}
           <span>{oldLineNumber.number}</span>
-          <OldLineNumberCitation reference={oldLineNumber.reference} />
+          {oldLineNumber.reference.hasUnresolvedDocument ? (
+            <sup className="chapter-display__old-line-reference-fallback">
+              <Citation reference={oldLineNumber.reference} />
+            </sup>
+          ) : (
+            <OldLineNumberCitation reference={oldLineNumber.reference} />
+          )}
         </React.Fragment>
       ))}
       )

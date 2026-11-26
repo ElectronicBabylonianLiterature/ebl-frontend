@@ -1,0 +1,13 @@
+[
+  {
+    "findspotId": 4,
+    "polygonIds": [
+      "uruk-area-1-d82e7d214644",
+      "uruk-area-1-76ab950d6152"
+    ],
+    "locationPrecision": "excavation-area",
+    "matchMethod": "verified-source",
+    "source": "uruk-fixture.ods",
+    "sourceRevision": "fixture-v1"
+  }
+]

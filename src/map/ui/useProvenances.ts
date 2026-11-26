@@ -19,6 +19,8 @@ export default function useProvenances(
 
   useEffect(() => {
     let ignore = false
+    setProvenances(null)
+    setError(null)
 
     fragmentService
       .fetchProvenances()

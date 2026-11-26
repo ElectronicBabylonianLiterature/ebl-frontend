@@ -34,6 +34,13 @@ export const museumsKToP = {
     country: 'AT',
     url: 'https://www.khm.at/',
   },
+  LMU_IAH: {
+    key: 'LMU_IAH',
+    name: 'LMU Institut für Assyriologie und Hethitologie',
+    city: 'Munich',
+    country: 'DE',
+    url: 'https://www.assyriologie.uni-muenchen.de/',
+  },
   LOUVRE: {
     key: 'LOUVRE',
     name: 'Louvre',

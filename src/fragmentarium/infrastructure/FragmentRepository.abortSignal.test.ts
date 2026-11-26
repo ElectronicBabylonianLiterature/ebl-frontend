@@ -1,4 +1,3 @@
-import { fragmentDto } from 'test-support/test-fragment'
 import {
   apiClient,
   fragmentId,
@@ -7,6 +6,7 @@ import {
   lineToVecRankingDto,
   resultStub,
 } from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
+import { fragmentDto } from 'test-support/test-fragment'
 
 type AbortableRead = {
   readonly name: string
@@ -21,8 +21,8 @@ const abortableReads: readonly AbortableRead[] = [
   {
     name: 'find',
     call: (signal) =>
-      fragmentRepository.find(fragmentId, undefined, undefined, signal),
-    expectedPath: `/fragments/${encodeURIComponent(fragmentId)}`,
+      fragmentRepository.find(fragmentId, undefined, true, signal),
+    expectedPath: `/fragments/${encodeURIComponent(fragmentId)}?excludeLines=true`,
     response: fragmentDto,
   },
   {

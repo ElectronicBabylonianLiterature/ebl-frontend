@@ -20,6 +20,13 @@ export const museumsAToI = {
     country: 'US',
     url: 'https://isac.uchicago.edu/',
   },
+  ARCHAEOLOGISCHE_STAATSSAMMLUNG: {
+    key: 'ARCHAEOLOGISCHE_STAATSSAMMLUNG',
+    name: 'Archäologische Staatssammlung',
+    city: 'Munich',
+    country: 'DE',
+    url: 'https://www.archaeologie.bayern/',
+  },
   ASHMOLEAN_MUSEUM: {
     key: 'ASHMOLEAN_MUSEUM',
     name: 'Ashmolean Museum',
@@ -47,6 +54,13 @@ export const museumsAToI = {
     city: 'Batman',
     country: 'TR',
     url: 'https://kvmgm.ktb.gov.tr/TR-281298/batman-muze-mudurlugu.html',
+  },
+  BAYERISCHE_STAATSBIBLIOTHEK: {
+    key: 'BAYERISCHE_STAATSBIBLIOTHEK',
+    name: 'Bayerische Staatsbibliothek',
+    city: 'Munich',
+    country: 'DE',
+    url: 'https://www.bsb-muenchen.de/',
   },
   BRYN_MAWR_COLLEGE: {
     key: 'BRYN_MAWR_COLLEGE',
@@ -89,6 +103,13 @@ export const museumsAToI = {
     city: 'Leiden',
     country: 'NL',
     url: 'https://www.nino-leiden.nl/collections/de-liagre-bohl-collection',
+  },
+  DEUTSCHES_MUSEUM: {
+    key: 'DEUTSCHES_MUSEUM',
+    name: 'Deutsches Museum',
+    city: 'Munich',
+    country: 'DE',
+    url: 'https://www.deutsches-museum.de/',
   },
   ECOLE_PRATIQUE_DES_HAUTES_ETUDES: {
     key: 'ECOLE_PRATIQUE_DES_HAUTES_ETUDES',
