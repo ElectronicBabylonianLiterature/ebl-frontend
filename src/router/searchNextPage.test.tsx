@@ -72,12 +72,22 @@ async function paginationControls(): Promise<readonly HTMLElement[]> {
   return within(nav).getAllByRole('listitem')
 }
 
+async function paginationControl(name: string): Promise<HTMLElement> {
+  const control = (await paginationControls()).find((item) =>
+    within(item).queryByText(name),
+  )
+  if (!control) {
+    throw new Error(`Pagination control not found: ${name}`)
+  }
+  return control
+}
+
 async function nextButton(): Promise<HTMLElement> {
-  return (await paginationControls())[2]
+  return paginationControl('Next')
 }
 
 async function previousButton(): Promise<HTMLElement> {
-  return (await paginationControls())[0]
+  return paginationControl('Previous')
 }
 
 function pageEntry(entry: string, pageIndex: number): string {

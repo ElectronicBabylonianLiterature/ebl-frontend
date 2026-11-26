@@ -66,11 +66,12 @@ function FragmentariumSearch({
       ),
     [lemmas, lemmaOperator, transliteration],
   )
+  const hasCorpusCriteria = hasNonDefaultValues(corpusQuery)
 
   const showResults =
     (isValidNumber(fragmentQuery.number) &&
       hasNonDefaultValues(fragmentQuery)) ||
-    hasNonDefaultValues(corpusQuery)
+    hasCorpusCriteria
 
   return (
     <AppContent
@@ -114,10 +115,17 @@ function FragmentariumSearch({
                     />
                   </Tab>
                   <Tab eventKey="corpus" title="Corpus">
-                    <CorpusSearchResult
-                      textService={textService}
-                      corpusQuery={corpusQuery}
-                    />
+                    {hasCorpusCriteria ? (
+                      <CorpusSearchResult
+                        textService={textService}
+                        corpusQuery={corpusQuery}
+                      />
+                    ) : (
+                      <p>
+                        Enter a transliteration or lemma search to search the
+                        Corpus.
+                      </p>
+                    )}
                   </Tab>
                 </Tabs>
               ) : (

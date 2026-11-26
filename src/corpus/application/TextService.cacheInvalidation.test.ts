@@ -139,6 +139,7 @@ test('keeps successful display requests deduplicated after invalidation', async 
   expect(apiClient.fetchJson).toHaveBeenLastCalledWith(
     `${chapterUrl}/display`,
     false,
+    expect.any(AbortSignal),
   )
   expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
 })

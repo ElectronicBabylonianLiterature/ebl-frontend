@@ -41,6 +41,7 @@ export interface CorpusQueryItem {
 
 export interface CorpusQueryResult {
   items: readonly CorpusQueryItem[]
+  totalChapters?: number | null
   matchCountTotal: number | null
   isMatchCountTotalExact?: boolean
   hasNextPage?: boolean | null

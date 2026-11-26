@@ -1,5 +1,7 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { LineDetails } from 'corpus/domain/line-details'
 import { MemoryRouter } from 'react-router-dom'
 import { ChapterViewLine } from 'corpus/ui/ChapterViewLine'
 import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
@@ -47,7 +49,13 @@ const line: LineDisplay = {
   ],
 }
 
-function LineWithContexts({ language }: { language: string }): JSX.Element {
+function LineWithContexts({
+  language,
+  displayLine,
+}: {
+  language: string
+  displayLine: LineDisplay
+}): JSX.Element {
   return (
     <RowsContext.Provider value={useRowsContext(1)}>
       <TranslationContext.Provider value={useTranslationContext(language)}>
@@ -56,7 +64,7 @@ function LineWithContexts({ language }: { language: string }): JSX.Element {
             <ChapterViewLine
               chapter={chapter}
               lineIndex={0}
-              line={line}
+              line={displayLine}
               columns={[]}
               maxColumns={1}
               textService={textServiceMock}
@@ -70,10 +78,10 @@ function LineWithContexts({ language }: { language: string }): JSX.Element {
   )
 }
 
-function renderLine(language = 'en'): void {
+function renderLine(language = 'en', displayLine = line): void {
   render(
     <MemoryRouter>
-      <LineWithContexts language={language} />
+      <LineWithContexts language={language} displayLine={displayLine} />
     </MemoryRouter>,
   )
 }
@@ -110,4 +118,58 @@ it('shows the translation in the selected language', () => {
 it('leaves the translation empty for a language without translation', () => {
   renderLine('fr')
   expect(screen.queryByText('Line translation')).not.toBeInTheDocument()
+})
+
+function controlledRow(toggle: HTMLElement): HTMLElement | undefined {
+  return screen
+    .getAllByRole('row', { hidden: true })
+    .find(
+      (row) => row.getAttribute('id') === toggle.getAttribute('aria-controls'),
+    )
+}
+
+it.each(['Show score', 'Show notes', 'Show parallels'])(
+  'opens and closes %s with the keyboard and pointer',
+  async (name) => {
+    textServiceMock.findChapterLine.mockResolvedValue(new LineDetails([], 0))
+    renderLine()
+    const toggle = screen.getAllByRole('button', { name })[0]
+    expect(toggle.tagName).toBe('BUTTON')
+    expect(toggle).toHaveAttribute('type', 'button')
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    for (let index = 0; index < 12 && !toggle.matches(':focus'); index++) {
+      await userEvent.tab()
+    }
+    expect(toggle).toHaveFocus()
+    await userEvent.keyboard('{Enter}')
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(toggle).toHaveFocus()
+    const expandedTarget = controlledRow(toggle)
+    expect(expandedTarget).toBeInTheDocument()
+    await waitFor(() => expect(expandedTarget).toHaveClass('show'))
+    await userEvent.keyboard(' ')
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveFocus()
+    await userEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(controlledRow(toggle)).toBeInTheDocument()
+  },
+)
+
+it('omits empty detail controls and the secondary variant score control', () => {
+  renderLine('en', {
+    ...line,
+    variants: line.variants.map((variant) => ({
+      ...variant,
+      note: null,
+      parallelLines: [],
+    })),
+  })
+  expect(
+    screen.queryByRole('button', { name: 'Show notes' }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByRole('button', { name: 'Show parallels' }),
+  ).not.toBeInTheDocument()
+  expect(screen.getAllByRole('button', { name: 'Show score' })).toHaveLength(1)
 })

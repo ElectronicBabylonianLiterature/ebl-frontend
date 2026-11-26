@@ -107,6 +107,7 @@ test('inject ChapterDisplay', async () => {
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     `${chapterUrl}/display`,
     false,
+    expect.any(AbortSignal),
   )
   expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith(
     [translationReference.id],
@@ -173,6 +174,7 @@ describe('findChapterDisplay line selection', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/display?lines=1&lines=2&variants=0`,
       false,
+      expect.any(AbortSignal),
     )
   })
 
