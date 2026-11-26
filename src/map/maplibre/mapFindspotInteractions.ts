@@ -23,12 +23,17 @@ import {
   unclusteredLayer,
 } from 'map/maplibre/mapLayers'
 import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
+import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/domain/mapLayerIds'
+import type { MapCameraOwnership } from 'map/maplibre/useMapCameraOwnership'
 
 export interface FindspotMapHandlers {
   isActive: () => boolean
   isCurrentMap: () => boolean
   provenances: () => readonly ProvenanceRecord[] | null
   getInteractionVersion: () => number
+  camera: MapCameraOwnership
+  onFindspotSelect?: (id: string) => void
+  onExcavationSelect?: (polygonId: string) => void
   navigate: (path: string) => void
   reportError: (error: Error) => void
 }
@@ -49,9 +54,11 @@ function expandCluster(
     number,
   ]
   const interactionVersion = handlers.getInteractionVersion()
+  const isCurrentCamera = handlers.camera.claim()
   const easeToClusterCenter = (zoom?: number): void => {
     if (
       handlers.isActive() &&
+      isCurrentCamera() &&
       handlers.getInteractionVersion() === interactionVersion
     ) {
       map.easeTo(zoom === undefined ? { center } : { center, zoom })
@@ -64,6 +71,7 @@ function expandCluster(
     .catch((error: Error) => {
       if (
         handlers.isActive() &&
+        isCurrentCamera() &&
         handlers.getInteractionVersion() === interactionVersion
       ) {
         handlers.reportError(error)
@@ -82,6 +90,10 @@ function openFindspotPopup(
 
   const popupProperties = getPopupProperties(feature, coordinates)
   if (!popupProperties) return
+  handlers.camera.claim()
+  if (typeof feature.properties?.id === 'string') {
+    handlers.onFindspotSelect?.(feature.properties.id)
+  }
 
   focusFindspot(
     map,
@@ -111,6 +123,14 @@ function handleMapClick(
   ])
   if (findspot) {
     openFindspotPopup(map, findspot, handlers)
+    return
+  }
+  const [area] = queryFindspotFeatures(map, event.point, [
+    EXCAVATION_AREA_FILL_LAYER_ID,
+  ])
+  if (typeof area?.properties?.id === 'string') {
+    handlers.camera.claim()
+    handlers.onExcavationSelect?.(area.properties.id)
   }
 }
 

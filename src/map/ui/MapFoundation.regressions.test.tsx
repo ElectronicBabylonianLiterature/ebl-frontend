@@ -143,10 +143,10 @@ test('can choose the already selected findspot without leaving stale input text'
       onFilterChange={onFilterChange}
     />,
   )
-  await userEvent.click(screen.getByLabelText('Filter findspots by name'))
+  await userEvent.click(screen.getByLabelText('Search sites'))
   await userEvent.click(await screen.findByRole('option', { name: 'Babylon' }))
   expect(onFilterChange).toHaveBeenCalledWith('Babylon')
-  expect(screen.getByLabelText('Filter findspots by name')).toHaveValue('')
+  expect(screen.getByLabelText('Search sites')).toHaveValue('')
   expect(
     screen.getByText('Babylon', { selector: '.findspot-filter__single-value' }),
   ).toBeInTheDocument()

@@ -46,3 +46,16 @@ export function countLabel(
 ): string {
   return `${count.toLocaleString('en')} ${pluralize(count, singular, plural)}`
 }
+
+const SQUARE_METRES_PER_SQUARE_KM = 1_000_000
+
+export function mappedAreaLabel(areaSquareKm: number): string {
+  if (areaSquareKm < 1) {
+    const squareMetres = Math.max(
+      1,
+      Math.round(areaSquareKm * SQUARE_METRES_PER_SQUARE_KM),
+    )
+    return `${squareMetres.toLocaleString('en')} m²`
+  }
+  return `${areaSquareKm.toLocaleString('en', { maximumFractionDigits: 2 })} km²`
+}

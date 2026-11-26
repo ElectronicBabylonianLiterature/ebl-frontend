@@ -9,7 +9,7 @@ export interface MapPanelDefinition {
   readonly render: () => JSX.Element
 }
 
-export const MAP_PANEL_CONTAINER_ID = 'map-panel-drawer'
+export const MAP_PANEL_CONTAINER_ID = 'map-research-tool-panel'
 
 interface Props {
   readonly panels: readonly MapPanelDefinition[]
@@ -76,7 +76,7 @@ export default function MapToolbar({
             }}
             type="button"
             size="sm"
-            variant={isOpen ? 'secondary' : 'outline-secondary'}
+            variant={isOpen ? 'primary' : 'outline-primary'}
             aria-expanded={isOpen}
             aria-controls={isOpen ? MAP_PANEL_CONTAINER_ID : undefined}
             onClick={() => onToggle(panel.id)}

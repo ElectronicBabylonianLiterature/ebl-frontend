@@ -67,7 +67,7 @@ beforeEach(() => {
   const fetchJsonImplementation =
     fakeApi.client.fetchJson.getMockImplementation()
   fakeApi.client.fetchJson.mockImplementation((path, authenticate) => {
-    if (path === '/fragments/X.1') {
+    if (path === '/fragments/X.1?excludeLines=true') {
       return Promise.resolve(uncertainFragmentDto)
     }
 
@@ -143,6 +143,9 @@ describe('Chapter', () => {
       })
     appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
+    await appDriver.getView().findByText('X.1', {
+      selector: '.list-of-manuscripts__uncertain-fragments a',
+    })
     expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/^o iii/)).toBeVisible()
   })

@@ -1,4 +1,25 @@
 @use 'src/design-tokens' as *
+
+.map-tool-panel
+  display: grid
+  gap: .75rem
+
+  &__actions
+    display: flex
+    flex-wrap: wrap
+    gap: .4rem
+
+  &__status,
+  &__instructions,
+  &__note
+    margin: 0
+    overflow-wrap: anywhere
+
+  &__instructions,
+  &__note
+    color: $ebl-color-text-secondary
+    font-size: .85rem
+
 .map-measure
   display: grid
   gap: 0.5rem
