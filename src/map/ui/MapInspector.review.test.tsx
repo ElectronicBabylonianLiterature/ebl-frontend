@@ -15,6 +15,8 @@ it.each(['Evidence', 'Findspots'])(
     render(
       <MemoryRouter>
         <MapInspector
+          visualizationMode="mapped"
+          siteFilter=""
           polygon={excavationPolygon()}
           summary={undefined}
           status="error"
@@ -37,6 +39,8 @@ it('expands all mapped findspots', async () => {
   render(
     <MemoryRouter>
       <MapInspector
+        visualizationMode="mapped"
+        siteFilter=""
         polygon={polygon}
         summary={aggregateFindspotMapData(rows).get(polygon.polygonId)}
         status="loaded-with-mappings"
@@ -79,6 +83,8 @@ it.each([
     render(
       <MemoryRouter>
         <MapInspector
+          visualizationMode="mapped"
+          siteFilter=""
           polygon={polygon}
           summary={aggregateFindspotMapData(rows).get(polygon.polygonId)}
           status="loaded-with-mappings"

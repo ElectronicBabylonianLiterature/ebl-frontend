@@ -18,7 +18,10 @@ export default function useMapPanelAvailability(
     ) {
       close()
     }
-    if (!canShowExcavationAreas && active === 'spatial-search') {
+    if (
+      !canShowExcavationAreas &&
+      (active === 'spatial-search' || active === 'export')
+    ) {
       close()
     }
   }, [active, canShowExcavationAreas, close, isBackgroundUnavailable])

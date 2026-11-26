@@ -8,6 +8,8 @@ import MapInspector from 'map/ui/MapInspector'
 import MapVisualizationControl from 'map/ui/MapVisualizationControl'
 import MapMeasurePanel from 'map/ui/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/ui/MapSpatialSearchPanel'
+import MapExportPanel from 'map/ui/MapExportPanel'
+import { exportDataStatuses } from 'map/domain/mapExportData'
 import type { MapPanelDefinition } from 'map/ui/MapToolbar'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 
@@ -52,6 +54,26 @@ export default function MapResearchSidebar({
         />
       ),
     },
+    {
+      id: 'export',
+      label: 'Export',
+      isSupported:
+        state.canShowExcavationAreas && !state.isExcavationAreasUnavailable,
+      render: () => (
+        <MapExportPanel
+          rows={state.exportView.rows}
+          scope={state.exportView.scope}
+          buildContext={() => ({
+            visualization: state.visualization.effectiveMode,
+            siteFilter: state.experience.filter,
+            shareUrl: window.location.href,
+            exportedAt: new Date().toISOString(),
+            scope: state.exportView.scope,
+            dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
+          })}
+        />
+      ),
+    },
   ]
   return (
     <aside className="map-research-panel" aria-label="Site research">
@@ -64,6 +86,8 @@ export default function MapResearchSidebar({
           <MapInspector
             key={polygon.polygonId}
             polygon={polygon}
+            visualizationMode={state.visualization.effectiveMode}
+            siteFilter={state.experience.filter}
             {...polygonLinkedData(state.fragmentMapData, polygon)}
           />
         )}

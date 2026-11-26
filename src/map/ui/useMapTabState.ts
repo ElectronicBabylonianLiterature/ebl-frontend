@@ -13,6 +13,7 @@ import useMapPanelAvailability from 'map/ui/useMapPanelAvailability'
 import useMapVisualization from 'map/ui/useMapVisualization'
 import useMapMeasurement from 'map/ui/useMapMeasurement'
 import useMapSpatialSearch from 'map/ui/useMapSpatialSearch'
+import useMapExportView from 'map/ui/useMapExportView'
 import useMapResearchSelection from 'map/ui/useMapResearchSelection'
 import useMapLinkedAreaSelection from 'map/ui/useMapLinkedAreaSelection'
 import useMapLinkedTablets from 'map/ui/useMapLinkedTablets'
@@ -23,6 +24,7 @@ import { fitExcavationArea } from 'map/maplibre/fitExcavationArea'
 import { filterProvenances } from 'map/domain/findspotFilter'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import {
+  findExcavationPolygon,
   sortedExcavationPolygons,
   usablePolygonIndex,
 } from 'map/domain/excavationPolygonIndex'
@@ -87,7 +89,9 @@ export default function useMapTabState(
     findspotService,
     polygons,
     isVisible:
-      experience.showExcavationAreas || panel.active === 'spatial-search',
+      experience.showExcavationAreas ||
+      panel.active === 'spatial-search' ||
+      panel.active === 'export',
     selectedAreaId: research.selectedAreaId,
   })
   const isMeasurementActive =
@@ -142,6 +146,17 @@ export default function useMapTabState(
     fragmentMapData,
   )
   const measurement = useMapMeasurement(mapRef, isMeasurementActive)
+  const excavationPolygons = useMemo(
+    () => sortedExcavationPolygons(polygonIndex),
+    [polygonIndex],
+  )
+  const exportView = useMapExportView(
+    mapRef,
+    experience.showExcavationAreas && canShowExcavationAreas,
+    excavationPolygons,
+    findExcavationPolygon(polygonIndex, research.selectedAreaId),
+    fragmentMapData,
+  )
   const resetView = useCallback(() => {
     camera.claim()
     resetMapCamera(mapRef.current)
@@ -187,7 +202,8 @@ export default function useMapTabState(
     fragmentMapData,
     polygonIndex,
     visualization,
-    excavationPolygons: sortedExcavationPolygons(polygonIndex),
+    excavationPolygons,
+    exportView,
     measurement,
     spatialSearch,
     resetView,

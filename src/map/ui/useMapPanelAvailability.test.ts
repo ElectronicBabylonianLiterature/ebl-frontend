@@ -11,6 +11,18 @@ interface PanelCase {
 
 it.each<PanelCase>([
   {
+    active: 'export',
+    canShowExcavationAreas: false,
+    isBackgroundUnavailable: false,
+    closeCalls: 1,
+  },
+  {
+    active: 'export',
+    canShowExcavationAreas: true,
+    isBackgroundUnavailable: false,
+    closeCalls: 0,
+  },
+  {
     active: 'visualization',
     canShowExcavationAreas: true,
     isBackgroundUnavailable: true,

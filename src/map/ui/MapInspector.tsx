@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import { mapSiteName } from 'fragmentarium/domain/mapSites'
 import MapInspectorTabs, { type InspectorTab } from 'map/ui/MapInspectorTabs'
 import MapCompletenessNote from 'map/ui/MapCompletenessNote'
+import MapResearchSummaryActions from 'map/ui/MapResearchSummaryActions'
+import { polygonResearchMarkdown } from 'map/domain/mapResearchSummaryText'
+import { visualizationModeLabel } from 'map/ui/MapVisualizationControl'
+import type { MapVisualizationMode } from 'map/domain/mapChoroplethScale'
 import { buildFindspotFragmentSearchLink } from 'map/domain/mapLinks'
 import { findspotLabel } from 'map/domain/findspotLabel'
 import {
@@ -22,6 +26,8 @@ import type { FragmentMapDataStatus } from 'map/domain/useFragmentMapData'
 interface Props {
   readonly polygon: ExcavationPolygon
   readonly summary: PolygonFindspotSummary | undefined
+  readonly visualizationMode: MapVisualizationMode
+  readonly siteFilter: string
   readonly status: FragmentMapDataStatus
 }
 
@@ -155,6 +161,8 @@ export default function MapInspector({
   polygon,
   summary,
   status,
+  visualizationMode,
+  siteFilter,
 }: Props): JSX.Element {
   const [expandedCount, setExpandedCount] = useState(10)
   const research = derivePolygonResearchSummary({
@@ -200,6 +208,24 @@ export default function MapInspector({
         {linkedDataMessage(status, research)}
       </p>
       <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
+      {hasLoaded(status) ? (
+        <MapResearchSummaryActions
+          title={`${research.displayName} — ${research.siteName}`}
+          selectionKey={`${research.siteId}:${research.polygonId}`}
+          buildSummary={() => {
+            const generatedAt = new Date().toISOString()
+            return {
+              generatedAt,
+              markdown: polygonResearchMarkdown(research, {
+                visualizationLabel: visualizationModeLabel(visualizationMode),
+                siteFilter,
+                shareUrl: window.location.href,
+                generatedAt,
+              }),
+            }
+          }}
+        />
+      ) : null}
     </div>
   )
 }

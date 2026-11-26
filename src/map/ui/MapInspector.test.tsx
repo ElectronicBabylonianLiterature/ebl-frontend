@@ -23,7 +23,13 @@ function inspector(
 ): JSX.Element {
   return (
     <MemoryRouter>
-      <MapInspector polygon={polygon} summary={summary} status={status} />
+      <MapInspector
+        polygon={polygon}
+        summary={summary}
+        status={status}
+        visualizationMode="count"
+        siteFilter=""
+      />
     </MemoryRouter>
   )
 }
@@ -43,6 +49,8 @@ describe('MapInspector', () => {
           polygon={{ ...polygon, areaSquareKm: null }}
           summary={undefined}
           status="loaded-empty"
+          visualizationMode="count"
+          siteFilter=""
         />
       </MemoryRouter>,
     )
