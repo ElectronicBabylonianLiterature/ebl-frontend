@@ -17,7 +17,7 @@ interface Options {
   readonly polygonIndex: ExcavationPolygonIndex
   readonly isLoaded: boolean
   readonly error: Error | null
-  readonly onSelectFromUrl?: () => void
+  readonly onSelectFromUrl?: (polygonId: string) => void
 }
 
 type LinkedResearch = Pick<
@@ -55,7 +55,7 @@ function synchronizeLinkedArea(
     return
   }
   if (research.selectedAreaId !== polygonId) {
-    onSelectFromUrl?.()
+    onSelectFromUrl?.(polygonId)
     research.selectArea(polygonId, document.body, false)
   }
 }

@@ -35,7 +35,7 @@ export default function MapSelectionInspector({
         <MapResearchInspector
           selectionId={`${selection.kind}:${selection.id}`}
           provenance={provenances.find(({ id }) => id === selectedSiteId)}
-          polygon={polygon}
+          polygon={polygon ?? undefined}
           focusHeading={focusInspector}
           onClose={close}
         >

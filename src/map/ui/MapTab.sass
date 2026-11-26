@@ -1,5 +1,6 @@
-@use './map-inspector-content'
 @use 'src/design-tokens' as *
+@use 'map-inspector-content'
+@use 'map-tools'
 
 .map-experience
   display: grid
@@ -288,6 +289,10 @@
     font-size: 0.875rem
     font-weight: 600
 
+  > .map-inspector
+    margin: 0 1rem 1rem
+    font-size: 0.875rem
+
   h4:focus
     outline: 3px solid $ebl-color-brand-primary-dark
     outline-offset: 3px
@@ -344,7 +349,7 @@
     min-height: 0
 
   .map-research-panel
-    max-height: 30rem
+    overflow: visible
 
   .map-site-browser__list
     max-height: 18rem
@@ -368,7 +373,7 @@
     min-height: 0
 
   .map-research-panel
-    max-height: 30rem
+    overflow: visible
 
   .map-site-browser__list
     max-height: 18rem
@@ -424,26 +429,90 @@
     font-size: 0.875rem
     line-height: 1.5
 
-.map-linked-tablets
-  padding: 1rem
-  border-top: 1px solid $ebl-color-border-light
-  font-size: 0.875rem
+.map-research-tools
+  display: grid
+  gap: .75rem
 
-  h5
-    margin: 0 0 0.75rem
-    color: $ebl-color-project-title
-    font-size: 1rem
+  .map-toolbar__bar
+    display: flex
+    flex-wrap: wrap
+    gap: .4rem
 
-  p
-    margin: 0 0 0.75rem
+    > .btn
+      flex: 1 1 auto
 
-  ul
-    margin: 0
-    padding-left: 1.25rem
+  &__panel
+    padding: .75rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: .4rem
 
-  a
-    display: inline-flex
+  &__heading
+    display: flex
     align-items: center
-    min-height: 2.75rem
-    color: $ebl-color-brand-primary-dark
+    justify-content: space-between
+    gap: .5rem
+    margin-bottom: .75rem
+
+    h4
+      margin: 0
+      font-size: 1rem
+.map-legend
+  position: absolute
+  z-index: 2
+  top: 0.75rem
+  left: 0.75rem
+  pointer-events: auto
+
+  &__body
+    width: min(22rem, calc(100vw - 2rem))
+    margin-top: 0.35rem
+    padding: 0.65rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.35rem
+    background: $ebl-color-white-alpha-90
+    box-shadow: 0 0.5rem 1.25rem $ebl-color-black-alpha-10
+
+  &__unit
+    margin: 0 0 0.4rem
+    color: $ebl-color-text-secondary
+    font-size: 0.8rem
+    font-weight: 600
+
+  &__entries
+    display: grid
+    gap: 0.35rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+  &__entry
+    display: grid
+    grid-template-columns: 1.4rem minmax(0, 1fr)
+    align-items: center
+    gap: 0.45rem
+
+  &__mark
+    display: inline-block
+    width: 1.15rem
+    height: 1.15rem
+    border: 0.18rem solid
+    border-radius: 0.15rem
+
+    &--dashed
+      border-style: dashed
+
+    &--dotted
+      border-style: dotted
+
+    &--dash-dot
+      border-style: solid
+
+  &__label
     overflow-wrap: anywhere
+    font-size: 0.78rem
+
+  &--inline
+    position: static
+
+    .map-legend__body
+      width: auto

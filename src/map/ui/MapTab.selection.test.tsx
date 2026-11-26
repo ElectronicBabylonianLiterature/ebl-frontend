@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -8,9 +8,11 @@ import {
   makeFragmentService,
   makeProvenance,
   mockAddLayer,
+  mockFitBounds,
   mockQueryRenderedFeatures,
   mockSetLayoutProperty,
-  mockSetPaintProperty,
+  mockSetFeatureState,
+  mockGetSource,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
@@ -49,6 +51,9 @@ describe('MapTab excavation selection', () => {
     resetMapMocks()
     fetchMock.resetMocks()
     fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+    mockGetSource.mockImplementation((sourceId: string) =>
+      sourceId === 'excavation-areas' ? {} : undefined,
+    )
   })
 
   it('preserves a deep-link selection when the polygon index is unavailable', async () => {
@@ -85,7 +90,7 @@ describe('MapTab excavation selection', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('stores a canonical click, highlights it, and shows one linked-data card', async () => {
+  it('stores a canonical click, highlights it, and opens one evidence inspector', async () => {
     renderMapTab(
       makeFragmentService([makeProvenance()]),
       '/tools/map?mv=1&areas=1',
@@ -121,11 +126,10 @@ describe('MapTab excavation selection', () => {
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
     expect(
-      screen.getAllByRole('tablist', { name: 'Excavation area detail' }),
-    ).toHaveLength(1)
-    expect(
-      await screen.findByText('3 accessible tablets across 1 findspot.'),
-    ).toBeInTheDocument()
+      within(
+        screen.getByRole('region', { name: 'Location details' }),
+      ).getByRole('status'),
+    ).toHaveTextContent('3 accessible tablets across 1 findspot.')
 
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
     expect(screen.getByRole('link', { name: 'Area A' })).toHaveAttribute(
@@ -139,6 +143,9 @@ describe('MapTab excavation selection', () => {
     expect(
       screen.queryByRole('region', { name: 'Location details' }),
     ).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.getByLabelText('Search sites')).toHaveFocus(),
+    )
     expect(screen.getByTestId('current-location')).not.toHaveTextContent(
       'selected=',
     )
@@ -146,10 +153,9 @@ describe('MapTab excavation selection', () => {
       { x: 10, y: 20 },
       { layers: [EXCAVATION_AREA_FILL_LAYER_ID] },
     )
-    expect(mockSetPaintProperty).toHaveBeenCalledWith(
-      'excavation-area-outline',
-      'line-width',
-      ['case', ['==', ['get', 'id'], POLYGON_ID], 3.5, 1.75],
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: 'excavation-areas', id: POLYGON_ID },
+      { selected: true },
     )
   })
 
@@ -159,10 +165,19 @@ describe('MapTab excavation selection', () => {
       `/tools/map?mv=1&areas=0&selected=area%3A${POLYGON_ID}`,
       makeFindspotService(),
     )
-    expect(
-      await screen.findByText('3 accessible tablets across 1 findspot.'),
-    ).toBeInTheDocument()
+    await screen.findByRole('region', { name: 'Location details' })
+    await waitFor(() =>
+      expect(
+        within(
+          screen.getByRole('region', { name: 'Location details' }),
+        ).getByRole('status'),
+      ).toHaveTextContent('3 accessible tablets across 1 findspot.'),
+    )
     expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
+    expect(mockFitBounds).toHaveBeenLastCalledWith(expect.any(Array), {
+      padding: 40,
+      maxZoom: 17,
+    })
     expect(
       screen.getByRole('combobox', { name: 'Inspect excavation area' }),
     ).toHaveValue(POLYGON_ID)
@@ -181,12 +196,15 @@ describe('MapTab excavation selection', () => {
       name: 'Inspect excavation area',
     })
     await userEvent.selectOptions(select, POLYGON_ID)
-    expect(
-      await screen.findByText('Linked tablet data is unavailable right now.', {
-        selector: 'p:not(.visually-hidden)',
-      }),
-    ).toBeVisible()
+    await waitFor(() => expect(findspotService.fetchMapData).toHaveBeenCalled())
     expect(select).toHaveFocus()
+    await waitFor(() =>
+      expect(
+        within(
+          screen.getByRole('region', { name: 'Location details' }),
+        ).getByRole('status'),
+      ).toHaveTextContent('Linked tablet data is unavailable right now.'),
+    )
     expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()
   })
 })

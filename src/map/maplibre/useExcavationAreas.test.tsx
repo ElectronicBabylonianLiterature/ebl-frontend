@@ -1,59 +1,44 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { act, render } from '@testing-library/react'
-import type { Map as MapLibreMap } from 'maplibre-gl'
-import useExcavationAreas from 'map/maplibre/useExcavationAreas'
-import { EXCAVATION_AREAS_SOURCE_ID } from 'map/maplibre/mapExcavationLayers'
+import {
+  EXCAVATION_AREAS_SOURCE_ID,
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+} from 'map/maplibre/mapExcavationLayers'
 import {
   clearMockStyleResources,
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
-  mockGetLayer,
   mockGetSource,
-  mockMapInstance,
+  mockQueryRenderedFeatures,
   mockRemove,
+  mockSetFeatureState,
   mockSetLayoutProperty,
+  mockSetPaintProperty,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/testSupport/mapLibreMock'
 
+import {
+  Harness,
+  OwnerTeardownHarness,
+} from 'map/maplibre/useExcavationAreas.testSupport'
+import { rejectDisposedMapAccess } from 'map/testSupport/mapLibreDisposedMock.testSupport'
+
 jest.mock('maplibre-gl')
 
-const POLYGON_INDEX = new Map()
-
-function Harness({
-  isVisible = true,
-  onAvailabilityChange,
-}: {
-  readonly isVisible?: boolean
-  readonly onAvailabilityChange?: (isUnavailable: boolean) => void
-}): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useExcavationAreas(mapRef, isVisible, onAvailabilityChange, POLYGON_INDEX)
-  return null
-}
-
-function OwnerTeardownHarness(): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useEffect(
-    () => () => {
-      mockRemove()
-      mapRef.current = null
-    },
-    [],
-  )
-  useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX)
-  return null
-}
+const ASSUR_POLYGON_ID = 'assur-bb6i-3d76dc1e02af'
 
 describe('useExcavationAreas', () => {
-  beforeEach(resetMapMocks)
+  beforeEach(() => {
+    resetMapMocks()
+    mockAddSource.mockImplementation(() => {
+      mockGetSource.mockReturnValue({})
+    })
+  })
 
-  it('installs both layers and applies visibility after style load', () => {
+  it('installs all layers and applies visibility after style load', () => {
     const onAvailabilityChange = jest.fn()
 
     render(
@@ -64,8 +49,8 @@ describe('useExcavationAreas', () => {
       EXCAVATION_AREAS_SOURCE_ID,
       expect.any(Object),
     )
-    expect(mockAddLayer).toHaveBeenCalledTimes(2)
-    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(2)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
     expect(mockSetLayoutProperty).toHaveBeenCalledWith(
       expect.any(String),
       'visibility',
@@ -77,13 +62,10 @@ describe('useExcavationAreas', () => {
   it('updates visibility without rebuilding the source or layers', () => {
     const { rerender } = render(<Harness isVisible />)
 
-    expect(mockAddSource).toHaveBeenCalledTimes(1)
-    expect(mockAddLayer).toHaveBeenCalledTimes(2)
-
     rerender(<Harness isVisible={false} />)
 
     expect(mockAddSource).toHaveBeenCalledTimes(1)
-    expect(mockAddLayer).toHaveBeenCalledTimes(2)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
     expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
       expect.any(String),
       'visibility',
@@ -91,19 +73,84 @@ describe('useExcavationAreas', () => {
     )
   })
 
+  it('updates canonical selection paint without rebuilding layers', () => {
+    const { rerender } = render(<Harness selectedPolygonId={null} />)
+    mockSetPaintProperty.mockClear()
+
+    rerender(<Harness selectedPolygonId={ASSUR_POLYGON_ID} />)
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: EXCAVATION_AREAS_SOURCE_ID, id: ASSUR_POLYGON_ID },
+      { selected: true },
+    )
+  })
+
+  it('updates visualization state without rebuilding source or layers', () => {
+    const value = {
+      polygonId: ASSUR_POLYGON_ID,
+      dataAvailable: true,
+      findspotCount: 2,
+      accessibleFragmentCount: 7,
+      areaSquareKm: 3.5,
+      densityAvailable: true,
+      densityPerSquareKm: 2,
+      mappingEvidence: 'verified-source' as const,
+    }
+    const { rerender } = render(
+      <Harness values={new Map([[ASSUR_POLYGON_ID, value]])} />,
+    )
+    mockSetFeatureState.mockClear()
+
+    const unavailableValue = {
+      ...value,
+      dataAvailable: false,
+      findspotCount: 0,
+      accessibleFragmentCount: 0,
+      densityAvailable: false,
+      densityPerSquareKm: null,
+      mappingEvidence: 'unmapped' as const,
+    }
+    rerender(
+      <Harness values={new Map([[ASSUR_POLYGON_ID, unavailableValue]])} />,
+    )
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: EXCAVATION_AREAS_SOURCE_ID, id: ASSUR_POLYGON_ID },
+      expect.objectContaining({
+        dataAvailable: false,
+        findspotCount: 0,
+        accessibleFragmentCount: 0,
+        evidenceCode: 0,
+        densityAvailable: false,
+        densityPerSquareKm: 0,
+      }),
+    )
+  })
+
+  it('selects the canonical promoted feature id on polygon click', () => {
+    const onSelectPolygon = jest.fn()
+    mockQueryRenderedFeatures.mockReturnValue([
+      { id: ASSUR_POLYGON_ID, properties: { id: 'untrusted-property' } },
+    ])
+    render(<Harness onSelectPolygon={onSelectPolygon} />)
+
+    act(() => {
+      triggerMapEvent(
+        'click',
+        { point: { x: 10, y: 20 } },
+        EXCAVATION_AREA_FILL_LAYER_ID,
+      )
+    })
+
+    expect(onSelectPolygon).toHaveBeenCalledWith(ASSUR_POLYGON_ID)
+  })
+
   it('skips subordinate cleanup after the map owner disposes it', () => {
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectDisposedMapAccess()
 
     const { unmount } = render(<OwnerTeardownHarness />)
 
@@ -111,7 +158,7 @@ describe('useExcavationAreas', () => {
     expect(mockRemove).toHaveBeenCalled()
   })
 
-  it('removes its style load listener on cleanup', () => {
+  it('removes style load listeners on cleanup', () => {
     deferMapLoad()
     const { unmount } = render(<Harness />)
 
@@ -124,25 +171,24 @@ describe('useExcavationAreas', () => {
     expect(mockAddSource).not.toHaveBeenCalled()
   })
 
-  it('restores layers and latest visibility after a style reload', () => {
-    const { rerender } = render(<Harness isVisible />)
-    rerender(<Harness isVisible={false} />)
+  it('restores layers, visibility and selection after a style reload', () => {
+    render(<Harness selectedPolygonId={ASSUR_POLYGON_ID} />)
     clearMockStyleResources()
     mockAddLayer.mockClear()
     mockSetLayoutProperty.mockClear()
+    mockSetFeatureState.mockClear()
 
     act(() => triggerMapEvent('style.load'))
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(2)
-    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(2)
-    expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
-      expect.any(String),
-      'visibility',
-      'none',
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: EXCAVATION_AREAS_SOURCE_ID, id: ASSUR_POLYGON_ID },
+      { selected: true },
     )
   })
 
-  it('reports only excavation-source failures as unavailable', () => {
+  it('reports only excavation source and layer failures', () => {
     const onAvailabilityChange = jest.fn()
     render(<Harness onAvailabilityChange={onAvailabilityChange} />)
     onAvailabilityChange.mockClear()
@@ -150,7 +196,7 @@ describe('useExcavationAreas', () => {
     act(() => {
       triggerMapEvent('error', {
         error: { message: 'asset unavailable' },
-        sourceId: EXCAVATION_AREAS_SOURCE_ID,
+        layer: { id: EXCAVATION_AREA_SELECTED_LAYER_ID },
       })
     })
     expect(onAvailabilityChange).toHaveBeenCalledWith(true)

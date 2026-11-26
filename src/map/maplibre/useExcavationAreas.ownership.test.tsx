@@ -26,7 +26,11 @@ it('ignores stale style events after the map owner replaces its instance', () =>
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(mapRef, {
+      isVisible: true,
+      polygonIndex: POLYGON_INDEX,
+      selectedPolygonId: null,
+    }),
   )
   clearMockStyleResources()
   mockAddLayer.mockClear()
@@ -49,7 +53,11 @@ it('ignores callbacks captured before the hook unmounts', () => {
     current: new MapLibreMap({ container: document.createElement('div') }),
   }
   const { unmount } = renderHook(() =>
-    useExcavationAreas(mapRef, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(mapRef, {
+      isVisible: true,
+      polygonIndex: POLYGON_INDEX,
+      selectedPolygonId: null,
+    }),
   )
   const callbacks = mockOn.mock.calls
     .filter(([event]) => event === 'style.load')
@@ -68,7 +76,10 @@ it('ignores callbacks captured before the hook unmounts', () => {
 
 it('waits for a map owner before registering listeners', () => {
   renderHook(() =>
-    useExcavationAreas({ current: null }, true, undefined, POLYGON_INDEX),
+    useExcavationAreas(
+      { current: null },
+      { isVisible: true, polygonIndex: POLYGON_INDEX, selectedPolygonId: null },
+    ),
   )
 
   expect(mockOn).not.toHaveBeenCalled()
@@ -81,7 +92,13 @@ it('reuses source and layers already installed when the style event repeats', ()
   }
   markLayersAdded(...EXCAVATION_AREA_LAYER_IDS)
   mockGetSource.mockReturnValue({})
-  renderHook(() => useExcavationAreas(mapRef, false, undefined, POLYGON_INDEX))
+  renderHook(() =>
+    useExcavationAreas(mapRef, {
+      isVisible: false,
+      polygonIndex: POLYGON_INDEX,
+      selectedPolygonId: null,
+    }),
+  )
   act(() => triggerMapEvent('style.load'))
 
   expect(mockAddSource).not.toHaveBeenCalled()

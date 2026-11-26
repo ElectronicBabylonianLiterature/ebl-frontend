@@ -1,12 +1,24 @@
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
 import type { ExcavationPolygonIndex } from 'map/domain/excavationPolygonIndex'
-
-export const EXCAVATION_AREAS_SOURCE_ID = 'excavation-areas'
-export const EXCAVATION_AREA_FILL_LAYER_ID = 'excavation-area-fill'
-export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'excavation-area-outline'
-
-const NEUTRAL_FILL_COLOR = '#a27843'
-const NEUTRAL_OUTLINE_COLOR = '#624921'
+import {
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
+} from 'map/domain/mapLayerIds'
+import {
+  CATEGORICAL_PAINT,
+  type ExcavationPaint,
+  excavationPaintProperties,
+} from 'map/maplibre/mapExcavationPaint'
+import { SELECTED } from 'map/domain/mapStateExpressions'
+import { OUTLINE_SELECTED } from 'map/domain/mapPaintColors'
+export {
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
+} from 'map/domain/mapLayerIds'
 
 export function createExcavationAreasSource(
   index: ExcavationPolygonIndex,
@@ -32,30 +44,57 @@ export function createExcavationAreasSource(
   }
 }
 
-export const excavationAreaFillLayer: AddLayerObject = {
-  id: EXCAVATION_AREA_FILL_LAYER_ID,
-  type: 'fill',
-  source: EXCAVATION_AREAS_SOURCE_ID,
-  layout: { visibility: 'visible' },
-  paint: {
-    'fill-color': NEUTRAL_FILL_COLOR,
-    'fill-opacity': 0.2,
-  },
+export function createExcavationAreaFillLayer(
+  paint: ExcavationPaint = CATEGORICAL_PAINT,
+): AddLayerObject {
+  const properties = excavationPaintProperties(paint)
+
+  return {
+    id: EXCAVATION_AREA_FILL_LAYER_ID,
+    type: 'fill',
+    source: EXCAVATION_AREAS_SOURCE_ID,
+    layout: { visibility: 'visible' },
+    paint: {
+      'fill-color': properties.fillColor,
+      'fill-opacity': properties.fillOpacity,
+    },
+  }
 }
 
-export const excavationAreaOutlineLayer: AddLayerObject = {
-  id: EXCAVATION_AREA_OUTLINE_LAYER_ID,
+export function createExcavationAreaOutlineLayer(
+  paint: ExcavationPaint = CATEGORICAL_PAINT,
+): AddLayerObject {
+  const properties = excavationPaintProperties(paint)
+
+  return {
+    id: EXCAVATION_AREA_OUTLINE_LAYER_ID,
+    type: 'line',
+    source: EXCAVATION_AREAS_SOURCE_ID,
+    layout: { visibility: 'visible', 'line-join': 'round' },
+    paint: {
+      'line-color': properties.outlineColor,
+      'line-width': properties.outlineWidth,
+      'line-opacity': properties.outlineOpacity,
+      'line-dasharray': properties.outlineDash,
+    },
+  }
+}
+export const excavationAreaSelectedLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_SELECTED_LAYER_ID,
   type: 'line',
   source: EXCAVATION_AREAS_SOURCE_ID,
   layout: { visibility: 'visible', 'line-join': 'round' },
   paint: {
-    'line-color': NEUTRAL_OUTLINE_COLOR,
-    'line-width': 1.75,
-    'line-opacity': 0.9,
+    'line-color': OUTLINE_SELECTED,
+    'line-width': ['case', SELECTED, 4, 0],
+    'line-opacity': ['case', SELECTED, 1, 0],
   },
 }
 
+export const excavationAreaFillLayer = createExcavationAreaFillLayer()
+export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
 export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
 ]
