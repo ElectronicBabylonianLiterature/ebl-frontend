@@ -27,7 +27,8 @@ import MapStage from 'map/ui/MapStage'
 import MapExperienceHeader from 'map/ui/MapExperienceHeader'
 import MapLayerControls from 'map/ui/MapLayerControls'
 import MapSelectionInspector from 'map/ui/MapSelectionInspector'
-import MapAreaLinkedTablets from 'map/ui/MapAreaLinkedTablets'
+import MapInspector from 'map/ui/MapInspector'
+import { polygonLinkedData } from 'map/domain/polygonLinkedData'
 import MapExcavationBrowser from 'map/ui/MapExcavationBrowser'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
@@ -173,7 +174,11 @@ function LoadedMapTab({
             provenances={provenances}
             polygonIndex={polygonIndex}
             renderAreaDetails={(polygon) => (
-              <MapAreaLinkedTablets polygon={polygon} data={linkedData} />
+              <MapInspector
+                key={polygon.polygonId}
+                polygon={polygon}
+                {...polygonLinkedData(linkedData, polygon)}
+              />
             )}
           />
           <MapExcavationBrowser

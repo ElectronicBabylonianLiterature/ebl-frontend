@@ -1,0 +1,205 @@
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { mapSiteName } from 'fragmentarium/domain/mapSites'
+import MapInspectorTabs, { type InspectorTab } from 'map/ui/MapInspectorTabs'
+import MapCompletenessNote from 'map/ui/MapCompletenessNote'
+import { buildFindspotFragmentSearchLink } from 'map/domain/mapLinks'
+import { findspotLabel } from 'map/domain/findspotLabel'
+import {
+  locationPrecisionLabel,
+  mappingEvidenceLabel,
+  countLabel,
+  mappedAreaLabel,
+} from 'map/domain/mapResearchLabels'
+import {
+  derivePolygonResearchSummary,
+  type PolygonResearchSummary,
+} from 'map/domain/mapResearchSummary'
+import type { ExcavationPolygon } from 'map/domain/excavationPolygonIndex'
+import type { PolygonFindspotSummary } from 'fragmentarium/domain/findspotMapData'
+import type { FragmentMapDataStatus } from 'map/domain/useFragmentMapData'
+
+interface Props {
+  readonly polygon: ExcavationPolygon
+  readonly summary: PolygonFindspotSummary | undefined
+  readonly status: FragmentMapDataStatus
+}
+
+function hasLoaded(status: FragmentMapDataStatus): boolean {
+  return status === 'loaded-with-mappings' || status === 'loaded-empty'
+}
+
+function linkedDataMessage(
+  status: FragmentMapDataStatus,
+  research: PolygonResearchSummary,
+): string {
+  if (status === 'loaded-with-mappings' || status === 'loaded-empty') {
+    return `${countLabel(
+      research.accessibleFragmentCount,
+      'accessible tablet',
+    )} across ${countLabel(research.mappedFindspotCount, 'findspot')}.`
+  }
+
+  return {
+    'not-configured': 'Linked tablet data is not configured for this site.',
+    loading: 'Loading linked tablet data…',
+    error: 'Linked tablet data is unavailable right now.',
+    incompatible: 'Linked tablet data is incompatible with this map.',
+  }[status]
+}
+
+function LinkedDataStatus({
+  status,
+  research,
+}: {
+  status: FragmentMapDataStatus
+  research: PolygonResearchSummary
+}): JSX.Element | null {
+  return hasLoaded(status) ? null : <p>{linkedDataMessage(status, research)}</p>
+}
+
+function OverviewTab({
+  research,
+  status,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+}): JSX.Element {
+  return (
+    <>
+      <dl className="map-inspector__facts">
+        {research.areaSquareKm !== null ? (
+          <>
+            <dt>Mapped area</dt>
+            <dd>{mappedAreaLabel(research.areaSquareKm)}</dd>
+          </>
+        ) : null}
+        {hasLoaded(status) ? (
+          <>
+            <dt>Mapped findspots</dt>
+            <dd>{countLabel(research.mappedFindspotCount, 'findspot')}</dd>
+            <dt>Accessible tablets</dt>
+            <dd>{countLabel(research.accessibleFragmentCount, 'tablet')}</dd>
+          </>
+        ) : null}
+      </dl>
+      <LinkedDataStatus status={status} research={research} />
+    </>
+  )
+}
+
+function EvidenceTab({
+  research,
+  status,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+}): JSX.Element {
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
+  }
+
+  return (
+    <>
+      <dl className="map-inspector__facts">
+        <dt>Mapping evidence</dt>
+        <dd>{mappingEvidenceLabel(research.mappingEvidence)}</dd>
+        <dt>Location precision</dt>
+        <dd>{locationPrecisionLabel(research.locationPrecision)}</dd>
+      </dl>
+      <MapCompletenessNote />
+    </>
+  )
+}
+
+function FindspotsTab({
+  research,
+  status,
+  expandedCount,
+  onExpand,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+  expandedCount: number
+  onExpand: () => void
+}): JSX.Element {
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
+  }
+  if (research.findspots.length === 0) {
+    return <p>No tablets are linked to this excavation area.</p>
+  }
+  const visible = research.findspots.slice(0, expandedCount)
+  return (
+    <>
+      <ul className="map-inspector__findspots">
+        {visible.map((findspot) => (
+          <li key={findspot.findspotId}>
+            <Link to={buildFindspotFragmentSearchLink(findspot.findspotId)}>
+              {findspotLabel(findspot)}
+            </Link>{' '}
+            ({countLabel(findspot.accessibleFragmentCount, 'tablet')})
+          </li>
+        ))}
+      </ul>
+      {expandedCount < research.findspots.length ? (
+        <button type="button" onClick={onExpand}>
+          Show all {research.findspots.length}
+        </button>
+      ) : null}
+    </>
+  )
+}
+
+export default function MapInspector({
+  polygon,
+  summary,
+  status,
+}: Props): JSX.Element {
+  const [expandedCount, setExpandedCount] = useState(10)
+  const research = derivePolygonResearchSummary({
+    polygonId: polygon.polygonId,
+    polygon,
+    summary,
+    siteName: mapSiteName(polygon.siteId),
+  })
+
+  const tabs: readonly InspectorTab[] = [
+    {
+      id: 'overview',
+      label: 'Overview',
+      render: () => <OverviewTab research={research} status={status} />,
+    },
+    {
+      id: 'evidence',
+      label: 'Evidence',
+      render: () => <EvidenceTab research={research} status={status} />,
+    },
+    {
+      id: 'findspots',
+      label: 'Findspots',
+      render: () => (
+        <FindspotsTab
+          research={research}
+          status={status}
+          expandedCount={expandedCount}
+          onExpand={() => setExpandedCount(research.findspots.length)}
+        />
+      ),
+    },
+  ]
+
+  return (
+    <div className="map-inspector">
+      <p
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {linkedDataMessage(status, research)}
+      </p>
+      <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
+    </div>
+  )
+}

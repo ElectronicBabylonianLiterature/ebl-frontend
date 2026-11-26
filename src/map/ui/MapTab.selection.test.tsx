@@ -121,13 +121,14 @@ describe('MapTab excavation selection', () => {
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
     expect(
-      screen.getAllByRole('region', { name: 'Linked tablets' }),
+      screen.getAllByRole('tablist', { name: 'Excavation area detail' }),
     ).toHaveLength(1)
     expect(
       await screen.findByText('3 accessible tablets across 1 findspot.'),
     ).toBeInTheDocument()
 
-    expect(screen.getByRole('link', { name: 'Area A (3)' })).toHaveAttribute(
+    await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
+    expect(screen.getByRole('link', { name: 'Area A' })).toHaveAttribute(
       'href',
       '/library/search?findspotId=7',
     )
@@ -160,7 +161,7 @@ describe('MapTab excavation selection', () => {
     )
     expect(
       await screen.findByText('3 accessible tablets across 1 findspot.'),
-    ).toBeVisible()
+    ).toBeInTheDocument()
     expect(screen.getByLabelText('Excavation areas')).not.toBeChecked()
     expect(
       screen.getByRole('combobox', { name: 'Inspect excavation area' }),
@@ -181,7 +182,9 @@ describe('MapTab excavation selection', () => {
     })
     await userEvent.selectOptions(select, POLYGON_ID)
     expect(
-      await screen.findByText('Linked tablet data is unavailable right now.'),
+      await screen.findByText('Linked tablet data is unavailable right now.', {
+        selector: 'p:not(.visually-hidden)',
+      }),
     ).toBeVisible()
     expect(select).toHaveFocus()
     expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()
