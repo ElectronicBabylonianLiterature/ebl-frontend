@@ -83,4 +83,14 @@ it('switches visualization through its sidebar tool and keeps URL, legend and fe
       screen.getByRole('region', { name: 'Map legend details' }),
     ).getByText('Mapping evidence source'),
   ).toBeVisible()
+  await userEvent.click(visualization)
+  expect(
+    screen.queryByRole('region', { name: 'Visualization' }),
+  ).not.toBeInTheDocument()
+  await userEvent.click(visualization)
+  await userEvent.keyboard('{Escape}')
+  expect(
+    screen.queryByRole('region', { name: 'Visualization' }),
+  ).not.toBeInTheDocument()
+  expect(visualization).toHaveFocus()
 })

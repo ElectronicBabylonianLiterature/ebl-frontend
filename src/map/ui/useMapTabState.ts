@@ -67,16 +67,20 @@ export default function useMapTabState(
   )
   const camera = useMapCameraOwnership(filteredProvenances)
   const pendingAreaFocus = useRef<string | null>(null)
+  const selectAreaFromUrl = useCallback(
+    (polygonId: string) => {
+      camera.claim()
+      pendingAreaFocus.current = polygonId
+    },
+    [camera],
+  )
   const areaSelection = useMapLinkedAreaSelection({
     experience,
     research: researchState,
     polygonIndex,
     isLoaded,
     error,
-    onSelectFromUrl: (polygonId) => {
-      camera.claim()
-      pendingAreaFocus.current = polygonId
-    },
+    onSelectFromUrl: selectAreaFromUrl,
   })
   const research = { ...researchState, ...areaSelection }
   const fragmentMapData = useMapLinkedTablets({
