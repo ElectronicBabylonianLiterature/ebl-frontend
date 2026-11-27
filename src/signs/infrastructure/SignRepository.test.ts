@@ -53,9 +53,17 @@ const testData: TestData<SignRepository>[] = [
     'findMesZlKap2',
     [signName],
     apiClient.fetchJson,
-    { number: '579', text: 'text' },
+    [{ number: '579', text: 'text' }],
     [`/signs/${encodeURIComponent(signName)}/meszl-kap2`, true, undefined],
-    Promise.resolve({ number: '579', text: 'text' }),
+    Promise.resolve([{ number: '579', text: 'text' }]),
+  ),
+  new TestData(
+    'findMesZlKap2Section',
+    ['anhang-2'],
+    apiClient.fetchJson,
+    '2. Anhang',
+    ['/meszl-kap2/anhang-2', true, undefined],
+    Promise.resolve({ section: 'anhang-2', text: '2. Anhang' }),
   ),
   new TestData(
     'getCentroidImages',
@@ -209,10 +217,10 @@ describe('findMesZlKap2', () => {
     typeof isNotFoundError
   >
 
-  it('returns null when there is no entry', async () => {
+  it('returns no entries when the sign is not found', async () => {
     apiClient.fetchJson.mockReturnValueOnce(Promise.reject(error))
     mockIsNotFoundError.mockReturnValueOnce(true)
-    await expect(signsRepository.findMesZlKap2(signName)).resolves.toBeNull()
+    await expect(signsRepository.findMesZlKap2(signName)).resolves.toEqual([])
     expect(isNotFoundError).toHaveBeenCalledWith(error)
   })
 

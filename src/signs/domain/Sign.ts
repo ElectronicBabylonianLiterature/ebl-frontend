@@ -39,6 +39,13 @@ export interface MesZlKap2Entry {
   readonly text: string
 }
 
+export const mesZlKap2Sections = {
+  einleitung: 'Einleitung',
+  'anhang-1': '1. Anhang: Zum Sᵃ Vokabular aus Emar',
+  'anhang-2': '2. Anhang: Weitere bei Fossey vorhandene Zeichen',
+} as const
+export type MesZlKap2Section = keyof typeof mesZlKap2Sections
+
 export interface SignListRecord {
   name: string
   number: string

@@ -1,5 +1,6 @@
 import Sign, {
   MesZlKap2Entry,
+  MesZlKap2Section,
   OrderedSign,
   SignQuery,
   UnicodeAtf,
@@ -49,8 +50,15 @@ export default class SignService {
   findMesZlKap2(
     signName: string,
     signal?: AbortSignal,
-  ): Promise<MesZlKap2Entry | null> {
+  ): Promise<MesZlKap2Entry[]> {
     return this.signsRepository.findMesZlKap2(signName, signal)
+  }
+
+  findMesZlKap2Section(
+    section: MesZlKap2Section,
+    signal?: AbortSignal,
+  ): Promise<string> {
+    return this.signsRepository.findMesZlKap2Section(section, signal)
   }
 
   listAllSigns(): Promise<string[]> {

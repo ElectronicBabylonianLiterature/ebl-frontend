@@ -1,6 +1,7 @@
 import ApiClient, { isNotFoundError } from 'http/ApiClient'
 import Sign, {
   MesZlKap2Entry,
+  MesZlKap2Section,
   OrderedSign,
   SignDto,
   SignQuery,
@@ -117,19 +118,29 @@ class SignRepository {
   findMesZlKap2(
     signName: string,
     signal?: AbortSignal,
-  ): Promise<MesZlKap2Entry | null> {
+  ): Promise<MesZlKap2Entry[]> {
     return this.apiClient
-      .fetchJson<MesZlKap2Entry>(
-        `/signs/${encodeURIComponent(signName)}/meszl-kap2`,
-        true,
-        signal,
-      )
+      .fetchJson<
+        MesZlKap2Entry[]
+      >(`/signs/${encodeURIComponent(signName)}/meszl-kap2`, true, signal)
       .catch((error) => {
         if (isNotFoundError(error)) {
-          return null
+          return []
         }
         throw error
       })
+  }
+
+  findMesZlKap2Section(
+    section: MesZlKap2Section,
+    signal?: AbortSignal,
+  ): Promise<string> {
+    return this.apiClient
+      .fetchJson<{
+        section: string
+        text: string
+      }>(`/meszl-kap2/${section}`, true, signal)
+      .then(({ text }) => text)
   }
 
   listAllSigns(): Promise<string[]> {
