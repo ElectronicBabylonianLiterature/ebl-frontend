@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import useActiveSection from 'common/hooks/useActiveSection'
@@ -46,17 +46,33 @@ export default function useEntryPageNavigation(
     return hashId || null
   }, [location.hash])
 
+  const handledLocation = useRef<string | null>(null)
   useEffect(() => {
     if (!selectedId) {
       return
     }
+    const locationKey = `${location.key}${location.hash}`
+    if (handledLocation.current === locationKey) {
+      return
+    }
     const sectionId = sectionByAnchor[selectedId]
+    if (sectionId || selectedId === topId) {
+      handledLocation.current = locationKey
+    }
     if (sectionId) {
       openSection(sectionId)
     }
     selectActiveSection(selectedId)
     scrollToSection(selectedId)
-  }, [location, selectedId, sectionByAnchor, openSection, selectActiveSection])
+  }, [
+    location.key,
+    location.hash,
+    selectedId,
+    topId,
+    sectionByAnchor,
+    openSection,
+    selectActiveSection,
+  ])
 
   const navigateToSection = useCallback(
     (id: string): void => {

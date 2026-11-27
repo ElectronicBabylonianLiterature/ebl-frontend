@@ -57,7 +57,7 @@ describe('RealiaDisplay navigation focus and mobile menu', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(menuToggle()).toHaveAttribute('aria-expanded', 'false')
-    expect(menuToggle()).toHaveAttribute('aria-controls', 'realia-nav-body')
+    expect(menuToggle()).toHaveAttribute('aria-controls', 'realia-top-nav-body')
     fireEvent.click(menuToggle())
     expect(menuToggle()).toHaveAttribute('aria-expanded', 'true')
     expect(navMenu()).toHaveClass('is-expanded')

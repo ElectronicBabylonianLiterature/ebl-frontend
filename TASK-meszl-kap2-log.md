@@ -23,4 +23,18 @@
 - Coverage of changed files brought to 100%: removed dead fallbacks (mesZlMarkup, SignDisplay), added tests (EntrySection default, Schramm edge cases, logogram superscripts/uncertain/other words, Fossey singular, no-MZL sign, Kap. II reject after leaving, resizeObserverMock, MesZlContent without cut-off). Realia now imports the shared section state directly; useRealiaSectionState.ts removed and its scrollToSection test moved (unchanged) to src/common/ui/entry-page/scrollToSection.test.ts.
 - Not 100%: src/signs/ui/search/MesZLContent.tsx line 30 was covered by the new test; src/signs/domain/CroppedAnnotation.ts (types only, not changed by this branch).
 - Second full `yarn test:ci` running.
-- Committed aa582d4a (45 paths under src/) and pushed to origin/ccr-d085af16-bshs1r. TASK files not committed.
+- Committed aa582d4a (45 paths under src/) and pushed to origin/ccr-d085af16-bshs1r. TASK files were later committed because a stop hook requires a clean tree.
+- Round 2 (merciless review): fixed R1–R12 and the nits; see the review file.
+- Error made: the first version of the new section tests passed against the old hooks,
+  because the stable booleans meant the sections never changed. Rewrote them around
+  composites that resolve empty; they now fail on the old code and pass on the new.
+- Error made: the first indentation fix also replaced the space inside the tab span;
+  fixed by converting tabs, four-space runs and single spaces in one pass.
+- Data check for escaping: real HTML is only span, u and br; all other <…> are
+  editorial brackets, which DOMPurify used to delete.
+- Extra requests: MesZL number conversion in the sign search; Borger White Heads
+  for the result glyph.
+- Pre-existing issues found: none new in the test output (console clean).
+- Extra request: sign search results show the shared SignCard (compact variant);
+  the result row moved to SignSearchResult.tsx (SignsSearch.tsx was at 249 lines).
+- Stopped an outdated full test run that was started before the card change.

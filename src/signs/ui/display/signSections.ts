@@ -1,9 +1,5 @@
 import Sign from 'signs/domain/Sign'
 import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
-import {
-  MesZlKap2State,
-  hasMesZlKap2Content,
-} from 'signs/ui/display/useMesZlKap2'
 
 export const signTopId = 'sign-top'
 
@@ -29,16 +25,23 @@ export interface SignNavSection extends EntryNavSection {
   readonly id: SignSectionId
 }
 
+export interface SignSectionPresence {
+  readonly mesZl: boolean
+  readonly composites: boolean
+}
+
 function isPresent(
   id: SignSectionId,
   sign: Sign,
-  kap2: MesZlKap2State,
+  presence: SignSectionPresence,
 ): boolean {
   switch (id) {
     case signSectionIds.meszl:
-      return Boolean(sign.mesZl) || hasMesZlKap2Content(kap2)
+      return presence.mesZl
     case signSectionIds.logograms:
       return sign.logograms.length > 0
+    case signSectionIds.composites:
+      return presence.composites
     case signSectionIds.fossey:
       return sign.fossey.length > 0
     default:
@@ -48,10 +51,10 @@ function isPresent(
 
 export function buildSignSections(
   sign: Sign,
-  kap2: MesZlKap2State,
+  presence: SignSectionPresence,
 ): readonly SignNavSection[] {
   return Object.values(signSectionIds)
-    .filter((id) => isPresent(id, sign, kap2))
+    .filter((id) => isPresent(id, sign, presence))
     .map((id) => ({
       id,
       label: signSectionLabels[id],

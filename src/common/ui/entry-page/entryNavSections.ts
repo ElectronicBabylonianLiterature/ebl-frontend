@@ -34,3 +34,7 @@ export function getEntrySectionByAnchor(
     ]),
   )
 }
+
+export function sectionContentId(sectionId: string): string {
+  return `${sectionId}-content`
+}

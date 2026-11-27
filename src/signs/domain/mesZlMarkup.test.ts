@@ -32,6 +32,18 @@ describe('linkMesZlReferences', () => {
     ['vgl. n1 und 2 Zeichen', `vgl. ${link('n1', '1')} und 2 Zeichen`],
     ['n12-14', `${link('n12', '12')}-${link('14', '14')}`],
     ['siehe n12–14.', `siehe ${link('n12', '12')}–${link('14', '14')}.`],
+    [
+      'horizontal \\[n115\\] bezeugt',
+      `horizontal \\[${link('n115', '115')}\\] bezeugt`,
+    ],
+    ['“n5”', `“${link('n5', '5')}”`],
+    ['n5;n6', `${link('n5', '5')};${link('n6', '6')}`],
+    ['n5; n6', `${link('n5', '5')}; ${link('n6', '6')}`],
+    ['siehe n05', `siehe ${link('n05', '5')}`],
+    [
+      'Zu oben n882 und 741 PÉŠ.',
+      `Zu oben ${link('n882', '882')} und ${link('741', '741')} PÉŠ.`,
+    ],
   ])('links %s', (text, expected) => {
     expect(linkMesZlReferences(text)).toEqual(expected)
   })
@@ -47,6 +59,7 @@ describe('linkMesZlReferences', () => {
     'MSL 9 174 32.34',
     'Wiseman u.a., LTTN n232A 27f.',
     'Borger, WO 5 170 zu BAK n557.',
+    'aBZL n037 “dara”',
   ])('leaves %s alone', (text) => {
     expect(linkMesZlReferences(text)).toEqual(text)
   })
@@ -97,17 +110,42 @@ describe('mesZlToMarkup', () => {
 
   test.each([
     ['\t\tindented 𒀀', `${tab}${tab}indented ${cuneiform('𒀀')}`],
-    ['    four spaces', 'four spaces'],
+    ['    four spaces', `${tab}four spaces`],
+    ['  two spaces', '&nbsp;&nbsp;two spaces'],
     ['1. Zeile', '1\\. Zeile'],
     ['2) Zeile', '2\\) Zeile'],
     ['- Strich', '\\- Strich'],
     ['* Stern', '\\* Stern'],
     ['# Raute', '\\# Raute'],
-    ['> Pfeil', '\\> Pfeil'],
+    ['> Pfeil', '&gt; Pfeil'],
     ['+ Plus', '\\+ Plus'],
     ['***', '\\***'],
     ['**fett** bleibt', '**fett** bleibt'],
   ])('keeps the line %p from becoming a Markdown block', (line, expected) => {
+    expect(mesZlToMarkup(`head\n${line}`).paragraphs).toEqual([expected])
+  })
+})
+
+describe('literal angle brackets and ampersands', () => {
+  test.each([
+    [
+      'schrift *me*₅*-lè-*<<IGI>>*-ṣa* (auch',
+      'schrift *me*₅*-lè-*&lt;&lt;IGI&gt;&gt;*-ṣa* (auch',
+    ],
+    ['offenbar <>-de-e-ma- zu lesen', 'offenbar &lt;&gt;-de-e-ma- zu lesen'],
+    ['wohl ^uru^BÀD-<AN> o.ä.', 'wohl ^uru^BÀD-&lt;AN&gt; o.ä.'],
+    ['AHw 116b bāʾu (< ba₇, = Hälfte)', 'AHw 116b bāʾu (&lt; ba₇, = Hälfte)'],
+    ['p20f., Nab. & Belsh. 99f.', 'p20f., Nab. &amp; Belsh. 99f.'],
+    ['Die <u>vier Windrichtungen</u>', 'Die <u>vier Windrichtungen</u>'],
+    [
+      '<span style="color: #00610F;">Siehe Kap. II 2. Anhang.</span>',
+      '<span style="color: #00610F;">Siehe Kap. II 2. Anhang.</span>',
+    ],
+    [
+      '<span>DIŠ</span><br/><span>DIŠ</span>',
+      '<span>DIŠ</span><br/><span>DIŠ</span>',
+    ],
+  ])('escapes %p as text, keeping real HTML', (line, expected) => {
     expect(mesZlToMarkup(`head\n${line}`).paragraphs).toEqual([expected])
   })
 })

@@ -1,21 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
+
+function mergeOpenSections(
+  previous: Readonly<Record<string, boolean>>,
+  sectionIds: readonly string[],
+): Record<string, boolean> {
+  return Object.fromEntries(sectionIds.map((id) => [id, previous[id] ?? true]))
+}
 
 export function useEntrySectionState(sectionIds: readonly string[]): {
   openSections: Record<string, boolean>
   toggleSection: (id: string) => void
   openSection: (id: string) => void
 } {
-  const initialState = useMemo(
-    () => Object.fromEntries(sectionIds.map((id) => [id, true])),
-    [sectionIds],
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(
+    () => mergeOpenSections({}, sectionIds),
   )
-  const [openSections, setOpenSections] =
-    useState<Record<string, boolean>>(initialState)
 
   useEffect(() => {
-    setOpenSections(initialState)
-  }, [initialState])
+    setOpenSections((previous) => mergeOpenSections(previous, sectionIds))
+  }, [sectionIds])
 
   const toggleSection = useCallback((id: string): void => {
     setOpenSections((previous) => ({ ...previous, [id]: !previous[id] }))

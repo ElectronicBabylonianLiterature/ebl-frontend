@@ -1,7 +1,21 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
-import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
+import {
+  EntryNavSection,
+  sectionContentId,
+} from 'common/ui/entry-page/entryNavSections'
+
+function navSublistId(sectionId: string): string {
+  return `${sectionId}-nav-sublist`
+}
+
+function toggleTargets(section: EntryNavSection): string {
+  return [
+    sectionContentId(section.id),
+    ...(section.subsections.length > 0 ? [navSublistId(section.id)] : []),
+  ].join(' ')
+}
 
 interface NavigationState {
   activeId: string | null
@@ -40,24 +54,23 @@ export function NavAnchor({
 }
 
 function SectionToggle({
-  classPrefix,
   section,
   open,
   onToggleSection,
 }: {
-  classPrefix: string
   section: EntryNavSection
   open: boolean
   onToggleSection: (id: string) => void
 }): JSX.Element {
   if (section.collapsible === false) {
-    return <span className={`${classPrefix}__nav-toggle`} aria-hidden="true" />
+    return <span className="EntryPage__nav-toggle" aria-hidden="true" />
   }
   return (
     <button
       type="button"
-      className={`${classPrefix}__nav-toggle`}
+      className="EntryPage__nav-toggle"
       aria-expanded={open}
+      aria-controls={toggleTargets(section)}
       aria-label={`${open ? 'Collapse' : 'Expand'} ${section.label}`}
       onClick={(): void => onToggleSection(section.id)}
     >
@@ -73,23 +86,21 @@ function SectionToggle({
 }
 
 function NavSubsections({
-  classPrefix,
   section,
   open,
   ...navigation
 }: NavigationState & {
-  classPrefix: string
   section: EntryNavSection
   open: boolean
 }): JSX.Element {
   return (
     <Collapse in={open}>
-      <ul className={`${classPrefix}__nav-sublist`}>
+      <ul id={navSublistId(section.id)} className="EntryPage__nav-sublist">
         {section.subsections.map((subsection) => (
-          <li key={subsection.id} className={`${classPrefix}__nav-subitem`}>
+          <li key={subsection.id} className="EntryPage__nav-subitem">
             <NavAnchor
               id={subsection.id}
-              className={`${classPrefix}__nav-sublink`}
+              className="EntryPage__nav-sublink"
               {...navigation}
             >
               {subsection.label}
@@ -102,19 +113,17 @@ function NavSubsections({
 }
 
 export default function EntryNavList({
-  classPrefix,
   sections,
   openSections,
   onToggleSection,
   ...navigation
 }: NavigationState & {
-  classPrefix: string
   sections: readonly EntryNavSection[]
   openSections: Readonly<Record<string, boolean>>
   onToggleSection: (id: string) => void
 }): JSX.Element {
   return (
-    <ul className={`${classPrefix}__nav-list`}>
+    <ul className="EntryPage__nav-list">
       {sections.map((section) => {
         const open = openSections[section.id]
         const isActiveGroup =
@@ -125,32 +134,26 @@ export default function EntryNavList({
         return (
           <li
             key={section.id}
-            className={classNames(`${classPrefix}__nav-item`, {
+            className={classNames('EntryPage__nav-item', {
               'is-active-group': isActiveGroup,
             })}
           >
-            <div className={`${classPrefix}__nav-row`}>
+            <div className="EntryPage__nav-row">
               <SectionToggle
-                classPrefix={classPrefix}
                 section={section}
                 open={open}
                 onToggleSection={onToggleSection}
               />
               <NavAnchor
                 id={section.id}
-                className={`${classPrefix}__nav-link`}
+                className="EntryPage__nav-link"
                 {...navigation}
               >
                 {section.label}
               </NavAnchor>
             </div>
             {section.subsections.length > 0 && (
-              <NavSubsections
-                classPrefix={classPrefix}
-                section={section}
-                open={open}
-                {...navigation}
-              />
+              <NavSubsections section={section} open={open} {...navigation} />
             )}
           </li>
         )

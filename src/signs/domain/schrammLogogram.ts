@@ -57,6 +57,16 @@ export interface LogogramSpelling {
   readonly id: string
   readonly logogram: string
   readonly schramm: SchrammEntry | null
+  readonly schrammText: string
+}
+
+function toSpelling(logogram: Logogram): LogogramSpelling {
+  return {
+    id: `${logogram.logogram}\u0000${logogram.schrammLogogramme}`,
+    logogram: logogram.logogram,
+    schramm: parseSchrammLogogram(logogram.schrammLogogramme),
+    schrammText: logogram.schrammLogogramme,
+  }
 }
 
 export interface LogogramsOfWord {
@@ -82,13 +92,9 @@ export function groupLogogramsByWord(
         spellings: [],
       }
       others.forEach((other) => group.otherWordIds.add(other))
-      const id = `${logogram.logogram}\u0000${logogram.schrammLogogramme}`
-      if (!group.spellings.some((spelling) => spelling.id === id)) {
-        group.spellings.push({
-          id,
-          logogram: logogram.logogram,
-          schramm: parseSchrammLogogram(logogram.schrammLogogramme),
-        })
+      const spelling = toSpelling(logogram)
+      if (!group.spellings.some(({ id }) => id === spelling.id)) {
+        group.spellings.push(spelling)
       }
       groups.set(wordId, group)
     })
@@ -100,6 +106,21 @@ export function groupLogogramsByWord(
       otherWordIds: [...group.otherWordIds],
       spellings: group.spellings,
     }))
+}
+
+export function ungroupedLogograms(
+  logograms: readonly Logogram[],
+): readonly LogogramSpelling[] {
+  const spellings = logograms
+    .filter(
+      (logogram) =>
+        logogram.wordId.length === 0 && !isLogogramCrossReference(logogram),
+    )
+    .map(toSpelling)
+  return spellings.filter(
+    (spelling, index) =>
+      spellings.findIndex(({ id }) => id === spelling.id) === index,
+  )
 }
 
 export function splitWordId(wordId: string): {

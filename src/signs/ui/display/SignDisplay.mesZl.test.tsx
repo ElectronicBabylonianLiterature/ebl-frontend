@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from '@testing-library/react'
+import { act, fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import SignService from 'signs/application/SignService'
 import Sign from 'signs/domain/Sign'
@@ -130,20 +130,39 @@ it('drops the MesZL section when neither chapter has an entry', async () => {
   ).not.toBeInTheDocument()
 })
 
-it('says that Kapitel II is loading', async () => {
+it('shows the Kapitel II tab while it loads', async () => {
   signService.findMesZlKap2.mockReturnValue(new Promise(() => undefined))
   await renderSignPage(signService, fullEditor)
+  await userEvent.click(
+    screen.getByRole('tab', { name: 'Kap. Ⅱ · Zeichenübersicht' }),
+  )
   expect(screen.getByText('Loading Kapitel Ⅱ…')).toBeVisible()
+})
+
+it('keeps Kapitel III mounted when Kapitel II arrives', async () => {
+  let resolve: (entries: { number: string; text: string }[]) => void = () =>
+    undefined
+  signService.findMesZlKap2.mockReturnValue(
+    new Promise((resolvePromise) => {
+      resolve = resolvePromise
+    }),
+  )
+  await renderSignPage(signService, fullEditor)
+  const kap3Text = screen.getByText(/Lw\. še \(allg\.\)/)
+  await act(async () => resolve([{ number: '579', text: kap2 }]))
+  expect(kap3Text).toBeInTheDocument()
 })
 
 it('says when Kapitel II could not be loaded', async () => {
   signService.findMesZlKap2.mockRejectedValue(new Error('Server error'))
   await renderSignPage(signService, fullEditor)
+  expect(screen.getByText(/Lw\. še \(allg\.\)/)).toBeVisible()
+  await userEvent.click(
+    screen.getByRole('tab', { name: 'Kap. Ⅱ · Zeichenübersicht' }),
+  )
   expect(
     await screen.findByText('MesZL Kapitel Ⅱ could not be loaded.'),
   ).toBeVisible()
-  expect(screen.getByText(/Lw\. še \(allg\.\)/)).toBeVisible()
-  expect(screen.queryByRole('tab')).not.toBeInTheDocument()
 })
 
 it('stops loading Kapitel II when the page is left', async () => {

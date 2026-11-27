@@ -130,6 +130,7 @@ describe('with more than three rows of cards', () => {
   test('shows three rows and a Show more button', async () => {
     renderFossey(nineCards())
     expect(screen.getAllByRole('img')).toHaveLength(6)
+    expect(screen.getAllByRole('img', { hidden: true })).toHaveLength(6)
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Show more (3 more)' }),

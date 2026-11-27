@@ -1,92 +1,66 @@
 import React from 'react'
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
 import ExternalLink from 'common/ui/ExternalLink'
+import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
+import useRequestState from 'common/hooks/useRequestState'
 import { Logogram } from 'signs/domain/Sign'
 import {
   LogogramSpelling,
   groupLogogramsByWord,
   isLogogramCrossReference,
-  isSameAkkadian,
-  splitWordId,
+  ungroupedLogograms,
 } from 'signs/domain/schrammLogogram'
+import {
+  LogogramText,
+  Spelling,
+  WordLink,
+} from 'signs/ui/display/SignLogogramParts'
 
-export function LogogramText({ logogram }: { logogram: string }): JSX.Element {
-  return (
-    <>
-      {logogram
-        .split(/(<sup>.*?<\/sup>)/)
-        .filter(Boolean)
-        .map((part, index) => {
-          const superscript = part.match(/^<sup>(.*)<\/sup>$/)
-          return superscript ? (
-            <sup key={index}>{superscript[1]}</sup>
-          ) : (
-            <React.Fragment key={index}>{part}</React.Fragment>
-          )
-        })}
-    </>
+function useLogogramWords(
+  wordIds: readonly string[],
+  wordService: WordService,
+): ReadonlyMap<string, Word> {
+  const ids = [...new Set(wordIds)].sort()
+  const state = useRequestState(
+    ids.length > 0 ? ids.join('\n') : null,
+    (signal) => wordService.findAll(ids, signal),
+  )
+  return new Map(
+    state.status === 'loaded' ? state.data.map((word) => [word._id, word]) : [],
   )
 }
 
-function WordLink({ wordId }: { wordId: string }): JSX.Element {
-  const { lemma, homonym } = splitWordId(wordId)
-  return (
-    <Link
-      className="SignPage__logogram-lemma"
-      to={`/dictionary/${encodeURIComponent(wordId)}`}
-    >
-      <em>{lemma}</em>
-      {homonym && ` ${homonym}`}
-    </Link>
-  )
-}
-
-function Spelling({
-  spelling,
-  lemma,
+function OtherLogograms({
+  spellings,
 }: {
-  spelling: LogogramSpelling
-  lemma: string
+  spellings: readonly LogogramSpelling[]
 }): JSX.Element {
-  const { schramm } = spelling
   return (
-    <li className="SignPage__logogram-spelling">
-      <span className="SignPage__logogram-logogram">
-        <LogogramText logogram={spelling.logogram} />
-      </span>
-      {schramm && (
-        <>
-          {(!isSameAkkadian(schramm.akkadian, lemma) || schramm.uncertain) && (
-            <span className="SignPage__logogram-meaning">
-              {!isSameAkkadian(schramm.akkadian, lemma) && (
-                <em>{schramm.akkadian}</em>
-              )}
-              {schramm.uncertain && ' (?)'}
-            </span>
-          )}
-          {schramm.meaning && (
-            <span className="SignPage__logogram-meaning">
-              „{schramm.meaning}“
-            </span>
-          )}
-          {schramm.references && (
-            <span className="SignPage__logogram-references">
-              {schramm.references}
-            </span>
-          )}
-        </>
-      )}
+    <li className="SignPage__logogram-word">
+      <span className="SignPage__logogram-lemma">Without dictionary word</span>
+      <ul className="SignPage__logogram-spellings">
+        {spellings.map((spelling) => (
+          <Spelling key={spelling.id} spelling={spelling} lemma="" />
+        ))}
+      </ul>
     </li>
   )
 }
 
 export default function SignLogogramsByWord({
   logograms,
+  wordService,
 }: {
   logograms: readonly Logogram[]
+  wordService: WordService
 }): JSX.Element {
   const words = groupLogogramsByWord(logograms)
+  const others = ungroupedLogograms(logograms)
+  const dictionaryWords = useLogogramWords(
+    logograms.flatMap((logogram) => logogram.wordId),
+    wordService,
+  )
   const crossReferences = _.uniqBy(
     logograms.filter(isLogogramCrossReference),
     (logogram) => logogram.logogram,
@@ -96,11 +70,11 @@ export default function SignLogogramsByWord({
       <ul className="SignPage__logograms">
         {words.map(({ wordId, lemma, otherWordIds, spellings }) => (
           <li key={wordId} className="SignPage__logogram-word">
-            <WordLink wordId={wordId} />
+            <WordLink wordId={wordId} word={dictionaryWords.get(wordId)} />
             {otherWordIds.map((other) => (
               <React.Fragment key={other}>
                 {' + '}
-                <WordLink wordId={other} />
+                <WordLink wordId={other} word={dictionaryWords.get(other)} />
               </React.Fragment>
             ))}
             <ul className="SignPage__logogram-spellings">
@@ -110,6 +84,7 @@ export default function SignLogogramsByWord({
             </ul>
           </li>
         ))}
+        {others.length > 0 && <OtherLogograms spellings={others} />}
       </ul>
       {crossReferences.length > 0 && (
         <p className="SignPage__note">

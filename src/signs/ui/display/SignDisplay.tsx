@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import withData, { WithoutData } from 'http/withData'
 import SignService from 'signs/application/SignService'
+import WordService from 'dictionary/application/WordService'
 import Sign from 'signs/domain/Sign'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
@@ -12,7 +13,9 @@ import useEntryPageNavigation from 'common/ui/entry-page/useEntryPageNavigation'
 import SignOverview from 'signs/ui/display/SignOverview'
 import SignSectionContent from 'signs/ui/display/SignSectionContent'
 import useMesZlKap2 from 'signs/ui/display/useMesZlKap2'
-import useKeepSectionInView from 'signs/ui/display/useKeepSectionInView'
+import useCompositeSigns from 'signs/ui/display/useCompositeSigns'
+import { isPendingOrNonEmpty } from 'common/hooks/useRequestState'
+import useKeepSectionInView from 'common/ui/entry-page/useKeepSectionInView'
 import {
   buildSignSections,
   signSectionIds,
@@ -27,18 +30,27 @@ import 'signs/ui/display/SignPage.sass'
 function SignPage({
   sign,
   signService,
+  wordService,
   session,
 }: {
   sign: Sign
   signService: SignService
+  wordService: WordService
   session: Session
 }): JSX.Element {
   const kap2 = useMesZlKap2(
-    sign.name,
+    sign,
     signService,
     session.isAllowedToReadMesZlKap2(),
   )
-  const sections = useMemo(() => buildSignSections(sign, kap2), [sign, kap2])
+  const composites = useCompositeSigns(sign, signService)
+  const hasMesZl = Boolean(sign.mesZl) || isPendingOrNonEmpty(kap2)
+  const hasComposites = isPendingOrNonEmpty(composites)
+  const sections = useMemo(
+    () =>
+      buildSignSections(sign, { mesZl: hasMesZl, composites: hasComposites }),
+    [sign, hasMesZl, hasComposites],
+  )
   const {
     openSections,
     toggleSection,
@@ -49,10 +61,19 @@ function SignPage({
   const [content, setContent] = useState<HTMLDivElement | null>(null)
   useKeepSectionInView(selectedId, content)
   const numbers = sign.mesZlNumbers
-  const hasMesZl = sections.some(({ id }) => id === signSectionIds.meszl)
 
   return (
     <div className="EntryPage__layout SignPage">
+      <div id={signTopId} className="EntryPage__top">
+        <SignOverview
+          sign={sign}
+          onShowMesZl={
+            hasMesZl
+              ? (): void => navigateToSection(signSectionIds.meszl)
+              : null
+          }
+        />
+      </div>
       <EntryNavMenu
         title={
           <>
@@ -76,16 +97,6 @@ function SignPage({
         onNavigate={navigateToSection}
       />
       <div className="EntryPage__content" ref={setContent}>
-        <div id={signTopId} className="EntryPage__top">
-          <SignOverview
-            sign={sign}
-            onShowMesZl={
-              hasMesZl
-                ? (): void => navigateToSection(signSectionIds.meszl)
-                : null
-            }
-          />
-        </div>
         {sections.map((section) => (
           <EntrySection
             key={section.id}
@@ -99,7 +110,9 @@ function SignPage({
               id={section.id}
               sign={sign}
               signService={signService}
+              wordService={wordService}
               kap2={kap2}
+              composites={composites}
             />
           </EntrySection>
         ))}
@@ -111,9 +124,11 @@ function SignPage({
 function SignDisplay({
   sign,
   signService,
+  wordService,
 }: {
   sign: Sign
   signService: SignService
+  wordService: WordService
 }): JSX.Element {
   return (
     <SessionContext.Consumer>
@@ -134,6 +149,7 @@ function SignDisplay({
               <SignPage
                 sign={sign}
                 signService={signService}
+                wordService={wordService}
                 session={session}
               />
             </>
@@ -149,12 +165,17 @@ function SignDisplay({
 type Props = {
   data: Sign
   signService: SignService
+  wordService: WordService
   id: string
 }
 
 export default withData<WithoutData<Props>, { id: string }, Sign>(
-  ({ data, signService }) => (
-    <SignDisplay sign={data} signService={signService} />
+  ({ data, signService, wordService }) => (
+    <SignDisplay
+      sign={data}
+      signService={signService}
+      wordService={wordService}
+    />
   ),
   (props, signal) => props.signService.find(props.id, signal),
   { watch: (props) => [props.id] },

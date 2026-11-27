@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
+import { sectionContentId } from 'common/ui/entry-page/entryNavSections'
 
 export function EntrySection({
   id,
@@ -42,6 +43,7 @@ export function EntrySection({
           type="button"
           className="EntryPage__section-toggle"
           aria-expanded={open}
+          aria-controls={sectionContentId(id)}
           onClick={(): void => onToggle(id)}
         >
           <i
@@ -55,7 +57,7 @@ export function EntrySection({
         </button>
       </h2>
       <Collapse in={open}>
-        <div>{children}</div>
+        <div id={sectionContentId(id)}>{children}</div>
       </Collapse>
     </section>
   )

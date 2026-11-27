@@ -1,3 +1,4 @@
+import { MES_ZL_LIST } from 'signs/domain/mesZlNumber'
 import { produce, immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/application/SubIndex'
@@ -148,7 +149,7 @@ export default class Sign {
 
   get mesZlNumbers(): readonly string[] {
     return this.lists
-      .filter((record) => record.name === 'MZL')
+      .filter((record) => record.name === MES_ZL_LIST)
       .map((record) => record.number)
   }
 

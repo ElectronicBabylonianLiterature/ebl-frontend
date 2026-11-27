@@ -7,6 +7,8 @@ import { helmetContext } from 'router/head'
 import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
 import SignService from 'signs/application/SignService'
+import WordService from 'dictionary/application/WordService'
+import { wordFactory } from 'test-support/word-fixtures'
 import Sign, { Fossey, Value } from 'signs/domain/Sign'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -90,10 +92,34 @@ export function setUpSignService(
   displayedSign: Sign = sign,
 ): void {
   signService.find.mockResolvedValue(displayedSign)
-  signService.search.mockResolvedValue([])
+  signService.search.mockResolvedValue([compositeSign])
   signService.getCentroidImages.mockResolvedValue([croppedAnnotation])
   signService.findMesZlKap2.mockResolvedValue([{ number: '579', text: kap2 }])
+  wordService.findAll.mockResolvedValue([barley])
 }
+
+export const compositeSign = new Sign({
+  name: '|ŠE.NAGA|',
+  lists: [],
+  values: [],
+  logograms: [],
+  fossey: [],
+  mesZl: '',
+  LaBaSi: '',
+  unicode: [],
+})
+
+export const barley = wordFactory.build({
+  _id: "še'u I",
+  lemma: ["še'u"],
+  homonym: 'I',
+  guideWord: 'barley',
+  attested: true,
+})
+
+export const wordService = {
+  findAll: jest.fn(),
+} as unknown as jest.Mocked<WordService>
 
 export const signPath = `/signs/${encodeURIComponent(sign.name)}`
 
@@ -111,6 +137,7 @@ export function renderSignDisplay(
             render={({ match }) => (
               <SignDisplay
                 signService={signService}
+                wordService={wordService}
                 id={decodeURIComponent(String(match.params.id))}
               />
             )}

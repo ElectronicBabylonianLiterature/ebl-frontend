@@ -94,7 +94,7 @@ it('lists the sections in order in the navigation', async () => {
   ])
   expect(
     within(navigation)
-      .getAllByRole('button')
+      .getAllByRole('button', { name: /^(Collapse|Expand) / })
       .map((button) => button.getAttribute('aria-label')),
   ).toEqual([
     'Collapse Logograms',
@@ -180,6 +180,8 @@ describe('when the page is opened at a section', () => {
     await renderSignPage(signService, undefined, '/signs/%C5%A0E#sign-fossey')
     scrollIntoView.mockClear()
 
+    resizeObservedElements()
+    expect(scrollIntoView).not.toHaveBeenCalled()
     resizeObservedElements()
     expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
 

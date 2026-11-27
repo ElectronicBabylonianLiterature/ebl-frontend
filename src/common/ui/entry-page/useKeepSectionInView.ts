@@ -14,9 +14,14 @@ export default function useKeepSectionInView(
     ) {
       return
     }
-    const observer = new ResizeObserver(() =>
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'auto' }),
-    )
+    let initialObservation = true
+    const observer = new ResizeObserver(() => {
+      if (initialObservation) {
+        initialObservation = false
+        return
+      }
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'auto' })
+    })
     const stop = (): void => observer.disconnect()
     observer.observe(content)
     interactions.forEach((type) =>

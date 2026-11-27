@@ -85,3 +85,22 @@ it('omits the readings of a sign without values', async () => {
   expect(screen.queryByText(/—/)).not.toBeInTheDocument()
   expect(screen.queryByText(/^\(/)).not.toBeInTheDocument()
 })
+
+it('links primed MesZL numbers and leaves signs without one unlinked', async () => {
+  const primed: OrderedSign = { name: 'KA', unicode: [0x12157], mzl: '527′' }
+  const unnumbered: OrderedSign = { name: 'LU', unicode: [0x121fd], mzl: null }
+  signService.findSignsByOrder.mockResolvedValue([[primed, center, unnumbered]])
+  const row = await findFirstSignRow()
+
+  expect(
+    within(row).getByRole('link', { name: displayUnicode(primed.unicode) }),
+  ).toHaveAttribute(
+    'href',
+    '/tools/signs?listsName=MZL&listsNumber=527%E2%80%B2',
+  )
+  expect(
+    within(row).queryByRole('link', {
+      name: displayUnicode(unnumbered.unicode),
+    }),
+  ).not.toBeInTheDocument()
+})

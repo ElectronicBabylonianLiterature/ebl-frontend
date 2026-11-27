@@ -3,7 +3,7 @@ import 'signs/ui/search/Signs.sass'
 import { Link } from 'react-router-dom'
 import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
-import { wrapCuneiform } from 'signs/domain/mesZlMarkup'
+import { escapeMesZlText, wrapCuneiform } from 'signs/domain/mesZlMarkup'
 import 'signs/ui/display/CuneiformFonts.css'
 import 'signs/ui/display/MesZl.sass'
 
@@ -12,14 +12,9 @@ function splitMesZl(
   cutOff: number,
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
   const mesZlLines = mesZl.split('\n')
-  const mesZlBody = mesZlLines
-    .slice(1, cutOff)
-    .join('\n\n')
-    .replace(/\\/g, '\\\\')
-    .replace(/\[/g, '\\[')
-    .replace(/]/g, '\\]')
+  const mesZlBody = escapeMesZlText(mesZlLines.slice(1, cutOff).join('\n\n'))
   return {
-    mesZlHeadMarkdown: wrapCuneiform(mesZlLines[0]),
+    mesZlHeadMarkdown: wrapCuneiform(escapeMesZlText(mesZlLines[0])),
     mesZlBodyMarkdown: wrapCuneiform(mesZlBody),
   }
 }

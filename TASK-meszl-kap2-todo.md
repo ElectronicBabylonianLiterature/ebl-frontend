@@ -10,4 +10,8 @@
 - [x] Run the app and look at the sign page
 - [x] Write TASK-meszl-kap2-review.md
 - [x] Commit and push the fixes (code only) — aa582d4a
+- [x] Second (merciless) review: fix R1–R12 and nits; sign search apostrophes; Borger glyph in results
+- [x] yarn lint, yarn tsc, yarn test:ci (round 2): 824 suites, 6834 tests, 46 snapshots, no console output
+- [x] Look at the sign page and search page in the running app (Realia needs a login; covered by its tests)
+- [x] Commit and push round 2
 - [ ] Before merge: remove the TASK-meszl-kap2-*.md files; mirror entry-page changes on sumerian-dictionary-frontend

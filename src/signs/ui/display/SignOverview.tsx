@@ -5,6 +5,7 @@ import { getDisplayName } from 'signs/domain/signListNames'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import ExternalLink from 'common/ui/ExternalLink'
 import { signSectionIds } from 'signs/ui/display/signSections'
+import SignCard from 'signs/ui/SignCard'
 
 const scriptForms: readonly { readonly className: string; label: string }[] = [
   {
@@ -26,28 +27,6 @@ const scriptForms: readonly { readonly className: string; label: string }[] = [
     label: 'Neo-Babylonian',
   },
 ]
-
-function SignCard({ sign }: { sign: Sign }): JSX.Element {
-  const numbers = sign.mesZlNumbers
-  return (
-    <div className="SignPage__card">
-      <span className="SignPage__card-glyph" aria-hidden="true">
-        {sign.displayCuneiformSigns}
-      </span>
-      <h1 className="SignPage__card-name">{sign.displaySignName}</h1>
-      <span className="SignPage__card-caption">
-        {[
-          numbers.length > 0 && `MesZL ${numbers.join(', ')}`,
-          ...sign.unicode.map(
-            (codePoint) => `U+${codePoint.toString(16).toUpperCase()}`,
-          ),
-        ]
-          .filter(Boolean)
-          .join(' · ')}
-      </span>
-    </div>
-  )
-}
 
 function ScriptForms({
   sign,

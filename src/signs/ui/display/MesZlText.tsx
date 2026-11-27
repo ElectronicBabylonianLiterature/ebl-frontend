@@ -6,14 +6,19 @@ import 'signs/ui/display/MesZl.sass'
 
 export type MesZlChapter = 'kap3' | 'kap2'
 
+const MODIFIER_KEYS = ['metaKey', 'ctrlKey', 'shiftKey', 'altKey'] as const
+
 function isPlainLeftClick(event: React.MouseEvent): boolean {
-  return (
-    event.button === 0 &&
-    !event.metaKey &&
-    !event.ctrlKey &&
-    !event.shiftKey &&
-    !event.altKey
+  return event.button === 0 && !MODIFIER_KEYS.some((key) => event[key])
+}
+
+function internalReference(event: React.MouseEvent): HTMLAnchorElement | null {
+  const reference = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+    'a.MesZl__reference',
   )
+  return reference && reference.origin === window.location.origin
+    ? reference
+    : null
 }
 
 export default function MesZlText({
@@ -26,8 +31,7 @@ export default function MesZlText({
   const history = useHistory()
   const { head, paragraphs } = mesZlToMarkup(text)
   const followReference = (event: React.MouseEvent<HTMLElement>): void => {
-    const target = event.target as HTMLElement
-    const reference = target.closest<HTMLAnchorElement>('a.MesZl__reference')
+    const reference = internalReference(event)
     if (reference && isPlainLeftClick(event)) {
       event.preventDefault()
       history.push({

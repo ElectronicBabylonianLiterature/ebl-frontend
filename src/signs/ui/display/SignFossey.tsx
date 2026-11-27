@@ -107,11 +107,8 @@ function FosseyCards({ fosseys }: { fosseys: readonly Fossey[] }): JSX.Element {
   return (
     <>
       <ul className="SignPage__fossey-cards" ref={setContainer}>
-        {fosseys.map((fossey, index) => (
-          <li
-            key={`${fossey.number}${fossey.suffix ?? ''}`}
-            hidden={!expanded && index >= fitting}
-          >
+        {fosseys.slice(0, expanded ? fosseys.length : fitting).map((fossey) => (
+          <li key={`${fossey.page}-${fossey.number}${fossey.suffix ?? ''}`}>
             <FosseyCard fossey={fossey} />
           </li>
         ))}
