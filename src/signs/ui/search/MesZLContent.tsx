@@ -3,6 +3,9 @@ import 'signs/ui/search/Signs.sass'
 import { Link } from 'react-router-dom'
 import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
+import { wrapCuneiform } from 'signs/domain/mesZlMarkup'
+import 'signs/ui/display/CuneiformFonts.css'
+import 'signs/ui/display/SignPage.sass'
 
 function splitMesZl(
   mesZl: string,
@@ -15,7 +18,10 @@ function splitMesZl(
     .replace(/\\/g, '\\\\')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
-  return { mesZlHeadMarkdown: mesZlLines[0], mesZlBodyMarkdown: mesZlBody }
+  return {
+    mesZlHeadMarkdown: wrapCuneiform(mesZlLines[0]),
+    mesZlBodyMarkdown: wrapCuneiform(mesZlBody),
+  }
 }
 
 export default function MesZlContent({
@@ -29,7 +35,7 @@ export default function MesZlContent({
 }): JSX.Element | null {
   const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl, cutOff)
   return (
-    <>
+    <div className="MesZl--kap3">
       <div className={'mesZL__popover'}>
         <pre>
           {mesZlHeadMarkdown && (
@@ -68,6 +74,6 @@ export default function MesZlContent({
         link="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
         icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
       />
-    </>
+    </div>
   )
 }
