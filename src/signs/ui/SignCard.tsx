@@ -1,28 +1,58 @@
-import React from 'react'
+import React, { Fragment, ReactNode } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import Sign from 'signs/domain/Sign'
 import 'signs/ui/display/CuneiformFonts.css'
 import 'signs/ui/SignCard.sass'
 
-function caption(sign: Sign): string {
+function mesZlLabel(sign: Sign): string | null {
   const numbers = sign.mesZlNumbers
-  return [
-    numbers.length > 0 && `MesZL ${numbers.join(', ')}`,
-    ...sign.unicode.map(
-      (codePoint) => `U+${codePoint.toString(16).toUpperCase()}`,
-    ),
+  return numbers.length > 0 ? `MesZL ${numbers.join(', ')}` : null
+}
+
+function codePoints(sign: Sign): string[] {
+  return sign.unicode.map(
+    (codePoint) => `U+${codePoint.toString(16).toUpperCase()}`,
+  )
+}
+
+function Caption({
+  sign,
+  renderMesZl,
+}: {
+  sign: Sign
+  renderMesZl?: (label: string) => ReactNode
+}): JSX.Element {
+  const label = mesZlLabel(sign)
+  const parts: { key: string; content: ReactNode }[] = [
+    ...(label
+      ? [{ key: label, content: renderMesZl ? renderMesZl(label) : label }]
+      : []),
+    ...codePoints(sign).map((codePoint) => ({
+      key: codePoint,
+      content: codePoint,
+    })),
   ]
-    .filter(Boolean)
-    .join(' · ')
+  return (
+    <span className="SignCard__caption">
+      {parts.map((part, index) => (
+        <Fragment key={part.key}>
+          {index > 0 && ' · '}
+          {part.content}
+        </Fragment>
+      ))}
+    </span>
+  )
 }
 
 export default function SignCard({
   sign,
   compact = false,
+  renderMesZl,
 }: {
   sign: Sign
   compact?: boolean
+  renderMesZl?: (label: string) => ReactNode
 }): JSX.Element {
   return (
     <div className={classNames('SignCard', { 'SignCard--compact': compact })}>
@@ -39,7 +69,7 @@ export default function SignCard({
       ) : (
         <h1 className="SignCard__name">{sign.displaySignName}</h1>
       )}
-      <span className="SignCard__caption">{caption(sign)}</span>
+      <Caption sign={sign} renderMesZl={renderMesZl} />
     </div>
   )
 }

@@ -36,3 +36,22 @@ it('links the sign name in the compact card', () => {
   expect(screen.queryByRole('heading')).not.toBeInTheDocument()
   expect(screen.getByText('MesZL 614 · U+1226D')).toBeInTheDocument()
 })
+
+it('renders the MesZL label through renderMesZl', () => {
+  render(
+    <MemoryRouter>
+      <SignCard
+        sign={sign}
+        compact
+        renderMesZl={(label) => <button type="button">{label}</button>}
+      />
+    </MemoryRouter>,
+  )
+  expect(screen.getByRole('button', { name: 'MesZL 614' })).toBeInTheDocument()
+  expect(screen.getByText(/· U\+1226D/)).toBeInTheDocument()
+})
+
+it('shows only code points without a MesZL number', () => {
+  render(<SignCard sign={new Sign({ ...sign, lists: [] })} />)
+  expect(screen.getByText('U+1226D')).toBeInTheDocument()
+})

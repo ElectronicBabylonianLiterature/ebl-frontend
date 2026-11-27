@@ -18,13 +18,11 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 𒍴^q12asd^
 `
 
-const mesZlRecords = [{ name: 'MesZL', number: '131' }]
-
 describe('MesZl', () => {
   it('MesZl Button', async () => {
     render(
       <MemoryRouter>
-        <MesZL mesZl={mesZl} mesZlRecords={mesZlRecords} signName={'ALSK13'} />
+        <MesZL mesZl={mesZl} signName={'ALSK13'} label="MesZL 131" />
       </MemoryRouter>,
     )
     await screen.findByText('MesZL 131')

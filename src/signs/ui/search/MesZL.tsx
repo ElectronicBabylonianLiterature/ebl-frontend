@@ -3,17 +3,15 @@ import _ from 'lodash'
 import React from 'react'
 import 'signs/ui/search/Signs.sass'
 import MesZlContent from 'signs/ui/search/MesZLContent'
-import { SignListRecord } from 'signs/domain/Sign'
-import { getDisplayName } from 'signs/domain/signListNames'
 
 export default function MesZL({
   mesZl,
-  mesZlRecords,
   signName,
+  label,
 }: {
   signName: string
   mesZl: string
-  mesZlRecords: SignListRecord[]
+  label: string
 }): JSX.Element | null {
   const renderPopover = (props) => (
     <Popover
@@ -35,12 +33,8 @@ export default function MesZL({
       rootClose={true}
       overlay={renderPopover}
     >
-      <Button variant="outline-dark" size="sm">
-        <span className="ReferenceList__citation">
-          {mesZlRecords
-            .map((record) => `${getDisplayName(record.name)} ${record.number}`)
-            .join(', ')}
-        </span>
+      <Button variant="link" className="signs__meszl-link">
+        {label}
       </Button>
     </OverlayTrigger>
   )
