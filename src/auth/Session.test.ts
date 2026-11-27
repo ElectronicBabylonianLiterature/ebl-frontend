@@ -15,6 +15,7 @@ describe('GuestSession', () => {
     expect(guestSession.isAllowedToWriteTexts()).toBe(false)
     expect(guestSession.hasBetaAccess()).toBe(false)
     expect(guestSession.isAllowedToReadRealia()).toBe(false)
+    expect(guestSession.isAllowedToReadMesZlKap2()).toBe(false)
     expect(guestSession.isGuestSession()).toBe(true)
   })
 
@@ -43,6 +44,7 @@ describe.each([
   ['access:beta', 'hasBetaAccess'],
   ['create:proper_nouns', 'isAllowedToCreateProperNouns'],
   ['read:realia', 'isAllowedToReadRealia'],
+  ['read:meszl-kap2', 'isAllowedToReadMesZlKap2'],
 ])('%s %s', (scope, method) => {
   test('Returns true if session has scope', () => {
     const session = new MemorySession([scope])

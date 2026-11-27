@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import { SignQuery } from 'signs/domain/Sign'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import { normalizeSignListNumber } from 'signs/domain/mesZlNumber'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
 
 interface Props {
@@ -78,7 +79,10 @@ function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
       navigate(
         `?${stringify({
           listsName: signQueryState.listsName,
-          listsNumber: signQueryState.listsNumber,
+          listsNumber: normalizeSignListNumber(
+            signQueryState.listsName,
+            signQueryState.listsNumber,
+          ),
         })}`,
       )
     }

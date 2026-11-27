@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
-import classNames from 'classnames'
-import { Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import {
   getReferenceTypes,
   RealiaCrossReference,
@@ -12,6 +11,10 @@ import {
 } from 'realia/domain/RealiaEntry'
 import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 import ExternalLink from 'common/ui/ExternalLink'
+import {
+  EntryMetadata,
+  EntryMetadataItem,
+} from 'common/ui/entry-page/EntrySection'
 
 export function WikidataLinks({
   wikidataIds,
@@ -95,58 +98,15 @@ export function ReferenceTypeBadges({
 export function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
   const typeLabels = entry.type.join(', ') || '—'
   return (
-    <div className="Realia__metadata">
+    <EntryMetadata>
       <WikidataLinks wikidataIds={entry.wikidataId} />
       {entry.relatedTerms.length > 0 && (
-        <span>
-          <span className="Realia__metadata-label">Related terms: </span>
-          {entry.relatedTerms.join(', ')}{' '}
-        </span>
+        <EntryMetadataItem label="Related terms">
+          {entry.relatedTerms.join(', ')}
+        </EntryMetadataItem>
       )}
-      <span>
-        <span className="Realia__metadata-label">Type: </span>
-        {typeLabels}
-      </span>
-    </div>
-  )
-}
-
-export function RealiaSection({
-  id,
-  heading,
-  open,
-  onToggle,
-  children,
-}: {
-  id: string
-  heading: string
-  open: boolean
-  onToggle: (id: string) => void
-  children: React.ReactNode
-}): JSX.Element {
-  return (
-    <section id={id} className="Realia__section">
-      <h2 className="Realia__section-heading">
-        <button
-          type="button"
-          className="Realia__section-toggle"
-          aria-expanded={open}
-          onClick={(): void => onToggle(id)}
-        >
-          <i
-            className={classNames('fas', 'Realia__section-caret', {
-              'fa-caret-down': open,
-              'fa-caret-right': !open,
-            })}
-            aria-hidden="true"
-          />
-          {heading}
-        </button>
-      </h2>
-      <Collapse in={open}>
-        <div>{children}</div>
-      </Collapse>
-    </section>
+      <EntryMetadataItem label="Type">{typeLabels}</EntryMetadataItem>
+    </EntryMetadata>
   )
 }
 

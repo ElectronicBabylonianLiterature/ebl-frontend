@@ -3,80 +3,99 @@
 exports[`MesZl MesZl Content 1`] = `
 <div>
   <div
-    class="mesZL__popover"
+    class="MesZl--kap3"
   >
-    <pre>
+    <div
+      class="mesZL__popover"
+    >
+      <pre>
+        <div
+          class="text-center my-5 withData-spinner"
+        >
+          <span
+            aria-hidden="true"
+            aria-label="Spinner"
+            class="mr-2 spinner-border spinner-border-sm"
+            role="status"
+          />
+           Loading...
+        </div>
+      </pre>
+    </div>
+    <div
+      class="text-center my-5 withData-spinner"
+    >
+      <span
+        aria-hidden="true"
+        aria-label="Spinner"
+        class="mr-2 spinner-border spinner-border-sm"
+        role="status"
+      />
+       Loading...
+    </div>
+    <div
+      class="text-center"
+    >
+      <br />
+      <strong>
+        <a
+          data-discover="true"
+          href="/signs/ALSK13"
+        >
+          (Read more ...)
+        </a>
+      </strong>
+      <br />
+      <br />
+    </div>
+    <aside
+      aria-label="Source"
+      class="SignPage__source"
+    >
       <div
-        class="text-center my-5 withData-spinner"
+        class="SignPage__source-text"
       >
         <span
-          aria-hidden="true"
-          aria-label="Spinner"
-          class="mr-2 spinner-border spinner-border-sm"
-          role="status"
-        />
-         Loading...
+          class="SignPage__source-label"
+        >
+          From
+        </span>
+        <span>
+          Borger, R.,
+           
+          <em>
+            Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
+          </em>
+          . Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag,
+           
+          <sup>
+            2
+          </sup>
+          2010; 
+          <strong>
+            Kapitel Ⅲ
+          </strong>
+          .
+        </span>
+        <span
+          class="SignPage__source-permission"
+        >
+          By permission from Ugarit-Verlag
+        </span>
       </div>
-    </pre>
-  </div>
-  <div
-    class="text-center my-5 withData-spinner"
-  >
-    <span
-      aria-hidden="true"
-      aria-label="Spinner"
-      class="mr-2 spinner-border spinner-border-sm"
-      role="status"
-    />
-     Loading...
-  </div>
-  <div
-    class="text-center"
-  >
-    <br />
-    <strong>
       <a
-        data-discover="true"
-        href="/signs/ALSK13"
+        class="SignPage__source-link"
+        href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        (Read more ...)
+        <i
+          aria-hidden="true"
+          class="fas fa-shopping-cart"
+        />
+        Buy at Ugarit-Verlag
       </a>
-    </strong>
-    <br />
-    <br />
-  </div>
-  <div
-    class="text-center border border-dark mx-5 m-3 p-2"
-  >
-    <strong>
-      From
-    </strong>
-    <br />
-    Borger, R.
-    , 
-    <em>
-      Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
-    </em>
-    . 
-    Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel Ⅲ
-    .
-    <br />
-    <strong>
-      By permission from Ugarit-Verlag
-    </strong>
-    <br />
-    <a
-      aria-label="Open external source for Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
-      class="text-dark "
-      href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <i
-        aria-hidden="true"
-        class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-      />
-    </a>
+    </aside>
   </div>
 </div>
 `;

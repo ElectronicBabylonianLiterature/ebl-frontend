@@ -1,7 +1,7 @@
 import SignService from 'signs/application/SignService'
 import React, { useState } from 'react'
 import withData, { WithoutData } from 'http/withData'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 
 import _ from 'lodash'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
@@ -27,7 +27,9 @@ export default withData<
         signService={signService}
         signName={signName}
       />
-    ) : null,
+    ) : (
+      <p className="SignPage__note">No sign images available yet.</p>
+    ),
   (props, signal) =>
     props.signService.getCentroidImages(props.signName, signal),
 )
@@ -51,14 +53,9 @@ function SignImagePagination({
   const scriptsSorted = sortScriptsByPeriod(scripts)
 
   return (
-    <Container>
-      <Row className={'mt-5'}>
-        <Col>
-          <h3>&#8546;. Palaeography</h3>
-        </Col>
-      </Row>
+    <div className="sign-images">
       <Row>
-        <Col className={'mb-5'}>
+        <Col>
           {scriptsSorted.map((elem) => {
             const [scriptAbbr, croppedAnnotationsForScript] = elem
 
@@ -78,6 +75,6 @@ function SignImagePagination({
           <div className={'border-top'} />
         </Col>
       </Row>
-    </Container>
+    </div>
   )
 }

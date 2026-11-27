@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Redirect, useHistory } from 'router/compat'
+import React, { useMemo } from 'react'
+import { Redirect } from 'router/compat'
 import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
 import {
@@ -13,28 +12,24 @@ import {
 } from 'realia/domain/RealiaEntry'
 import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
-import RealiaNavMenu from 'realia/ui/RealiaNavMenu'
+import EntryNavMenu from 'common/ui/entry-page/EntryNavMenu'
+import { EntrySection } from 'common/ui/entry-page/EntrySection'
+import useEntryPageNavigation from 'common/ui/entry-page/useEntryPageNavigation'
 import { AfoRegisterVolumes } from 'realia/ui/RealiaAfoRegister'
 import { ReallexikonEntries } from 'realia/ui/RealiaReallexikon'
 import { EblRealiaEntries } from 'realia/ui/RealiaEblRealia'
 import {
   RealiaMetadata,
-  RealiaSection,
   ReferenceTypeBadges,
   SeeAlsoList,
 } from 'realia/ui/RealiaParts'
 import { RealiaRedirect } from 'realia/ui/RealiaRedirect'
-import {
-  scrollToSection,
-  useRealiaSectionState,
-} from 'realia/ui/useRealiaSectionState'
 import { buildRealiaNav, realiaSectionIds } from 'realia/ui/realiaSections'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import useActiveSection from 'common/hooks/useActiveSection'
 import 'realia/ui/Realia.sass'
 
 function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
@@ -50,79 +45,26 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
     () => buildRealiaNav({ entry, volumeGroups, crossReferences }),
     [entry, volumeGroups, crossReferences],
   )
-  const sectionIds = useMemo(
-    () => navSections.map((section) => section.id),
-    [navSections],
-  )
-  const anchorIds = useMemo(
-    () => [
-      realiaSectionIds.top,
-      ...navSections.flatMap((section) =>
-        section.subsections.length > 0
-          ? section.subsections.map((subsection) => subsection.id)
-          : [section.id],
-      ),
-    ],
-    [navSections],
-  )
-  const sectionByAnchor = useMemo(() => {
-    const map: Record<string, string> = {}
-    navSections.forEach((section) => {
-      map[section.id] = section.id
-      section.subsections.forEach((subsection) => {
-        map[subsection.id] = section.id
-      })
-    })
-    return map
-  }, [navSections])
-  const { openSections, toggleSection, openSection } =
-    useRealiaSectionState(sectionIds)
-  const { activeId, selectActiveSection } = useActiveSection(anchorIds)
-  const history = useHistory()
-  const location = useLocation()
-  const selectedId = useMemo(() => {
-    const hashId = decodeURIComponent(location.hash.replace(/^#/, ''))
-    return hashId || null
-  }, [location.hash])
+  const {
+    openSections,
+    toggleSection,
+    activeId,
+    selectedId,
+    navigateToSection,
+  } = useEntryPageNavigation(realiaSectionIds.top, navSections)
   const typeLabel = entry.type.length > 0 ? entry.type.join(', ') : null
 
-  // Reflect the section/subsection named in the URL hash: open its parent,
-  // highlight it as active, and scroll it into view. Runs on load (deep links,
-  // cross-references) and whenever a menu click pushes a new hash.
-  useEffect(() => {
-    if (!selectedId) {
-      return
-    }
-    const sectionId = sectionByAnchor[selectedId]
-    if (sectionId) {
-      openSection(sectionId)
-    }
-    selectActiveSection(selectedId)
-    scrollToSection(selectedId)
-  }, [location, selectedId, sectionByAnchor, openSection, selectActiveSection])
-
-  const navigateToSection = useCallback(
-    (id: string): void => {
-      history.push({
-        pathname: location.pathname,
-        search: location.search,
-        hash: `#${id}`,
-      })
-    },
-    [history, location.pathname, location.search],
-  )
-
   return (
-    <div className="Realia__layout">
-      <div id={realiaSectionIds.top} className="Realia__top">
+    <div className="EntryPage__layout">
+      <div id={realiaSectionIds.top} className="EntryPage__top">
         <h1>{entry.id}</h1>
         <ReferenceTypeBadges entry={entry} />
         <RealiaMetadata entry={entry} />
         <RealiaDevelopmentNotice />
       </div>
-      <RealiaNavMenu
+      <EntryNavMenu
         title={entry.id}
-        typeLabel={typeLabel}
+        subtitle={typeLabel}
         topId={realiaSectionIds.top}
         sections={navSections}
         openSections={openSections}
@@ -131,19 +73,19 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         onToggleSection={toggleSection}
         onNavigate={navigateToSection}
       />
-      <div className="Realia__content">
+      <div className="EntryPage__content">
         {entry.reallexikon.length > 0 && (
-          <RealiaSection
+          <EntrySection
             id={realiaSectionIds.reallexikon}
             heading={`I. ${realiaReferenceTypeNames.RlA}`}
             open={openSections[realiaSectionIds.reallexikon]}
             onToggle={toggleSection}
           >
             <ReallexikonEntries entries={entry.reallexikon} />
-          </RealiaSection>
+          </EntrySection>
         )}
         {entry.afoRegister.length > 0 && (
-          <RealiaSection
+          <EntrySection
             id={realiaSectionIds.afoRegister}
             heading={`II. ${realiaReferenceTypeNames.AfO}`}
             open={openSections[realiaSectionIds.afoRegister]}
@@ -153,37 +95,37 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
               entryId={entry.id}
               volumeGroups={volumeGroups}
             />
-          </RealiaSection>
+          </EntrySection>
         )}
         {entry.eblRealia.length > 0 && (
-          <RealiaSection
+          <EntrySection
             id={realiaSectionIds.eblRealia}
             heading={`III. ${realiaReferenceTypeNames.eBL}`}
             open={openSections[realiaSectionIds.eblRealia]}
             onToggle={toggleSection}
           >
             <EblRealiaEntries entries={entry.eblRealia} />
-          </RealiaSection>
+          </EntrySection>
         )}
         {entry.references.length > 0 && (
-          <RealiaSection
+          <EntrySection
             id={realiaSectionIds.references}
             heading="IV. References"
             open={openSections[realiaSectionIds.references]}
             onToggle={toggleSection}
           >
             <ReferenceList references={entry.references} />
-          </RealiaSection>
+          </EntrySection>
         )}
         {crossReferences.length > 0 && (
-          <RealiaSection
+          <EntrySection
             id={realiaSectionIds.seeAlso}
             heading="V. See Also"
             open={openSections[realiaSectionIds.seeAlso]}
             onToggle={toggleSection}
           >
             <SeeAlsoList crossReferences={crossReferences} />
-          </RealiaSection>
+          </EntrySection>
         )}
       </div>
     </div>

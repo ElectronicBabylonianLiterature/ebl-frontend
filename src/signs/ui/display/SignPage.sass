@@ -1,0 +1,217 @@
+@use 'src/design-tokens' as *
+@use 'src/common/ui/entry-page/entry-link-pill' as *
+
+@use 'src/signs/ui/display/borger-fonts' as *
+
+.SignPage__overview
+    display: grid
+    grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr)
+    gap: 1.25rem
+
+    @media (max-width: $ebl-breakpoint-md-max)
+        grid-template-columns: minmax(0, 1fr)
+
+.SignPage__forms
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr))
+    gap: 0.4rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+.SignPage__form
+    padding: 0.35rem 0.25rem 0.3rem
+    text-align: center
+    border: 1px solid $ebl-color-border-light
+    border-radius: 0.4rem
+
+.SignPage__form-glyph
+    font-size: 2rem
+    line-height: 1.25
+
+.SignPage__form-label
+    font-size: 0.7rem
+    line-height: 1.2
+    color: $ebl-color-text-secondary
+
+.SignPage__font-credits
+    display: flex
+    flex-wrap: wrap
+    gap: 0.1rem 0.9rem
+    margin: 0.4rem 0 0
+    font-size: 0.75rem
+    color: $ebl-color-text-secondary
+
+.SignPage__font-credits-label
+    font-weight: 600
+    letter-spacing: 0.06em
+    text-transform: uppercase
+
+.SignPage__facts
+    display: grid
+    grid-template-columns: max-content minmax(0, 1fr)
+    gap: 0.45rem 1.1rem
+    margin: 0.9rem 0 0
+
+    dt
+        font-weight: 600
+
+    dd
+        margin: 0
+        color: $ebl-color-text-neutral
+
+.SignPage__list-record
+    margin-right: 0.9rem
+    white-space: nowrap
+
+.SignPage__meszl-tabs
+    margin-bottom: 0
+
+.SignPage__meszl-body
+    padding: 1rem 1.1rem 0.9rem
+    border: 1px solid $ebl-color-border-default
+    border-radius: 0.5rem
+
+    &--tabbed
+        border-top: 0
+        border-radius: 0 0 0.5rem 0.5rem
+
+.SignPage__logograms
+    columns: 2 26rem
+    column-gap: 2rem
+    margin: 0
+    padding: 0
+    font-size: 0.92rem
+    list-style: none
+
+.SignPage__logogram-word
+    padding: 0.4rem 0 0.45rem
+    border-bottom: 1px solid $ebl-color-border-light
+    break-inside: avoid
+
+.SignPage__logogram-lemma
+    font-size: 1rem
+    text-decoration: none
+    border-bottom: 1px dotted currentColor
+
+.SignPage__logogram-spellings
+    margin: 0
+    padding-left: 0.9rem
+    list-style: none
+
+.SignPage__logogram-spelling
+    display: flex
+    flex-wrap: wrap
+    align-items: baseline
+    gap: 0 0.5rem
+
+.SignPage__logogram-logogram
+    font-weight: 600
+
+.SignPage__logogram-meaning
+    color: $ebl-color-text-neutral
+
+.SignPage__logogram-references
+    font-size: 0.78rem
+    color: $ebl-color-text-secondary
+
+.SignPage__note
+    margin: 0.5rem 0 0
+    font-size: 0.82rem
+    color: $ebl-color-text-secondary
+
+.SignPage__composites
+    display: flex
+    flex-wrap: wrap
+    gap: 0.3rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+    a
+        @extend %entry-link-pill
+        font-size: 0.78rem
+
+.SignPage__fossey-cards
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr))
+    gap: 0.75rem
+    margin: 0 0 0.9rem
+    padding: 0
+    list-style: none
+
+.SignPage__fossey-card
+    display: flex
+    flex-direction: column
+    height: 100%
+    margin: 0
+    overflow: hidden
+    border: 1px solid $ebl-color-border-light
+    border-radius: 0.5rem
+
+.SignPage__fossey-image
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 7rem
+    padding: 0.5rem
+    border-bottom: 1px solid $ebl-color-border-light
+
+    img
+        max-width: 100%
+        max-height: 100%
+
+.SignPage__fossey-caption
+    display: flex
+    flex-direction: column
+    gap: 0.1rem
+    padding: 0.5rem 0.65rem
+    font-size: 0.82rem
+    color: $ebl-color-text-neutral
+
+.SignPage__fossey-number
+    display: flex
+    justify-content: space-between
+    align-items: baseline
+
+    strong
+        font-size: 0.95rem
+        color: $ebl-color-text-primary
+
+.SignPage__fossey-muted
+    color: $ebl-color-text-secondary
+
+.SignPage__fossey-ranges
+    display: flex
+    flex-wrap: wrap
+    gap: 0.6rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+.SignPage__fossey-range
+    display: flex
+    align-items: center
+    gap: 0.75rem
+    padding: 0.6rem 0.9rem
+    background-color: $ebl-color-surface-muted
+    border: 1px dashed $ebl-color-border-default
+    border-radius: 0.5rem
+
+    strong
+        font-variant-numeric: tabular-nums
+
+    span
+        font-size: 0.82rem
+        color: $ebl-color-text-secondary
+
+.SignPage__show-more
+    margin: 0 0 0.9rem
+    text-align: center
+
+.SignPage__nav-glyph
+    font-family: $borger-white-heads
+    font-weight: 400
+
+.SignPage .EntryPage__top
+    margin-bottom: 2rem

@@ -18,13 +18,11 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 𒍴^q12asd^
 `
 
-const mesZlRecords = [{ name: 'MesZL', number: '131' }]
-
 describe('MesZl', () => {
   it('MesZl Button', async () => {
     render(
       <MemoryRouter>
-        <MesZL mesZl={mesZl} mesZlRecords={mesZlRecords} signName={'ALSK13'} />
+        <MesZL mesZl={mesZl} signName={'ALSK13'} label="MesZL 131" />
       </MemoryRouter>,
     )
     await screen.findByText('MesZL 131')
@@ -43,5 +41,14 @@ describe('MesZl', () => {
       'Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage',
     )
     expect(container).toMatchSnapshot()
+  })
+  it('shows the whole entry without a cut-off', async () => {
+    render(
+      <MemoryRouter>
+        <MesZlContent mesZl={mesZl} signName={'ALSK13'} />
+      </MemoryRouter>,
+    )
+    expect(await screen.findByText(/q12asd/)).toBeInTheDocument()
+    expect(screen.queryByText('(Read more ...)')).not.toBeInTheDocument()
   })
 })

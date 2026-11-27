@@ -1,150 +1,202 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-import { Route } from 'router/compat'
-import SessionContext from 'auth/SessionContext'
-import SignDisplay from 'signs/ui/display/SignDisplay'
+import { act, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import MemorySession from 'auth/Session'
 import SignService from 'signs/application/SignService'
-import Sign, { Value } from 'signs/domain/Sign'
-import WordService from 'dictionary/application/WordService'
-import Word from 'dictionary/domain/Word'
-import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
-import { wordFactory } from 'test-support/word-fixtures'
-import { HelmetProvider } from 'react-helmet-async'
-import { helmetContext } from 'router/head'
+import Sign from 'signs/domain/Sign'
+import { installMockIntersectionObserver } from 'test-support/intersectionObserverMock'
+import {
+  installMockResizeObserver,
+  resizeObservedElements,
+  uninstallMockResizeObserver,
+} from 'test-support/resizeObserverMock'
+import {
+  renderSignDisplay,
+  renderSignPage,
+  setUpSignService,
+  sign,
+  signPath,
+} from 'signs/ui/display/signDisplay.testSupport'
 
 jest.mock('signs/application/SignService')
-jest.mock('dictionary/application/WordService')
 
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
-const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-const session = new MemorySession(['read:words'])
 
-const sign = new Sign({
-  lists: [],
-  logograms: [],
-  fossey: [
-    {
-      cdliNumber: '',
-      date: '',
-      externalProject: '',
-      museumNumber: null,
-      newEdition: '',
-      notes: '',
-      number: 8750,
-      page: 265,
-      reference: 'D. 557.',
-      secondaryLiterature: '',
-      sign: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
-      transliteration: '',
-    },
-  ],
-  name: 'BU',
-  unicode: [74127],
-  values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],
-  mesZl: `123**ALSK13**𒁇𒍴
-Lorem ipsum dolor *sit* amet, consetetur <span style="color: #00610F;">*sadipscing*(*l*)*ubasd*</span>sadipscing elitr, sed diam *nonumy*
-eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
-lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-^aba^𒁇𒊩 = BAR-MUNUS = *parratu*, weibliches Lamm. CAD <span style="color: #00610F;">P</span> 192b liest *parsallu*.
-<span style="color: #00610F;">P</span>
-^aba^𒁇𒋝
-^asdg^𒋝
-^ghas^𒁈
-𒁖^asd^
-𒍴^q12asd^
-`,
-  LaBaSi: '123',
+beforeEach(() => {
+  jest.clearAllMocks()
+  installMockIntersectionObserver()
+  setUpSignService(signService)
 })
 
-const word: Word = wordFactory.build({
-  guideWord: '',
-  arabicGuideWord: '',
-  origin: '',
-  cdaAddenda: '',
-  supplementsAkkadianDictionaries: '',
-  homonym: '',
-  lemma: [],
-  oraccWords: [],
-  akkadischeGlossareUndIndices: [],
-  pos: [],
-  _id: '',
+it('shows the overview with sign lists, readings and LaBaSi', async () => {
+  await renderSignPage(signService)
+  expect(signService.find).toHaveBeenCalledWith('ŠE', expect.any(AbortSignal))
+  expect(screen.getByText('MesZL 579 · U+122BA')).toBeInTheDocument()
+  expect(screen.getAllByRole('term').map((term) => term.textContent)).toEqual([
+    'Sign lists',
+    'Readings',
+    'LaBaSi',
+  ])
+  expect(
+    screen
+      .getAllByRole('definition')
+      .slice(0, 2)
+      .map((definition) => definition.textContent),
+  ).toEqual(['ABZ 367MesZL 579', 'niga, še, u₂₀'])
+  expect(
+    screen.getByRole('link', { name: 'Open LaBaSi entry 95' }),
+  ).toBeInTheDocument()
+  expect(
+    within(screen.getByRole('list', { name: 'Sign forms by period' }))
+      .getAllByRole('listitem')
+      .map((item) => item.textContent),
+  ).toContain('𒊺Neo-Babylonian')
 })
 
-const croppedAnnotation: CroppedAnnotation = {
-  image: 'test-base64-string',
-  fragmentNumber: '',
-  script: 'MA',
-  label: "i stone wig 1'",
-  annotationId: 'annotation-1',
-  pcaClustering: {
-    clusterId: 'test-cluster-id',
-    clusterRank: 0,
-    form: 'canonical1',
-    isCentroid: true,
-    clusterSize: 1,
-    isMain: true,
-  },
-}
-
-function renderSignDisplay(signName: string, currentSession = session) {
-  return render(
-    <HelmetProvider context={helmetContext}>
-      <MemoryRouter initialEntries={[`/signs/${signName}`]}>
-        <SessionContext.Provider value={currentSession}>
-          <Route
-            path="/signs/:id"
-            render={({ match }) => (
-              <SignDisplay
-                wordService={wordService}
-                signService={signService}
-                id={decodeURIComponent(match.params.id ?? '')}
-              />
-            )}
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    </HelmetProvider>,
+it('shows every MesZL number of a sign', async () => {
+  setUpSignService(
+    signService,
+    new Sign({
+      ...sign,
+      lists: [
+        { name: 'MZL', number: '264' },
+        { name: 'MZL', number: '516' },
+      ],
+    }),
   )
-}
+  await renderSignPage(signService)
+  expect(screen.getByText('MesZL 264, 516 · U+122BA')).toBeInTheDocument()
+  expect(
+    screen.getByText('Cuneiform sign · MesZL 264, 516'),
+  ).toBeInTheDocument()
+})
 
-describe('Sign Display', () => {
-  const setup = async () => {
-    signService.search.mockReturnValue(Promise.resolve([]))
-    signService.getCentroidImages.mockReturnValue(
-      Promise.resolve([croppedAnnotation]),
-    )
-    signService.find.mockReturnValue(Promise.resolve(sign))
-    wordService.find.mockReturnValue(Promise.resolve(word))
+it('names a sign without MesZL number a cuneiform sign', async () => {
+  setUpSignService(signService, new Sign({ ...sign, lists: [] }))
+  await renderSignPage(signService, undefined, '/signs/%C5%A0E#sign-top')
+  expect(screen.getByText('Cuneiform sign')).toBeInTheDocument()
+  expect(screen.getByText('U+122BA')).toBeInTheDocument()
+})
 
-    const view = renderSignDisplay(sign.name)
+it('lists the sections in order in the navigation', async () => {
+  await renderSignPage(signService)
+  const navigation = screen.getByRole('navigation', { name: 'On this page' })
+  expect(
+    within(navigation)
+      .getAllByRole('link')
+      .map((link) => link.textContent),
+  ).toEqual([
+    'ŠE 𒊺Cuneiform sign · MesZL 579',
+    'Mesopotamisches Zeichenlexikon',
+    'Logograms',
+    'Palaeography',
+    'Composite signs',
+    'Fossey',
+  ])
+  expect(
+    within(navigation)
+      .getAllByRole('button', { name: /^(Collapse|Expand) / })
+      .map((button) => button.getAttribute('aria-label')),
+  ).toEqual([
+    'Collapse Logograms',
+    'Collapse Palaeography',
+    'Collapse Composite signs',
+    'Collapse Fossey',
+  ])
+})
 
-    await screen.findAllByText(sign.name)
-    expect(signService.find).toBeCalledWith(sign.name, expect.any(AbortSignal))
+it('collapses a section from the navigation and the heading', async () => {
+  await renderSignPage(signService)
+  const navigation = screen.getByRole('navigation', { name: 'On this page' })
+  await userEvent.click(
+    within(navigation).getByRole('button', { name: 'Collapse Logograms' }),
+  )
+  const heading = screen.getByRole('button', { name: 'Logograms' })
+  expect(heading).toHaveAttribute('aria-expanded', 'false')
+  expect(
+    within(navigation).getByRole('button', { name: 'Expand Logograms' }),
+  ).toHaveAttribute('aria-expanded', 'false')
+  await userEvent.click(heading)
+  expect(heading).toHaveAttribute('aria-expanded', 'true')
+  expect(
+    screen.queryByRole('button', { name: 'Mesopotamisches Zeichenlexikon' }),
+  ).not.toBeInTheDocument()
+})
 
-    return view
-  }
+it('goes to MesZL from the font credits', async () => {
+  await renderSignPage(signService)
+  await userEvent.click(
+    screen.getByRole('link', { name: 'R. Borger (see below)' }),
+  )
+  expect(screen.getByTestId('location')).toHaveTextContent(
+    '/signs/%C5%A0E#sign-meszl',
+  )
+})
 
-  it('Sign Display Snapshot', async () => {
-    const { container } = await setup()
+it('has no MesZL link or section without MesZL', async () => {
+  setUpSignService(signService, new Sign({ ...sign, mesZl: '' }))
+  await renderSignPage(signService)
+  expect(
+    screen.queryByRole('link', { name: 'R. Borger (see below)' }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByRole('region', { name: 'Mesopotamisches Zeichenlexikon' }),
+  ).not.toBeInTheDocument()
+})
 
-    expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
+it('groups logograms by Akkadian word', async () => {
+  await renderSignPage(signService)
+  const section = screen.getByRole('region', { name: 'Logograms' })
+  expect(within(section).getByRole('link', { name: "še'u I" })).toHaveAttribute(
+    'href',
+    `/dictionary/${encodeURIComponent("še'u I")}`,
+  )
+  expect(section).toHaveTextContent('„Gerste, Getreide“')
+  expect(section).toHaveTextContent('Cross-references: U₂₀ → ŠE')
+})
 
-    await screen.findByText('Ⅲ. Palaeography')
-    expect(
-      await screen.findByText((content) => content.includes('Canonical 1')),
-    ).toBeInTheDocument()
+it('shows Fossey numbers without images as a range', async () => {
+  await renderSignPage(signService)
+  const section = screen.getByRole('region', { name: 'Fossey' })
+  expect(section).toHaveTextContent('24351 – 24352')
+})
 
-    expect(container).toMatchSnapshot()
+it('shows the sign images by period', async () => {
+  await renderSignPage(signService)
+  expect(await screen.findByText(/Neo-Assyrian \(/)).toBeInTheDocument()
+})
+
+describe('when the page is opened at a section', () => {
+  const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView
+
+  afterEach(() => {
+    uninstallMockResizeObserver()
+    window.HTMLElement.prototype.scrollIntoView = originalScrollIntoView
   })
-  it('asks guests to log in', async () => {
-    signService.find.mockReturnValue(Promise.resolve(sign))
-    renderSignDisplay(sign.name, new MemorySession([]))
 
-    expect(
-      await screen.findByText('Please log in to browse the Signs.'),
-    ).toBeVisible()
+  it('keeps the section in view while the page grows, until the reader acts', async () => {
+    installMockResizeObserver()
+    const scrollIntoView = jest.fn()
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoView
+    await renderSignPage(signService, undefined, '/signs/%C5%A0E#sign-fossey')
+    scrollIntoView.mockClear()
+
+    resizeObservedElements()
+    expect(scrollIntoView).not.toHaveBeenCalled()
+    resizeObservedElements()
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+
+    scrollIntoView.mockClear()
+    act(() => {
+      window.dispatchEvent(new Event('wheel'))
+    })
+    resizeObservedElements()
+    expect(scrollIntoView).not.toHaveBeenCalled()
   })
+})
+
+it('asks guests to log in', async () => {
+  renderSignDisplay(signService, new MemorySession([]), signPath)
+  expect(
+    await screen.findByText('Please log in to browse the Signs.'),
+  ).toBeVisible()
 })

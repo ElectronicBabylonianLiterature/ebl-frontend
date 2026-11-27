@@ -39,6 +39,15 @@ describe('Display Search Results', () => {
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query, expect.any(AbortSignal))
   }
+  it('Shows each result as a compact sign card linking to the sign', async () => {
+    await setup()
+    signs.forEach((sign) =>
+      expect(
+        screen.getByRole('link', { name: sign.displaySignName }),
+      ).toHaveAttribute('href', `/signs/${encodeURIComponent(sign.name)}`),
+    )
+    expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument()
+  })
   it('Displays results', async () => {
     await setup()
     expect(

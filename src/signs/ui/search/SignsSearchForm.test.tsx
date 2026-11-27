@@ -123,6 +123,28 @@ it('Queries a sign list by name and number', async () => {
   expect(mockNavigate).toHaveBeenCalledWith('?listsName=MZL&listsNumber=123')
 })
 
+it('Converts apostrophes in MesZL numbers to Borger’s prime', async () => {
+  renderSignsSearchForm()
+  await userEvent.selectOptions(screen.getByRole('combobox'), 'MZL')
+  await userEvent.type(screen.getByPlaceholderText('Number'), "527'")
+  await userEvent.click(screen.getAllByRole('button')[1])
+
+  expect(mockNavigate).toHaveBeenCalledWith(
+    '?listsName=MZL&listsNumber=527%E2%80%B2',
+  )
+})
+
+it('Leaves the numbers of other sign lists unchanged', async () => {
+  renderSignsSearchForm()
+  await userEvent.selectOptions(screen.getByRole('combobox'), 'SLLHA')
+  await userEvent.type(screen.getByPlaceholderText('Number'), "125'")
+  await userEvent.click(screen.getAllByRole('button')[1])
+
+  expect(mockNavigate).toHaveBeenCalledWith(
+    '?listsName=SLLHA&listsNumber=125%27',
+  )
+})
+
 it('Does not query a sign list without a number', async () => {
   renderSignsSearchForm()
   await userEvent.selectOptions(screen.getByRole('combobox'), 'MZL')

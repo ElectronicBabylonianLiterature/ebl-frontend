@@ -1,3 +1,4 @@
+import { MES_ZL_LIST } from 'signs/domain/mesZlNumber'
 import { produce, immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/application/SubIndex'
@@ -21,6 +22,7 @@ export interface UnicodeAtf {
 export interface Fossey {
   page: number
   number: number
+  suffix?: string
   reference: string
   newEdition: string
   secondaryLiterature: string
@@ -31,6 +33,11 @@ export interface Fossey {
   date: string
   transliteration: string
   sign: string
+}
+
+export interface MesZlKap2Entry {
+  readonly number: string
+  readonly text: string
 }
 
 export interface SignListRecord {
@@ -138,6 +145,12 @@ export default class Sign {
   }
   get displaySignName(): string {
     return this.name.replace(/\|/g, '')
+  }
+
+  get mesZlNumbers(): readonly string[] {
+    return this.lists
+      .filter((record) => record.name === MES_ZL_LIST)
+      .map((record) => record.number)
   }
 
   static fromDto(signDto: SignDto): Sign {

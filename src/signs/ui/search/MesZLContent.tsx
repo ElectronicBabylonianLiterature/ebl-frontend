@@ -2,20 +2,21 @@ import React from 'react'
 import 'signs/ui/search/Signs.sass'
 import { Link } from 'react-router-dom'
 import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
-import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
+import { MesZlSourceCard } from 'signs/ui/display/MesZlSource'
+import { escapeMesZlText, wrapCuneiform } from 'signs/domain/mesZlMarkup'
+import 'signs/ui/display/CuneiformFonts.css'
+import 'signs/ui/display/MesZl.sass'
 
 function splitMesZl(
   mesZl: string,
   cutOff: number,
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
   const mesZlLines = mesZl.split('\n')
-  const mesZlBody = mesZlLines
-    .slice(1, cutOff)
-    .join('\n\n')
-    .replace(/\\/g, '\\\\')
-    .replace(/\[/g, '\\[')
-    .replace(/]/g, '\\]')
-  return { mesZlHeadMarkdown: mesZlLines[0], mesZlBodyMarkdown: mesZlBody }
+  const mesZlBody = escapeMesZlText(mesZlLines.slice(1, cutOff).join('\n\n'))
+  return {
+    mesZlHeadMarkdown: wrapCuneiform(escapeMesZlText(mesZlLines[0])),
+    mesZlBodyMarkdown: wrapCuneiform(mesZlBody),
+  }
 }
 
 export default function MesZlContent({
@@ -29,7 +30,7 @@ export default function MesZlContent({
 }): JSX.Element | null {
   const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl, cutOff)
   return (
-    <>
+    <div className="MesZl--kap3">
       <div className={'mesZL__popover'}>
         <pre>
           {mesZlHeadMarkdown && (
@@ -59,15 +60,7 @@ export default function MesZlContent({
           <br />
         </div>
       )}
-      <LiteratureRedirectBox
-        authors="Borger, R."
-        book="Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
-        subtitle="Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel &#8546;"
-        notelink=""
-        note="By permission from Ugarit-Verlag"
-        link="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
-        icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-      />
-    </>
+      <MesZlSourceCard chapter="kap3" />
+    </div>
   )
 }

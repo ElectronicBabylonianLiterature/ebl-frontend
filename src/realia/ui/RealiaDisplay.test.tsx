@@ -224,7 +224,9 @@ describe('RealiaDisplay sections and reallexikon', () => {
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText('Type:')).toBeInTheDocument()
     expect(
-      screen.getByText('Divine names', { selector: '.Realia__metadata span' }),
+      screen.getByText('Divine names', {
+        selector: '.EntryPage__metadata span',
+      }),
     ).toBeInTheDocument()
   })
 
