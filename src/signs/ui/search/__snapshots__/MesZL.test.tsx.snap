@@ -48,39 +48,54 @@ exports[`MesZl MesZl Content 1`] = `
       <br />
       <br />
     </div>
-    <div
-      class="text-center border border-dark mx-5 m-3 p-2"
+    <aside
+      aria-label="Source"
+      class="SignPage__source"
     >
-      <strong>
-        From
-      </strong>
-      <br />
-      Borger, R.
-      , 
-      <em>
-        Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
-      </em>
-      . 
-      Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel Ⅲ
-      .
-      <br />
-      <strong>
-        By permission from Ugarit-Verlag
-      </strong>
-      <br />
+      <div
+        class="SignPage__source-text"
+      >
+        <span
+          class="SignPage__source-label"
+        >
+          From
+        </span>
+        <span>
+          Borger, R.,
+           
+          <em>
+            Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
+          </em>
+          . Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag,
+           
+          <sup>
+            2
+          </sup>
+          2010; 
+          <strong>
+            Kapitel Ⅲ
+          </strong>
+          .
+        </span>
+        <span
+          class="SignPage__source-permission"
+        >
+          By permission from Ugarit-Verlag
+        </span>
+      </div>
       <a
-        aria-label="Open external source for Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
-        class="text-dark "
+        class="SignPage__source-link"
         href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
         rel="noopener noreferrer"
         target="_blank"
       >
         <i
           aria-hidden="true"
-          class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+          class="fas fa-shopping-cart"
         />
+        Buy at Ugarit-Verlag
       </a>
-    </div>
+    </aside>
   </div>
 </div>
 `;

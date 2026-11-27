@@ -1,6 +1,7 @@
 import React from 'react'
 import ExternalLink from 'common/ui/ExternalLink'
 import { MesZlChapter } from 'signs/ui/display/MesZlText'
+import 'signs/ui/display/MesZlSource.sass'
 
 export const mesZlChapters: Readonly<
   Record<MesZlChapter, { tab: string; label: string }>
