@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { Button } from 'react-bootstrap'
@@ -34,31 +34,21 @@ export function groupFossey(fosseys: readonly Fossey[]): {
   }
 }
 
-// Counts how many items fit in the first `maxRows` rows of a wrapping grid.
-function useItemsInRows(
-  container: React.RefObject<HTMLElement>,
-  itemCount: number,
-  maxRows: number,
-): number {
-  const [count, setCount] = useState(itemCount)
+function gridColumnCount(element: HTMLElement): number | null {
+  const tracks = window
+    .getComputedStyle(element)
+    .gridTemplateColumns.split(' ')
+    .filter((track) => track !== '' && track !== 'none')
+  return tracks.length > 0 ? tracks.length : null
+}
+
+function useGridColumns(element: HTMLElement | null): number | null {
+  const [columns, setColumns] = useState<number | null>(null)
   useLayoutEffect(() => {
-    const element = container.current
-    if (!element) {
+    if (element === null) {
       return
     }
-    const measure = (): void => {
-      const tops: number[] = []
-      for (const child of Array.from(element.children) as HTMLElement[]) {
-        if (!tops.includes(child.offsetTop)) {
-          tops.push(child.offsetTop)
-        }
-        if (tops.length > maxRows) {
-          setCount(Array.from(element.children).indexOf(child))
-          return
-        }
-      }
-      setCount(itemCount)
-    }
+    const measure = (): void => setColumns(gridColumnCount(element))
     measure()
     if (typeof ResizeObserver === 'undefined') {
       return
@@ -66,8 +56,8 @@ function useItemsInRows(
     const observer = new ResizeObserver(measure)
     observer.observe(element)
     return () => observer.disconnect()
-  }, [container, itemCount, maxRows])
-  return count
+  }, [element])
+  return columns
 }
 
 function FosseyCard({ fossey }: { fossey: Fossey }): JSX.Element {
@@ -76,7 +66,7 @@ function FosseyCard({ fossey }: { fossey: Fossey }): JSX.Element {
     <figure className="SignPage__fossey-card">
       <div className="SignPage__fossey-image">
         <img
-          src={`data:image/png;base64, ${fossey.sign}`}
+          src={`data:image/png;base64,${fossey.sign}`}
           alt={`Fossey ${label}`}
         />
       </div>
@@ -106,13 +96,17 @@ function FosseyCard({ fossey }: { fossey: Fossey }): JSX.Element {
 }
 
 function FosseyCards({ fosseys }: { fosseys: readonly Fossey[] }): JSX.Element {
-  const container = useRef<HTMLUListElement>(null)
+  const [container, setContainer] = useState<HTMLUListElement | null>(null)
   const [expanded, setExpanded] = useState(false)
-  const fitting = useItemsInRows(container, fosseys.length, fosseyMaxRows)
+  const columns = useGridColumns(container)
+  const fitting =
+    columns === null
+      ? fosseys.length
+      : Math.min(fosseys.length, columns * fosseyMaxRows)
   const hasMore = fitting < fosseys.length
   return (
     <>
-      <ul className="SignPage__fossey-cards" ref={container}>
+      <ul className="SignPage__fossey-cards" ref={setContainer}>
         {fosseys.map((fossey, index) => (
           <li
             key={`${fossey.number}${fossey.suffix ?? ''}`}

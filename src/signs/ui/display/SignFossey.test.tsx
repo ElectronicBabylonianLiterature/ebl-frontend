@@ -7,6 +7,11 @@ import FosseyDisplay, {
   groupFossey,
 } from 'signs/ui/display/SignFossey'
 import { Fossey } from 'signs/domain/Sign'
+import {
+  installMockResizeObserver,
+  resizeObservedElements,
+  uninstallMockResizeObserver,
+} from 'test-support/resizeObserverMock'
 
 const image = 'iVBORw0KGgo='
 
@@ -51,6 +56,7 @@ test('groupFossey keeps images and merges the other numbers into ranges', () => 
 
 test.each([
   [111, 0, '111 numbers · no sign images available'],
+  [1, 0, '1 number · no sign images available'],
   [35, 35, '35 forms, all with sign images'],
   [
     10,
@@ -79,7 +85,7 @@ test('shows a card with the details of a form with an image', () => {
   ])
   expect(screen.getByRole('img', { name: 'Fossey 25721' })).toHaveAttribute(
     'src',
-    `data:image/png;base64, ${image}`,
+    `data:image/png;base64,${image}`,
   )
   expect(screen.getByText('p. 778')).toBeInTheDocument()
   expect(screen.getByText('Dungi: CT, III, 8, XIII, 33.')).toBeInTheDocument()
@@ -91,38 +97,38 @@ test('shows a card with the details of a form with an image', () => {
 })
 
 describe('with more than three rows of cards', () => {
-  const offsetTop = Object.getOwnPropertyDescriptor(
-    HTMLElement.prototype,
-    'offsetTop',
-  )
+  const realGetComputedStyle = window.getComputedStyle.bind(window)
+  let columns = '200px 200px'
 
   beforeEach(() => {
-    // jsdom has no layout: pretend the cards are laid out two per row.
-    Object.defineProperty(HTMLElement.prototype, 'offsetTop', {
-      configurable: true,
-      get(this: HTMLElement) {
-        /* eslint-disable testing-library/no-node-access */
-        const siblings = this.parentElement
-          ? Array.from(this.parentElement.children)
-          : []
-        /* eslint-enable testing-library/no-node-access */
-        return Math.floor(siblings.indexOf(this) / 2) * 100
-      },
-    })
+    columns = '200px 200px'
+    jest
+      .spyOn(window, 'getComputedStyle')
+      .mockImplementation((element: Element) => {
+        const style = realGetComputedStyle(element)
+        return element.classList.contains('SignPage__fossey-cards')
+          ? new Proxy(style, {
+              get: (target, key) =>
+                key === 'gridTemplateColumns'
+                  ? columns
+                  : Reflect.get(target, key),
+            })
+          : style
+      })
   })
 
   afterEach(() => {
-    if (offsetTop) {
-      Object.defineProperty(HTMLElement.prototype, 'offsetTop', offsetTop)
-    }
+    jest.restoreAllMocks()
+    uninstallMockResizeObserver()
   })
 
-  test('shows three rows and a Show more button', async () => {
-    renderFossey(
-      Array.from({ length: 9 }, (_, index) =>
-        fossey(100 + index, { sign: image }),
-      ),
+  const nineCards = (): readonly Fossey[] =>
+    Array.from({ length: 9 }, (_, index) =>
+      fossey(100 + index, { sign: image }),
     )
+
+  test('shows three rows and a Show more button', async () => {
+    renderFossey(nineCards())
     expect(screen.getAllByRole('img')).toHaveLength(6)
 
     await userEvent.click(
@@ -135,12 +141,27 @@ describe('with more than three rows of cards', () => {
   })
 
   test('has no button when everything fits', () => {
-    renderFossey(
-      Array.from({ length: 6 }, (_, index) =>
-        fossey(100 + index, { sign: image }),
-      ),
-    )
+    renderFossey(nineCards().slice(0, 6))
     expect(screen.getAllByRole('img')).toHaveLength(6)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  test('shows more cards again when the grid gets wider', () => {
+    installMockResizeObserver()
+    columns = '200px'
+    renderFossey(nineCards())
+    expect(screen.getAllByRole('img')).toHaveLength(3)
+
+    columns = '200px 200px 200px'
+    resizeObservedElements()
+
+    expect(screen.getAllByRole('img')).toHaveLength(9)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  test('shows every card when the grid has no columns', () => {
+    columns = 'none'
+    renderFossey(nineCards())
+    expect(screen.getAllByRole('img')).toHaveLength(9)
   })
 })

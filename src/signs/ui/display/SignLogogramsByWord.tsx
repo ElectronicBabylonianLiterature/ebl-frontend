@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import ExternalLink from 'common/ui/ExternalLink'
 import { Logogram } from 'signs/domain/Sign'
@@ -10,7 +11,6 @@ import {
   splitWordId,
 } from 'signs/domain/schrammLogogram'
 
-// Logograms are stored as text with <sup> determinatives, e.g. "<sup>giš</sup>ŠE.NU".
 export function LogogramText({ logogram }: { logogram: string }): JSX.Element {
   return (
     <>
@@ -87,11 +87,14 @@ export default function SignLogogramsByWord({
   logograms: readonly Logogram[]
 }): JSX.Element {
   const words = groupLogogramsByWord(logograms)
-  const crossReferences = logograms.filter(isLogogramCrossReference)
+  const crossReferences = _.uniqBy(
+    logograms.filter(isLogogramCrossReference),
+    (logogram) => logogram.logogram,
+  )
   return (
     <>
       <ul className="SignPage__logograms">
-        {words.map(({ wordId, otherWordIds, spellings }) => (
+        {words.map(({ wordId, lemma, otherWordIds, spellings }) => (
           <li key={wordId} className="SignPage__logogram-word">
             <WordLink wordId={wordId} />
             {otherWordIds.map((other) => (
@@ -101,12 +104,8 @@ export default function SignLogogramsByWord({
               </React.Fragment>
             ))}
             <ul className="SignPage__logogram-spellings">
-              {spellings.map((spelling, index) => (
-                <Spelling
-                  key={index}
-                  spelling={spelling}
-                  lemma={splitWordId(wordId).lemma}
-                />
+              {spellings.map((spelling) => (
+                <Spelling key={spelling.id} spelling={spelling} lemma={lemma} />
               ))}
             </ul>
           </li>
@@ -116,7 +115,7 @@ export default function SignLogogramsByWord({
         <p className="SignPage__note">
           Cross-references:{' '}
           {crossReferences.map((logogram, index) => (
-            <React.Fragment key={index}>
+            <React.Fragment key={logogram.logogram}>
               {index > 0 && ' · '}
               <LogogramText logogram={logogram.logogram} />
             </React.Fragment>

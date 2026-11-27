@@ -1,0 +1,41 @@
+@use 'src/design-tokens' as *
+@use 'src/signs/ui/display/borger-fonts' as *
+
+.MesZl
+    text-align: justify
+
+    p
+        margin: 0 0 0.45rem
+
+.MesZl__tab
+    display: inline-block
+    width: 1.5em
+
+.MesZl__head
+    display: flex
+    flex-wrap: wrap
+    gap: 0.5rem
+    margin-bottom: 0.6rem
+    padding-bottom: 0.4rem
+    font-size: 1.05rem
+    border-bottom: 1px solid $ebl-color-border-light
+
+    .MesZl__tab
+        width: 0
+
+.MesZl__cuneiform
+    font-size: 1.35em
+    line-height: 1
+
+.MesZl--kap3 .MesZl__cuneiform
+    font-family: $borger-white-heads
+
+.MesZl--kap2 .MesZl__cuneiform
+    font-family: $borger-black-heads
+
+.MesZl + .MesZl
+    margin-top: 1.1rem
+
+.MesZl__reference
+    text-decoration: none
+    border-bottom: 1px dotted currentColor

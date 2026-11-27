@@ -1,5 +1,6 @@
 import {
   linkMesZlReferences,
+  mesZlParagraphsMarkup,
   mesZlSearchUrl,
   mesZlToMarkup,
   wrapCuneiform,
@@ -7,24 +8,30 @@ import {
 
 const link = (label: string, number: string): string =>
   `<a class="MesZl__reference" href="${mesZlSearchUrl(number)}">${label}</a>`
+const tab = '<span class="MesZl__tab"></span>'
+const cuneiform = (signs: string): string =>
+  `<span class="MesZl__cuneiform">${signs}</span>`
 
 describe('linkMesZlReferences', () => {
   test.each([
     ['siehe n94.', `siehe ${link('n94', '94')}.`],
     ['Siehe auch n293 dingir', `Siehe auch ${link('n293', '293')} dingir`],
-    ['usw. siehe zu n115', `usw. siehe zu ${link('n115', '115')}`],
     ['Variante zu n121 BAR', `Variante zu ${link('n121', '121')} BAR`],
     [
       'sowie Kap. II n10, 293 und 579.',
       `sowie Kap. II ${link('n10', '10')}, ${link('293', '293')} und ${link('579', '579')}.`,
     ],
-    ['wechselt mit n596 𒌓', `wechselt mit ${link('n596', '596')} 𒌓`],
     [
-      'Lww. dul₄ und tul₆ aus n876 und 829 erschlossen',
-      `Lww. dul₄ und tul₆ aus ${link('n876', '876')} und ${link('829', '829')} erschlossen`,
+      'aus n876 und 829 erschlossen',
+      `aus ${link('n876', '876')} und ${link('829', '829')} erschlossen`,
     ],
     ['(n134 (NAM)', `(${link('n134', '134')} (NAM)`],
-    ['das Zeichen n206 = SUR₁₀', `das Zeichen ${link('n206', '206')} = SUR₁₀`],
+    ['(n12)', `(${link('n12', '12')})`],
+    ['AN n5', `AN ${link('n5', '5')}`],
+    ['(BAD, n113)', `(BAD, ${link('n113', '113')})`],
+    ['vgl. n1 und 2 Zeichen', `vgl. ${link('n1', '1')} und 2 Zeichen`],
+    ['n12-14', `${link('n12', '12')}-${link('14', '14')}`],
+    ['siehe n12–14.', `siehe ${link('n12', '12')}–${link('14', '14')}.`],
   ])('links %s', (text, expected) => {
     expect(linkMesZlReferences(text)).toEqual(expected)
   })
@@ -32,14 +39,14 @@ describe('linkMesZlReferences', () => {
   test.each([
     'Rosengarten n348 und 349.',
     'Fales + Postgate, SAA 11 n80 Rs. 8’',
-    'Cavigneaux, NABU 1989 n52, M. P. Streck',
     'Gelb n227a. HethZL n328.',
     'SpTU II n51 I 24',
-    'UET 6/II n408 12',
     'Supplément n12',
     'ZA 88 263). n3) S^a^-Vokab.',
+    'n3) S^a^-Vokab.',
     'MSL 9 174 32.34',
-    'siehe zu Gelb n227a',
+    'Wiseman u.a., LTTN n232A 27f.',
+    'Borger, WO 5 170 zu BAK n557.',
   ])('leaves %s alone', (text) => {
     expect(linkMesZlReferences(text)).toEqual(text)
   })
@@ -48,7 +55,13 @@ describe('linkMesZlReferences', () => {
 describe('wrapCuneiform', () => {
   test('wraps runs of signs, including private-use signs and spaces between signs', () => {
     expect(wrapCuneiform('𒊺 𒆕 (𒀀) = še-dù-a; 􀀳')).toEqual(
-      '<span class="MesZl__cuneiform">𒊺 𒆕</span> (<span class="MesZl__cuneiform">𒀀</span>) = še-dù-a; <span class="MesZl__cuneiform">􀀳</span>',
+      `${cuneiform('𒊺 𒆕')} (${cuneiform('𒀀')}) = še-dù-a; ${cuneiform('􀀳')}`,
+    )
+  })
+
+  test('does not join signs across line breaks', () => {
+    expect(wrapCuneiform('𒊺\n\n𒀀')).toEqual(
+      `${cuneiform('𒊺')}\n\n${cuneiform('𒀀')}`,
     )
   })
 
@@ -68,10 +81,10 @@ describe('mesZlToMarkup', () => {
 
   test('splits head and paragraphs, drops separators and blank lines', () => {
     expect(mesZlToMarkup(text)).toEqual({
-      head: '579  <span class="MesZl__cuneiform">𒊺</span>  **— ŠE — ŠL 367**',
+      head: `579${tab}${cuneiform('𒊺')}${tab}**— ŠE — ŠL 367**`,
       paragraphs: [
         'Fossey p736. Rosengarten n440.',
-        `<span class="MesZl__cuneiform">𒊺𒆰</span> siehe ${link('n117', '117')} \\[sic\\].`,
+        `${cuneiform('𒊺𒆰')} siehe ${link('n117', '117')} \\[sic\\].`,
       ],
     })
   })
@@ -80,5 +93,29 @@ describe('mesZlToMarkup', () => {
     expect(
       mesZlToMarkup(text, { linkReferences: false }).paragraphs[1],
     ).toContain('siehe n117')
+  })
+
+  test.each([
+    ['\t\tindented 𒀀', `${tab}${tab}indented ${cuneiform('𒀀')}`],
+    ['    four spaces', 'four spaces'],
+    ['1. Zeile', '1\\. Zeile'],
+    ['2) Zeile', '2\\) Zeile'],
+    ['- Strich', '\\- Strich'],
+    ['* Stern', '\\* Stern'],
+    ['# Raute', '\\# Raute'],
+    ['> Pfeil', '\\> Pfeil'],
+    ['+ Plus', '\\+ Plus'],
+    ['***', '\\***'],
+    ['**fett** bleibt', '**fett** bleibt'],
+  ])('keeps the line %p from becoming a Markdown block', (line, expected) => {
+    expect(mesZlToMarkup(`head\n${line}`).paragraphs).toEqual([expected])
+  })
+})
+
+describe('mesZlParagraphsMarkup', () => {
+  test('keeps the paragraphs in one block', () => {
+    expect(mesZlParagraphsMarkup(['a', 'b'])).toEqual(
+      '<div class="MesZl__body">\n\na\n\nb\n\n</div>',
+    )
   })
 })

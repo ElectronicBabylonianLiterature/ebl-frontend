@@ -26,8 +26,8 @@ import {
 import { RealiaRedirect } from 'realia/ui/RealiaRedirect'
 import {
   scrollToSection,
-  useRealiaSectionState,
-} from 'realia/ui/useRealiaSectionState'
+  useEntrySectionState,
+} from 'common/ui/entry-page/useEntrySectionState'
 import { buildRealiaNav, realiaSectionIds } from 'realia/ui/realiaSections'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
@@ -76,7 +76,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
     return map
   }, [navSections])
   const { openSections, toggleSection, openSection } =
-    useRealiaSectionState(sectionIds)
+    useEntrySectionState(sectionIds)
   const { activeId, selectActiveSection } = useActiveSection(anchorIds)
   const history = useHistory()
   const location = useLocation()

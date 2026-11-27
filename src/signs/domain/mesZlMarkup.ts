@@ -1,45 +1,77 @@
-// Prepares Borger's MesZL text (Kapitel II and III) for MarkdownAndHtmlToHtml:
-// wraps cuneiform in spans so Borger's font can be applied, and turns his
-// cross-references to other MesZL entries ("siehe n94", "wechselt mit n596",
-// "Kap. II n10, 293 und 579") into links. A number is not linked when the
-// word before it names another catalogue ("Rosengarten n348", "HethZL n20"),
-// a publication ("LKA n…") or a volume or page ("SAA 11 n80", "SpTU II n51"),
-// nor when it is a numbered list item ("n3)").
-
-const CUNEIFORM =
-  /[\u{12000}-\u{1254F}\u{100000}-\u{10FFFD}]+(?:\s+[\u{12000}-\u{1254F}\u{100000}-\u{10FFFD}]+)*/gu
+const CUNEIFORM_SIGN = '[\\u{12000}-\\u{1254F}\\u{100000}-\\u{10FFFD}]'
+const CUNEIFORM = new RegExp(
+  `${CUNEIFORM_SIGN}+(?:[ \\t\\u00A0]+${CUNEIFORM_SIGN}+)*`,
+  'gu',
+)
 
 const OTHER_CATALOGUES = new Set([
+  'ABC',
+  'ABL',
+  'ABUK',
+  'ABZ',
+  'ADD',
+  'ARU',
   'ASy',
+  'ATHE',
+  'AV',
+  'BAK',
+  'BBR',
+  'BDHP',
   'BL',
+  'BMS',
   'Cate',
   'Choix',
   'Deimel',
+  'ECTJ',
   'El-Amarna',
   'Emesal-Studien',
-  'EmesalStudien',
   'Fossey',
+  'GPA',
   'Gelb',
-  'HethZI',
+  'HAU',
   'HethZL',
-  'LIḪ',
-  'aBZL',
+  'ITN',
+  'KADP',
+  'KAV',
+  'KTH',
   'LAK',
+  'LIḪ',
   'LKA',
+  'LTNT',
+  'LTTB',
   'LTTN',
+  'NLDK',
+  'NLKD',
+  'NRGD',
+  'OAIC',
+  'RMA',
+  'RÈC',
   'RÉC',
   'Rosengarten',
+  'SAI',
   'SBH',
+  'SBKI',
+  'SFS',
   'SLOBA',
+  'SRU',
+  'STT',
+  'SVJAD',
   'Schneider',
   'Supplément',
+  'TBP',
+  'TMB',
+  'TUT',
+  'UAZP',
+  'aBZL',
   'ŠL',
-  'p',
 ])
 
-// "n" + number not glued to more digits, letters, primes, "." + digit or ")".
-const REFERENCE =
-  /(?<=^|[\s(;])n(\d{1,3})(?![\d\p{L}′')]|[.,]\d)((?:\s*(?:,|und|bzw\.)\s*\d{1,3}(?![\d\p{L}′')]|[.,]\d))*)/gu
+const NUMBER_END = String.raw`(?![\d\p{L}′']|[.,]\d)`
+const FOLLOWING_NUMBER = String.raw`(?:\s*(?:,|und|bzw\.)\s*|[-–])\d{1,3}${NUMBER_END}(?!\s+\p{Lu}\p{Ll})`
+const REFERENCE = new RegExp(
+  String.raw`(?<=^|[\s(;])n(\d{1,3})${NUMBER_END}((?:${FOLLOWING_NUMBER})*)`,
+  'gu',
+)
 
 export function mesZlSearchUrl(number: string): string {
   return `/tools/signs?listsName=MZL&listsNumber=${encodeURIComponent(number)}`
@@ -51,31 +83,41 @@ function referenceLink(label: string, number: string): string {
 
 function precedingWord(text: string, offset: number): string {
   const words = text.slice(0, offset).trimEnd().split(/\s+/)
-  return (words[words.length - 1] ?? '').replace(/^[(“"]+|[,;:]+$/g, '')
+  return words[words.length - 1].replace(/^[(“"]+|[,;:.]+$/g, '')
 }
 
 function isOtherCatalogue(word: string): boolean {
-  return (
-    OTHER_CATALOGUES.has(word) ||
-    /\d/.test(word) ||
-    /^[IVX]+$/.test(word) ||
-    /^[A-Z]{2,6}$/.test(word)
-  )
+  return OTHER_CATALOGUES.has(word) || /\d/.test(word) || /^[IVX]+$/.test(word)
 }
 
 function isMesZlChapter(text: string, offset: number): boolean {
   return /Kap\.\s+II\s*$/.test(text.slice(0, offset))
 }
 
+function isListItem(text: string, offset: number, match: string): boolean {
+  return (
+    text.slice(0, offset).trim() === '' && text[offset + match.length] === ')'
+  )
+}
+
+function isReference(text: string, offset: number, match: string): boolean {
+  if (isListItem(text, offset, match)) {
+    return false
+  }
+  return (
+    isMesZlChapter(text, offset) ||
+    !isOtherCatalogue(precedingWord(text, offset))
+  )
+}
+
 export function linkMesZlReferences(text: string): string {
   return text.replace(
     REFERENCE,
     (match: string, number: string, more: string, offset: number) =>
-      !isMesZlChapter(text, offset) &&
-      isOtherCatalogue(precedingWord(text, offset))
-        ? match
-        : referenceLink(`n${number}`, number) +
-          more.replace(/\d{1,3}/g, (next) => referenceLink(next, next)),
+      isReference(text, offset, match)
+        ? referenceLink(`n${number}`, number) +
+          more.replace(/\d{1,3}/g, (next) => referenceLink(next, next))
+        : match,
   )
 }
 
@@ -86,13 +128,26 @@ export function wrapCuneiform(text: string): string {
   )
 }
 
-function escapeMarkdown(text: string): string {
+export function escapeMarkdown(text: string): string {
   return text.replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/]/g, '\\]')
 }
 
+function escapeBlockMarkers(line: string): string {
+  return line
+    .replace(/^(\d+)([.)])(?=\s|$)/, '$1\\$2')
+    .replace(/^([*_-])(?=(?:\s*\1){2,}\s*$)/, '\\$1')
+    .replace(/^([#>+-]|\*(?=\s))/, '\\$1')
+}
+
+const TAB = '<span class="MesZl__tab"></span>'
+
 function formatLine(line: string, linkReferences: boolean): string {
-  const escaped = wrapCuneiform(escapeMarkdown(line.replace(/\t/g, '  ')))
-  return linkReferences ? linkMesZlReferences(escaped) : escaped
+  const content = line.replace(/^[\t ]+/, '')
+  const indentation = line.slice(0, line.length - content.length)
+  const tabs = indentation.replace(/ /g, '').length
+  const escaped = wrapCuneiform(escapeBlockMarkers(escapeMarkdown(content)))
+  const linked = linkReferences ? linkMesZlReferences(escaped) : escaped
+  return TAB.repeat(tabs) + linked.replace(/\t/g, TAB)
 }
 
 export interface MesZlMarkup {
@@ -104,7 +159,7 @@ export function mesZlToMarkup(
   text: string,
   { linkReferences = true }: { linkReferences?: boolean } = {},
 ): MesZlMarkup {
-  const [head = '', ...body] = text
+  const [head, ...body] = text
     .split('\n')
     .filter((line) => line.trim() !== '---')
   return {
@@ -113,4 +168,8 @@ export function mesZlToMarkup(
       .filter((line) => line.trim() !== '')
       .map((line) => formatLine(line, linkReferences)),
   }
+}
+
+export function mesZlParagraphsMarkup(paragraphs: readonly string[]): string {
+  return ['<div class="MesZl__body">', ...paragraphs, '</div>'].join('\n\n')
 }

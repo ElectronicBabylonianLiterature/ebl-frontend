@@ -146,6 +146,12 @@ export default class Sign {
     return this.name.replace(/\|/g, '')
   }
 
+  get mesZlNumbers(): readonly string[] {
+    return this.lists
+      .filter((record) => record.name === 'MZL')
+      .map((record) => record.number)
+  }
+
   static fromDto(signDto: SignDto): Sign {
     const sign = produce(signDto, (draftSignDto) => {
       draftSignDto.values = draftSignDto.values.map(

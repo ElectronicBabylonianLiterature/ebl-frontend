@@ -39,6 +39,13 @@ const testData: TestData<SignService>[] = [
   ),
   new TestData('listAllSigns', [], signRepository.listAllSigns, []),
   new TestData(
+    'findMesZlKap2',
+    ['signName'],
+    signRepository.findMesZlKap2,
+    [{ number: '579', text: 'text' }],
+    ['signName', undefined],
+  ),
+  new TestData(
     'findSignsByOrder',
     ['signName', 'neoBabylonianOnset'],
     signRepository.findSignsByOrder,

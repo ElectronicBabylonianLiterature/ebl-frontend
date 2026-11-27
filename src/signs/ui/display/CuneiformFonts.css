@@ -34,8 +34,6 @@
   src: url('fonts/Esagil.woff') format('woff');
 }
 
-/* R. Borger's cuneiform fonts (MesZL): outlined ("white") heads for Kapitel III,
-   filled ("black") heads for Kapitel II. Latin text falls back to the page font. */
 @font-face {
   font-display: swap;
   font-family: 'Borger Akkadian White Heads';

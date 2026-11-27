@@ -7,6 +7,7 @@ export interface EntryNavSection {
   readonly id: string
   readonly label: string
   readonly subsections: readonly EntryNavSubsection[]
+  readonly collapsible?: boolean
 }
 
 export function getEntryAnchorIds(

@@ -1,9 +1,6 @@
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { Logogram } from 'signs/domain/Sign'
 
-// A line of W. Schramm, Akkadische Logogramme² looks like
-//   "<sup>giš</sup>ŠE.U₃.SUH₅; *terinnu* (Zapfen (eines Nadelbaums)); ME 169² CD 404b ZL 375"
-// i.e. logogram; *Akkadian* [(?)] (German meaning); references.
 export interface SchrammEntry {
   readonly akkadian: string
   readonly uncertain: boolean
@@ -57,18 +54,18 @@ export function isLogogramCrossReference(logogram: Logogram): boolean {
 }
 
 export interface LogogramSpelling {
+  readonly id: string
   readonly logogram: string
   readonly schramm: SchrammEntry | null
 }
 
 export interface LogogramsOfWord {
   readonly wordId: string
+  readonly lemma: string
   readonly otherWordIds: readonly string[]
   readonly spellings: readonly LogogramSpelling[]
 }
 
-// Groups a sign's logograms by the (first) eBL word they write, in dictionary
-// order, keeping the order of spellings within a word.
 export function groupLogogramsByWord(
   logograms: readonly Logogram[],
 ): readonly LogogramsOfWord[] {
@@ -85,16 +82,21 @@ export function groupLogogramsByWord(
         spellings: [],
       }
       others.forEach((other) => group.otherWordIds.add(other))
-      group.spellings.push({
-        logogram: logogram.logogram,
-        schramm: parseSchrammLogogram(logogram.schrammLogogramme),
-      })
+      const id = `${logogram.logogram}\u0000${logogram.schrammLogogramme}`
+      if (!group.spellings.some((spelling) => spelling.id === id)) {
+        group.spellings.push({
+          id,
+          logogram: logogram.logogram,
+          schramm: parseSchrammLogogram(logogram.schrammLogogramme),
+        })
+      }
       groups.set(wordId, group)
     })
   return [...groups.entries()]
     .sort(([first], [second]) => compareCleanedAkkadianString(first, second))
     .map(([wordId, group]) => ({
       wordId,
+      lemma: splitWordId(wordId).lemma,
       otherWordIds: [...group.otherWordIds],
       spellings: group.spellings,
     }))

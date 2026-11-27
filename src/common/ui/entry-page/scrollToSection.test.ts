@@ -1,4 +1,4 @@
-import { scrollToSection } from 'realia/ui/useRealiaSectionState'
+import { scrollToSection } from 'common/ui/entry-page/useEntrySectionState'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 jest.mock('common/utils/prefersReducedMotion')

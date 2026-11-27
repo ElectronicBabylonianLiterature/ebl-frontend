@@ -103,7 +103,6 @@ export function getEntityRoutes({
         >
           <SignDisplay
             signService={signService}
-            wordService={wordService}
             id={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>

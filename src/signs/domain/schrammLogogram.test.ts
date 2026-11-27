@@ -66,6 +66,24 @@ describe('parseSchrammLogogram', () => {
         references: 'ZL 375 (Lit.)',
       },
     ],
+    [
+      'ŠE; *šeʾu*; ZL 367',
+      {
+        akkadian: 'šeʾu',
+        uncertain: false,
+        meaning: '',
+        references: 'ZL 367',
+      },
+    ],
+    [
+      'ŠE; *šeʾu* (Gerste',
+      {
+        akkadian: 'šeʾu',
+        uncertain: false,
+        meaning: 'Gerste',
+        references: '',
+      },
+    ],
   ])('parses %s', (schramm, expected) => {
     expect(parseSchrammLogogram(schramm)).toEqual(expected)
   })
@@ -92,6 +110,7 @@ test('groupLogogramsByWord groups by first word in dictionary order', () => {
     logogram('ŠE.GA', ['šemû I'], 'ŠE.GA; *šemû* (hören); ME 169'),
     logogram('ŠE', ['magāru I'], 'ŠE; *magāru* (günstig sein); CD 188b'),
     logogram('ŠE', ['šemû I'], 'ŠE; *šemû* (hören); ZL 375'),
+    logogram('ŠE', ['šemû I'], 'ŠE; *šemû* (hören); ZL 375'),
     logogram('ŠE.GUR', ['kurru I', "še'u I"], 'ŠE.GUR; *kur₃ šeʾum* (x); ZL'),
     logogram('U₂₀ → ŠE', [], 'U₂₀ → ŠE'),
   ])
@@ -101,6 +120,7 @@ test('groupLogogramsByWord groups by first word in dictionary order', () => {
     'šemû I',
   ])
   expect(groups[0].otherWordIds).toEqual(["še'u I"])
+  expect(groups[2].lemma).toEqual('šemû')
   expect(groups[2].spellings.map((spelling) => spelling.logogram)).toEqual([
     'ŠE.GA',
     'ŠE',

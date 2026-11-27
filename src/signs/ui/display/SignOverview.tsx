@@ -4,6 +4,7 @@ import Sign from 'signs/domain/Sign'
 import { getDisplayName } from 'signs/domain/signListNames'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import ExternalLink from 'common/ui/ExternalLink'
+import { signSectionIds } from 'signs/ui/display/signSections'
 
 const scriptForms: readonly { readonly className: string; label: string }[] = [
   {
@@ -26,12 +27,8 @@ const scriptForms: readonly { readonly className: string; label: string }[] = [
   },
 ]
 
-function mesZlNumber(sign: Sign): string | undefined {
-  return sign.lists.find((record) => record.name === 'MZL')?.number
-}
-
 function SignCard({ sign }: { sign: Sign }): JSX.Element {
-  const number = mesZlNumber(sign)
+  const numbers = sign.mesZlNumbers
   return (
     <div className="SignPage__card">
       <span className="SignPage__card-glyph" aria-hidden="true">
@@ -40,7 +37,7 @@ function SignCard({ sign }: { sign: Sign }): JSX.Element {
       <h1 className="SignPage__card-name">{sign.displaySignName}</h1>
       <span className="SignPage__card-caption">
         {[
-          number && `MesZL ${number}`,
+          numbers.length > 0 && `MesZL ${numbers.join(', ')}`,
           ...sign.unicode.map(
             (codePoint) => `U+${codePoint.toString(16).toUpperCase()}`,
           ),
@@ -52,7 +49,13 @@ function SignCard({ sign }: { sign: Sign }): JSX.Element {
   )
 }
 
-function ScriptForms({ sign }: { sign: Sign }): JSX.Element {
+function ScriptForms({
+  sign,
+  onShowMesZl,
+}: {
+  sign: Sign
+  onShowMesZl: (() => void) | null
+}): JSX.Element {
   return (
     <>
       <ul className="SignPage__forms" aria-label="Sign forms by period">
@@ -79,20 +82,37 @@ function ScriptForms({ sign }: { sign: Sign }): JSX.Element {
             S. Vanseveren
           </ExternalLink>
         </span>
-        <span>
-          MesZL: <a href="#sign-meszl">R. Borger (see below)</a>
-        </span>
+        {onShowMesZl && (
+          <span>
+            MesZL:{' '}
+            <a
+              href={`#${signSectionIds.meszl}`}
+              onClick={(event): void => {
+                event.preventDefault()
+                onShowMesZl()
+              }}
+            >
+              R. Borger (see below)
+            </a>
+          </span>
+        )}
       </p>
     </>
   )
 }
 
-export default function SignOverview({ sign }: { sign: Sign }): JSX.Element {
+export default function SignOverview({
+  sign,
+  onShowMesZl,
+}: {
+  sign: Sign
+  onShowMesZl: (() => void) | null
+}): JSX.Element {
   return (
     <div className="SignPage__overview">
       <SignCard sign={sign} />
       <div>
-        <ScriptForms sign={sign} />
+        <ScriptForms sign={sign} onShowMesZl={onShowMesZl} />
         <dl className="SignPage__facts">
           {sign.lists.length > 0 && (
             <>

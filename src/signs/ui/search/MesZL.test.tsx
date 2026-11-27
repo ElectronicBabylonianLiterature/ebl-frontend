@@ -44,4 +44,13 @@ describe('MesZl', () => {
     )
     expect(container).toMatchSnapshot()
   })
+  it('shows the whole entry without a cut-off', async () => {
+    render(
+      <MemoryRouter>
+        <MesZlContent mesZl={mesZl} signName={'ALSK13'} />
+      </MemoryRouter>,
+    )
+    expect(await screen.findByText(/q12asd/)).toBeInTheDocument()
+    expect(screen.queryByText('(Read more ...)')).not.toBeInTheDocument()
+  })
 })

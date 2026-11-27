@@ -14,7 +14,7 @@ function CompositeSign({
   mainSign: string
 }): JSX.Element {
   const signCompositesWithoutMainSign = [...signComposites].filter(
-    (sign) => sign.displaySignName !== mainSign?.toUpperCase(),
+    (sign) => sign.displaySignName !== mainSign.toUpperCase(),
   )
   return signCompositesWithoutMainSign.length > 0 ? (
     <>

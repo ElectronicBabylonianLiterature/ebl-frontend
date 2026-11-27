@@ -5,7 +5,7 @@ import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { wrapCuneiform } from 'signs/domain/mesZlMarkup'
 import 'signs/ui/display/CuneiformFonts.css'
-import 'signs/ui/display/SignPage.sass'
+import 'signs/ui/display/MesZl.sass'
 
 function splitMesZl(
   mesZl: string,

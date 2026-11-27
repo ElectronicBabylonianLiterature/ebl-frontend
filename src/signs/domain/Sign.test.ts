@@ -44,4 +44,12 @@ describe('Sign', () => {
   test('cuneiform signs', () => {
     expect(sign.displayCuneiformSigns).toEqual('𒆏𒁍')
   })
+  test('MesZL numbers', () => {
+    const lists = [
+      { name: 'MZL', number: '264' },
+      { name: 'ABZ', number: '150' },
+      { name: 'MZL', number: '516' },
+    ]
+    expect(new Sign({ ...sign, lists }).mesZlNumbers).toEqual(['264', '516'])
+  })
 })

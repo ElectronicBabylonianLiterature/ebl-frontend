@@ -5,6 +5,7 @@ import AbortableOperation from 'common/utils/AbortableOperation'
 import { isCancellation } from 'common/utils/abortError'
 import convertAtfLines from 'signs/ui/CuneiformConverter/convertAtfLines'
 import 'signs/ui/CuneiformConverter/CuneiformConverterForm.sass'
+import 'signs/ui/display/CuneiformFonts.css'
 import 'signs/ui/display/SignDisplay.css'
 
 function reportQueryError(error: unknown): void {
