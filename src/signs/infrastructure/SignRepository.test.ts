@@ -1,5 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import ApiClient from 'http/ApiClient'
+import ApiClient, { isNotFoundError } from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import Sign from 'signs/domain/Sign'
 import { stringify } from 'common/utils/queryString'
@@ -48,6 +48,14 @@ const testData: TestData<SignRepository>[] = [
     [resultStub],
     [`/signs?${stringify(query)}`, false, undefined],
     Promise.resolve([resultStub]),
+  ),
+  new TestData(
+    'findMesZlKap2',
+    [signName],
+    apiClient.fetchJson,
+    { number: '579', text: 'text' },
+    [`/signs/${encodeURIComponent(signName)}/meszl-kap2`, true, undefined],
+    Promise.resolve({ number: '579', text: 'text' }),
   ),
   new TestData(
     'getCentroidImages',
@@ -192,5 +200,25 @@ describe('associate signs', () => {
 
     expect(search).toHaveBeenCalledTimes(2)
     search.mock.calls.forEach(([, signal]) => expect(signal).toBe(abortSignal))
+  })
+})
+
+describe('findMesZlKap2', () => {
+  const error = new Error('request failed')
+  const mockIsNotFoundError = isNotFoundError as jest.MockedFunction<
+    typeof isNotFoundError
+  >
+
+  it('returns null when there is no entry', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(error))
+    mockIsNotFoundError.mockReturnValueOnce(true)
+    await expect(signsRepository.findMesZlKap2(signName)).resolves.toBeNull()
+    expect(isNotFoundError).toHaveBeenCalledWith(error)
+  })
+
+  it('passes on other errors', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(error))
+    mockIsNotFoundError.mockReturnValueOnce(false)
+    await expect(signsRepository.findMesZlKap2(signName)).rejects.toBe(error)
   })
 })

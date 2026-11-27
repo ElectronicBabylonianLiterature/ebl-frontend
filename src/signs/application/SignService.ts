@@ -1,4 +1,9 @@
-import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
+import Sign, {
+  MesZlKap2Entry,
+  OrderedSign,
+  SignQuery,
+  UnicodeAtf,
+} from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 
@@ -39,6 +44,13 @@ export default class SignService {
 
   find(signName: string, signal?: AbortSignal): Promise<Sign> {
     return this.signsRepository.find(signName, signal)
+  }
+
+  findMesZlKap2(
+    signName: string,
+    signal?: AbortSignal,
+  ): Promise<MesZlKap2Entry | null> {
+    return this.signsRepository.findMesZlKap2(signName, signal)
   }
 
   listAllSigns(): Promise<string[]> {

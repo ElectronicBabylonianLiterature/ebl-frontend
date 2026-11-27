@@ -1,0 +1,51 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Adobe Blank';
+  src: url('fonts/AdobeBlank.otf.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian (Monumental)';
+  src: url('fonts/SantakkuM.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian (Literature)';
+  src: url('fonts/OBFreie.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian Cursive';
+  src: url('fonts/Santakku.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Hittite;
+  src: url('fonts/UllikummiA.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Neo-Babylonian;
+  src: url('fonts/Esagil.woff') format('woff');
+}
+
+/* R. Borger's cuneiform fonts (MesZL): outlined ("white") heads for Kapitel III,
+   filled ("black") heads for Kapitel II. Latin text falls back to the page font. */
+@font-face {
+  font-display: swap;
+  font-family: 'Borger Akkadian White Heads';
+  src: url('fonts/BorgerAkkadianWhiteHeads.woff2') format('woff2');
+  unicode-range: U+12000-1254F, U+100000-10FFFD;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Borger Akkadian Black Heads';
+  src: url('fonts/BorgerAkkadianBlackHeads.woff2') format('woff2');
+  unicode-range: U+12000-1254F, U+100000-10FFFD;
+}

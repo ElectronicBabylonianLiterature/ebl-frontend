@@ -1,25 +1,183 @@
-import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import React, { useMemo } from 'react'
 import withData, { WithoutData } from 'http/withData'
 import SignService from 'signs/application/SignService'
 import Sign from 'signs/domain/Sign'
-import 'signs/ui/display/SignDisplay.css'
 import WordService from 'dictionary/application/WordService'
-import SignInformation from 'signs/ui/display/SignInformation'
-import SignHeading from 'signs/ui/display/SignHeading'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
-import MesZlContent from 'signs/ui/search/MesZLContent'
+import ExternalLink from 'common/ui/ExternalLink'
+import EntryNavMenu from 'common/ui/entry-page/EntryNavMenu'
+import { EntrySection } from 'common/ui/entry-page/EntrySection'
+import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
+import useEntryPageNavigation from 'common/ui/entry-page/useEntryPageNavigation'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import SignOverview from 'signs/ui/display/SignOverview'
+import MesZlSection from 'signs/ui/display/MesZlSection'
+import SignLogogramsByWord from 'signs/ui/display/SignLogogramsByWord'
 import SignImages from 'signs/ui/display/SignImages'
+import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import FosseyDisplay from 'signs/ui/display/SignFossey'
-import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { HeadTags } from 'router/head'
+import 'common/ui/entry-page/EntryPage.sass'
+import 'signs/ui/display/SignDisplay.css'
+import 'signs/ui/display/SignPage.sass'
+
+export const signSectionIds = {
+  top: 'sign-top',
+  meszl: 'sign-meszl',
+  logograms: 'sign-logograms',
+  palaeography: 'sign-palaeography',
+  composites: 'sign-composites',
+  fossey: 'sign-fossey',
+} as const
+
+const sectionLabels: Readonly<Record<string, string>> = {
+  [signSectionIds.meszl]: 'Mesopotamisches Zeichenlexikon',
+  [signSectionIds.logograms]: 'Logograms',
+  [signSectionIds.palaeography]: 'Palaeography',
+  [signSectionIds.composites]: 'Composite signs',
+  [signSectionIds.fossey]: 'Fossey',
+}
+
+export function buildSignSections(
+  sign: Sign,
+  isAllowedToReadKap2: boolean,
+): readonly EntryNavSection[] {
+  const present: readonly [string, boolean][] = [
+    [signSectionIds.meszl, Boolean(sign.mesZl) || isAllowedToReadKap2],
+    [signSectionIds.logograms, sign.logograms.length > 0],
+    [signSectionIds.palaeography, true],
+    [signSectionIds.composites, true],
+    [signSectionIds.fossey, sign.fossey.length > 0],
+  ]
+  return present
+    .filter(([, isPresent]) => isPresent)
+    .map(([id]) => ({ id, label: sectionLabels[id], subsections: [] }))
+}
+
+function mesZlNumber(sign: Sign): string | undefined {
+  return sign.lists.find((record) => record.name === 'MZL')?.number
+}
+
+function SignPage({
+  sign,
+  signService,
+  session,
+}: {
+  sign: Sign
+  signService: SignService
+  session: Session
+}): JSX.Element {
+  const isAllowedToReadKap2 = session.isAllowedToReadMesZlKap2()
+  const sections = useMemo(
+    () => buildSignSections(sign, isAllowedToReadKap2),
+    [sign, isAllowedToReadKap2],
+  )
+  const {
+    openSections,
+    toggleSection,
+    activeId,
+    selectedId,
+    navigateToSection,
+  } = useEntryPageNavigation(signSectionIds.top, sections)
+  const number = mesZlNumber(sign)
+  const shown = new Set(sections.map((section) => section.id))
+  const section = (id: string, children: React.ReactNode): JSX.Element => (
+    <EntrySection
+      id={id}
+      heading={sectionLabels[id]}
+      open
+      collapsible={false}
+      onToggle={toggleSection}
+    >
+      {children}
+    </EntrySection>
+  )
+
+  return (
+    <div className="EntryPage__layout SignPage">
+      <EntryNavMenu
+        title={
+          <>
+            {sign.displaySignName}{' '}
+            <span className="SignPage__nav-glyph" aria-hidden="true">
+              {sign.displayCuneiformSigns}
+            </span>
+          </>
+        }
+        subtitle={
+          number ? `Cuneiform sign · MesZL ${number}` : 'Cuneiform sign'
+        }
+        topId={signSectionIds.top}
+        sections={sections}
+        openSections={openSections}
+        activeId={activeId}
+        selectedId={selectedId}
+        onToggleSection={toggleSection}
+        onNavigate={navigateToSection}
+      />
+      <div className="EntryPage__content">
+        <div id={signSectionIds.top} className="EntryPage__top">
+          <SignOverview sign={sign} />
+        </div>
+        {shown.has(signSectionIds.meszl) &&
+          section(
+            signSectionIds.meszl,
+            <MesZlSection
+              signName={sign.name}
+              kap3={sign.mesZl}
+              signService={signService}
+              isAllowedToReadKap2={isAllowedToReadKap2}
+            />,
+          )}
+        {shown.has(signSectionIds.logograms) &&
+          section(
+            signSectionIds.logograms,
+            <SignLogogramsByWord logograms={sign.logograms} />,
+          )}
+        {section(
+          signSectionIds.palaeography,
+          <SignImages signName={sign.name} signService={signService} />,
+        )}
+        {section(
+          signSectionIds.composites,
+          <CompositeSigns
+            signService={signService}
+            query={{
+              isComposite: true,
+              value: replaceTransliteration(sign.name.toLowerCase()),
+              subIndex: 1,
+            }}
+          />,
+        )}
+        {shown.has(signSectionIds.fossey) &&
+          section(
+            signSectionIds.fossey,
+            <>
+              <FosseyDisplay fosseys={sign.fossey} />
+              <p className="SignPage__note">
+                From Ch. Fossey,{' '}
+                <em>
+                  Manuel d’assyriologie, Tome deuxième: Evolution des
+                  cunéiformes
+                </em>
+                . Paris: Conard, 1926 (
+                <ExternalLink href="https://www.europeana.eu/en/rights/public-domain-charter">
+                  in the public domain
+                </ExternalLink>
+                ).
+              </p>
+            </>,
+          )}
+      </div>
+    </div>
+  )
+}
 
 function SignDisplay({
   sign,
-  wordService,
   signService,
 }: {
   sign: Sign
@@ -34,73 +192,26 @@ function SignDisplay({
             new SectionCrumb('Signs'),
             new TextCrumb(sign.displaySignName),
           ]}
-          title={' '}
+          hideHeading
         >
           {session.isAllowedToReadWords() ? (
-            <Container>
+            <>
               <HeadTags
                 title={`Cuneiform sign ${sign.displaySignName}: eBL`}
                 description={`Detailed information on the cuneiform sign ${sign.displaySignName} at the electronic Babylonian Library (eBL).`}
               />
-              <SignHeading
-                signName={sign.displaySignName}
-                cuneiformLetters={sign.displayCuneiformSigns}
-              />
-              <SignInformation
-                signService={signService}
+              <SignPage
                 sign={sign}
-                wordService={wordService}
+                signService={signService}
+                session={session}
               />
-              {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
-              <SignImages signName={sign.name} signService={signService} />
-              {sign.fossey && (
-                <>
-                  <FosseyDisplay fosseys={sign.fossey} />
-                  <div className={'pl-5 ml-3'}>
-                    <LiteratureRedirectBox
-                      authors="Fossey, Ch."
-                      book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
-                      subtitle="Paris: Conard, 1926"
-                      notelink=""
-                      note="In the public domain"
-                      link="https://www.europeana.eu/en/rights/public-domain-charter"
-                      icon="pointer__hover my-2 fas fa-external-link-square-alt"
-                    />
-                  </div>
-                </>
-              )}
-            </Container>
+            </>
           ) : (
             <p>Please log in to browse the Signs.</p>
           )}
         </AppContent>
       )}
     </SessionContext.Consumer>
-  )
-}
-
-function MesZl({
-  signName,
-  mesZl,
-}: {
-  signName: string
-  mesZl: string
-}): JSX.Element | null {
-  return (
-    <Row className={'mt-5'}>
-      <Row>
-        <Col>
-          <h3>&#8545;. Mesopotamisches Zeichenlexikon</h3>
-        </Col>
-      </Row>
-      <div className={'ml-5'}>
-        <Row>
-          <Col className={'ml-4 mt-3'}>
-            <MesZlContent signName={signName} mesZl={mesZl} />
-          </Col>
-        </Row>
-      </div>
-    </Row>
   )
 }
 
@@ -120,4 +231,5 @@ export default withData<WithoutData<Props>, { id: string }, Sign>(
     />
   ),
   (props, signal) => props.signService.find(props.id, signal),
+  { watch: (props) => [props.id] },
 )

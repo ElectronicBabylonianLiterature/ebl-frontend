@@ -7,14 +7,30 @@ export function EntrySection({
   heading,
   open,
   onToggle,
+  collapsible = true,
   children,
 }: {
   id: string
   heading: React.ReactNode
   open: boolean
   onToggle: (id: string) => void
+  collapsible?: boolean
   children: React.ReactNode
 }): JSX.Element {
+  if (!collapsible) {
+    return (
+      <section
+        id={id}
+        className="EntryPage__section"
+        aria-labelledby={`${id}-heading`}
+      >
+        <h2 id={`${id}-heading`} className="EntryPage__section-heading">
+          {heading}
+        </h2>
+        {children}
+      </section>
+    )
+  }
   return (
     <section
       id={id}

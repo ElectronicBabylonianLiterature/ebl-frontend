@@ -27,7 +27,7 @@ describe('Composite Signs', () => {
         />
       </MemoryRouter>,
     )
-    await screen.findByText('Composites:')
+    await screen.findByRole('list', { name: 'Composite signs' })
   }
   test('Composite Sign is link', async () => {
     await setup()
@@ -38,4 +38,17 @@ describe('Composite Signs', () => {
       screen.getByRole('link', { name: new RegExp(sign2.name) }),
     ).toBeInTheDocument()
   })
+})
+
+test('says when there are no composite signs', async () => {
+  signService.search.mockReturnValue(Promise.resolve([]))
+  render(
+    <MemoryRouter>
+      <CompositeSigns
+        signService={signService}
+        query={{ value: 'test', subIndex: 1, isComposite: true }}
+      />
+    </MemoryRouter>,
+  )
+  expect(await screen.findByText('No composite signs.')).toBeInTheDocument()
 })

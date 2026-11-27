@@ -21,6 +21,7 @@ export interface UnicodeAtf {
 export interface Fossey {
   page: number
   number: number
+  suffix?: string
   reference: string
   newEdition: string
   secondaryLiterature: string
@@ -31,6 +32,11 @@ export interface Fossey {
   date: string
   transliteration: string
   sign: string
+}
+
+export interface MesZlKap2Entry {
+  readonly number: string
+  readonly text: string
 }
 
 export interface SignListRecord {

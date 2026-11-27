@@ -2,11 +2,8 @@ import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import withData, { WithoutData } from 'http/withData'
 import React from 'react'
-import 'signs/ui/display/CompositeSigns.css'
 
-import HelpTrigger from 'common/ui/HelpTrigger'
-import { Col, Popover, Row } from 'react-bootstrap'
-import _ from 'lodash'
+import { Link } from 'react-router-dom'
 import ExternalLink from 'common/ui/ExternalLink'
 
 function CompositeSign({
@@ -15,55 +12,31 @@ function CompositeSign({
 }: {
   signComposites: readonly Sign[]
   mainSign: string
-}): JSX.Element | null {
+}): JSX.Element {
   const signCompositesWithoutMainSign = [...signComposites].filter(
     (sign) => sign.displaySignName !== mainSign?.toUpperCase(),
   )
   return signCompositesWithoutMainSign.length > 0 ? (
-    <Row>
-      <Col xs={'auto'}>Composites: </Col>
-      <Col
-        xs={'auto'}
-        className={'compositeSigns__compositeSigns__compositeSigns'}
-      >
-        {signCompositesWithoutMainSign.map((sign, index) => (
-          <span key={index}>
-            <a href={`/signs/${encodeURIComponent(sign.name)}`}>
+    <>
+      <ul className="SignPage__composites" aria-label="Composite signs">
+        {signCompositesWithoutMainSign.map((sign) => (
+          <li key={sign.name}>
+            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
               {sign.displaySignName}
-            </a>
-            {index < signCompositesWithoutMainSign.length - 1 ? ', ' : ''}
-          </span>
+            </Link>
+          </li>
         ))}
-      </Col>
-      <Col xs={1} className={'mt-auto'}>
-        <HelpTrigger
-          placement={'auto'}
-          delay={{ show: 0, hide: 1200 }}
-          overlay={CompositeSignsInfo()}
-        />
-      </Col>
-    </Row>
-  ) : null
-}
-
-function CompositeSignsInfo(): JSX.Element {
-  return (
-    <Popover
-      id={_.uniqueId('CompositeSignsInfo-')}
-      title="Composite Signs Info"
-    >
-      <Popover.Body>
-        From Oracc Global Sign List &nbsp;&nbsp;
-        <ExternalLink
-          href={'http://oracc.org/ogsl/'}
-          className={'text-dark'}
-          aria-label="Open Oracc Global Sign List"
-        >
-          {' '}
-          <i className="fas fa-external-link-square-alt" aria-hidden="true" />
+      </ul>
+      <p className="SignPage__note">
+        From the{' '}
+        <ExternalLink href="http://oracc.org/ogsl/">
+          Oracc Global Sign List
         </ExternalLink>
-      </Popover.Body>
-    </Popover>
+        .
+      </p>
+    </>
+  ) : (
+    <p className="SignPage__note">No composite signs.</p>
   )
 }
 

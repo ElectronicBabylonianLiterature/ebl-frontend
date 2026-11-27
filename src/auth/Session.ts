@@ -30,6 +30,8 @@ export interface Session {
 
   isAllowedToReadRealia(): boolean
 
+  isAllowedToReadMesZlKap2(): boolean
+
   isGuestSession(): boolean
 }
 
@@ -87,6 +89,10 @@ class GuestSession implements Session {
   }
 
   isAllowedToReadRealia(): boolean {
+    return false
+  }
+
+  isAllowedToReadMesZlKap2(): boolean {
     return false
   }
 
@@ -154,6 +160,10 @@ export default class MemorySession implements Session {
 
   isAllowedToReadRealia(): boolean {
     return this.hasApplicationScope('readRealia')
+  }
+
+  isAllowedToReadMesZlKap2(): boolean {
+    return this.hasApplicationScope('readMesZlKap2')
   }
 
   isAllowedToReadFolio(folio: Folio): boolean {

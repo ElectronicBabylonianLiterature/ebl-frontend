@@ -1,11 +1,4 @@
-.signDisplay__LogogramInfo {
-  min-width: 25%;
-}
-
-.signDisplay__FontInfo {
-  font-size: 0.8em;
-  color: grey;
-}
+@import url('./CuneiformFonts.css');
 
 .CuneiformFonts__heading-old-babylonian-monumental {
   font-family: 'Old-Babylonian (Monumental)', 'Adobe Blank', Junicode, serif;
@@ -25,40 +18,4 @@
 
 .CuneiformFonts__heading-neo-babylonian {
   font-family: Neo-Babylonian, 'Adobe Blank', Junicode, serif;
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Adobe Blank';
-  src: url('fonts/AdobeBlank.otf.woff') format('woff');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Old-Babylonian (Monumental)';
-  src: url('fonts/SantakkuM.woff') format('woff');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Old-Babylonian (Literature)';
-  src: url('fonts/OBFreie.woff') format('woff');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Old-Babylonian Cursive';
-  src: url('fonts/Santakku.woff') format('woff');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: Hittite;
-  src: url('fonts/UllikummiA.woff') format('woff');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: Neo-Babylonian;
-  src: url('fonts/Esagil.woff') format('woff');
 }

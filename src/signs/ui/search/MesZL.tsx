@@ -4,7 +4,7 @@ import React from 'react'
 import 'signs/ui/search/Signs.sass'
 import MesZlContent from 'signs/ui/search/MesZLContent'
 import { SignListRecord } from 'signs/domain/Sign'
-import { getDisplayName } from 'signs/ui/display/SignInformation'
+import { getDisplayName } from 'signs/domain/signListNames'
 
 export default function MesZL({
   mesZl,
