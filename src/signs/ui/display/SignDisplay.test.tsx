@@ -133,9 +133,6 @@ beforeEach(() => {
   signService.search.mockResolvedValue([])
   signService.getCentroidImages.mockResolvedValue([croppedAnnotation])
   signService.findMesZlKap2.mockResolvedValue([{ number: '579', text: kap2 }])
-  signService.findMesZlKap2Section.mockResolvedValue(
-    'Kapitel II: Übersicht\n**§1**\tIn verschiedenen Fällen',
-  )
 })
 
 async function renderPage(session: Session = reader): Promise<void> {
@@ -233,22 +230,6 @@ it('shows the Kapitel II entries of all MesZL numbers', async () => {
   )
   expect(await screen.findByText(/Rosengarten n440/)).toBeInTheDocument()
   expect(screen.getByText('Second entry.')).toBeInTheDocument()
-})
-
-it('opens the Einleitung of Kapitel II', async () => {
-  await renderPage(fullEditor)
-  await userEvent.click(
-    await screen.findByRole('tab', { name: 'Kap. Ⅱ · Zeichenübersicht' }),
-  )
-  const toggle = screen.getByRole('button', { name: 'Einleitung' })
-  expect(toggle).toHaveAttribute('aria-expanded', 'false')
-  await userEvent.click(toggle)
-  expect(await screen.findByText(/In verschiedenen Fällen/)).toBeInTheDocument()
-  expect(signService.findMesZlKap2Section).toHaveBeenCalledWith(
-    'einleitung',
-    expect.any(AbortSignal),
-  )
-  expect(toggle).toHaveAttribute('aria-expanded', 'true')
 })
 
 it('shows no tabs to Full Editors when there is no Kapitel II entry', async () => {

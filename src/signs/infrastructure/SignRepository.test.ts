@@ -58,14 +58,6 @@ const testData: TestData<SignRepository>[] = [
     Promise.resolve([{ number: '579', text: 'text' }]),
   ),
   new TestData(
-    'findMesZlKap2Section',
-    ['anhang-2'],
-    apiClient.fetchJson,
-    '2. Anhang',
-    ['/meszl-kap2/anhang-2', true, undefined],
-    Promise.resolve({ section: 'anhang-2', text: '2. Anhang' }),
-  ),
-  new TestData(
     'getCentroidImages',
     [signName],
     apiClient.fetchJson,

@@ -3,11 +3,7 @@ import classNames from 'classnames'
 import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import ExternalLink from 'common/ui/ExternalLink'
 import { mesZlToMarkup } from 'signs/domain/mesZlMarkup'
-import {
-  MesZlKap2Entry,
-  MesZlKap2Section,
-  mesZlKap2Sections,
-} from 'signs/domain/Sign'
+import { MesZlKap2Entry } from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 
 type Chapter = 'kap3' | 'kap2'
@@ -112,63 +108,6 @@ function useMesZlKap2(
   return entries
 }
 
-function Kap2SectionText({
-  section,
-  signService,
-}: {
-  section: MesZlKap2Section
-  signService: SignService
-}): JSX.Element {
-  const [text, setText] = useState<string | null>(null)
-  const [failed, setFailed] = useState(false)
-  useEffect(() => {
-    setText(null)
-    setFailed(false)
-    const controller = new AbortController()
-    signService
-      .findMesZlKap2Section(section, controller.signal)
-      .then((result) => !controller.signal.aborted && setText(result))
-      .catch(() => !controller.signal.aborted && setFailed(true))
-    return () => controller.abort()
-  }, [section, signService])
-  if (failed) {
-    return <p className="SignPage__note">Could not load this section.</p>
-  }
-  return text === null ? (
-    <p className="SignPage__note">Loading…</p>
-  ) : (
-    <MesZlText text={text} chapter="kap2" />
-  )
-}
-
-function Kap2Sections({
-  signService,
-}: {
-  signService: SignService
-}): JSX.Element {
-  const [open, setOpen] = useState<MesZlKap2Section | null>(null)
-  const sections = Object.keys(mesZlKap2Sections) as MesZlKap2Section[]
-  return (
-    <div className="SignPage__meszl-sections">
-      <span className="SignPage__source-label">Kapitel Ⅱ</span>
-      {sections.map((section) => (
-        <button
-          key={section}
-          type="button"
-          className={classNames('btn btn-link SignPage__meszl-section-toggle', {
-            active: open === section,
-          })}
-          aria-expanded={open === section}
-          onClick={(): void => setOpen(open === section ? null : section)}
-        >
-          {mesZlKap2Sections[section]}
-        </button>
-      ))}
-      {open && <Kap2SectionText section={open} signService={signService} />}
-    </div>
-  )
-}
-
 export default function MesZlSection({
   signName,
   kap3,
@@ -226,12 +165,9 @@ export default function MesZlSection({
         })}
       >
         {chapter === 'kap2' ? (
-          <>
-            {kap2.map((entry) => (
-              <MesZlText key={entry.number} text={entry.text} chapter="kap2" />
-            ))}
-            <Kap2Sections signService={signService} />
-          </>
+          kap2.map((entry) => (
+            <MesZlText key={entry.number} text={entry.text} chapter="kap2" />
+          ))
         ) : (
           <MesZlText key={chapter} text={kap3} chapter={chapter} />
         )}
