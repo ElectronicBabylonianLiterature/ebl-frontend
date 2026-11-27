@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dropdown, DropdownButton, DropdownButtonProps } from 'react-bootstrap'
 import { ChapterListing, Text } from 'corpus/domain/text'
-import { stageToAbbreviation } from 'common/utils/period'
+import { createChapterPath } from 'corpus/ui/chapterPath'
 
 function GotoItem({
   text,
@@ -14,11 +14,7 @@ function GotoItem({
   const name =
     chapter.name !== '-' || !text.hasMultipleStages ? chapter.name : ''
   return (
-    <Dropdown.Item
-      href={`/corpus/${text.genre}/${text.category}/${
-        text.index
-      }/${stageToAbbreviation(chapter.stage)}/${chapter.name}`}
-    >
+    <Dropdown.Item href={createChapterPath(text, chapter)}>
       {stage}
       {name}
     </Dropdown.Item>

@@ -145,6 +145,10 @@ export interface Line {
   readonly status: EditStatus
 }
 
+export function createLineAlignment(line: Line): ManuscriptAlignment[][] {
+  return line.variants.map((variant) => variant.alignment)
+}
+
 export function createLine(config: Partial<Line>): Line {
   return {
     number: '',

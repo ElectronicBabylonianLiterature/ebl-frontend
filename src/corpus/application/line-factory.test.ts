@@ -88,6 +88,31 @@ describe('createDefaultLineFactory', () => {
     },
   )
 
+  test.each<[string, string[], string]>([
+    ['5', ['6'], '7'],
+    ['5', ['7', '4', '5'], '6'],
+    ['1', ['2', '3', '4', '5', '1'], '6'],
+    ["5'", ["6'", '7'], "7'"],
+    ['5', ["6'"], '6'],
+    ['6b', ['', '7'], ''],
+    ['', ['', '1'], ''],
+  ])(
+    'If line number is "%s" and %j are taken then the next number is "%s".',
+    (number, takenNumbers, expected) => {
+      const lastLine = createLine({
+        number,
+        variants: [
+          createVariant({ manuscripts: [createManuscriptLine({ number })] }),
+        ],
+      })
+
+      expect(createDefaultLineFactory(lastLine, takenNumbers)()).toEqual({
+        ...createDefaultLineFactory(lastLine)(),
+        number: expected,
+      })
+    },
+  )
+
   test('Has the manuscripts without transliteration in same order.', () => {
     const manuscripts = [
       createManuscriptLine({

@@ -7,7 +7,7 @@ import { textDto } from 'test-support/test-corpus-text'
 import { chapterIdFactory } from 'test-support/chapter-fixtures'
 import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
 import { wordDto } from 'test-support/test-word'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 
 const apiClient = {
   fetchJson: jest.fn(),

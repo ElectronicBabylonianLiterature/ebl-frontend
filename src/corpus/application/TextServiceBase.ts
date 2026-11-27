@@ -1,9 +1,8 @@
 import { stringify } from 'common/utils/queryString'
 
-import { Chapter, DictionaryLineDisplay } from 'corpus/domain/chapter'
+import { DictionaryLineDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { Manuscript } from 'corpus/domain/manuscript'
 
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
@@ -18,7 +17,6 @@ import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemapConfig'
 
 import { createChapterUrl } from 'corpus/application/chapterUrls'
-import CorpusLemmatizationFactory from 'corpus/application/CorpusLemmatizationFactory'
 
 import TextServiceCore from 'corpus/application/TextServiceCore'
 
@@ -100,13 +98,6 @@ export class TextServiceBase extends TextServiceCore {
       false,
       signal,
     )
-  }
-
-  findSuggestions(chapter: Chapter): Promise<ChapterLemmatization> {
-    return new CorpusLemmatizationFactory(
-      this.fragmentService,
-      this.wordService,
-    ).createLemmatization(chapter)
   }
 
   listAllTexts(): Promise<TextSlugs> {

@@ -5,7 +5,7 @@ import {
   createTextServiceTestContext,
   TextServiceTestContext,
 } from 'corpus/application/TextService.testSupport'
-import { chapterDto } from 'test-support/test-corpus-text'
+import { apiOutline } from 'corpus/application/edit-lite/chapterEditSource.testSupport'
 
 export const staleDisplayDto = {
   ...chapterDisplayDto,
@@ -36,7 +36,7 @@ export function createChapterCacheTestContext(
   context.fragmentServiceMock.fetchProvenances.mockResolvedValue([])
   context.apiClient.fetchJson.mockResolvedValue(staleDisplayDto)
   context.apiClient.postJson.mockImplementation(
-    createHttpSuccessPostJsonMock(Promise.resolve(chapterDto)),
+    createHttpSuccessPostJsonMock(Promise.resolve(apiOutline)),
   )
   return { ...context, service: context.createService(getCacheScope) }
 }

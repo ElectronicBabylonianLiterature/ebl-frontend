@@ -8,7 +8,7 @@ import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/Lemm
 import ProperNounCreationPanel from 'fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { Button, Form, Spinner } from 'react-bootstrap'
 import Word from 'dictionary/domain/Word'
 

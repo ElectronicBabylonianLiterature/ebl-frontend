@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
-import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
+import {
+  createLemmaOptionsLoader,
+  LemmaOption,
+} from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { components } from 'react-select'
 import type {
   OptionProps,
@@ -12,36 +15,25 @@ import type {
   MultiValue,
 } from 'react-select'
 
-export class LemmaOption extends Lemma {
-  readonly id?: string
-  word: Word
-  isSuggestion?: boolean
-
-  constructor(word: Word, isSuggestion = false) {
-    super(word)
-    this.word = word
-    this.id = _.uniqueId('lemmaoption-')
-    this.isSuggestion = isSuggestion
-  }
-
-  unsetSuggestion = (): LemmaOption => {
-    return new LemmaOption(this.word)
-  }
+export function Option<Selected extends Lemma = LemmaOption>(
+  props: OptionProps<Selected, true>,
+): JSX.Element {
+  return (
+    <components.Option {...props}>
+      <InlineMarkdown source={props.label} />
+    </components.Option>
+  )
 }
 
-export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
-  <components.Option {...props}>
-    <InlineMarkdown source={props.label} />
-  </components.Option>
-)
-
-export const MultiValueLabel = (
-  props: MultiValueGenericProps<LemmaOption, true>,
-): JSX.Element => (
-  <components.MultiValueLabel {...props}>
-    <InlineMarkdown source={props.data.label} />
-  </components.MultiValueLabel>
-)
+export function MultiValueLabel<Selected extends Lemma = LemmaOption>(
+  props: MultiValueGenericProps<Selected, true>,
+): JSX.Element {
+  return (
+    <components.MultiValueLabel {...props}>
+      <InlineMarkdown source={props.data.label} />
+    </components.MultiValueLabel>
+  )
+}
 
 type Props = {
   query?: readonly LemmaOption[]
@@ -66,15 +58,7 @@ class LemmaSelectionForm extends Component<Props, State> {
     }
   }
 
-  loadOptions = (
-    inputValue: string,
-    callback: (lemmas: LemmaOption[]) => void,
-  ): void => {
-    this.props.wordService
-      .searchLemma(inputValue)
-      .then((words) => words.map((word) => new LemmaOption(word)))
-      .then(callback)
-  }
+  loadOptions = createLemmaOptionsLoader(this.props.wordService, undefined)
 
   handleChange = (
     query: MultiValue<LemmaOption>,

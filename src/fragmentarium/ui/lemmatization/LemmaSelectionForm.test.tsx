@@ -1,9 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LemmaSelectionForm, {
-  LemmaOption,
-} from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import LemmaSelectionForm from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 
@@ -53,4 +52,13 @@ it('turns a suggested lemma into a confirmed one', () => {
 
   expect(confirmed.isSuggestion).toBe(false)
   expect(confirmed.value).toEqual(suggested.value)
+})
+
+it('shows no options when the lemma search fails', async () => {
+  searchLemma.mockRejectedValue(new Error('Network error'))
+  renderForm()
+
+  await userEvent.type(screen.getByLabelText('Select lemmata'), 'šar')
+
+  expect(await screen.findByText('No options')).toBeInTheDocument()
 })

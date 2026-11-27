@@ -12,7 +12,7 @@ import { PeriodModifiers } from 'common/utils/period'
 import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
 import { Text } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
+import { Chapter } from 'corpus/domain/chapter.testSupport'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 

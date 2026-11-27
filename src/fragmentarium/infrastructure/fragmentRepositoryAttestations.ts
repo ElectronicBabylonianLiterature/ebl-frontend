@@ -7,7 +7,7 @@ import {
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { LemmaSuggestions } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import Word from 'dictionary/domain/Word'
 import { CorpusAttestations } from 'fragmentarium/application/fragmentServicePorts'
 import { JsonApiClient } from 'http/JsonApiClient'

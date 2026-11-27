@@ -1,0 +1,185 @@
+@use 'src/design-tokens' as *
+
+.edit-lite-label,
+.edit-lite-manuscript--header
+  color: $ebl-color-text-corpus-muted
+  font-size: 0.7rem
+  font-weight: 700
+  letter-spacing: 0.05em
+  text-transform: uppercase
+
+.edit-lite-input,
+.edit-lite-siglum
+  border: 1px solid $ebl-color-border-input
+  border-radius: 3px
+  font-size: 0.85rem
+  line-height: 1.3
+  min-width: 0
+  padding: 0.1rem 0.3rem
+  width: 100%
+
+.edit-lite-input
+  background: $ebl-color-surface-primary
+
+  &:focus
+    border-color: $ebl-color-brand-primary
+    outline: 2px solid $ebl-color-brand-alpha-25
+
+  &:disabled
+    background: $ebl-color-surface-muted
+    color: $ebl-color-text-secondary
+
+.edit-lite-check
+  align-items: center
+  display: inline-flex
+  font-size: 0.8rem
+  gap: 0.25rem
+
+.edit-lite-field
+  margin-top: 0.3rem
+
+.edit-lite-atf
+  background: $ebl-color-surface-primary
+  border: 1px solid $ebl-color-border-input
+  border-radius: 3px
+  margin: 0
+
+  &--static
+    cursor: text
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', monospace
+    font-size: 1rem
+    line-height: 1.2
+    min-height: 2.4em
+    overflow-wrap: anywhere
+    padding: 0 4px
+    white-space: pre-wrap
+
+    &:hover,
+    &:focus
+      border-color: $ebl-color-brand-primary
+      outline: none
+
+  &--active
+    border-color: $ebl-color-brand-primary
+    box-shadow: 0 0 0 2px $ebl-color-brand-alpha-25
+
+  &--disabled
+    background: $ebl-color-surface-muted
+    color: $ebl-color-text-secondary
+    cursor: default
+
+.edit-lite-siglum
+  &--static
+    background: $ebl-color-surface-corpus-soft
+    border-color: transparent
+    color: $ebl-color-text-corpus-primary
+    font-weight: 600
+    overflow: hidden
+    text-align: left
+    text-overflow: ellipsis
+    white-space: nowrap
+
+    &:hover:not(:disabled)
+      border-color: $ebl-color-brand-primary
+
+  &--active
+    background: $ebl-color-surface-primary
+    border-color: $ebl-color-brand-primary
+
+.edit-lite-badge
+  background: $ebl-color-surface-corpus-soft
+  border-radius: 999px
+  color: $ebl-color-text-corpus-medium
+  font-size: 0.7rem
+  font-weight: 600
+  padding: 0.05rem 0.45rem
+  white-space: nowrap
+
+  &--variants
+    background: $ebl-color-brand-alpha-15
+    color: $ebl-color-brand-primary-dark
+
+  &--edited
+    background: $ebl-color-text-warning
+    color: $ebl-color-surface-primary
+
+  &--failed
+    background: var(--bs-danger)
+    color: $ebl-color-surface-primary
+
+.edit-lite-summary
+  align-items: center
+  display: flex
+  gap: 0.6rem
+  text-align: left
+  width: 100%
+
+  &__number
+    color: $ebl-color-text-corpus-primary
+    flex: 0 0 3.5rem
+    font-weight: 700
+    white-space: nowrap
+
+  &__text
+    flex: 1 1 auto
+    min-width: 0
+
+  &__reconstruction,
+  &__translation
+    display: block
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  &__reconstruction
+    color: $ebl-color-text-corpus-body
+    font-size: 0.9rem
+
+  &__translation
+    color: $ebl-color-text-corpus-muted
+    font-size: 0.8rem
+
+  &__badges
+    display: flex
+    flex: 0 0 auto
+    gap: 0.25rem
+
+.edit-lite-panel
+  &__header
+    align-items: center
+    display: flex
+    flex-wrap: wrap
+    gap: 0.4rem 0.8rem
+
+  &__number
+    width: 6rem
+
+.edit-lite-variant
+  border-top: 1px solid $ebl-color-border-corpus-soft
+  margin-top: 0.5rem
+  padding-top: 0.2rem
+
+  &__caption
+    color: $ebl-color-text-corpus-primary
+    font-size: 0.8rem
+    font-weight: 700
+
+.edit-lite-line
+  font-size: 0.9rem
+  padding: 0.5rem 0.6rem
+
+  &__alert
+    font-size: 0.85rem
+    margin-bottom: 0.4rem
+    padding: 0.35rem 0.6rem
+
+  &__actions
+    align-items: center
+    display: flex
+    flex-wrap: wrap
+    gap: 0.4rem
+    margin-top: 0.5rem
+
+.edit-lite-line__problem
+  color: $ebl-color-text-warning
+  font-size: 0.8rem

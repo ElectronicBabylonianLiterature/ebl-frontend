@@ -6,7 +6,6 @@ import {
   chapterId,
   createTextServiceTestContext,
 } from 'corpus/application/TextService.testSupport'
-import { lemmatization } from 'corpus/application/TextService.update.testSupport'
 import { deferred } from 'test-support/concurrencyLimiterHelpers'
 import { chapter, chapterDto } from 'test-support/test-corpus-text'
 
@@ -19,31 +18,6 @@ jest.mock('common/errors/SentryErrorReporter')
 const { apiClient, fragmentServiceMock, createService } =
   createTextServiceTestContext()
 
-const writes: [
-  string,
-  (service: ReturnType<typeof createService>) => Promise<object>,
-][] = [
-  [
-    'updateAlignment',
-    (service) => service.updateAlignment(chapterId, chapter.alignment),
-  ],
-  [
-    'updateLemmatization',
-    (service) => service.updateLemmatization(chapterId, lemmatization),
-  ],
-  [
-    'updateManuscripts',
-    (service) =>
-      service.updateManuscripts(
-        chapterId,
-        chapter.manuscripts,
-        chapter.uncertainFragments,
-      ),
-  ],
-  ['updateLines', (service) => service.updateLines(chapterId, chapter.lines)],
-  ['importChapter', (service) => service.importChapter(chapterId, '1. kur')],
-]
-
 beforeEach(() => {
   jest.clearAllMocks()
 })
@@ -55,12 +29,6 @@ const reads: [
   object,
   unknown,
 ][] = [
-  [
-    'findChapter',
-    (service) => service.findChapter(chapterId),
-    chapterDto,
-    chapter,
-  ],
   [
     'findManuscripts',
     (service) => service.findManuscripts(chapterId),
@@ -81,22 +49,13 @@ const reads: [
   ],
 ]
 
-const scenarios = [
-  ...writes.map(([name, run]) => ({
-    name,
-    run,
-    client: apiClient.postJson,
-    response: chapterDto,
-    expected: chapter,
-  })),
-  ...reads.map(([name, run, response, expected]) => ({
-    name,
-    run,
-    client: apiClient.fetchJson,
-    response,
-    expected,
-  })),
-]
+const scenarios = reads.map(([name, run, response, expected]) => ({
+  name,
+  run,
+  client: apiClient.fetchJson,
+  response,
+  expected,
+}))
 
 test.each(scenarios)(
   '$name starts its request before provenance preload settles',

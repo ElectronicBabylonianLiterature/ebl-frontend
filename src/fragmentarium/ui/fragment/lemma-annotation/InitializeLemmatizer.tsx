@@ -6,7 +6,7 @@ import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'

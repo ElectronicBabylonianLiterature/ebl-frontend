@@ -3,8 +3,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import ApiClient from 'http/ApiClient'
-import Word from 'dictionary/domain/Word'
-import { chapter } from 'test-support/test-corpus-text'
+import { chapter, textDto } from 'test-support/test-corpus-text'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
@@ -16,7 +15,6 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
-import { wordFactory } from 'test-support/word-fixtures'
 import createReference from 'bibliography/application/createReference'
 import { OldLineNumberDto } from 'corpus/application/dtos'
 import { OldLineNumber } from 'transliteration/domain/line-number'
@@ -59,12 +57,6 @@ export function createTextServiceTestContext(): TextServiceTestContext {
     createService: createService,
   }
 }
-
-export const word: Word = wordFactory.build({
-  _id: 'aklu I',
-  lemma: ['aklu'],
-  homonym: 'I',
-})
 
 export const extantLines: ExtantLines = {
   NinNA1a: {
@@ -138,3 +130,5 @@ export const oldSiglumReferenceDto = referenceDtoFactory.build(
   {},
   { associations: { document: cslData } },
 )
+
+export const textsDto = [textDto]

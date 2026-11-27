@@ -1,4 +1,4 @@
-import { produce, castDraft, Draft, immerable } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { Token } from 'transliteration/domain/token'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
@@ -29,33 +29,62 @@ export interface ManuscriptAlignment {
   readonly omittedWords: readonly number[]
 }
 
-export class ChapterAlignment {
-  readonly [immerable] = true
-  readonly lines: readonly ManuscriptAlignment[][][]
+export type LineAlignment = readonly ManuscriptAlignment[][]
 
-  constructor(lines: readonly ManuscriptAlignment[][][]) {
-    this.lines = lines
-  }
+export const setAlignmentToken = produce(
+  (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
+    draft.alignment[index] = castDraft(token)
+  },
+)
 
-  getAlignment(
-    lineIndex: number,
-    variantIndex: number,
-    manuscriptIndex: number,
-  ): ManuscriptAlignment {
-    return this.lines[lineIndex][variantIndex][manuscriptIndex]
-  }
+export const setOmittedWords = produce(
+  (draft: Draft<ManuscriptAlignment>, value: number[]) => {
+    draft.omittedWords = value
+  },
+)
 
-  setAlignment(
-    lineIndex: number,
-    variantIndex: number,
-    manuscriptIndex: number,
-    alignment: ManuscriptAlignment,
-  ): ChapterAlignment {
-    return produce(this, (draft: Draft<ChapterAlignment>) => {
-      draft.lines[lineIndex][variantIndex][manuscriptIndex] =
-        castDraft(alignment)
-    })
-  }
+export function setManuscriptAlignment(
+  lineAlignment: LineAlignment,
+  variantIndex: number,
+  manuscriptIndex: number,
+  alignment: ManuscriptAlignment,
+): LineAlignment {
+  return produce(lineAlignment, (draft: Draft<LineAlignment>) => {
+    draft[variantIndex][manuscriptIndex] = castDraft(alignment)
+  })
+}
+
+export function alignToken(
+  token: AlignmentToken,
+  reconstructionTokens: readonly Token[],
+  alignment: number | null,
+  variant: string,
+): AlignmentToken {
+  const reconstructionToken =
+    alignment === null ? undefined : reconstructionTokens[alignment]
+  return alignment !== null &&
+    reconstructionToken !== undefined &&
+    isAnyWord(reconstructionToken)
+    ? {
+        value: token.value,
+        alignment,
+        variant: variant
+          ? {
+              value: variant,
+              type: reconstructionToken.type,
+              language: reconstructionToken.language,
+            }
+          : null,
+        isAlignable: true,
+        suggested: false,
+      }
+    : {
+        value: token.value,
+        alignment: null,
+        variant: null,
+        isAlignable: true,
+        suggested: false,
+      }
 }
 
 export function createAlignmentToken(token: Token): AlignmentToken {

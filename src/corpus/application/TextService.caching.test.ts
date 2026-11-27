@@ -3,8 +3,8 @@ import { text, chapterDto } from 'test-support/test-corpus-text'
 import {
   chapterId,
   createTextServiceTestContext,
+  textsDto,
 } from 'corpus/application/TextService.testSupport'
-import { textsDto } from 'corpus/application/TextService.update.testSupport'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -77,9 +77,9 @@ describe('list caching', () => {
 describe('loadProvenances delegation', () => {
   test('delegates to fragmentService.fetchProvenances', async () => {
     fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
-    apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterDto))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterDto.manuscripts))
 
-    await textService.findChapter(chapterId)
+    await textService.findManuscripts(chapterId)
 
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
   })

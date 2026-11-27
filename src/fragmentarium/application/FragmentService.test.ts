@@ -17,7 +17,7 @@ import {
 } from 'test-support/fragment-fixtures'
 import { wordFactory } from 'test-support/word-fixtures'
 import { Text } from 'transliteration/domain/text'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ApiError } from 'http/ApiClient'
 import {

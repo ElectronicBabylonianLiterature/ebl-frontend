@@ -13,7 +13,7 @@ import {
 } from 'fragmentarium/ui/fragment/lemma-annotation/properNounCreation'
 
 interface ProperNounCreationPanelProps {
-  wordService: WordService
+  wordService: Pick<WordService, 'searchLemma' | 'createProperNoun'>
   onClose: () => void
   onCreated: (word: Word) => void
 }

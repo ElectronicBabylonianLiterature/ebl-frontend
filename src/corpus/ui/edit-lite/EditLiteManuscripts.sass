@@ -1,0 +1,154 @@
+@use 'src/design-tokens' as *
+
+$edit-lite-manuscript-columns: 0.6rem repeat(2, minmax(0, 1.2fr)) repeat(3, minmax(0, 1fr)) 3.6rem
+
+.edit-lite-manuscript-list
+  &__toolbar
+    align-items: center
+    display: flex
+    flex-wrap: wrap
+    gap: 0.4rem 0.8rem
+    margin-bottom: 0.5rem
+
+  &__count
+    color: $ebl-color-text-corpus-primary
+    font-size: 0.85rem
+    font-weight: 700
+
+  &__empty
+    color: $ebl-color-text-corpus-muted
+    font-size: 0.9rem
+    margin: 0
+
+  &__rows
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 4px
+    list-style: none
+    margin: 0
+    padding: 0
+
+  &__row
+    border-top: 1px solid $ebl-color-border-corpus-soft
+
+    &:first-child
+      border-top: 0
+
+    &--open
+      background: $ebl-color-surface-corpus-highlight
+      box-shadow: inset 3px 0 0 $ebl-color-brand-primary
+
+  &__captions
+    display: none
+
+    @media (min-width: $ebl-breakpoint-md)
+      color: $ebl-color-text-corpus-muted
+      column-gap: 0.6rem
+      display: grid
+      font-size: 0.7rem
+      font-weight: 700
+      grid-template-columns: $edit-lite-manuscript-columns
+      letter-spacing: 0.05em
+      padding: 0 0.6rem 0.15rem
+      text-transform: uppercase
+
+  &__header
+    align-items: center
+    background: transparent
+    border: 0
+    color: inherit
+    column-gap: 0.6rem
+    display: grid
+    font-size: 0.9rem
+    grid-template-columns: 0.6rem repeat(3, minmax(0, 1fr)) auto
+    padding: 0.3rem 0.6rem
+    text-align: left
+    width: 100%
+
+    @media (min-width: $ebl-breakpoint-md)
+      grid-template-columns: $edit-lite-manuscript-columns
+
+    &:hover
+      background: $ebl-color-brand-soft-subtle
+
+    &:focus-visible
+      outline: 2px solid $ebl-color-brand-primary
+      outline-offset: -2px
+
+    &[aria-expanded='true']
+      background: $ebl-color-surface-corpus-soft
+
+  &__chevron
+    border-color: $ebl-color-text-corpus-muted
+    border-style: solid
+    border-width: 0 2px 2px 0
+    height: 0.5rem
+    transform: rotate(-45deg)
+    width: 0.5rem
+
+    [aria-expanded='true'] > &
+      transform: rotate(45deg)
+
+  &__caption,
+  &__cell
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  &__cell
+    color: $ebl-color-text-corpus-body
+
+    &--siglum
+      color: $ebl-color-text-corpus-primary
+      font-weight: 700
+
+    &--museum-number
+      grid-column: 3 / span 2
+
+    &--period
+      grid-column: 2
+
+    &--type
+      grid-column: 4 / span 2
+
+  &__status
+    grid-column: 5
+    grid-row: 1
+    text-align: right
+
+  &__cell--museum-number,
+  &__cell--period,
+  &__cell--type,
+  &__status
+    @media (min-width: $ebl-breakpoint-md)
+      grid-column: auto
+      grid-row: auto
+
+  &__panel
+    border-top: 1px solid $ebl-color-border-corpus-soft
+    padding: 0.6rem 0.8rem
+
+.edit-lite-uncertain-fragments
+  margin-top: 0.8rem
+
+  &__heading
+    color: $ebl-color-text-corpus-primary
+    font-size: 0.85rem
+    font-weight: 700
+    margin: 0 0 0.3rem
+
+  &__list
+    display: grid
+    gap: 0.2rem
+    margin: 0 0 0.3rem
+
+  &__item
+    align-items: center
+    display: flex
+    font-size: 0.85rem
+    gap: 0.4rem
+
+    > .edit-lite-input,
+    > .edit-lite-siglum
+      flex: 0 1 14rem
+      min-width: 0

@@ -1,0 +1,67 @@
+@use 'src/design-tokens' as *
+
+.edit-lite-views
+  > .nav-tabs
+    font-size: 0.85rem
+    margin-bottom: 0.4rem
+
+    .nav-link
+      padding: 0.2rem 0.7rem
+
+  &__note
+    color: $ebl-color-text-warning
+    font-size: 0.8rem
+    margin: 0.4rem 0 0
+
+.edit-lite-annotation
+  &__reconstruction
+    color: $ebl-color-text-corpus-body
+    margin: 0.3rem 0
+    white-space: pre-wrap
+
+  &__row
+    align-items: start
+    border-top: 1px solid $ebl-color-border-corpus-soft
+    display: grid
+    gap: 0.25rem 0.5rem
+    grid-template-columns: minmax(0, 1fr) auto
+    padding: 0.3rem 0
+
+    @media (min-width: $ebl-breakpoint-md)
+      grid-template-columns: minmax(5rem, 9rem) minmax(3rem, 6rem) minmax(0, 1fr)
+
+  &__siglum
+    color: $ebl-color-text-corpus-primary
+    font-weight: 600
+    overflow-wrap: anywhere
+
+  &__number
+    color: $ebl-color-text-corpus-muted
+
+  &__tokens,
+  &__omitted
+    grid-column: 1 / -1
+    min-width: 0
+
+    @media (min-width: $ebl-breakpoint-md)
+      grid-column: 3
+
+  &__tokens
+    line-height: 2.2
+
+.edit-lite-views__hint
+  color: $ebl-color-text-corpus-muted
+  font-size: 0.8rem
+  margin: 0 0 0.4rem
+
+.edit-lite-word--pending
+  box-shadow: 0 0 0 0.2rem $ebl-color-brand-alpha-25
+
+.edit-lite-word-popover
+  font-family: inherit
+  max-width: min(32rem, 100vw)
+  min-width: min(22rem, 100vw)
+
+.edit-lite-word-form__select
+  flex-grow: 1
+  min-width: 0

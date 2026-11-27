@@ -7,8 +7,8 @@ import {
   fromLineDetailsDto,
   fromLineDto,
   fromManuscriptDto,
-  toManuscriptsDto,
 } from 'corpus/application/dtos'
+import { toManuscriptsDto } from 'corpus/application/chapterDtoSerialization'
 import { EditStatus } from 'corpus/domain/line'
 import { EmptyLine } from 'transliteration/domain/line'
 

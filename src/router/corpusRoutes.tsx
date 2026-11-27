@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
-import { Route } from 'router/compat'
+import { Redirect, Route } from 'router/compat'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
-import ChapterEditView from 'corpus/ui/ChapterEditView'
+import ChapterEditLiteView from 'corpus/ui/edit-lite/ChapterEditLiteView'
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -16,6 +16,8 @@ import { sitemapDefaults, ChapterSlugs, TextSlugs } from 'router/sitemapConfig'
 import MarkupService from 'markup/application/MarkupService'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
+
 function parseChapterId(params): ChapterId {
   return {
     textId: parseTextId(params),
@@ -53,16 +55,30 @@ export default function CorpusRoutes({
 }): JSX.Element[] {
   return [
     <Route
-      key="ChapterEditView"
+      key="ChapterEditLiteView"
       path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
       exact
-      render={({ match }): ReactNode => (
-        <ChapterEditView
+      render={({ match, location }): ReactNode => (
+        <ChapterEditLiteView
           textService={textService}
           bibliographyService={bibliographyService}
           fragmentService={fragmentService}
-          wordService={wordService}
           id={parseChapterId(match.params)}
+          search={location.search}
+        />
+      )}
+    />,
+    <Route
+      key="ChapterEditLiteRedirect"
+      path="/corpus/:genre/:category/:index/:stage/:chapter/edit-lite"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            location.pathname.replace(/\/edit-lite\/?$/, '/edit'),
+            location.search,
+            location.hash,
+          )}
         />
       )}
     />,

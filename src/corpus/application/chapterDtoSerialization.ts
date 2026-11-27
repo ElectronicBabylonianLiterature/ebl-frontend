@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import serializeReference from 'bibliography/application/serializeReference'
 import Reference from 'bibliography/domain/Reference'
-import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { EditStatus, Line } from 'corpus/domain/line'
+import { AlignmentToken, LineAlignment } from 'corpus/domain/alignment'
+import { LineLemmatization } from 'corpus/domain/lemmatization'
+import { Line } from 'corpus/domain/line'
 import { Manuscript, OldSiglum } from 'corpus/domain/manuscript'
 
 function toName(record: { name: string }): string {
@@ -40,7 +40,7 @@ function toManuscriptDto(manuscript: Manuscript) {
   } as const
 }
 
-function toLineDto(line: Line) {
+export function toLineDto(line: Line) {
   return {
     ..._.omit(line, 'status'),
     variants: line.variants.map((variant) => ({
@@ -71,32 +71,20 @@ function toAlignmentTokenDto(token: AlignmentToken) {
       } as const)
 }
 
-export function toAlignmentDto(
-  alignment: ChapterAlignment,
-): Record<string, unknown> {
-  return {
-    alignment: alignment.lines.map((line) =>
-      line.map((variant) =>
-        variant.map((manuscript) => ({
-          alignment: manuscript.alignment.map(toAlignmentTokenDto),
-          omittedWords: manuscript.omittedWords,
-        })),
-      ),
-    ),
-  } as const
+export function toLineAlignmentDto(line: LineAlignment) {
+  return line.map((variant) =>
+    variant.map((manuscript) => ({
+      alignment: manuscript.alignment.map(toAlignmentTokenDto),
+      omittedWords: manuscript.omittedWords,
+    })),
+  )
 }
 
-export function toLemmatizationDto(lemmatization: ChapterLemmatization) {
-  return {
-    lemmatization: lemmatization.map((line) =>
-      line.map((variant) => ({
-        reconstruction: variant[0].map((token) => token.toDto()),
-        manuscripts: variant[1].map((line) =>
-          line.map((token) => token.toDto()),
-        ),
-      })),
-    ),
-  } as const
+export function toLineLemmatizationDto(line: readonly LineLemmatization[]) {
+  return line.map((variant) => ({
+    reconstruction: variant[0].map((token) => token.toDto()),
+    manuscripts: variant[1].map((line) => line.map((token) => token.toDto())),
+  }))
 }
 
 export function toManuscriptsDto(
@@ -108,23 +96,3 @@ export function toManuscriptsDto(
     uncertainFragments: uncertainChapters,
   } as const
 }
-
-export const toLinesDto = (lines: readonly Line[]) =>
-  ({
-    edited: _(lines)
-      .map((line, index) =>
-        line.status === EditStatus.EDITED
-          ? { line: toLineDto(line), index: index }
-          : null,
-      )
-      .reject(_.isNil)
-      .value(),
-    deleted: _(lines)
-      .map((line, index) => (line.status === EditStatus.DELETED ? index : null))
-      .reject(_.isNil)
-      .value(),
-    new: _(lines)
-      .filter((line) => line.status === EditStatus.NEW)
-      .map(toLineDto)
-      .value(),
-  }) as const

@@ -15,7 +15,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
-import type { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import type { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 

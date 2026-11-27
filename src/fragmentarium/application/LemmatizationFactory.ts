@@ -16,7 +16,7 @@ export interface LemmaSuggestionSource {
   ): Promise<readonly UniqueLemma[]>
 }
 
-export abstract class AbstractLemmatizationFactory<T, U> {
+abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findSuggestions: (
     value: string,
     isNormalized: boolean,

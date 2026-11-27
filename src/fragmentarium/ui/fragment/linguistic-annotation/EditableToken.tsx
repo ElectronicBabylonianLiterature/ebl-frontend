@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { Badge } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import classNames from 'classnames'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/lemmaOptions'
 import _ from 'lodash'
 
 function DisplayLemmaEntry({
