@@ -96,12 +96,16 @@ function FragmentLemmaLines({
         (queryItem, index) => {
           return (
             <Row key={index}>
-              <Col xs={1}>
+              <Col
+                xs={12}
+                lg="auto"
+                className="fragment-lines-with-lemma__identifier"
+              >
                 <FragmentLink number={queryItem.museumNumber}>
                   {queryItem.museumNumber}
                 </FragmentLink>
               </Col>
-              <Col className={'fragmentlines-column'}>
+              <Col xs={12} lg className={'fragmentlines-column'}>
                 <QueryItemFragmentLines
                   queryItem={queryItem}
                   fragmentService={fragmentService}
